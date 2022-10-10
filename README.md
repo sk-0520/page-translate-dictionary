@@ -23,5 +23,21 @@
 
 * node: `18.4.0`
 
+## 設定項目
 
+```jsonc
+{
+  "name": "example trans",
+  "base": "example",
+  "lang": "ja-JP",
+  "version": "YYYY-MM-DD/x.xx.xxx",
+  // 対象パス
+  "(www\\.)?<BASE>.com": {
 
+  },
+  // 共通テキスト設定
+  "*": {
+
+  }
+}
+```
