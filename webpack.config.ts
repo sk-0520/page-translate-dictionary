@@ -5,14 +5,13 @@ import webpack from 'webpack';
 const TerserPlugin = require("terser-webpack-plugin");
 
 const inputRootDirectory = path.resolve(__dirname, 'source');
-const inputSourceDirectory = path.resolve(__dirname, inputRootDirectory ,'page-translate-robot');
+const inputSourceDirectory = path.resolve(__dirname, inputRootDirectory, 'page-translate-robot');
 const outputDirectory = path.resolve(__dirname, 'dist');
 
 function replaceManifestFile(browser: string): void {
 	const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
-	const inputManifestName = `${browser}-manifest.json`;
-	const inputManifestPath = path.join(inputRootDirectory, inputManifestName);
+	const inputManifestPath = path.join(inputRootDirectory, 'manifest', `${browser}.json`);
 
 	const packageVersion = packageJson['version'];
 
@@ -20,7 +19,7 @@ function replaceManifestFile(browser: string): void {
 	targetJson['version'] = packageVersion;
 
 	const outputPath = path.join(outputDirectory, 'manifest.json');
-	fs.writeFileSync(outputPath, JSON.stringify(targetJson, undefined, 2));
+	fs.writeFileSync(outputPath, JSON.stringify(targetJson, undefined, 2), { flag: 'w' });
 }
 
 const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Configuration => {
