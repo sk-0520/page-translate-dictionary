@@ -4,7 +4,11 @@
 	"description": "夢語るだけのREADME。",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"build:firefox": "webpack --mode=production --config=webpack.config.ts --env=browser=firefox",
+		"prebrowser:firefox-sk": "mkdirp X:\\fx",
+		"browser:firefox": "web-ext run --source-dir=./dist --start-url about:debugging about:addons",
+		"browser:firefox-sk": "npm run browser:firefox -- --keep-profile-changes --firefox-profile=X:\\fx ",
+		"lint:firefox": "web-ext lint --source-dir=./dist",
 		"check": "ncu",
 		"update": "ncu -u && npm install"
 	},
