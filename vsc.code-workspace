@@ -4,5 +4,29 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.exclude": {
+			"**/bin": true,
+			"**/obj": true,
+			".vs": true,
+			"dist/": true,
+			"*.lnk": true
+		},
+		"files.watcherExclude": {
+			"**/.git/objects/**": true,
+			"**/.git/subtree-cache/**": true,
+			"**/node_modules/*/**": true,
+			".vs": true,
+			".vscode": true,
+			"**/dist/**": true,
+			"**/bin/**": true,
+			"**/obj/**": true,
+			"*.lnk": true,
+		},
+		"html.format.indentInnerHtml": true,
+		"html.format.wrapLineLength": 0,
+		"cSpell.words": [
+			"webextension"
+		]
+	}
 }

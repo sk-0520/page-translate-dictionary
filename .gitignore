@@ -1,0 +1,17 @@
+.vscode/
+temp/
+/node_modules/
+/dist/
+
+desktop.ini
+*.zip
+*.7z
+*.lnk
+-*
+@*
+$*
+^*
+*.zip
+*.7z
+*.tmp
+*.log
