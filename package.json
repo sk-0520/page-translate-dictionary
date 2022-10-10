@@ -5,8 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"build:firefox": "webpack --mode=production --config=webpack.config.ts --env=browser=firefox",
-		"prebrowser:firefox-sk": "mkdirp X:\\fx",
 		"browser:firefox": "web-ext run --source-dir=./dist --start-url about:debugging about:addons",
+		"prebrowser:firefox-sk": "mkdirp X:\\fx",
 		"browser:firefox-sk": "npm run browser:firefox -- --keep-profile-changes --firefox-profile=X:\\fx ",
 		"lint:firefox": "web-ext lint --source-dir=./dist",
 		"check": "ncu",
