@@ -5,9 +5,9 @@ on: push
 jobs:
   build:
 
-    strategy:
-      matrix:
-        PLATFORM: ["x86", "x64"]
+    # strategy:
+    #   matrix:
+    #     PLATFORM: ["x86", "x64"]
 
     runs-on: ubuntu-22.04
 
