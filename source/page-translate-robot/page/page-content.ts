@@ -1,9 +1,10 @@
 import * as config from '../config';
-import * as host from '../host';
+import * as url from '../url';
 import * as logging from '../logging';
 
 const logger = logging.create('page-content');
 
+//　将来的にこの項目はストレージから引っ張るので無くなる
 const confItems: Array<config.ISiteConfiguration> = [
 	{
 		host: 'github\\.com',
@@ -12,7 +13,7 @@ const confItems: Array<config.ISiteConfiguration> = [
 		level: 0,
 		language: 'ja-JP',
 		path: {
-			"\\w+/\\w+": {
+			"/[A-Za-z0-9_\\-]+/[A-Za-z0-9_\\-]+/?$": {
 				"selector": {
 					"h1": {
 						text: {
@@ -23,7 +24,19 @@ const confItems: Array<config.ISiteConfiguration> = [
 						}
 					}
 				}
-			}
+			},
+			"/[A-Za-z0-9_\\-]+/[A-Za-z0-9_\\-]+/issue": {
+				"selector": {
+					"h1": {
+						text: {
+							replace: {
+								mode: config.ReplaceMode.Normal,
+								value: "test",
+							}
+						}
+					}
+				}
+			},
 		},
 		common: {
 			selector: {
@@ -34,18 +47,48 @@ const confItems: Array<config.ISiteConfiguration> = [
 	}
 ];
 
-const currentConfItems = confItems.filter(i => host.isEnabledHost(location.hostname, i.host));
-if (currentConfItems.length) {
-	logger.trace('きた！');
-	const sortedCurrentConfItems = currentConfItems.sort((a,b) => a.level - b.level);
-	for(const config of sortedCurrentConfItems) {
-		transfer(config);
+
+function transfer(pathConfiguration: config.IPathConfiguration, siteConfiguration: config.ISiteConfiguration): void {
+	for (const [selector, value] of Object.entries(pathConfiguration.selector)) {
+		const element = document.querySelector(selector);
+		if (!element) {
+			continue;
+		}
+		console.debug(value);
 	}
-} else {
-	logger.trace('むし！');
 }
 
-function transfer(site: config.ISiteConfiguration): void
-{
+function execute() {
+	const currentConfItems = confItems.filter(i => url.isEnabledHost(location.hostname, i.host));
+	if (currentConfItems.length) {
+		logger.trace('きた？');
 
+		let isEnabled = false;
+		const sortedCurrentConfItems = currentConfItems.sort((a, b) => a.level - b.level);
+		for (const config of sortedCurrentConfItems) {
+			for (const [pathPattern, value] of Object.entries(config.path)) {
+				if (url.isEnabledPath(location.pathname, pathPattern)) {
+					logger.trace('きた！！');
+					isEnabled = true;
+					transfer(value, config);
+				}
+			}
+		}
+		if (!isEnabled) {
+			logger.trace('きてない・・・', location.pathname);
+		}
+	} else {
+		logger.trace('無視！');
+	}
 }
+
+function update(event: Event) {
+	logger.info('update');
+	execute();
+}
+
+(function () {
+	document.addEventListener('pjax:end', ev => update(ev));
+	document.addEventListener('turbo:render', ev => update(ev));
+	execute();
+})();
