@@ -19,6 +19,7 @@
 	],
 	"content_scripts": [
 		{
+			"run_at": "document_idle",
 			"matches": [
 				"<all_urls>"
 			],

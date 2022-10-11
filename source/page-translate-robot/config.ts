@@ -100,8 +100,8 @@ export interface ISiteConfiguration {
 	name: string;
 	/** バージョン */
 	version: string;
-	/** 対象ドメイン */
-	domain: string;
+	/** 対象ホスト */
+	host: string;
 	/** 優先度 */
 	level: number;
 	/** 変換先言語 */

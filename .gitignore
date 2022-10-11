@@ -2,6 +2,7 @@
 temp/
 /node_modules/
 /dist/
+/coverage/
 
 desktop.ini
 *.zip
