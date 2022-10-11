@@ -1,5 +1,5 @@
 {
-	"name": "page-translate-robot",
+	"name": "page-translate-dictionary",
 	"version": "1.0.0",
 	"description": "夢語るだけのREADME。",
 	"main": "index.js",
@@ -19,14 +19,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/sk-0520/page-translate-robot.git"
+		"url": "git+https://github.com/sk-0520/page-translate-dictionary.git"
 	},
 	"author": "sk",
 	"license": "WTFPL",
 	"bugs": {
-		"url": "https://github.com/sk-0520/page-translate-robot/issues"
+		"url": "https://github.com/sk-0520/page-translate-dictionary/issues"
 	},
-	"homepage": "https://github.com/sk-0520/page-translate-robot#readme",
+	"homepage": "https://github.com/sk-0520/page-translate-dictionary#readme",
 	"jest": {
 		"moduleFileExtensions": [
 			"ts",

@@ -5,7 +5,7 @@ import webpack from 'webpack';
 const TerserPlugin = require("terser-webpack-plugin");
 
 const inputRootDirectory = path.resolve(__dirname, 'source');
-const inputSourceDirectory = path.resolve(__dirname, inputRootDirectory, 'page-translate-robot');
+const inputSourceDirectory = path.resolve(__dirname, inputRootDirectory, 'page-translate-dictionary');
 const outputDirectory = path.resolve(__dirname, 'dist');
 
 function replaceManifestFile(browser: string): void {
