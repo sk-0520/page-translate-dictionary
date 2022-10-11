@@ -4,11 +4,21 @@
 	"description": "夢語るだけのREADME。",
 	"main": "index.js",
 	"scripts": {
+		"test:script": "jest",
+		"test": "npm-run-all --sequential test:script",
+
 		"build:firefox": "webpack --mode=production --config=webpack.config.ts --env=browser=firefox",
+		"watch:firefox": "webpack --watch --cache --mode=development --config=webpack.config.ts --env=browser=firefox",
+
 		"browser:firefox": "web-ext run --source-dir=./dist --start-url about:debugging about:addons",
 		"prebrowser:firefox-sk": "mkdirp X:\\fx",
 		"browser:firefox-sk": "npm run browser:firefox -- --keep-profile-changes --firefox-profile=X:\\fx ",
+
+		"debug:firefox": "npm-run-all --parallel watch:firefox browser:firefox",
+		"debug:firefox-sk": "npm-run-all --parallel watch:firefox browser:firefox-sk",
+
 		"lint:firefox": "web-ext lint --source-dir=./dist",
+
 		"check": "ncu",
 		"update": "ncu -u && npm install"
 	},
@@ -22,6 +32,25 @@
 		"url": "https://github.com/sk-0520/page-translate-robot/issues"
 	},
 	"homepage": "https://github.com/sk-0520/page-translate-robot#readme",
+	"jest": {
+		"moduleFileExtensions": [
+			"ts",
+			"js"
+		],
+		"transform": {
+			"^.+\\.ts$": "ts-jest"
+		},
+		"globals": {
+			"ts-jest": {
+				"tsconfig": "tsconfig.json"
+			}
+		},
+		"testMatch": [
+			"**/source/test/**/*"
+		],
+		"collectCoverage": true,
+		"coverageDirectory": "coverage/script"
+	},
 	"devDependencies": {
 		"@types/webpack": "^5.28.0",
 		"cp-cli": "^2.0.0",

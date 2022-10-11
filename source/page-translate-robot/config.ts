@@ -1,79 +1,79 @@
 
-enum WhiteSpace {
+export enum WhiteSpace {
 	Join = 'join',
 	Raw = 'raw',
 }
 
-enum LineBreak {
+export enum LineBreak {
 	Join = 'join',
 	Raw = 'raw',
 }
 
-enum MatchMode {
+export enum MatchMode {
 	Partial = 'partial',
 	Forward = 'forward',
 	Backward = 'backward',
 	Regex = 'regex',
 }
 
-enum ReplaceMode {
+export enum ReplaceMode {
 	Normal = 'normal',
 	Common = 'common',
 }
 
-interface IFilterConfiguration {
+export interface IFilterConfiguration {
 	//#region property
 
-	trim: boolean;
-	whiteSpace: WhiteSpace;
-	lineBreak: LineBreak;
+	trim?: boolean;
+	whiteSpace?: WhiteSpace;
+	lineBreak?: LineBreak;
 
 	//#endregion
 }
 
-interface IMatchConfiguration {
+export interface IMatchConfiguration {
 	//#region property
 
-	mode: MatchMode;
-	ignoreCase: boolean;
+	mode?: MatchMode;
+	ignoreCase?: boolean;
 	pattern: string;
 
 	//#endregion
 }
 
-interface IReplaceConfiguration {
+export interface IReplaceConfiguration {
 	//#region property
 
-	mode: ReplaceMode;
+	mode?: ReplaceMode;
 	value: string;
 
 	//#endregion
 }
 
-interface ITargetConfiguration {
+export interface ITargetConfiguration {
 	//#region property
 
-	filter: IFilterConfiguration;
-	match: IMatchConfiguration;
+	filter?: IFilterConfiguration;
+	match?: IMatchConfiguration;
 	replace: IReplaceConfiguration;
 
 	//#endregion
 }
 
-interface IQueryConfiguration {
+export interface IQueryConfiguration {
 	//#region property
 
-	text: ITargetConfiguration;
-	value: ITargetConfiguration;
-	attributes: { [name: string]: ITargetConfiguration };
+	text?: ITargetConfiguration;
+	value?: ITargetConfiguration;
+	attributes?: { [name: string]: ITargetConfiguration };
 
 	//#endregion
 }
 
-interface IPathConfiguration {
+export interface IPathConfiguration {
 	//#region property
 
-	selector: { [selector: string]: string }
+	selector: { [selector: string]: IQueryConfiguration }
 
 	//#endregion
 }
@@ -81,19 +81,19 @@ interface IPathConfiguration {
 /**
  * 共通設定
  */
-interface ICommonConfiguration {
+export interface ICommonConfiguration {
 	//#region property
 
 	/** 共通セレクタ設定 */
-	selector: { [key: string]: string }
+	selector?: { [key: string]: string }
 
 	/** 共通テキスト設定 */
-	text: { [key: string]: string }
+	text?: { [key: string]: string }
 
 	//#endregion
 }
 
-interface ISiteConfiguration {
+export interface ISiteConfiguration {
 	//#region property
 
 	/** 名前 */
@@ -108,6 +108,8 @@ interface ISiteConfiguration {
 	language: string;
 
 	path: { [path: string]: IPathConfiguration }
+
+	common?: ICommonConfiguration;
 
 	//#endregion
 }
