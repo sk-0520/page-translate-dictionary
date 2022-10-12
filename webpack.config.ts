@@ -35,7 +35,6 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 	const conf: webpack.Configuration = {
 		mode: args.mode,
 
-		// 名前に親ディレクトリを含めること(JS/CSSごちゃまぜ回避方法不明)
 		entry: {
 			// 共通スクリプト
 			"page-content": path.join(inputSourceDirectory, 'page/page-content.ts'),
