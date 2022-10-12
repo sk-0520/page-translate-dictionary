@@ -1,11 +1,33 @@
 import * as config from '../config';
 import * as url from '../url';
 import * as logging from '../logging';
+import * as translator from './translator';
 
 const logger = logging.create('page-content');
 
 //　将来的にこの項目はストレージから引っ張るので無くなる
 const confItems: Array<config.ISiteConfiguration> = [
+	{
+		host: 'content-type-text\\.net',
+		name: 'cttn',
+		version: '0',
+		level: 0,
+		language: 'ja-JP',
+		path: {
+			"/": {
+				selector: {
+					"h1": {
+						text: {
+							replace: {
+								mode: config.ReplaceMode.Normal,
+								value: "test",
+							}
+						}
+					}
+				}
+			}
+		}
+	},
 	{
 		host: 'github\\.com',
 		name: 'test',
@@ -14,7 +36,7 @@ const confItems: Array<config.ISiteConfiguration> = [
 		language: 'ja-JP',
 		path: {
 			"/[A-Za-z0-9_\\-]+/[A-Za-z0-9_\\-]+/?$": {
-				"selector": {
+				selector: {
 					"h1": {
 						text: {
 							replace: {
@@ -26,7 +48,7 @@ const confItems: Array<config.ISiteConfiguration> = [
 				}
 			},
 			"/[A-Za-z0-9_\\-]+/[A-Za-z0-9_\\-]+/issue": {
-				"selector": {
+				selector: {
 					"h1": {
 						text: {
 							replace: {
@@ -47,17 +69,6 @@ const confItems: Array<config.ISiteConfiguration> = [
 	}
 ];
 
-
-function transfer(pathConfiguration: config.IPathConfiguration, siteConfiguration: config.ISiteConfiguration): void {
-	for (const [selector, value] of Object.entries(pathConfiguration.selector)) {
-		const element = document.querySelector(selector);
-		if (!element) {
-			continue;
-		}
-		console.debug(value);
-	}
-}
-
 function execute() {
 	const currentConfItems = confItems.filter(i => url.isEnabledHost(location.hostname, i.host));
 	if (currentConfItems.length) {
@@ -68,9 +79,9 @@ function execute() {
 		for (const config of sortedCurrentConfItems) {
 			for (const [pathPattern, value] of Object.entries(config.path)) {
 				if (url.isEnabledPath(location.pathname, pathPattern)) {
-					logger.trace('きた！！');
+					logger.trace('きた！！', pathPattern);
 					isEnabled = true;
-					transfer(value, config);
+					translator.translate(value, config);
 				}
 			}
 		}
