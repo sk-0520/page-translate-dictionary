@@ -31,7 +31,30 @@ const confItems: Array<config.ISiteConfiguration> = [
 								value: "ABC",
 							}
 						}
-					}
+					},
+					"li:nth-child(2) a:nth-child(1)": {
+						text: {
+							match: {
+								pattern: "Pe"
+							},
+							replace: {
+								mode: config.ReplaceMode.Normal,
+								value: "PE",
+							}
+						}
+					},
+					"li:nth-child(2) li:nth-child(2) a": {
+						text: {
+							match: {
+								mode: config.MatchMode.Regex,
+								pattern: "(?<HEAD>.+)(?<VALUE>r)(?<TAIL>.+)"
+							},
+							replace: {
+								mode: config.ReplaceMode.Normal,
+								value: "💩<${HEAD}>!<VALUE>!<${TAIL}>",
+							}
+						}
+					},
 				}
 			}
 		},

@@ -72,10 +72,10 @@ function matchText(input: string, matchConfiguration: config.IMatchConfiguration
 			} else {
 				index = input.indexOf(matchConfiguration.pattern);
 			}
-			if (index === -1) {
-				return MatchResult.none();
+			if (index !== -1) {
+				return MatchResult.matchedPlain();
 			}
-			return MatchResult.matchedPlain();
+			return MatchResult.none();
 
 		case config.MatchMode.Regex:
 			const flags = ignoreCase ? 'mi' : 'm';
@@ -111,7 +111,21 @@ function replace(source: string, targetConfiguration: config.ITargetConfiguratio
 			return null;
 		}
 		if (matchResult.hasRegex) {
+			try {
+				console.debug('P: ', matchResult.regex);
+				console.debug('I: ', targetConfiguration.replace.value);
+				const result = targetConfiguration.replace.value.replace(/\$\{(?<NAME>.+?)\}/g, (s, r) => {
+					// 名前付きは groups にいらっしゃる
+					alert('? ' + s + ': ' + r + ": " + matchResult.regex.groups![r]);
+					return r;
+				})
+				alert('R: ' + result);
 
+				return result;
+
+			} catch (e) {
+				alert('catch --> ' + e);
+			}
 		}
 	}
 
