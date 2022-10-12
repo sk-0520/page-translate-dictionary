@@ -9,7 +9,7 @@ const logger = logging.create('page-content');
 const confItems: Array<config.ISiteConfiguration> = [
 	{
 		host: 'content-type-text\\.net',
-		name: 'cttn',
+		name: 'content-type-text.net',
 		version: '0',
 		level: 0,
 		language: 'ja-JP',
@@ -23,8 +23,21 @@ const confItems: Array<config.ISiteConfiguration> = [
 								value: "test",
 							}
 						}
+					},
+					"li:nth-child(1) a": {
+						text: {
+							replace: {
+								mode: config.ReplaceMode.Common,
+								value: "ABC",
+							}
+						}
 					}
 				}
+			}
+		},
+		"common": {
+			text: {
+				"ABC": "aaaaaaa"
 			}
 		}
 	},

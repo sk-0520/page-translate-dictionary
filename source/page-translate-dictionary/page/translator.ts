@@ -139,8 +139,8 @@ function replace(source: string, targetConfiguration: config.ITargetConfiguratio
 
 export function translate(pathConfiguration: config.IPathConfiguration, siteConfiguration: config.ISiteConfiguration): void {
 	for (const [selector, queryConfiguration] of Object.entries(pathConfiguration.selector)) {
-			logger.debug('selector:', selector)
-			const element = document.querySelector(selector);
+		logger.debug('selector:', selector)
+		const element = document.querySelector(selector);
 		if (!element) {
 			logger.debug('selector not match:', selector)
 			continue;
