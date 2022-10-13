@@ -5,7 +5,7 @@ import webpack from 'webpack';
 const TerserPlugin = require("terser-webpack-plugin");
 
 const inputRootDirectory = path.resolve(__dirname, 'source');
-const inputSourceDirectory = path.resolve(__dirname, inputRootDirectory, 'page-translate-dictionary');
+const inputEntryDirectory = path.resolve(__dirname, inputRootDirectory, 'entry');
 const outputDirectory = path.resolve(__dirname, 'dist');
 
 function replaceManifestFile(browser: string): void {
@@ -36,8 +36,7 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 		mode: args.mode,
 
 		entry: {
-			// 共通スクリプト
-			"page-content": path.join(inputSourceDirectory, 'page/page-content.ts'),
+			"page-content": path.join(inputEntryDirectory, 'page-content.ts'),
 		},
 
 		devtool: isProduction ? false : 'inline-source-map',

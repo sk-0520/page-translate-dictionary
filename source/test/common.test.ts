@@ -1,4 +1,4 @@
-import * as common from '../page-translate-dictionary/common'
+import * as common from '../scripts/common'
 
 describe('common', () => {
 	test('toBoolean', () => {

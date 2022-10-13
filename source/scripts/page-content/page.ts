@@ -134,8 +134,9 @@ function update(event: Event) {
 	execute();
 }
 
-(function () {
+export function boot()
+{
 	document.addEventListener('pjax:end', ev => update(ev));
 	document.addEventListener('turbo:render', ev => update(ev));
 	execute();
-})();
+}
