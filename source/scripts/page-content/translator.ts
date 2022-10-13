@@ -126,7 +126,7 @@ function replace(source: string, targetConfiguration: config.ITargetConfiguratio
 
 		if (matchResult.isRegex) {
 			try {
-				console.debug('I: ', targetConfiguration.replace.value);
+				logger.debug('I: ', targetConfiguration.replace.value);
 
 				// https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/String/replace#%E8%A7%A3%E8%AA%AC
 				const result = inputText.replace(matchResult.regex, targetConfiguration.replace.value);
@@ -134,7 +134,7 @@ function replace(source: string, targetConfiguration: config.ITargetConfiguratio
 				return result;
 
 			} catch (e) {
-				alert('catch --> ' + e);
+				logger.error('catch --> ' + e);
 			}
 		}
 	}

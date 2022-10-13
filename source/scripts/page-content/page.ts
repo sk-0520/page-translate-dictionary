@@ -55,6 +55,20 @@ const siteConfigurations: Array<config.ISiteConfiguration> = [
 							}
 						}
 					},
+					"li:nth-child(2) li:nth-child(3) a": {
+						attributes: {
+							"href": {
+								match: {
+									mode: config.MatchMode.Regex,
+									pattern: "(.+)(?<VALUE>sk)(?<TAIL>.+)"
+								},
+								replace: {
+									mode: config.ReplaceMode.Normal,
+									value: "💩[$1]!<R>![$<TAIL>]💩",
+								}
+							}
+						}
+					},
 				}
 			}
 		},
