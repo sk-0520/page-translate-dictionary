@@ -134,3 +134,23 @@ export interface IApplicationConfiguration
 
 	//#endregion
 }
+
+export const Default = {
+	filter: {
+		lineBreak: LineBreak.Join,
+		trim: true,
+		whiteSpace: WhiteSpace.Join,
+	} as IFilterConfiguration,
+
+	match: {
+		ignoreCase: true,
+		mode: MatchMode.Partial,
+		pattern: '', // これは、どうなんだ
+	} as IMatchConfiguration,
+
+	replace: {
+		mode: ReplaceMode.Normal,
+		value: '', // これもどうなんだ・・・・
+	} as IReplaceConfiguration,
+}
+
