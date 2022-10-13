@@ -111,15 +111,12 @@ function matchText(input: string, matchConfiguration: config.IMatchConfiguration
 }
 
 function replace(source: string, targetConfiguration: config.ITargetConfiguration, siteConfiguration: config.ISiteConfiguration): string | null {
-	let inputText = source;
-	if (targetConfiguration.filter && targetConfiguration.match) {
-		inputText = filterText(source, targetConfiguration.filter);
-	}
+	const inputText = filterText(source, { ...targetConfiguration.filter, ...config.Default.filter });
 
 	const replaceMode = targetConfiguration.replace.mode ?? config.ReplaceMode.Normal;
 
 	if (targetConfiguration.match) {
-		const matchResult = matchText(inputText, targetConfiguration.match);
+		const matchResult = matchText(inputText, { ...targetConfiguration.match, ...config.Default.match });
 		if (!matchResult.matched) {
 			return null;
 		}
