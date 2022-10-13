@@ -6,7 +6,7 @@ import * as translator from './translator';
 const logger = logging.create('page-content');
 
 //　将来的にこの項目はストレージから引っ張るので無くなる
-const confItems: Array<config.ISiteConfiguration> = [
+const siteConfigurations: Array<config.ISiteConfiguration> = [
 	{
 		host: 'content-type-text\\.net',
 		name: 'content-type-text.net',
@@ -47,11 +47,11 @@ const confItems: Array<config.ISiteConfiguration> = [
 						text: {
 							match: {
 								mode: config.MatchMode.Regex,
-								pattern: "(?<HEAD>.+)(?<VALUE>r)(?<TAIL>.+)"
+								pattern: "(.+)(?<VALUE>r)(.+)"
 							},
 							replace: {
 								mode: config.ReplaceMode.Normal,
-								value: "💩<${HEAD}>!<VALUE>!<${TAIL}>",
+								value: "💩<${1}>!<ばりゅー>!<${2}>💩",
 							}
 						}
 					},
@@ -105,23 +105,29 @@ const confItems: Array<config.ISiteConfiguration> = [
 	}
 ];
 
+const applicationConfiguration: config.IApplicationConfiguration = {
+	translate: {
+		markReplacedElement: true,
+	},
+};
+
 function execute() {
-	const currentConfItems = confItems.filter(i => url.isEnabledHost(location.hostname, i.host));
-	if (currentConfItems.length) {
+	const currentSiteConfigurations = siteConfigurations.filter(i => url.isEnabledHost(location.hostname, i.host));
+	if (currentSiteConfigurations.length) {
 		logger.trace('きた？');
 
-		let isEnabled = false;
-		const sortedCurrentConfItems = currentConfItems.sort((a, b) => a.level - b.level);
-		for (const config of sortedCurrentConfItems) {
-			for (const [pathPattern, value] of Object.entries(config.path)) {
+		let isTranslated = false;
+		const sortedCurrentSiteConfigurations = currentSiteConfigurations.sort((a, b) => a.level - b.level);
+		for (const siteConfiguration of sortedCurrentSiteConfigurations) {
+			for (const [pathPattern, pathConfiguration] of Object.entries(siteConfiguration.path)) {
 				if (url.isEnabledPath(location.pathname, pathPattern)) {
 					logger.trace('きた！！', pathPattern);
-					isEnabled = true;
-					translator.translate(value, config);
+					isTranslated = true;
+					translator.translate(pathConfiguration, siteConfiguration, applicationConfiguration.translate);
 				}
 			}
 		}
-		if (!isEnabled) {
+		if (!isTranslated) {
 			logger.trace('きてない・・・', location.pathname);
 		}
 	} else {
@@ -134,8 +140,7 @@ function update(event: Event) {
 	execute();
 }
 
-export function boot()
-{
+export function boot() {
 	document.addEventListener('pjax:end', ev => update(ev));
 	document.addEventListener('turbo:render', ev => update(ev));
 	execute();

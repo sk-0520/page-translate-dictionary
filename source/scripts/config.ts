@@ -113,3 +113,24 @@ export interface ISiteConfiguration {
 
 	//#endregion
 }
+
+export interface ITranslateConfiguration
+{
+	//#region property
+
+	/**
+	 * 置き換えた要素に対して視覚的マークを設定するか。
+	 */
+	 markReplacedElement: boolean;
+
+	 //#endregion
+}
+
+export interface IApplicationConfiguration
+{
+	//#region property
+
+	translate: ITranslateConfiguration;
+
+	//#endregion
+}

@@ -4,6 +4,20 @@ import * as type from '../type';
 
 const logger = logging.create('translator');
 
+const baseName = 'ptd';
+const baseAttr = 'data-' + baseName + '-';
+
+const ClassNames = {
+	mark: baseName + '-marked',
+}
+
+const Attributes = {
+	translated: baseAttr + 'translated',
+	text: baseAttr + 'translated-text',
+	value: baseAttr + 'translated-value',
+	attributeHead: baseAttr + 'translated-attr-',
+}
+
 class MatchResult {
 	//#region variable
 
@@ -114,11 +128,17 @@ function replace(source: string, targetConfiguration: config.ITargetConfiguratio
 			try {
 				console.debug('P: ', matchResult.regex);
 				console.debug('I: ', targetConfiguration.replace.value);
-				const result = targetConfiguration.replace.value.replace(/\$\{(?<NAME>.+?)\}/g, (s, r) => {
-					// 名前付きは groups にいらっしゃる
-					alert('? ' + s + ': ' + r + ": " + matchResult.regex.groups![r]);
-					return r;
-				})
+
+				const result = targetConfiguration.replace.value.replace(/\$\{(?<NAME>.+?)\}/g, (s, c) => {
+					alert('? ' + s + ': ' + c + ": " + matchResult.regex.groups![c]);
+					if(isNaN(parseInt(c))) {
+						return matchResult.regex[c];
+					} else if(matchResult.regex.groups) {
+						return matchResult.regex.groups['NAME'];
+					}
+					return c;
+				});
+
 				alert('R: ' + result);
 
 				return result;
@@ -151,7 +171,49 @@ function replace(source: string, targetConfiguration: config.ITargetConfiguratio
 	}
 }
 
-export function translate(pathConfiguration: config.IPathConfiguration, siteConfiguration: config.ISiteConfiguration): void {
+function translateElement(element: Element, queryConfiguration: config.IQueryConfiguration, siteConfiguration: config.ISiteConfiguration): boolean {
+	let translated = false;
+
+	if (queryConfiguration.attributes) {
+		for (const [name, targetConfiguration] of Object.entries(queryConfiguration.attributes)) {
+			const sourceValue = element.getAttribute(name);
+			if (sourceValue) {
+				const output = replace(sourceValue, targetConfiguration, siteConfiguration);
+				if (output) {
+					element.setAttribute(name, output);
+					element.setAttribute(Attributes.attributeHead + name, sourceValue);
+					translated = true;
+				}
+			}
+		}
+	}
+
+	if (type.isInputElement(element) && queryConfiguration.value) {
+		const sourceValue = element.value;
+		const output = replace(sourceValue, queryConfiguration.value, siteConfiguration);
+		if (output) {
+			element.value = output;
+			element.setAttribute(Attributes.value, sourceValue);
+			translated = true;
+		}
+	} else if (element.textContent && queryConfiguration.text) {
+		const sourceValue = element.textContent;
+		const output = replace(sourceValue, queryConfiguration.text, siteConfiguration);
+		if (output) {
+			element.textContent = output;
+			element.setAttribute(Attributes.text, sourceValue);
+			translated = true;
+		}
+	}
+
+	if (translated) {
+		element.setAttribute(Attributes.translated, '');
+	}
+
+	return translated;
+}
+
+export function translate(pathConfiguration: config.IPathConfiguration, siteConfiguration: config.ISiteConfiguration, translateConfiguration: config.ITranslateConfiguration): void {
 	for (const [selector, queryConfiguration] of Object.entries(pathConfiguration.selector)) {
 		logger.debug('selector:', selector)
 		const element = document.querySelector(selector);
@@ -162,27 +224,9 @@ export function translate(pathConfiguration: config.IPathConfiguration, siteConf
 
 		logger.debug(queryConfiguration);
 
-		if (type.isInputElement(element) && queryConfiguration.value) {
-			const output = replace(element.value, queryConfiguration.value, siteConfiguration);
-			if (output) {
-				element.value = output;
-			}
-		} else if (element.textContent && queryConfiguration.text) {
-			const output = replace(element.textContent, queryConfiguration.text, siteConfiguration);
-			if (output) {
-				element.textContent = output;
-			}
-		}
-
-		if (queryConfiguration.attributes) {
-			for (const [name, targetConfiguration] of Object.entries(queryConfiguration.attributes)) {
-				const sourceValue = element.getAttribute(name);
-				if (sourceValue) {
-					const output = replace(sourceValue, targetConfiguration, siteConfiguration);
-					if (output) {
-						element.setAttribute(name, output);
-					}
-				}
+		if (translateElement(element, queryConfiguration, siteConfiguration)) {
+			if(translateConfiguration.markReplacedElement) {
+				element.classList.add(ClassNames.mark);
 			}
 		}
 	}
