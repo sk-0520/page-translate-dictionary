@@ -2,7 +2,7 @@ import * as config from '../config';
 import * as url from '../url';
 import * as logging from '../logging';
 import * as translator from './translator';
-
+import * as names from '../names';
 import '../../styles/page.scss';
 
 const logger = logging.create('page-content');
@@ -127,7 +127,8 @@ const applicationConfiguration: config.IApplicationConfiguration = {
 	},
 };
 
-function execute() {
+function executeCore() {
+	alert(true);
 	const currentSiteConfigurations = siteConfigurations.filter(i => url.isEnabledHost(location.hostname, i.host));
 	if (currentSiteConfigurations.length) {
 		logger.trace('きた？');
@@ -148,6 +149,27 @@ function execute() {
 		}
 	} else {
 		logger.trace('無視！');
+	}
+}
+
+function createProgressElement(): HTMLElement {
+	const progressElement = document.createElement('div');
+	progressElement.classList.add(names.ClassNames.progress)
+
+	progressElement.appendChild(
+		document.createTextNode('置き換え中...')
+	);
+
+	return progressElement;
+}
+
+function execute() {
+	const progressElement = createProgressElement();
+	document.body.appendChild(progressElement);
+	try {
+		executeCore();
+	} finally {
+		document.body.removeChild(progressElement);
 	}
 }
 

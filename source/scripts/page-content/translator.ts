@@ -1,22 +1,9 @@
 import * as config from '../config';
 import * as logging from '../logging';
+import * as names from '../names';
 import * as type from '../type';
 
 const logger = logging.create('translator');
-
-const baseName = 'ptd';
-const baseAttr = 'data-' + baseName + '-';
-
-const ClassNames = {
-	mark: baseName + '-marked',
-}
-
-const Attributes = {
-	translated: baseAttr + 'translated',
-	text: baseAttr + 'translated-text',
-	value: baseAttr + 'translated-value',
-	attributeHead: baseAttr + 'translated-attr-',
-}
 
 class MatchResult {
 	//#region variable
@@ -162,13 +149,13 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 	let translated = false;
 
 	if (queryConfiguration.attributes) {
-		for (const [name, targetConfiguration] of Object.entries(queryConfiguration.attributes)) {
-			const sourceValue = element.getAttribute(name);
+		for (const [attributeName, targetConfiguration] of Object.entries(queryConfiguration.attributes)) {
+			const sourceValue = element.getAttribute(attributeName);
 			if (sourceValue) {
 				const output = replace(sourceValue, targetConfiguration, siteConfiguration);
 				if (output) {
-					element.setAttribute(name, output);
-					element.setAttribute(Attributes.attributeHead + name, sourceValue);
+					element.setAttribute(attributeName, output);
+					element.setAttribute(names.Attributes.attributeHead + attributeName, sourceValue);
 					translated = true;
 				}
 			}
@@ -180,7 +167,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 		const output = replace(sourceValue, queryConfiguration.value, siteConfiguration);
 		if (output) {
 			element.value = output;
-			element.setAttribute(Attributes.value, sourceValue);
+			element.setAttribute(names.Attributes.value, sourceValue);
 			translated = true;
 		}
 	} else if (element.textContent && queryConfiguration.text) {
@@ -188,13 +175,13 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 		const output = replace(sourceValue, queryConfiguration.text, siteConfiguration);
 		if (output) {
 			element.textContent = output;
-			element.setAttribute(Attributes.text, sourceValue);
+			element.setAttribute(names.Attributes.text, sourceValue);
 			translated = true;
 		}
 	}
 
 	if (translated) {
-		element.setAttribute(Attributes.translated, '');
+		element.setAttribute(names.Attributes.translated, '');
 	}
 
 	return translated;
@@ -213,7 +200,7 @@ export function translate(pathConfiguration: config.IPathConfiguration, siteConf
 
 		if (translateElement(element, queryConfiguration, siteConfiguration)) {
 			if (translateConfiguration.markReplacedElement) {
-				element.classList.add(ClassNames.mark);
+				element.classList.add(names.ClassNames.mark);
 			}
 		}
 	}
