@@ -3,6 +3,8 @@ import * as url from '../url';
 import * as logging from '../logging';
 import * as translator from './translator';
 
+import '../../styles/page.scss';
+
 const logger = logging.create('page-content');
 
 //　将来的にこの項目はストレージから引っ張るので無くなる

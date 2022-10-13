@@ -62,6 +62,9 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 					test: /(\.(s[ac])ss)|(\.css)$/,
 					use: [
 						{
+							loader: "style-loader",
+						},
+						{
 							loader: "css-loader",
 							options: {
 								sourceMap: !isProduction,
