@@ -5,7 +5,7 @@ import webpack from 'webpack';
 const TerserPlugin = require("terser-webpack-plugin");
 
 const inputRootDirectory = path.resolve(__dirname, 'source');
-const inputEntryDirectory = path.resolve(__dirname, inputRootDirectory, 'entry');
+const inputEntryDirectory = path.resolve(inputRootDirectory, 'entry');
 const outputDirectory = path.resolve(__dirname, 'dist');
 
 function replaceManifestFile(browser: string): void {
@@ -19,6 +19,9 @@ function replaceManifestFile(browser: string): void {
 	targetJson['version'] = packageVersion;
 
 	const outputPath = path.join(outputDirectory, 'manifest.json');
+	if (!fs.existsSync(outputDirectory)) {
+		fs.mkdirSync(outputDirectory);
+	}
 	fs.writeFileSync(outputPath, JSON.stringify(targetJson, undefined, 2), { flag: 'w' });
 }
 

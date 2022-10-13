@@ -5,11 +5,11 @@ on: push
 jobs:
   build:
 
-    # strategy:
-    #   matrix:
-    #     PLATFORM: ["x86", "x64"]
-
     runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        BROWSER: ["firefox"]
 
     steps:
       - name: <Checkout> Repository
@@ -26,3 +26,10 @@ jobs:
 
       - name: <Test> Script
         run: npm run test
+
+      - name: <Build> Web-Extensions
+        run: npm run build:${{ matrix.BROWSER }}
+
+      - name: <Lint> Web-Extensions
+        run: npm run lint:${{ matrix.BROWSER }}
+
