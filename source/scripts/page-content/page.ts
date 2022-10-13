@@ -128,7 +128,6 @@ const applicationConfiguration: config.IApplicationConfiguration = {
 };
 
 function executeCore() {
-	alert(true);
 	const currentSiteConfigurations = siteConfigurations.filter(i => url.isEnabledHost(location.hostname, i.host));
 	if (currentSiteConfigurations.length) {
 		logger.trace('きた？');

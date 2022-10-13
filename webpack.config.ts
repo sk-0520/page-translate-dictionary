@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import webpack from 'webpack';
 
 const TerserPlugin = require("terser-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const inputRootDirectory = path.resolve(__dirname, 'source');
 const inputEntryDirectory = path.resolve(inputRootDirectory, 'entry');
@@ -40,6 +41,7 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 
 		entry: {
 			"page-content": path.join(inputEntryDirectory, 'page-content.ts'),
+			"application-options": path.join(inputEntryDirectory, 'application-options.ts'),
 		},
 
 		devtool: isProduction ? false : 'inline-source-map',
@@ -78,7 +80,7 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 						}
 					],
 					exclude: /node_modules/,
-				}
+				},
 			],
 		},
 		resolve: {
@@ -86,6 +88,13 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 				'.ts', '.js',
 			],
 		},
+		plugins: [
+			new HtmlWebpackPlugin({
+				template: path.join(inputRootDirectory, 'views', 'application-options.html'),
+				filename: 'application-options.html',
+				inject: false,
+			})
+		],
 	};
 
 	if (isProduction) {

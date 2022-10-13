@@ -27,5 +27,9 @@
 				"page-content.js"
 			]
 		}
-	]
+	],
+	"options_ui": {
+		"open_in_tab": true,
+		"page": "application-options.html"
+	}
 }
