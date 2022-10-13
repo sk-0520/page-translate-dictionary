@@ -47,11 +47,11 @@ const siteConfigurations: Array<config.ISiteConfiguration> = [
 						text: {
 							match: {
 								mode: config.MatchMode.Regex,
-								pattern: "(.+)(?<VALUE>r)(.+)"
+								pattern: "(.+)(?<VALUE>r)(?<TAIL>.+)"
 							},
 							replace: {
 								mode: config.ReplaceMode.Normal,
-								value: "💩<${1}>!<ばりゅー>!<${2}>💩",
+								value: "💩[$1]!<R>![$<TAIL>]💩",
 							}
 						}
 					},

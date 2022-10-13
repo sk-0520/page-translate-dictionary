@@ -22,11 +22,11 @@ class MatchResult {
 	//#region variable
 
 	private _matched: boolean;
-	private _regex: RegExpExecArray | null;
+	private _regex: RegExp | null;
 
 	//#endregion
 
-	private constructor(matched: boolean, regex: RegExpExecArray | null) {
+	private constructor(matched: boolean, regex: RegExp | null) {
 		this._matched = matched;
 		this._regex = regex;
 	}
@@ -37,11 +37,11 @@ class MatchResult {
 		return this._matched;
 	}
 
-	public get hasRegex(): boolean {
+	public get isRegex(): boolean {
 		return this._regex !== null;
 	}
 
-	public get regex(): RegExpExecArray {
+	public get regex(): RegExp {
 		if (!this._regex) {
 			throw new Error('regex');
 		}
@@ -62,7 +62,7 @@ class MatchResult {
 		return new MatchResult(true, null);
 	}
 
-	public static matchedRegex(regex: RegExpExecArray): MatchResult {
+	public static matchedRegex(regex: RegExp): MatchResult {
 		return new MatchResult(true, regex);
 	}
 
@@ -95,9 +95,8 @@ function matchText(input: string, matchConfiguration: config.IMatchConfiguration
 			const flags = ignoreCase ? 'mi' : 'm';
 			try {
 				const regex = new RegExp(matchConfiguration.pattern, flags);
-				const reg = regex.exec(input);
-				if (reg) {
-					return MatchResult.matchedRegex(reg);
+				if (regex.test(input)) {
+					return MatchResult.matchedRegex(regex);
 				}
 			} catch (ex) {
 				logger.warn(ex);
@@ -124,22 +123,13 @@ function replace(source: string, targetConfiguration: config.ITargetConfiguratio
 		if (!matchResult.matched) {
 			return null;
 		}
-		if (matchResult.hasRegex) {
+
+		if (matchResult.isRegex) {
 			try {
-				console.debug('P: ', matchResult.regex);
 				console.debug('I: ', targetConfiguration.replace.value);
 
-				const result = targetConfiguration.replace.value.replace(/\$\{(?<NAME>.+?)\}/g, (s, c) => {
-					alert('? ' + s + ': ' + c + ": " + matchResult.regex.groups![c]);
-					if(isNaN(parseInt(c))) {
-						return matchResult.regex[c];
-					} else if(matchResult.regex.groups) {
-						return matchResult.regex.groups['NAME'];
-					}
-					return c;
-				});
-
-				alert('R: ' + result);
+				// https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/String/replace#%E8%A7%A3%E8%AA%AC
+				const result = inputText.replace(matchResult.regex, targetConfiguration.replace.value);
 
 				return result;
 
@@ -225,7 +215,7 @@ export function translate(pathConfiguration: config.IPathConfiguration, siteConf
 		logger.debug(queryConfiguration);
 
 		if (translateElement(element, queryConfiguration, siteConfiguration)) {
-			if(translateConfiguration.markReplacedElement) {
+			if (translateConfiguration.markReplacedElement) {
 				element.classList.add(ClassNames.mark);
 			}
 		}
