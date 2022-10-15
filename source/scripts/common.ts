@@ -4,7 +4,7 @@
  *
  * @param msec 停止時間(ミリ秒)
  */
- export function sleepAsync(msec: number): Promise<void> {
+export function sleepAsync(msec: number): Promise<void> {
 	return new Promise((resolve, _) => {
 		setTimeout(() => {
 			resolve()
@@ -26,6 +26,20 @@ export function toString(b: boolean | null | undefined): string {
 	}
 
 	return 'false';
+}
+
+export function isNullOrEmpty(s?: string | null): boolean {
+	if (!s) {
+		return true;
+	}
+	return s.length === 0;
+}
+
+export function isNullOrWhiteSpace(s?: string | null): boolean {
+	if (!s) {
+		return true;
+	}
+	return s.trim().length === 0;
 }
 
 export function escapeRegex(source: string) {

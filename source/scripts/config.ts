@@ -2,6 +2,7 @@
  * 内部使用する(ある程度データが確定している)設定
  */
 import * as setting from './setting';
+import * as common from './common';
 
 export type SiteConfigurationId = string;
 
@@ -91,10 +92,10 @@ export interface ICommonConfiguration {
 	//#region property
 
 	/** 共通セレクタ設定 */
-	selector?: { [key: string]: string }
+	selector: { [key: string]: string }
 
 	/** 共通テキスト設定 */
-	text?: { [key: string]: string }
+	text: { [key: string]: string }
 
 	//#endregion
 }
@@ -181,12 +182,40 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 	//#region function
 
-	public static convertPath(path: setting.PathMap | null): { [path: string]: IPathConfiguration } {
+	public static convertPath(raw: setting.PathMap | null): { [path: string]: IPathConfiguration } {
 		throw new Error();
 	}
 
-	public static convertCommon(common: setting.ICommonSetting | null): ICommonConfiguration {
-		throw new Error();
+	public static convertCommon(raw: setting.ICommonSetting | null): ICommonConfiguration {
+		if (!raw) {
+			return {
+				selector: {},
+				text: {},
+			};
+		}
+
+		const result: ICommonConfiguration = {
+			selector: {},
+			text: {},
+		};
+
+		if ('selector' in raw && raw.selector && typeof raw.selector === 'object') {
+			for (const [key, selector] of Object.entries(raw.selector)) {
+				if (!common.isNullOrWhiteSpace(selector)) {
+					result.selector[key] = selector!;
+				}
+			}
+		}
+
+		if ('text' in raw && raw.text && typeof raw.text === 'object') {
+			for (const [key, text] of Object.entries(raw.text)) {
+				if (!common.isNullOrWhiteSpace(text)) {
+					result.text[key] = text!;
+				}
+			}
+		}
+
+		return result;
 	}
 
 	//#endregion

@@ -10,26 +10,26 @@ export function isInputElement(element: Element): element is HTMLInputElement {
 }
 
 export function isTranslateConfiguration(obj: any): obj is config.ITranslateConfiguration {
-	return obj !== null
-		&& obj.markReplacedElement !== undefined && typeof obj.markReplacedElement === 'boolean'
+	return !obj
+		&& 'markReplacedElement' in obj && typeof obj.markReplacedElement === 'boolean'
 		;
 }
 
 export function isApplicationConfiguration(obj: any): obj is config.IApplicationConfiguration {
-	return obj !== null
-		&& obj.translate !== undefined && isTranslateConfiguration(obj.translate)
+	return !obj
+		&& 'translate' in obj !== undefined && isTranslateConfiguration(obj.translate)
 		;
 }
 
 export function isSiteHeadConfiguration(obj: any): obj is config.ISiteHeadConfiguration {
-	return obj != null
-		&& obj.id !== undefined && typeof obj.id === 'string'
-		&& obj.updateUrl !== undefined && typeof obj.updateUrl === 'string'
-		&& obj.updatedTimestamp !== undefined && typeof obj.updatedTimestamp === 'string'
-		&& obj.name !== undefined && typeof obj.name === 'string'
-		&& obj.version !== undefined && typeof obj.version === 'string'
-		&& obj.hosts !== undefined && Array.isArray(obj.hosts)
-		&& obj.level !== undefined && typeof obj.level === 'number'
-		&& obj.language !== undefined && typeof obj.language === 'string'
+	return !obj
+		&& 'id' in obj && typeof obj.id === 'string'
+		&& 'updateUrl' in obj && typeof obj.updateUrl === 'string'
+		&& 'updatedTimestamp' in obj && typeof obj.updatedTimestamp === 'string'
+		&& 'name' in obj && typeof obj.name === 'string'
+		&& 'version' in obj && typeof obj.version === 'string'
+		&& 'hosts' in obj && Array.isArray(obj.hosts)
+		&& 'level' in obj && typeof obj.level === 'number'
+		&& 'language' in obj && typeof obj.language === 'string'
 		;
 }
