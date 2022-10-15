@@ -1,3 +1,3 @@
-import * as page from '../scripts/page-content/page';
+import * as page from '../scripts/page/page';
 
 page.boot();
