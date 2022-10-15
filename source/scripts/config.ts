@@ -209,11 +209,26 @@ export class SiteConfiguration implements ISiteConfiguration {
 			lineBreak: SiteConfiguration.convertEnum<LineBreak>(raw, 'lineBreak', LineBreak.Join),
 		};
 	}
-	private static convertMatch(raw: setting.IMatchSetting): IMatchConfiguration {
-		throw new Error();
+	private static convertMatch(raw: setting.IMatchSetting): IMatchConfiguration | null {
+		if (!type.hasPrimaryProperty(raw, 'pattern', 'boolean')) {
+			return null;
+		}
+
+		return {
+			ignoreCase: raw?.ignoreCase ?? true,
+			mode: SiteConfiguration.convertEnum<MatchMode>(raw, 'mode', MatchMode.Partial),
+			pattern: raw.pattern || '',
+		}
 	}
-	private static convertReplace(raw?: setting.IReplaceSetting | null): IReplaceConfiguration {
-		throw new Error();
+	private static convertReplace(raw?: setting.IReplaceSetting | null): IReplaceConfiguration | null {
+		if (!raw) {
+			return null;
+		}
+
+		return {
+			mode: SiteConfiguration.convertEnum<ReplaceMode>(raw, 'mode', ReplaceMode.Normal),
+			value: raw.value || '',
+		};
 	}
 
 	private static convertTarget(raw?: setting.ITargetSetting | null): ITargetConfiguration | null {
@@ -224,6 +239,10 @@ export class SiteConfiguration implements ISiteConfiguration {
 		const filter = SiteConfiguration.convertFilter(raw.filter);
 		const match = raw.match ? SiteConfiguration.convertMatch(raw.match) : null;
 		const replace = SiteConfiguration.convertReplace(raw.replace);
+
+		if (!replace) {
+			return null;
+		}
 
 		const result: ITargetConfiguration = {
 			filter: filter,
