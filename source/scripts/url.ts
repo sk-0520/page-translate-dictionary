@@ -1,8 +1,13 @@
+import Wildcard from "./wildcard";
 
-export function isEnabledHost(hostName: string, hostPattern: string): boolean {
-	const regex = new RegExp(hostPattern);
-	const result = regex.test(hostName);
-	return result;
+export function isEnabledHosts(hostName: string, hostPatterns: string[]): boolean {
+	for (const hostPattern of hostPatterns) {
+		if (Wildcard.test(hostName, hostPattern)) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 export function isEnabledPath(path: string, pathPattern: string): boolean {

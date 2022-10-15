@@ -15,10 +15,10 @@
 		"noEmitOnError": true,
 		"removeComments": false,
 		"sourceMap": true,
-		"target": "es6",
+		"target": "es2021",
 	},
 	"lib": [
-		"es6",
+		"es2021",
 		"dom",
 		"dom.iterable"
 	],
