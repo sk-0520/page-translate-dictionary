@@ -1,3 +1,4 @@
+// 内部使用する(ある程度データが確定している)設定
 
 export enum WhiteSpace {
 	Join = 'join',
