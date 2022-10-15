@@ -2,68 +2,99 @@ import * as config from '../config';
 import * as url from '../url';
 import * as logging from '../logging';
 import * as translator from './translator';
-import * as names from '../names';
+//import * as names from '../names';
 import * as storage from '../storage';
 import '../../styles/page.scss';
 
 const logger = logging.create('page-content');
 
-function executeCore() {
-	const currentSiteConfigurations = siteConfigurations.filter(i => url.isEnabledHost(location.hostname, i.host));
-	if (currentSiteConfigurations.length) {
-		logger.trace('きた？');
+type PageConfiguration = {
+	app: config.IApplicationConfiguration,
+	sites: ReadonlyArray<config.ISiteConfiguration>,
+};
+let pageConfiguration: PageConfiguration | null;
 
-		let isTranslated = false;
-		const sortedCurrentSiteConfigurations = currentSiteConfigurations.sort((a, b) => a.level - b.level);
-		for (const siteConfiguration of sortedCurrentSiteConfigurations) {
-			for (const [pathPattern, pathConfiguration] of Object.entries(siteConfiguration.path)) {
-				if (url.isEnabledPath(location.pathname, pathPattern)) {
-					logger.trace('きた！！', pathPattern);
-					isTranslated = true;
-					translator.translate(pathConfiguration, siteConfiguration, applicationConfiguration.translate);
-				}
+// function createProgressElement(): HTMLElement {
+// 	const progressElement = document.createElement('div');
+// 	progressElement.classList.add(names.ClassNames.progress)
+
+// 	progressElement.appendChild(
+// 		document.createTextNode('置き換え中...')
+// 	);
+
+// 	return progressElement;
+// }
+
+function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
+	for (const siteConfiguration of pageConfiguration.sites) {
+		for (const [pathPattern, pathConfiguration] of Object.entries(siteConfiguration.path)) {
+			if (url.isEnabledPath(location.pathname, pathPattern)) {
+				logger.trace('きた！！', pathPattern);
+				translator.translate(pathConfiguration, siteConfiguration, pageConfiguration.app.translate);
 			}
 		}
-		if (!isTranslated) {
-			logger.trace('きてない・・・', location.pathname);
-		}
-	} else {
-		logger.trace('無視！');
 	}
+
+	return Promise.resolve();
 }
 
-function createProgressElement(): HTMLElement {
-	const progressElement = document.createElement('div');
-	progressElement.classList.add(names.ClassNames.progress)
 
-	progressElement.appendChild(
-		document.createTextNode('置き換え中...')
-	);
 
-	return progressElement;
-}
-
-function execute() {
-	const progressElement = createProgressElement();
-	document.body.appendChild(progressElement);
+function executeAsync(pageConfiguration: PageConfiguration): Promise<void> {
+	// const progressElement = createProgressElement();
+	// document.body.appendChild(progressElement);
 	try {
-		executeCore();
+		return executeCoreAsync(pageConfiguration);
 	} finally {
-		document.body.removeChild(progressElement);
+		// document.body.removeChild(progressElement);
 	}
+
+	return Promise.resolve();
 }
 
 function update(event: Event) {
 	logger.info('update');
-	execute();
+	if (pageConfiguration) {
+		executeAsync(pageConfiguration);
+	}
+}
+
+async function bootAsync(): Promise<void> {
+	const currentSiteHeadConfigurations = await storage.loadSiteHeadsAsync();
+	const appConfigTask = storage.loadApplicationAsync();
+
+	if (!currentSiteHeadConfigurations.length) {
+		logger.trace('無視！');
+		return;
+	}
+
+	const siteItems = new Array<config.ISiteConfiguration>();
+
+	const sortedCurrentSiteHeadConfigurations = currentSiteHeadConfigurations.sort((a, b) => a.level - b.level);
+	for (const siteHeadConfiguration of sortedCurrentSiteHeadConfigurations) {
+		const rawBody = await storage.loadSiteBodyAsync(siteHeadConfiguration.id);
+		if (rawBody) {
+			const siteConfiguration = new config.SiteConfiguration(siteHeadConfiguration, rawBody);
+			siteItems.push(siteConfiguration);
+		}
+	}
+	if (siteItems.length) {
+		logger.debug('きてます！');
+		const appConfig = await appConfigTask;
+		pageConfiguration = {
+			app: appConfig,
+			sites: siteItems,
+		};
+		return executeAsync(pageConfiguration);
+	} else {
+		logger.trace('きてない・・・', location.pathname);
+	}
+
 }
 
 export function boot() {
 	document.addEventListener('pjax:end', ev => update(ev));
 	document.addEventListener('turbo:render', ev => update(ev));
 
-	storage.loadApplicationAsync();
-	storage.loadSiteHeadsAsync();
-
-	execute();
+	bootAsync();
 }

@@ -5,26 +5,26 @@ import * as setting from './setting';
 import * as type from './type';
 import * as common from './common';
 
-type SiteConfigurationId = string;
+export type SiteConfigurationId = string;
 
-const enum WhiteSpace {
+export const enum WhiteSpace {
 	Join,
 	Raw,
 }
 
-const enum LineBreak {
+export const enum LineBreak {
 	Join,
 	Raw,
 }
 
-const enum MatchMode {
+export const enum MatchMode {
 	Partial,
 	Forward,
 	Backward,
 	Regex,
 }
 
-const enum ReplaceMode {
+export const enum ReplaceMode {
 	Normal,
 	Common,
 }

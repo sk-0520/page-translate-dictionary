@@ -62,13 +62,10 @@ function filterText(input: string, filterConfiguration: config.IFilterConfigurat
 }
 
 function matchText(input: string, matchConfiguration: config.IMatchConfiguration): MatchResult {
-	const mode = matchConfiguration.mode ?? config.MatchMode.Partial;
-	const ignoreCase = matchConfiguration.ignoreCase ?? true;
-
-	switch (mode) {
+	switch (matchConfiguration.mode) {
 		case config.MatchMode.Partial:
 			let index = -1;
-			if (ignoreCase) {
+			if (matchConfiguration.ignoreCase) {
 				index = input.toLowerCase().indexOf(matchConfiguration.pattern.toLowerCase());
 			} else {
 				index = input.indexOf(matchConfiguration.pattern);
@@ -79,7 +76,7 @@ function matchText(input: string, matchConfiguration: config.IMatchConfiguration
 			return MatchResult.none();
 
 		case config.MatchMode.Regex:
-			const flags = ignoreCase ? 'mi' : 'm';
+			const flags = matchConfiguration.ignoreCase ? 'mi' : 'm';
 			try {
 				const regex = new RegExp(matchConfiguration.pattern, flags);
 				if (regex.test(input)) {
