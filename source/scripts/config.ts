@@ -2,30 +2,31 @@
  * 内部使用する(ある程度データが確定している)設定
  */
 import * as setting from './setting';
+import * as type from './type';
 import * as common from './common';
 
-export type SiteConfigurationId = string;
+type SiteConfigurationId = string;
 
-export enum WhiteSpace {
-	Join = 'join',
-	Raw = 'raw',
+const enum WhiteSpace {
+	Join,
+	Raw,
 }
 
-export enum LineBreak {
-	Join = 'join',
-	Raw = 'raw',
+const enum LineBreak {
+	Join,
+	Raw,
 }
 
-export enum MatchMode {
-	Partial = 'partial',
-	Forward = 'forward',
-	Backward = 'backward',
-	Regex = 'regex',
+const enum MatchMode {
+	Partial,
+	Forward,
+	Backward,
+	Regex,
 }
 
-export enum ReplaceMode {
-	Normal = 'normal',
-	Common = 'common',
+const enum ReplaceMode {
+	Normal,
+	Common,
 }
 
 export interface IFilterConfiguration {
@@ -61,7 +62,7 @@ export interface ITargetConfiguration {
 	//#region property
 
 	filter: IFilterConfiguration;
-	match?: IMatchConfiguration;
+	match: IMatchConfiguration | null;
 	replace: IReplaceConfiguration;
 
 	//#endregion
@@ -99,7 +100,6 @@ export interface ICommonConfiguration {
 
 	//#endregion
 }
-
 
 export interface ITranslateConfiguration {
 	//#region property
@@ -182,8 +182,124 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 	//#region function
 
-	public static convertPath(raw: setting.PathMap | null): { [path: string]: IPathConfiguration } {
+	private static convertEnum<TEnum>(raw: any | null | undefined, key: string, fallbackValue: TEnum): TEnum {
+		if (!raw) {
+			return fallbackValue;
+		}
+		if (!(key in raw)) {
+			return fallbackValue;
+		}
+
+		const value = raw[key];
+		return value as TEnum; // 💩 enum と設定定義が全然ダメ
+	}
+
+	private static convertFilter(raw?: setting.IFilterSetting | null): IFilterConfiguration {
+		if (!raw) {
+			return {
+				trim: true,
+				whiteSpace: WhiteSpace.Join,
+				lineBreak: LineBreak.Join,
+			};
+		}
+
+		return {
+			trim: type.getPrimaryPropertyOr(raw, 'trim', 'boolean', true),
+			whiteSpace: SiteConfiguration.convertEnum<WhiteSpace>(raw, 'whiteSpace', WhiteSpace.Join),
+			lineBreak: SiteConfiguration.convertEnum<LineBreak>(raw, 'lineBreak', LineBreak.Join),
+		};
+	}
+	private static convertMatch(raw: setting.IMatchSetting): IMatchConfiguration {
 		throw new Error();
+	}
+	private static convertReplace(raw?: setting.IReplaceSetting | null): IReplaceConfiguration {
+		throw new Error();
+	}
+
+	private static convertTarget(raw?: setting.ITargetSetting | null): ITargetConfiguration | null {
+		if (!raw) {
+			return null;
+		}
+
+		const filter = SiteConfiguration.convertFilter(raw.filter);
+		const match = raw.match ? SiteConfiguration.convertMatch(raw.match) : null;
+		const replace = SiteConfiguration.convertReplace(raw.replace);
+
+		const result: ITargetConfiguration = {
+			filter: filter,
+			match: match,
+			replace: replace,
+		};
+		return result;
+	}
+
+	public static convertPath(raw: setting.PathMap | null): PathMap {
+		if (!raw) {
+			return {};
+		}
+
+		const result: PathMap = {};
+
+		if (typeof raw !== 'object') {
+			return {};
+		}
+
+		for (const [path, pathSetting] of Object.entries(raw)) {
+			if (common.isNullOrWhiteSpace(path)) {
+				continue;
+			}
+			if (!pathSetting || typeof pathSetting !== 'object') {
+				continue;
+			}
+			if (!('selector' in pathSetting) || !pathSetting.selector || typeof pathSetting.selector !== 'object') {
+				continue;
+			}
+
+			const pathConfiguration: IPathConfiguration = {
+				selector: {}
+			};
+
+			for (const [selector, querySetting] of Object.entries(pathSetting.selector)) {
+				if (common.isNullOrWhiteSpace(selector)) {
+					continue;
+				}
+				if (!querySetting) {
+					continue;
+				}
+
+				const query: IQueryConfiguration = {
+					attributes: {}
+				};
+
+				const text = SiteConfiguration.convertTarget(querySetting.text);
+				if (text) {
+					query.text = text;
+				}
+
+				const value = SiteConfiguration.convertTarget(querySetting.value);
+				if (value) {
+					query.value = value;
+				}
+
+				if (querySetting.attributes && typeof querySetting.attributes === 'object') {
+					for (const [name, target] of Object.entries(querySetting.attributes)) {
+						if (!common.isNullOrWhiteSpace(name)) {
+							continue;
+						}
+						const attr = SiteConfiguration.convertTarget(target);
+						if (attr) {
+							query.attributes[name] = attr;
+						}
+					}
+				}
+
+				pathConfiguration.selector[selector] = query;
+			}
+
+			result[path] = pathConfiguration;
+		}
+
+		return result;
 	}
 
 	public static convertCommon(raw: setting.ICommonSetting | null): ICommonConfiguration {
