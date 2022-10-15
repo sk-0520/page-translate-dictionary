@@ -98,12 +98,12 @@ function matchText(input: string, matchConfiguration: config.IMatchConfiguration
 }
 
 function replace(source: string, targetConfiguration: config.ITargetConfiguration, siteConfiguration: config.ISiteConfiguration): string | null {
-	const inputText = filterText(source, { ...targetConfiguration.filter, ...config.Default.filter });
+	const inputText = filterText(source, targetConfiguration.filter);
 
 	const replaceMode = targetConfiguration.replace.mode ?? config.ReplaceMode.Normal;
 
 	if (targetConfiguration.match) {
-		const matchResult = matchText(inputText, { ...targetConfiguration.match, ...config.Default.match });
+		const matchResult = matchText(inputText, targetConfiguration.match);
 		if (!matchResult.matched) {
 			return null;
 		}

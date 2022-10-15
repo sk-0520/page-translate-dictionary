@@ -30,9 +30,9 @@ export enum ReplaceMode {
 export interface IFilterConfiguration {
 	//#region property
 
-	trim?: boolean;
-	whiteSpace?: WhiteSpace;
-	lineBreak?: LineBreak;
+	trim: boolean;
+	whiteSpace: WhiteSpace;
+	lineBreak: LineBreak;
 
 	//#endregion
 }
@@ -40,8 +40,8 @@ export interface IFilterConfiguration {
 export interface IMatchConfiguration {
 	//#region property
 
-	mode?: MatchMode;
-	ignoreCase?: boolean;
+	mode: MatchMode;
+	ignoreCase: boolean;
 	pattern: string;
 
 	//#endregion
@@ -50,7 +50,7 @@ export interface IMatchConfiguration {
 export interface IReplaceConfiguration {
 	//#region property
 
-	mode?: ReplaceMode;
+	mode: ReplaceMode;
 	value: string;
 
 	//#endregion
@@ -59,7 +59,7 @@ export interface IReplaceConfiguration {
 export interface ITargetConfiguration {
 	//#region property
 
-	filter?: IFilterConfiguration;
+	filter: IFilterConfiguration;
 	match?: IMatchConfiguration;
 	replace: IReplaceConfiguration;
 
@@ -71,7 +71,7 @@ export interface IQueryConfiguration {
 
 	text?: ITargetConfiguration;
 	value?: ITargetConfiguration;
-	attributes?: { [name: string]: ITargetConfiguration };
+	attributes: { [name: string]: ITargetConfiguration };
 
 	//#endregion
 }
@@ -99,26 +99,6 @@ export interface ICommonConfiguration {
 	//#endregion
 }
 
-export interface ISiteConfiguration {
-	//#region property
-
-	/** 名前 */
-	name: string;
-	/** バージョン */
-	version: string;
-	/** 対象ホスト */
-	host: string;
-	/** 優先度 */
-	level: number;
-	/** 変換先言語 */
-	language: string;
-
-	path: { [path: string]: IPathConfiguration }
-
-	common?: ICommonConfiguration;
-
-	//#endregion
-}
 
 export interface ITranslateConfiguration {
 	//#region property
@@ -139,26 +119,6 @@ export interface IApplicationConfiguration {
 	//#endregion
 }
 
-export const Default = {
-	filter: {
-		lineBreak: LineBreak.Join,
-		trim: true,
-		whiteSpace: WhiteSpace.Join,
-	} as IFilterConfiguration,
-
-	match: {
-		ignoreCase: true,
-		mode: MatchMode.Partial,
-		pattern: '', // これは、どうなんだ
-	} as IMatchConfiguration,
-
-	replace: {
-		mode: ReplaceMode.Normal,
-		value: '', // これもどうなんだ・・・・
-	} as IReplaceConfiguration,
-}
-
-
 export interface ISiteHeadConfiguration {
 	//#region property
 
@@ -174,7 +134,7 @@ export interface ISiteHeadConfiguration {
 	/** バージョン */
 	version: string;
 	/** 対象ホスト */
-	hosts: Array<string>;
+	hosts: string[];
 	/** 優先度 */
 	level: number;
 	/** 変換先言語 */
@@ -186,9 +146,93 @@ export interface ISiteHeadConfiguration {
 export interface ISiteBodyConfiguration {
 	//#region property
 
-	path: { [path: string]: setting.IPathSetting | null } | null
+	path?: setting.PathMap | null
 
 	common?: setting.ICommonSetting | null;
+
+	//#endregion
+}
+
+export type PathMap = { [path: string]: IPathConfiguration };
+
+export interface ISiteConfiguration extends ISiteHeadConfiguration {
+	//#region property
+
+	path: PathMap;
+
+	common: ICommonConfiguration;
+
+	//#endregion
+}
+
+export class SiteConfiguration implements ISiteConfiguration {
+
+	private readonly _path: PathMap;
+	private readonly _common: ICommonConfiguration;
+
+	public constructor(
+		private readonly head: ISiteHeadConfiguration,
+		body: ISiteBodyConfiguration
+	) {
+		// ここで全部のデータを補正
+		this._path = SiteConfiguration.convertPath(body.path || null);
+		this._common = SiteConfiguration.convertCommon(body.common || null);
+	}
+
+	//#region function
+
+	public static convertPath(path: setting.PathMap | null): { [path: string]: IPathConfiguration } {
+		throw new Error();
+	}
+
+	public static convertCommon(common: setting.ICommonSetting | null): ICommonConfiguration {
+		throw new Error();
+	}
+
+	//#endregion
+
+	//#region ISiteConfiguration
+
+	public get id(): string {
+		return this.head.id;
+	}
+
+	public get updateUrl(): string {
+		return this.head.id;
+	}
+
+	public get updatedTimestamp(): string {
+		return this.head.updatedTimestamp;
+	}
+
+	public get name(): string {
+		return this.head.name;
+	}
+
+	public get version(): string {
+		return this.head.version;
+	}
+
+	public get hosts(): string[] {
+		return this.head.hosts;
+	}
+
+	public get level(): number {
+		return this.head.level;
+	}
+
+	public get language(): string {
+		return this.head.language;
+	}
+
+	public get path(): PathMap {
+		return this._path;
+	}
+
+	public get common(): ICommonConfiguration {
+		return this._common;
+	}
+
 
 	//#endregion
 }

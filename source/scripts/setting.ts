@@ -72,6 +72,8 @@ export interface ICommonSetting {
 	//#endregion
 }
 
+export type PathMap = { [path: string]: IPathSetting | null };
+
 export interface ISiteSetting {
 	//#region property
 
@@ -86,7 +88,7 @@ export interface ISiteSetting {
 	/** 変換先言語 */
 	language: string | null;
 
-	path: { [path: string]: IPathSetting | null } | null
+	path: PathMap | null;
 
 	common?: ICommonSetting | null;
 
