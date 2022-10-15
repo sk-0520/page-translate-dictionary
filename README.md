@@ -31,7 +31,10 @@
   // バージョン
   "version": "YYYY-MM-DD/x.xx.xxx",
   // 対象ドメイン
-  "domain": "(www\\.)?example\\.(com)|(net)",
+  "hosts": [
+    "example.com"
+    "www.example.com"
+  ],
   // 優先度 0: 通常, 低 < 0 < 高
   "level": 0,
   // 変換先言語

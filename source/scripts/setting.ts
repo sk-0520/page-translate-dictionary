@@ -1,33 +1,11 @@
 // ユーザー(サイト翻訳機能提供者)があれこれやるやつ
 
-export enum WhiteSpace {
-	Join = 'join',
-	Raw = 'raw',
-}
-
-export enum LineBreak {
-	Join = 'join',
-	Raw = 'raw',
-}
-
-export enum MatchMode {
-	Partial = 'partial',
-	Forward = 'forward',
-	Backward = 'backward',
-	Regex = 'regex',
-}
-
-export enum ReplaceMode {
-	Normal = 'normal',
-	Common = 'common',
-}
-
 export interface IFilterSetting {
 	//#region property
 
 	trim?: boolean;
-	whiteSpace?: WhiteSpace;
-	lineBreak?: LineBreak;
+	whiteSpace?: string | null;
+	lineBreak?: string | null;
 
 	//#endregion
 }
@@ -35,9 +13,9 @@ export interface IFilterSetting {
 export interface IMatchSetting {
 	//#region property
 
-	mode?: MatchMode;
-	ignoreCase?: boolean;
-	pattern: string;
+	mode?: string | null;
+	ignoreCase?: boolean | null;
+	pattern: string | null;
 
 	//#endregion
 }
@@ -45,8 +23,8 @@ export interface IMatchSetting {
 export interface IReplaceSetting {
 	//#region property
 
-	mode?: ReplaceMode;
-	value: string;
+	mode?: string | null;
+	value: string | null;
 
 	//#endregion
 }
@@ -54,9 +32,9 @@ export interface IReplaceSetting {
 export interface ITargetSetting {
 	//#region property
 
-	filter?: IFilterSetting;
-	match?: IMatchSetting;
-	replace: IReplaceSetting;
+	filter?: IFilterSetting | null;
+	match?: IMatchSetting | null;
+	replace: IReplaceSetting | null;
 
 	//#endregion
 }
@@ -64,9 +42,9 @@ export interface ITargetSetting {
 export interface IQuerySetting {
 	//#region property
 
-	text?: ITargetSetting;
-	value?: ITargetSetting;
-	attributes?: { [name: string]: ITargetSetting };
+	text?: ITargetSetting | null;
+	value?: ITargetSetting | null;
+	attributes?: { [name: string]: ITargetSetting | null; } | null;
 
 	//#endregion
 }
@@ -74,7 +52,7 @@ export interface IQuerySetting {
 export interface IPathSetting {
 	//#region property
 
-	selector: { [selector: string]: IQuerySetting }
+	selector: { [selector: string]: IQuerySetting | null } | null
 
 	//#endregion
 }
@@ -86,10 +64,10 @@ export interface ICommonSetting {
 	//#region property
 
 	/** 共通セレクタ設定 */
-	selector?: { [key: string]: string }
+	selector?: { [key: string]: string | null } | null
 
 	/** 共通テキスト設定 */
-	text?: { [key: string]: string }
+	text?: { [key: string]: string | null } | null
 
 	//#endregion
 }
@@ -98,20 +76,19 @@ export interface ISiteSetting {
 	//#region property
 
 	/** 名前 */
-	name: string;
+	name: string | null;
 	/** バージョン */
-	version: string;
+	version: string | null;
 	/** 対象ホスト */
-	host: string;
+	hosts: string[] | null;
 	/** 優先度 */
-	level: number;
+	level: number | null;
 	/** 変換先言語 */
-	language: string;
+	language: string | null;
 
-	path: { [path: string]: IPathSetting }
+	path: { [path: string]: IPathSetting | null } | null
 
-	common?: ICommonSetting;
+	common?: ICommonSetting | null;
 
 	//#endregion
 }
-

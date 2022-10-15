@@ -1,4 +1,9 @@
-// 内部使用する(ある程度データが確定している)設定
+/**
+ * 内部使用する(ある程度データが確定している)設定
+ */
+import * as setting from './setting';
+
+export type SiteConfigurationId = string;
 
 export enum WhiteSpace {
 	Join = 'join',
@@ -115,20 +120,18 @@ export interface ISiteConfiguration {
 	//#endregion
 }
 
-export interface ITranslateConfiguration
-{
+export interface ITranslateConfiguration {
 	//#region property
 
 	/**
 	 * 置き換えた要素に対して視覚的マークを設定するか。
 	 */
-	 markReplacedElement: boolean;
+	markReplacedElement: boolean;
 
-	 //#endregion
+	//#endregion
 }
 
-export interface IApplicationConfiguration
-{
+export interface IApplicationConfiguration {
 	//#region property
 
 	translate: ITranslateConfiguration;
@@ -155,3 +158,37 @@ export const Default = {
 	} as IReplaceConfiguration,
 }
 
+
+export interface ISiteHeadConfiguration {
+	//#region property
+
+	/** 設定データの一意キー(自動採番) */
+	id: SiteConfigurationId,
+	/** 設定ファイルのダウンロードURL */
+	updateUrl: string,
+	/** 設定ファイルの最終更新日 */
+	updatedTimestamp: string,
+
+	/** 名前 */
+	name: string;
+	/** バージョン */
+	version: string;
+	/** 対象ホスト */
+	hosts: Array<string>;
+	/** 優先度 */
+	level: number;
+	/** 変換先言語 */
+	language: string;
+
+	//#endregion
+}
+
+export interface ISiteBodyConfiguration {
+	//#region property
+
+	path: { [path: string]: setting.IPathSetting | null } | null
+
+	common?: setting.ICommonSetting | null;
+
+	//#endregion
+}
