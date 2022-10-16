@@ -29,7 +29,7 @@ function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
 	for (const siteConfiguration of pageConfiguration.sites) {
 		for (const [pathPattern, pathConfiguration] of Object.entries(siteConfiguration.path)) {
 			if (url.isEnabledPath(location.pathname, pathPattern)) {
-				logger.trace('きた！！', pathPattern);
+				logger.trace('パス適合', pathPattern);
 				translator.translate(pathConfiguration, siteConfiguration, pageConfiguration.app.translate);
 			}
 		}
@@ -81,6 +81,7 @@ async function bootAsync(): Promise<void> {
 	if (siteItems.length) {
 		logger.debug('きてます！');
 		const appConfig = await appConfigTask;
+		// 設定データ確定
 		pageConfiguration = {
 			app: appConfig,
 			sites: siteItems,

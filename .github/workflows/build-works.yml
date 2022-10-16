@@ -33,3 +33,14 @@ jobs:
       - name: <Lint> Web-Extensions
         run: npm run lint:${{ matrix.BROWSER }}
 
+      - name: <Output> Web-Extensions
+        run: npm run output:${{ matrix.BROWSER }}
+
+      - name: <Artifact> Web-Extensions
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-${{ matrix.BROWSER }}
+          path: dist
+
+
+
