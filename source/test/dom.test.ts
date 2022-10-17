@@ -1,7 +1,17 @@
 import * as dom from '../scripts/dom';
 
 describe('dom', () => {
-	test('toCustomKey', () =>{
+	// test('requireElementById', () => {
+	// 	document.body.innerHTML = `
+	// 		<span id="id1">id1:1</span>
+	// 		<span id="id2">id2:1</span>
+	// 	`;
+
+	// 	expect(dom.requireElementById('id1').textContent!).toBe('id1:1');
+	// 	expect(dom.requireElementById('id2').textContent!).toBe('id2:1');
+	// });
+
+	test('toCustomKey', () => {
 		expect(dom.toCustomKey('')).toBe('');
 		expect(dom.toCustomKey('a')).toBe('a');
 		expect(dom.toCustomKey('aB')).toBe('ab');

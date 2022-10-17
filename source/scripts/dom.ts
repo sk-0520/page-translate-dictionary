@@ -1,13 +1,61 @@
+/**
+ * ID から要素取得を強制。
+ *
+ * @param elementId
+ * @returns
+ */
+export function requireElementById<THtmlElement extends HTMLElement>(elementId: string): THtmlElement {
+	const result = document.getElementById(elementId);
+	if (!result) {
+		throw new Error(elementId);
+	}
+
+	return result as THtmlElement;
+}
+
+/**
+ * セレクタから要素取得を強制。
+ *
+ * @param selector
+ * @param element
+ * @returns
+ */
+export function requireSelector<THtmlElement extends HTMLElement>(selector: string, element: HTMLElement | null = null): THtmlElement {
+	const result = (element ?? document).querySelector(selector);
+	if (!result) {
+		throw new Error(selector);
+	}
+
+	return result as THtmlElement;
+}
+
+/**
+ * 対象要素から所属する Form 要素を取得する。
+ * @param element Formに所属する要素。
+ * @returns
+ */
+export function getParentForm(element: HTMLElement): HTMLFormElement {
+	const formElement = element.closest<HTMLFormElement>('form');
+	if (formElement === null) {
+		throw new Error(element.outerText);
+	}
+
+	return formElement;
+}
+
+export function cloneTemplate(element: HTMLTemplateElement): HTMLElement {
+	return element.content.cloneNode(true) as HTMLElement;
+}
 
 /**
  * カスタムデータ属性のケバブ名を dataset アクセス可能な名前に変更
  * @param kebab データ属性名。
  * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
  */
- export function toCustomKey(kebab: string, removeDataAttributeBegin: boolean = true): string {
+export function toCustomKey(kebab: string, removeDataAttributeBegin: boolean = true): string {
 
 	const dataHead = 'data-';
-	if(removeDataAttributeBegin && kebab.startsWith(dataHead)) {
+	if (removeDataAttributeBegin && kebab.startsWith(dataHead)) {
 		kebab = kebab.substring(dataHead.length);
 	}
 
@@ -58,54 +106,6 @@ export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallbac
 	return value;
 }
 
-/**
- * ID から要素取得を強制。
- *
- * @param elementId
- * @returns
- */
-export function requireElementById<THtmlElement extends HTMLElement>(elementId: string): THtmlElement {
-	const result = document.getElementById(elementId);
-	if (!result) {
-		throw new Error(elementId);
-	}
-
-	return result as THtmlElement;
-}
-
-/**
- * セレクタから要素取得を強制。
- *
- * @param selector
- * @param element
- * @returns
- */
-export function requireSelector<THtmlElement extends HTMLElement>(selector: string, element: HTMLElement | null = null): THtmlElement {
-	const result = (element ?? document).querySelector(selector);
-	if (!result) {
-		throw new Error(selector);
-	}
-
-	return result as THtmlElement;
-}
-
-/**
- * 対象要素から所属する Form 要素を取得する。
- * @param element Formに所属する要素。
- * @returns
- */
-export function getParentForm(element: HTMLElement): HTMLFormElement {
-	const formElement = element.closest<HTMLFormElement>('form');
-	if (formElement === null) {
-		throw new Error(element.outerText);
-	}
-
-	return formElement;
-}
-
-export function cloneTemplate(element: HTMLTemplateElement): HTMLElement {
-	return element.content.cloneNode(true) as HTMLElement;
-}
 
 /**
  * 指定要素を兄弟間で上下させる。
