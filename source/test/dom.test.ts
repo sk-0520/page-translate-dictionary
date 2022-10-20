@@ -16,6 +16,43 @@ describe('dom', () => {
 		expect(() => dom.requireElementById('id3')).toThrowError(Error);
 	});
 
+	test('requireSelector', () => {
+		document.body.innerHTML = `
+			<div>
+				<div data-name="x">X1</div>
+				<div name="x">X2</div>
+			</div>
+		`;
+
+		expect(dom.requireSelector('[data-name="x"]').textContent!).toBe('X1');
+		expect(dom.requireSelector('[name="x"]').textContent!).toBe('X2');
+
+		expect(() => dom.requireSelector('.x')).toThrowError(Error);
+	});
+
+	test('requireSelector', () => {
+		document.body.innerHTML = `
+			<form data-key="a">
+				<div id="a"></div>
+			</form>
+			<form data-key="b">
+				<div id="b"></div>
+			</form>
+			<div>
+				<div id="c"></div>
+			</div>
+		`;
+
+		const a = document.getElementById('a') as HTMLElement;
+		const b = document.getElementById('b') as HTMLElement;
+		const c = document.getElementById('c') as HTMLElement;
+
+		expect(dom.getParentForm(a).dataset['key']!).toBe('a');
+		expect(dom.getParentForm(b).dataset['key']!).toBe('b');
+
+		expect(() => dom.getParentForm(c)).toThrowError(Error);
+	});
+
 	test('toCustomKey', () => {
 		expect(dom.toCustomKey('')).toBe('');
 		expect(dom.toCustomKey('a')).toBe('a');
