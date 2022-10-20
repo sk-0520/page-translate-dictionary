@@ -4,7 +4,7 @@
 	"description": "夢語るだけのREADME。",
 	"main": "index.js",
 	"scripts": {
-		"test:script": "jest",
+		"test:script": "jest --runInBand",
 		"test": "npm-run-all --sequential test:script",
 		"build:firefox": "webpack --mode=production --config=webpack.config.ts --env=browser=firefox",
 		"watch:firefox": "webpack --watch --cache --mode=development --config=webpack.config.ts --env=browser=firefox",
