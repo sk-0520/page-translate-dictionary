@@ -2,7 +2,7 @@ import webextension from "webextension-polyfill";
 import * as common from "./common";
 
 /**
- * 拡張機能のビューに対してローカライズを実施。
+ * 拡張機能の要素に対してローカライズを実施。
  *
  * * `data-we-text`: テキスト設定
  * * `data-we-attr-*`: 属性設定
