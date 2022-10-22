@@ -8,17 +8,35 @@
 	</head>
 
 	<body>
+		<template id="template-define-item">
+			<li>
+				<span name="name"></span>
+				<span name="version"></span>
+				<time name="updated-timestamp"></time>
+			</li>
+		</template>
+
 		<ul class="tab">
 			<li>
-				<strong class="tab-header">基本設定</strong>
+				<strong class="tab-header" data-we-text="options_tab_header_generic">options_tab_header_generic</strong>
 				<div class="tab-content">
-
+					<section>
+						<h2 data-we-text="options_tab_content_generic_translate"></h2>
+						<ul>
+							<li>
+								<label>
+									<input id="translate_markReplacedElement" type="checkbox" />
+									<span data-we-text="options_tab_content_generic_translate_markReplacedElement">options_tab_content_generic_translate_markReplacedElement</span>
+								</label>
+							</li>
+						</ul>
+					</section>
 				</div>
 			</li>
 			<li>
-				<strong class="tab-header">定義ファイル一覧</strong>
+				<strong class="tab-header" data-we-text="options_tab_header_defines">options_tab_header_defines</strong>
 				<div class="tab-content">
-
+					<ul id="defines"></ul>
 				</div>
 			</li>
 		</ul>

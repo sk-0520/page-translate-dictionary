@@ -17,6 +17,7 @@
 		"storage",
 		"<all_urls>"
 	],
+	"default_locale": "ja",
 	"content_scripts": [
 		{
 			"run_at": "document_idle",

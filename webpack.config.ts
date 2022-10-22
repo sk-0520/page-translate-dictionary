@@ -1,6 +1,7 @@
 import * as path from 'path';
 import * as fs from 'fs';
 import webpack from 'webpack';
+import * as locales from './source/locales/locales';
 
 const TerserPlugin = require("terser-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -26,6 +27,24 @@ function replaceManifestFile(browser: string): void {
 	fs.writeFileSync(outputPath, JSON.stringify(targetJson, undefined, 2), { flag: 'w' });
 }
 
+function exportLocales(browser: string): void {
+	const outputLocalesDirectory = path.join(outputDirectory, '_locales');
+	if (fs.existsSync(outputLocalesDirectory)) {
+		fs.rmSync(outputLocalesDirectory, { recursive: true });
+	}
+	fs.mkdirSync(outputLocalesDirectory);
+
+	const localeItems = locales.gets();
+	for (const [key, localeItem] of Object.entries(localeItems)) {
+		const outputDirectory = path.join(outputLocalesDirectory, key);
+		fs.mkdirSync(outputDirectory);
+
+		const outputPath = path.join(outputDirectory, 'messages.json');
+		const outputContent = JSON.stringify(localeItem);
+		fs.writeFileSync(outputPath, outputContent);
+	}
+}
+
 const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Configuration => {
 	/** 本番用か */
 	const isProduction = args.mode === 'production';
@@ -35,6 +54,7 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 	}
 
 	replaceManifestFile(env['browser']);
+	exportLocales(env['browser']);
 
 	const conf: webpack.Configuration = {
 		mode: args.mode,
