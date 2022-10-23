@@ -60,7 +60,7 @@ function update(event: Event) {
 	}
 }
 
-async function updateSiteConfigurationAsync(siteHeadConfiguration: config.ISiteHeadConfiguration): Promise<config.ISiteHeadConfiguration | null> {
+async function updateSiteConfigurationAsync(siteHeadConfiguration: config.ISiteHeadConfiguration, force: boolean): Promise<config.ISiteHeadConfiguration | null> {
 	try {
 		const setting = await loader.fetchAsync(siteHeadConfiguration.updateUrl);
 		if (!setting) {
@@ -68,8 +68,10 @@ async function updateSiteConfigurationAsync(siteHeadConfiguration: config.ISiteH
 			return null;
 		}
 
-		if (setting.version === siteHeadConfiguration.version) {
-			logger.warn('設定データバージョン同じ');
+		if(force) {
+			logger.debug('強制アップデート');
+		} else if (setting.version === siteHeadConfiguration.version) {
+			logger.info('設定のデータバージョン同じ');
 			return null;
 		}
 
@@ -108,9 +110,10 @@ async function bootAsync(): Promise<void> {
 			lastCheckedTimestamp.setDate(lastCheckedTimestamp.getDate() + applicationConfiguration.setting.periodDays);
 
 			if (lastCheckedTimestamp < currentDateTime) {
-				logger.info("UPDATE CHECK", lastCheckedTimestamp.toISOString(), '<', currentDateTime.toISOString(), currentSiteHeadConfiguration.id);
-				const newSiteHead = await updateSiteConfigurationAsync(currentSiteHeadConfiguration);
+				logger.info("CHECK NEW VERSION", lastCheckedTimestamp.toISOString(), '<', currentDateTime.toISOString(), currentSiteHeadConfiguration.id);
+				const newSiteHead = await updateSiteConfigurationAsync(currentSiteHeadConfiguration, applicationConfiguration.setting.periodDays === 0);
 				if (newSiteHead) {
+					logger.info("UPDATE!!", currentSiteHeadConfiguration.id);
 					newSiteHead.updatedTimestamp = currentDateTime.toISOString();
 					headItems.push(newSiteHead);
 				} else {
