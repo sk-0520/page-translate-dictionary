@@ -1,3 +1,4 @@
+@forward "tab";
 
 #processing {
 	margin: 0 auto;
@@ -15,4 +16,10 @@
 
 h2 {
 	background: red;
+}
+
+details {
+	summary {
+		cursor: pointer;
+	}
 }

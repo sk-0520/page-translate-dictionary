@@ -28,6 +28,9 @@ const messages: locale.IMessages & locale.MessageMap = {
 	options_tab_header_settings: {
 		message: '設定ファイル一覧',
 	},
+	options_tab_content_settings_item: {
+		message: '設定ファイル',
+	},
 	options_tab_content_settings_item_name: {
 		message: '設定名',
 	},
@@ -82,6 +85,10 @@ const messages: locale.IMessages & locale.MessageMap = {
 
 	options_tab_content_settings_import: {
 		message: 'インポート',
+	},
+
+	options_tab_content_settings_import_submit: {
+		message: 'インポート実行',
 	},
 
 	options_import_message: {

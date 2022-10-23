@@ -15,7 +15,7 @@
 				<time name="updated-timestamp" data-we-title="options_tab_content_settings_item_updatedTimestamp"></time>
 				<details>
 					<summary data-we-text="options_tab_content_settings_item_hosts"></summary>
-					<ul name="hosts" class="hosts"></ul>
+					<ul name="hosts" class="hosts"><!-- logic --></ul>
 				</details>
 				<details>
 					<summary data-we-text="options_tab_content_settings_item_details"></summary>
@@ -51,7 +51,6 @@
 									<button name="action" type="button" data-we-text="options_tab_content_settings_item_details_actions_update" data-we-data-updating="options_tab_content_settings_item_details_actions_updating">options_tab_content_settings_item_details_actions_update</button>
 								</td>
 							</tr>
-
 						</tbody>
 					</table>
 				</details>
@@ -62,57 +61,62 @@
 			<progress></progress>
 		</div>
 
-		<ul id="options" class="tab loading">
-			<li>
-				<strong class="tab-header" data-we-text="options_tab_header_generic">options_tab_header_generic</strong>
-				<div class="tab-content">
-					<form id="generic">
-						<section>
-							<h2 data-we-text="options_tab_content_generic_translate"></h2>
-							<ul>
-								<li>
-									<label>
-										<input id="translate_markReplacedElement" type="checkbox" />
-										<span data-we-text="options_tab_content_generic_translate_markReplacedElement">options_tab_content_generic_translate_markReplacedElement</span>
-									</label>
-								</li>
-							</ul>
-						</section>
-						<section>
-							<h2 data-we-text="options_tab_content_generic_setting">options_tab_content_generic_setting</h2>
-							<ul>
-								<li>
-									<label>
-										<input id="setting_autoUpdate" type="checkbox" />
-										<span data-we-text="options_tab_content_generic_setting_autoUpdate">options_tab_content_generic_setting_autoUpdate</span>
-									</label>
-								</li>
-								<li>
-									<label for="setting_periodDays">
-										<span data-we-text="options_tab_content_generic_setting_periodDays">options_tab_content_generic_setting_periodDays</span>
-									</label>
-									<input id="setting_periodDays" type="number" min="0" max="365" />
-								</li>
-							</ul>
-						</section>
-						<button data-we-text="options_tab_content_generic_save">options_tab_content_generic_save</button>
-					</form>
-				</div>
-			</li>
-			<li>
-				<strong class="tab-header" data-we-text="options_tab_header_settings">options_tab_header_settings</strong>
-				<div class="tab-content">
-					<ul id="settings">
-						<!-- template-setting-item -->
-					</ul>
-					<button id="import" data-we-text="options_tab_content_settings_import">import</button>
-					<ol id="import-log"></ol>
-				</div>
-			</li>
-		</ul>
+		<div id="options" class="loading tab">
 
-		<!-- webpack -->
-		<script src="application-options.js"></script>
+			<input name="tab" class="tab_check" type="radio" id="options_tab_header_generic" checked />
+			<label for="options_tab_header_generic" class="tab_header" data-we-text="options_tab_header_generic">options_tab_header_generic</label>
+			<div class="tab_content">
+				<form id="generic">
+					<section>
+						<h2 data-we-text="options_tab_content_generic_translate"></h2>
+						<ul>
+							<li>
+								<label>
+									<input id="translate_markReplacedElement" type="checkbox" />
+									<span data-we-text="options_tab_content_generic_translate_markReplacedElement">options_tab_content_generic_translate_markReplacedElement</span>
+								</label>
+							</li>
+						</ul>
+					</section>
+					<section>
+						<h2 data-we-text="options_tab_content_generic_setting">options_tab_content_generic_setting</h2>
+						<ul>
+							<li>
+								<label>
+									<input id="setting_autoUpdate" type="checkbox" />
+									<span data-we-text="options_tab_content_generic_setting_autoUpdate">options_tab_content_generic_setting_autoUpdate</span>
+								</label>
+							</li>
+							<li>
+								<label for="setting_periodDays">
+									<span data-we-text="options_tab_content_generic_setting_periodDays">options_tab_content_generic_setting_periodDays</span>
+								</label>
+								<input id="setting_periodDays" type="number" min="0" max="365" />
+							</li>
+						</ul>
+					</section>
+					<button data-we-text="options_tab_content_generic_save">options_tab_content_generic_save</button>
+				</form>
+			</div>
+
+			<input name="tab" class="tab_check" type="radio" id="options_tab_header_settings" />
+			<label for="options_tab_header_settings" class="tab_header" data-we-text="options_tab_header_settings">options_tab_header_settings</label>
+			<div class="tab_content">
+				<section>
+					<h2 data-we-text="options_tab_content_settings_item">options_tab_content_settings_item</h2>
+					<ul id="settings">
+						<!-- #template-setting-item -->
+					</ul>
+				</section>
+				<section>
+					<h2 data-we-text="options_tab_content_settings_import">options_tab_content_settings_import</h2>
+					<button id="import" data-we-text="options_tab_content_settings_import_submit">import</button>
+					<ol id="import-log"></ol>
+				</section>
+			</div>
+
+			<!-- webpack -->
+			<script src="application-options.js"></script>
 	</body>
 
 </html>

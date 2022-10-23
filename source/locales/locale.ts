@@ -34,7 +34,8 @@ export interface IMessages {
 
 	options_tab_header_settings: IMessage,
 
-	options_tab_content_settings_import: IMessage,
+	options_tab_content_settings_item: IMessage,
+
 	options_tab_content_settings_item_name: IMessage,
 	options_tab_content_settings_item_version: IMessage,
 	options_tab_content_settings_item_updatedTimestamp: IMessage,
@@ -53,7 +54,9 @@ export interface IMessages {
 	options_tab_content_settings_item_details_actions_update: IMessage,
 	options_tab_content_settings_item_details_actions_updating: IMessage,
 
-	options_import_message: IMessage,
+	options_tab_content_settings_import: IMessage,
+
+	options_tab_content_settings_import_submit: IMessage,
 
 	options_import_log_start: IMessage,
 	options_import_log_success: IMessage,
