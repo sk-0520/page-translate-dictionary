@@ -7,7 +7,6 @@ export interface IInformationSetting {
 	repository?: string | null;
 	document?: string | null;
 
-
 	//#endregion
 }
 

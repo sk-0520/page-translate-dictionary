@@ -61,6 +61,21 @@ const messages: locale.IMessages & locale.MessageMap = {
 	options_tab_content_defines_item_hosts: {
 		message: '有効ホスト一覧',
 	},
+	options_tab_content_defines_item_details: {
+		message: '詳細',
+	},
+	options_tab_content_defines_item_details_updateUrl: {
+		message: 'アップデートURL',
+	},
+	options_tab_content_defines_item_details_website: {
+		message: 'ウェブサイト',
+	},
+	options_tab_content_defines_item_details_repository: {
+		message: 'リポジトリ',
+	},
+	options_tab_content_defines_item_details_document: {
+		message: 'ドキュメント',
+	},
 
 	options_tab_content_defines_import: {
 		message: 'インポート',

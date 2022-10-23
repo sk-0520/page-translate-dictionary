@@ -46,6 +46,11 @@ export interface IMessages {
 	options_tab_content_defines_item_repository: IMessage,
 	options_tab_content_defines_item_document: IMessage,
 	options_tab_content_defines_item_hosts: IMessage,
+	options_tab_content_defines_item_details: IMessage,
+	options_tab_content_defines_item_details_updateUrl: IMessage,
+	options_tab_content_defines_item_details_website: IMessage,
+	options_tab_content_defines_item_details_repository: IMessage,
+	options_tab_content_defines_item_details_document: IMessage,
 
 	options_import_message: IMessage,
 
