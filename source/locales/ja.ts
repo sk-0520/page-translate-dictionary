@@ -28,12 +28,6 @@ const messages: locale.IMessages & locale.MessageMap = {
 	options_tab_header_defines: {
 		message: '定義ファイル一覧',
 	},
-	options_tab_content_defines_item_update: {
-		message: '更新',
-	},
-	options_tab_content_defines_item_updating: {
-		message: '更新中',
-	},
 	options_tab_content_defines_item_name: {
 		message: '設定名',
 	},
@@ -42,12 +36,6 @@ const messages: locale.IMessages & locale.MessageMap = {
 	},
 	options_tab_content_defines_item_updatedTimestamp: {
 		message: '最終更新日時(UTC)',
-	},
-	options_tab_content_defines_item_id: {
-		message: 'ID',
-	},
-	options_tab_content_defines_item_delete: {
-		message: '削除',
 	},
 	options_tab_content_defines_item_website: {
 		message: 'Webサイト',
@@ -75,6 +63,21 @@ const messages: locale.IMessages & locale.MessageMap = {
 	},
 	options_tab_content_defines_item_details_document: {
 		message: 'ドキュメント',
+	},
+	options_tab_content_defines_item_details_id: {
+		message: 'ID',
+	},
+	options_tab_content_defines_item_details_actions: {
+		message: '処理',
+	},
+	options_tab_content_defines_item_details_actions_delete: {
+		message: '削除',
+	},
+	options_tab_content_defines_item_details_actions_update: {
+		message: '更新',
+	},
+	options_tab_content_defines_item_details_actions_updating: {
+		message: '更新中',
 	},
 
 	options_tab_content_defines_import: {

@@ -4,7 +4,6 @@ import * as localize from '../localize';
 import * as storage from '../storage';
 import * as config from '../config';
 import * as loader from '../loader';
-import * as common from '../common';
 import '../../styles/application-options.scss';
 
 class ImportLog {
@@ -53,11 +52,12 @@ function updateItemInformation(siteHeadConfiguration: config.ISiteHeadConfigurat
 	];
 	for (const detail of details) {
 		const detailElement = dom.requireSelector<HTMLAnchorElement>(`[name="${detail.name}"]`, itemRootElement);
-		if (common.isNullOrWhiteSpace(detail.url)) {
-			dom.requireClosest('tr', detailElement).remove();
-		} else {
+
+		if (loader.checkUrl(detail.url)) {
 			detailElement.href = detail.url;
 			detailElement.textContent = detail.url;
+		} else {
+			dom.requireClosest('tr', detailElement).remove();
 		}
 	}
 }

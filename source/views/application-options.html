@@ -10,16 +10,12 @@
 	<body>
 		<template id="template-define-item">
 			<li class="setting-item">
-				<button name="action" type="button" data-we-text="options_tab_content_defines_item_update" data-we-data-updating="options_tab_content_defines_item_updating">options_tab_content_defines_item_update</button>
 				<span name="name" data-we-title="options_tab_content_defines_item_name"></span>
 				<span name="version" data-we-title="options_tab_content_defines_item_version"></span>
 				<time name="updated-timestamp" data-we-title="options_tab_content_defines_item_updatedTimestamp"></time>
-				<span name="id" data-we-title="options_tab_content_defines_item_id"></span>
-				<button name="delete" type="button" data-we-text="options_tab_content_defines_item_delete">options_tab_content_defines_item_update</button>
 				<details>
 					<summary data-we-text="options_tab_content_defines_item_hosts"></summary>
-					<ul name="hosts" class="hosts">
-					</ul>
+					<ul name="hosts" class="hosts"></ul>
 				</details>
 				<details>
 					<summary data-we-text="options_tab_content_defines_item_details"></summary>
@@ -41,6 +37,21 @@
 								<td data-we-text="options_tab_content_defines_item_details_document"></td>
 								<td><a name="document-url"></a></td>
 							</tr>
+
+							<tr>
+								<td data-we-text="options_tab_content_defines_item_details_id">options_tab_content_defines_item_details_id</td>
+								<td>
+									<code name="id"></code>
+								</td>
+							</tr>
+							<tr>
+								<td data-we-text="options_tab_content_defines_item_details_actions">options_tab_content_defines_item_details_actions</td>
+								<td>
+									<button name="delete" type="button" data-we-text="options_tab_content_defines_item_details_actions_delete">options_tab_content_defines_item_details_actions_delete</button>
+									<button name="action" type="button" data-we-text="options_tab_content_defines_item_details_actions_update" data-we-data-updating="options_tab_content_defines_item_details_actions_updating">options_tab_content_defines_item_details_actions_update</button>
+								</td>
+							</tr>
+
 						</tbody>
 					</table>
 				</details>

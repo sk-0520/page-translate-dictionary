@@ -35,13 +35,9 @@ export interface IMessages {
 	options_tab_header_defines: IMessage,
 
 	options_tab_content_defines_import: IMessage,
-	options_tab_content_defines_item_update: IMessage,
-	options_tab_content_defines_item_updating: IMessage,
 	options_tab_content_defines_item_name: IMessage,
 	options_tab_content_defines_item_version: IMessage,
 	options_tab_content_defines_item_updatedTimestamp: IMessage,
-	options_tab_content_defines_item_id: IMessage,
-	options_tab_content_defines_item_delete: IMessage,
 	options_tab_content_defines_item_website: IMessage,
 	options_tab_content_defines_item_repository: IMessage,
 	options_tab_content_defines_item_document: IMessage,
@@ -51,6 +47,11 @@ export interface IMessages {
 	options_tab_content_defines_item_details_website: IMessage,
 	options_tab_content_defines_item_details_repository: IMessage,
 	options_tab_content_defines_item_details_document: IMessage,
+	options_tab_content_defines_item_details_id: IMessage,
+	options_tab_content_defines_item_details_actions: IMessage,
+	options_tab_content_defines_item_details_actions_delete: IMessage,
+	options_tab_content_defines_item_details_actions_update: IMessage,
+	options_tab_content_defines_item_details_actions_updating: IMessage,
 
 	options_import_message: IMessage,
 

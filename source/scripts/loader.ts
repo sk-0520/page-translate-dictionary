@@ -7,7 +7,17 @@ import * as type from './type';
 import * as storage from './storage';
 
 export function checkUrl(s: string): boolean {
-	return s.startsWith('https://') || s.startsWith('http://');
+	const starts = [
+		'https://',
+		'http://',
+	];
+	for(const start of starts) {
+		if(s.startsWith(start) && start.length < s.length) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 export function throwIfInvalidString(obj: any, property: string) {
