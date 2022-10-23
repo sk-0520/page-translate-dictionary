@@ -29,6 +29,15 @@ export function requireSelector<THtmlElement extends HTMLElement>(selector: stri
 	return result as THtmlElement;
 }
 
+export function requireClosest<THtmlElement extends HTMLElement>(selector: string, element: HTMLElement): THtmlElement {
+	const result = element.closest(selector);
+	if (!result) {
+		throw new Error(selector);
+	}
+
+	return result as THtmlElement;
+}
+
 /**
  * 対象要素から所属する Form 要素を取得する。
  * @param element Formに所属する要素。

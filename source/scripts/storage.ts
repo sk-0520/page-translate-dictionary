@@ -104,3 +104,8 @@ export async function saveSiteBodyAsync(id: config.SiteConfigurationId, siteBody
 		[key]: siteBodyConfiguration,
 	});
 }
+
+export async function deleteSiteBodyAsync(id: config.SiteConfigurationId): Promise<void> {
+	const key = Keys.siteBody + id;
+	return webextension.storage.local.remove(key);
+}

@@ -4,6 +4,7 @@ import * as localize from '../localize';
 import * as storage from '../storage';
 import * as config from '../config';
 import * as loader from '../loader';
+import * as common from '../common';
 import '../../styles/application-options.scss';
 
 class ImportLog {
@@ -30,7 +31,61 @@ function setApplication(applicationConfiguration: config.IApplicationConfigurati
 	dom.requireElementById<HTMLInputElement>('setting_periodDays').value = applicationConfiguration.setting.periodDays.toString();
 }
 
+function updateItemInformation(siteHeadConfiguration: config.ISiteHeadConfiguration, itemRootElement: HTMLElement) {
+	dom.requireSelector('[name="name"]', itemRootElement).textContent = siteHeadConfiguration.name;
+	dom.requireSelector('[name="version"]', itemRootElement).textContent = siteHeadConfiguration.version;
+	const updatedTimestampElement = dom.requireSelector<HTMLTimeElement>('[name="updated-timestamp"]', itemRootElement);
+	updatedTimestampElement.textContent = siteHeadConfiguration.updatedTimestamp;
+	updatedTimestampElement.dateTime = siteHeadConfiguration.updatedTimestamp;
+	const hostsElement = dom.requireSelector('[name="hosts"]', itemRootElement);
+
+	for (const host of siteHeadConfiguration.hosts) {
+		const li = document.createElement('li');
+		li.textContent = host;
+		hostsElement.appendChild(li);
+	}
+}
+
 function addSetting(siteHeadConfiguration: config.ISiteHeadConfiguration) {
+	const templateElement = dom.requireElementById<HTMLTemplateElement>('template-define-item');
+	const itemRootElement = dom.cloneTemplate(templateElement);
+	for (const element of itemRootElement.querySelectorAll<HTMLElement>('*')) {
+		localize.applyElement(element);
+	}
+
+	dom.requireSelector('[name="action"]', itemRootElement).addEventListener('click', async ev => {
+		ev.preventDefault();
+		const element = ev.currentTarget as HTMLButtonElement;
+		element.disabled = true;
+		const prev = element.textContent;
+		try {
+			element.textContent = element.dataset['updating']!;
+			//TODO: 更新処理
+			await common.sleepAsync(3 * 1000);
+		} finally {
+			element.disabled = false;
+			element.textContent = prev;
+		}
+	}, false);
+	dom.requireSelector('[name="id"]', itemRootElement).textContent = siteHeadConfiguration.id;
+	dom.requireSelector('[name="delete"]', itemRootElement).addEventListener('click', async ev => {
+		const element = ev.currentTarget as HTMLButtonElement;
+		const itemElement = dom.requireClosest('.list-item', element);
+		itemElement.remove();
+
+		const headers = await storage.loadSiteHeadsAsync();
+		const targetHeaders = headers.filter(i => i.id === siteHeadConfiguration.id);
+		const removedHeaders = headers.filter(i => i.id !== siteHeadConfiguration.id);
+		await storage.saveSiteHeadsAsync(removedHeaders);
+		for(const head of targetHeaders) {
+			await storage.deleteSiteBodyAsync(head.id);
+		}
+	});
+	updateItemInformation(siteHeadConfiguration, itemRootElement);
+
+	const definesElement = dom.requireElementById<HTMLOListElement>('defines');
+	definesElement.appendChild(itemRootElement);
+
 }
 
 async function importSettingAsync(url: string): Promise<void> {
@@ -46,7 +101,7 @@ async function importSettingAsync(url: string): Promise<void> {
 		}
 
 		const existsId = await loader.hasSiteSettingAsync(url);
-		if(existsId !== null) {
+		if (existsId !== null) {
 			log.add(webextension.i18n.getMessage('options_import_log_duplicated', existsId));
 			return;
 		}
@@ -66,9 +121,11 @@ async function importSettingAsync(url: string): Promise<void> {
 		// 内部用データとして取り込み
 		log.add(webextension.i18n.getMessage('options_import_log_convert'));
 
-		await loader.saveAsync(url, setting);
+		const configPair = await loader.saveAsync(url, setting);
 
 		log.add(webextension.i18n.getMessage('options_import_log_success'));
+
+		addSetting(configPair.head);
 
 	} catch (ex) {
 		if (ex instanceof Error) {

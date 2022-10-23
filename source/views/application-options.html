@@ -9,11 +9,15 @@
 
 	<body>
 		<template id="template-define-item">
-			<li>
-				<button name="action"></button>
-				<span name="name"></span>
-				<span name="version"></span>
-				<time name="updated-timestamp"></time>
+			<li class="list-item">
+				<button name="action" type="button" data-we-text="options_tab_content_defines_item_update" data-we-data-updating="options_tab_content_defines_item_updating">options_tab_content_defines_item_update</button>
+				<span name="name" data-we-title="options_tab_content_defines_item_name"></span>
+				<span name="version" data-we-title="options_tab_content_defines_item_version"></span>
+				<time name="updated-timestamp" data-we-title="options_tab_content_defines_item_updatedTimestamp"></time>
+				<span name="id" data-we-title="options_tab_content_defines_item_id"></span>
+				<button name="delete" type="button" data-we-text="options_tab_content_defines_item_delete">options_tab_content_defines_item_update</button>
+				<ul name="hosts" class="hosts" data-we-title="options_tab_content_defines_item_hosts">
+				</ul>
 			</li>
 		</template>
 

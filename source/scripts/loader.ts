@@ -98,7 +98,7 @@ export async function hasSiteSettingAsync(url: string): Promise<config.SiteConfi
 	return target[0].id;
 }
 
-export async function saveAsync(updateUrl: string, setting: setting.ISiteSetting): Promise<void> {
+export async function saveAsync(updateUrl: string, setting: setting.ISiteSetting): Promise<{ head: config.ISiteHeadConfiguration, body: config.ISiteBodyConfiguration }> {
 	const timestamp = (new Date()).toISOString();
 
 	const head: config.ISiteHeadConfiguration = {
@@ -120,4 +120,9 @@ export async function saveAsync(updateUrl: string, setting: setting.ISiteSetting
 
 	await storage.saveSiteBodyAsync(head.id, body);
 	await storage.addSiteHeadsAsync(head);
+
+	return {
+		head: head,
+		body: body,
+	};
 }
