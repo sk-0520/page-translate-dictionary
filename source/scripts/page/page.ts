@@ -28,17 +28,21 @@ let pageConfiguration: PageConfiguration | null;
 
 function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
 	for (const siteConfiguration of pageConfiguration.sites) {
-		alert(JSON.stringify(siteConfiguration))
-		for (const [pathPattern, pathConfiguration] of Object.entries(siteConfiguration.path)) {
-			if (url.isEnabledPath(location.pathname, pathPattern)) {
-				logger.trace('パス適合', pathPattern);
+		//alert(JSON.stringify(siteConfiguration.path))
+		//for (const [pathPattern, pathConfiguration] of Object.entries(siteConfiguration.path)) {
+			//alert('siteConfiguration.path-> ' + JSON.stringify(siteConfiguration.path))
+			for(const  key in siteConfiguration.path) {
+			// alert('key:: ' + key)
+			const pathConfiguration = siteConfiguration.path[key];
+			if (url.isEnabledPath(location.pathname, key)) {
+				logger.trace('パス適合', key);
 				try {
 					translator.translate(pathConfiguration, siteConfiguration, pageConfiguration.app.translate);
 				} catch (ex) {
 					logger.error(ex);
 				}
 			} else {
-				logger.trace('パス非適合', pathPattern);
+				logger.trace('パス非適合', key);
 			}
 		}
 	}

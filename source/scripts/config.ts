@@ -7,8 +7,7 @@ import * as common from './common';
 
 export type SiteConfigurationId = string;
 
-export interface ISiteInformationConfiguration
-{
+export interface ISiteInformationConfiguration {
 	//#region property
 
 	websiteUrl: string;
@@ -217,7 +216,9 @@ export class SiteConfiguration implements ISiteConfiguration {
 		body: ISiteBodyConfiguration
 	) {
 		// ここで全部のデータを補正
+		//alert('body.path = ' + JSON.stringify(body.path));
 		this.path = SiteConfiguration.convertPath(body.path || null);
+		//alert('this.path = ' + JSON.stringify(this.path));
 		this.common = SiteConfiguration.convertCommon(body.common || null);
 	}
 
@@ -304,16 +305,24 @@ export class SiteConfiguration implements ISiteConfiguration {
 			return {};
 		}
 
-		for (const [path, pathSetting] of Object.entries(raw)) {
-			if (common.isNullOrWhiteSpace(path)) {
+		//alert(JSON.stringify(raw));
+
+		for (const key in raw) {
+			const pathSetting = raw[key];
+
+			if (common.isNullOrWhiteSpace(key)) {
+				// alert('0:::::' + key)
 				continue;
 			}
 			if (!pathSetting || typeof pathSetting !== 'object') {
+				// alert('1:::::' + key)
 				continue;
 			}
 			if (!('selector' in pathSetting) || !pathSetting.selector || typeof pathSetting.selector !== 'object') {
+				// alert('2:::::' + key)
 				continue;
 			}
+			// alert('3:::::' + key)
 
 			const pathConfiguration: IPathConfiguration = {
 				selector: {}
@@ -356,8 +365,10 @@ export class SiteConfiguration implements ISiteConfiguration {
 				pathConfiguration.selector[selector] = query;
 			}
 
-			result[path] = pathConfiguration;
+			result[key] = pathConfiguration;
 		}
+
+		//alert('result -> ' + JSON.stringify(result))
 
 		return result;
 	}
