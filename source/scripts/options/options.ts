@@ -39,9 +39,13 @@ function updateItemInformation(siteHeadConfiguration: config.ISiteHeadConfigurat
 	const hostsElement = dom.requireSelector('[name="hosts"]', itemRootElement);
 	hostsElement.innerHTML = '';
 	for (const host of siteHeadConfiguration.hosts) {
-		const li = document.createElement('li');
-		li.textContent = host;
-		hostsElement.appendChild(li);
+		const templateElement = dom.requireElementById<HTMLTemplateElement>('template-setting-item-host');
+		const hostRootElement = dom.cloneTemplate(templateElement);
+
+		const hostElement = dom.requireSelector('[name="host"]', hostRootElement);
+		hostElement.textContent = host;
+
+		hostsElement.appendChild(hostRootElement);
 	}
 
 	const details = [
@@ -204,7 +208,15 @@ async function bootAsync(): Promise<void> {
 	const application = await applicationTask;
 	setApplication(application);
 
-	const siteHeaders = await siteHeadersTask;
+	let siteHeaders = await siteHeadersTask;
+	siteHeaders = siteHeaders.sort((a, b) => {
+		if (a.name === b.name) {
+			return a.name.localeCompare(b.name);
+		}
+
+		return a.id.localeCompare(b.id);
+	});
+
 	setSettings(siteHeaders);
 
 	dom.requireElementById('generic').addEventListener('submit', async ev => {

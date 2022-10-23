@@ -10,12 +10,12 @@
 	<body>
 		<template id="template-setting-item">
 			<li class="setting-item">
-				<span name="name" data-we-title="options_tab_content_settings_item_name"></span>
-				<span name="version" data-we-title="options_tab_content_settings_item_version"></span>
+				<strong name="name" data-we-title="options_tab_content_settings_item_name"></strong>
+				<code name="version" data-we-title="options_tab_content_settings_item_version"></code>
 				<time name="updated-timestamp" data-we-title="options_tab_content_settings_item_updatedTimestamp"></time>
 				<details>
 					<summary data-we-text="options_tab_content_settings_item_hosts"></summary>
-					<ul name="hosts" class="hosts"><!-- logic --></ul>
+					<ul name="hosts" class="hosts"><!-- template-setting-item-host --></ul>
 				</details>
 				<details>
 					<summary data-we-text="options_tab_content_settings_item_details"></summary>
@@ -47,14 +47,17 @@
 							<tr>
 								<td data-we-text="options_tab_content_settings_item_details_actions">options_tab_content_settings_item_details_actions</td>
 								<td>
-									<button name="delete" type="button" data-we-text="options_tab_content_settings_item_details_actions_delete">options_tab_content_settings_item_details_actions_delete</button>
 									<button name="action" type="button" data-we-text="options_tab_content_settings_item_details_actions_update" data-we-data-updating="options_tab_content_settings_item_details_actions_updating">options_tab_content_settings_item_details_actions_update</button>
+									<button name="delete" type="button" data-we-text="options_tab_content_settings_item_details_actions_delete">options_tab_content_settings_item_details_actions_delete</button>
 								</td>
 							</tr>
 						</tbody>
 					</table>
 				</details>
 			</li>
+		</template>
+		<template id="template-setting-item-host">
+			<li><code name="host"></code></li>
 		</template>
 
 		<div id="processing">
