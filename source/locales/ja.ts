@@ -1,6 +1,6 @@
 import * as locale from './locale';
 
-const messages = {
+const messages: locale.IMessages & locale.MessageMap = {
 	options_tab_header_generic: {
 		message: '基本設定',
 	},
@@ -11,9 +11,23 @@ const messages = {
 		message: '置き換え部分をマークする',
 	},
 
+	options_tab_content_generic_setting: {
+		message: '設定ファイル',
+	},
+	options_tab_content_generic_setting_autoUpdate: {
+		message: '自動更新を行う',
+	},
+	options_tab_content_generic_setting_periodDays: {
+		message: '自動更新期間(日)',
+	},
+
+	options_tab_content_generic_save: {
+		message: '保存',
+	},
+
 	options_tab_header_defines: {
 		message: '定義ファイル一覧',
 	},
-} as locale.Messages & locale.IMessages;
+};
 
 export default messages;

@@ -17,27 +17,53 @@
 			</li>
 		</template>
 
-		<ul class="tab">
+		<div id="loading">
+			<progress></progress>
+		</div>
+
+		<ul id="options" class="tab loading">
 			<li>
 				<strong class="tab-header" data-we-text="options_tab_header_generic">options_tab_header_generic</strong>
 				<div class="tab-content">
-					<section>
-						<h2 data-we-text="options_tab_content_generic_translate"></h2>
-						<ul>
-							<li>
-								<label>
-									<input id="translate_markReplacedElement" type="checkbox" />
-									<span data-we-text="options_tab_content_generic_translate_markReplacedElement">options_tab_content_generic_translate_markReplacedElement</span>
-								</label>
-							</li>
-						</ul>
-					</section>
+					<form id="generic">
+						<section>
+							<h2 data-we-text="options_tab_content_generic_translate"></h2>
+							<ul>
+								<li>
+									<label>
+										<input id="translate_markReplacedElement" type="checkbox" />
+										<span data-we-text="options_tab_content_generic_translate_markReplacedElement">options_tab_content_generic_translate_markReplacedElement</span>
+									</label>
+								</li>
+							</ul>
+						</section>
+						<section>
+							<h2 data-we-text="options_tab_content_generic_setting">options_tab_content_generic_setting</h2>
+							<ul>
+								<li>
+									<label>
+										<input id="setting_autoUpdate" type="checkbox" />
+										<span data-we-text="options_tab_content_generic_setting_autoUpdate">options_tab_content_generic_setting_autoUpdate</span>
+									</label>
+								</li>
+								<li>
+									<label for="setting_periodDays">
+										<span data-we-text="options_tab_content_generic_setting_periodDays">options_tab_content_generic_setting_periodDays</span>
+									</label>
+									<input id="setting_periodDays" type="number" min="0" max="365" />
+								</li>
+							</ul>
+						</section>
+						<button data-we-text="options_tab_content_generic_save">options_tab_content_generic_save</button>
+					</form>
 				</div>
 			</li>
 			<li>
 				<strong class="tab-header" data-we-text="options_tab_header_defines">options_tab_header_defines</strong>
 				<div class="tab-content">
-					<ul id="defines"></ul>
+					<ul id="defines">
+						<!-- template-define-item -->
+					</ul>
 				</div>
 			</li>
 		</ul>

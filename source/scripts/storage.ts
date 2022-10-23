@@ -17,9 +17,12 @@ const Keys = {
  * @returns 読み込み失敗時はデフォルトデータとしてのアプリケーション設定を返す。
  */
 export async function loadApplicationAsync(): Promise<config.IApplicationConfiguration> {
-	const obj = await webextension.storage.local.get(Keys.application);
-	if (type.isApplicationConfiguration(obj)) {
-		return obj;
+	const record = await webextension.storage.local.get(Keys.application);
+	if (record && Keys.application in record) {
+		const obj = record[Keys.application];
+		if (type.isApplicationConfiguration(obj)) {
+			return obj;
+		}
 	}
 
 	logger.info('アプリ設定初期データ返却');
@@ -27,6 +30,10 @@ export async function loadApplicationAsync(): Promise<config.IApplicationConfigu
 	return {
 		translate: {
 			markReplacedElement: true,
+		},
+		setting: {
+			autoUpdate: true,
+			periodDays: 5,
 		},
 	};
 }
@@ -36,21 +43,23 @@ export async function loadApplicationAsync(): Promise<config.IApplicationConfigu
  * @returns 読み込み失敗データは無視される。
  */
 export async function loadSiteHeadsAsync(): Promise<Array<config.ISiteHeadConfiguration>> {
-	const obj = await webextension.storage.local.get(Keys.siteHeads);
-	if (!Array.isArray(obj)) {
-		return [];
-	}
+	const record = await webextension.storage.local.get(Keys.siteHeads);
 
-	const result = new Array<config.ISiteHeadConfiguration>();
-	for (const item of obj) {
-		if (type.isSiteHeadConfiguration(item)) {
-			result.push(item);
-		} else {
-			logger.warn('type error', item);
+	if (record && Keys.siteHeads in record) {
+		const result = new Array<config.ISiteHeadConfiguration>();
+		const obj = record[Keys.siteHeads];
+		for (const item of obj) {
+			if (type.isSiteHeadConfiguration(item)) {
+				result.push(item);
+			} else {
+				logger.warn('type error', item);
+			}
 		}
+
+		return result;
 	}
 
-	return result;
+	return [];
 }
 
 /**
@@ -59,12 +68,20 @@ export async function loadSiteHeadsAsync(): Promise<Array<config.ISiteHeadConfig
  * @returns 存在しない場合は `null`。存在する場合は多分本体データを返す(型確認をしない)
  */
 export async function loadSiteBodyAsync(id: config.SiteConfigurationId): Promise<config.ISiteBodyConfiguration | null> {
-	const obj = await webextension.storage.local.get(Keys.siteBody + id);
-	if (obj) {
+	const key = Keys.siteBody + id;
+	const record = await webextension.storage.local.get(key);
+	if (record && key in record) {
+		const obj = record[key];
 		// 実際に使用する際に補正しまくる
 		return obj as config.ISiteBodyConfiguration;
 	}
 
 	logger.warn('null', id);
 	return null;
+}
+
+export function saveApplicationAsync(applicationConfiguration: config.IApplicationConfiguration): Promise<void> {
+	return webextension.storage.local.set({
+		[Keys.application]: applicationConfiguration
+	});
 }

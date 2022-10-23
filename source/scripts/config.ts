@@ -112,10 +112,31 @@ export interface ITranslateConfiguration {
 	//#endregion
 }
 
+export interface ISettingConfiguration {
+	//#region property
+
+	/**
+	 * 設定を自動アップデートするか。
+	 */
+	autoUpdate: boolean;
+
+
+	/**
+	 * 最終更新確認日から指定した期間を超えた設定を更新対象とする。
+	 *
+	 * `0` を指定した場合は毎回実施する(検証時に使用する想定)。
+	 */
+	periodDays: number;
+
+
+	//#endregion
+}
+
 export interface IApplicationConfiguration {
 	//#region property
 
 	translate: ITranslateConfiguration;
+	setting: ISettingConfiguration;
 
 	//#endregion
 }
@@ -129,6 +150,8 @@ export interface ISiteHeadConfiguration {
 	updateUrl: string,
 	/** 設定ファイルの最終更新日 */
 	updatedTimestamp: string,
+	/** 設定ファイルの最終更新確認日 */
+	lastCheckedTimestamp: string,
 
 	/** 名前 */
 	name: string;
@@ -369,6 +392,10 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return this.head.updatedTimestamp;
 	}
 
+	public get lastCheckedTimestamp(): string {
+		return this.head.lastCheckedTimestamp;
+	}
+
 	public get name(): string {
 		return this.head.name;
 	}
@@ -396,7 +423,6 @@ export class SiteConfiguration implements ISiteConfiguration {
 	public get common(): ICommonConfiguration {
 		return this._common;
 	}
-
 
 	//#endregion
 }

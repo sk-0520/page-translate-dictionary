@@ -88,8 +88,10 @@ export interface ISiteSetting {
 	/** 変換先言語 */
 	language: string | null;
 
+	/** パスに対する変換設定 */
 	path: PathMap | null;
 
+	/** 変換共通処理 */
 	common?: ICommonSetting | null;
 
 	//#endregion

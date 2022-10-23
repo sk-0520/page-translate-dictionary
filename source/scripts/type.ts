@@ -34,19 +34,19 @@ export function isInputElement(element: Element): element is HTMLInputElement {
 }
 
 export function isTranslateConfiguration(obj: any): obj is config.ITranslateConfiguration {
-	return !obj
+	return obj
 		&& 'markReplacedElement' in obj && typeof obj.markReplacedElement === 'boolean'
 		;
 }
 
 export function isApplicationConfiguration(obj: any): obj is config.IApplicationConfiguration {
-	return !obj
-		&& 'translate' in obj !== undefined && isTranslateConfiguration(obj.translate)
+	return obj
+		&& 'translate' in obj && isTranslateConfiguration(obj.translate)
 		;
 }
 
 export function isSiteHeadConfiguration(obj: any): obj is config.ISiteHeadConfiguration {
-	return !obj
+	return obj
 		&& 'id' in obj && typeof obj.id === 'string'
 		&& 'updateUrl' in obj && typeof obj.updateUrl === 'string'
 		&& 'updatedTimestamp' in obj && typeof obj.updatedTimestamp === 'string'

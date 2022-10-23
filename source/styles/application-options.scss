@@ -1,0 +1,14 @@
+
+#loading {
+	margin: 0 auto;
+}
+
+#options {
+	&.loading {
+		display: none;
+	}
+}
+
+h2 {
+	background: red;
+}
