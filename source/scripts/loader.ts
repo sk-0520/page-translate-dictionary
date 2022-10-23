@@ -57,6 +57,17 @@ export async function fetchAsync(url: string): Promise<setting.ISiteSetting | nu
 	return json as setting.ISiteSetting;
 }
 
+export async function updateAsync(siteHeadConfiguration: config.ISiteHeadConfiguration): Promise<config.Site> {
+	const setting = await fetchAsync(siteHeadConfiguration.updateUrl);
+	if (!setting) {
+		throw new Error('setting error: ' + siteHeadConfiguration.updateUrl);
+	}
+
+	const site = await saveAsync(siteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id);
+
+	return site;
+}
+
 export function createSiteConfigurationId(): config.SiteConfigurationId {
 	return crypto.randomUUID();
 }
@@ -98,11 +109,12 @@ export async function hasSiteSettingAsync(url: string): Promise<config.SiteConfi
 	return target[0].id;
 }
 
-export async function saveAsync(updateUrl: string, setting: setting.ISiteSetting): Promise<{ head: config.ISiteHeadConfiguration, body: config.ISiteBodyConfiguration }> {
+export async function saveAsync(updateUrl: string, setting: setting.ISiteSetting, siteId: config.SiteConfigurationId | null): Promise<config.Site> {
 	const timestamp = (new Date()).toISOString();
+	const isCreateMode = common.isNullOrWhiteSpace(siteId);
 
 	const head: config.ISiteHeadConfiguration = {
-		id: createSiteConfigurationId(),
+		id: isCreateMode ? createSiteConfigurationId() : siteId!,
 		updateUrl: updateUrl,
 		updatedTimestamp: timestamp,
 		lastCheckedTimestamp: timestamp,
@@ -119,7 +131,14 @@ export async function saveAsync(updateUrl: string, setting: setting.ISiteSetting
 	};
 
 	await storage.saveSiteBodyAsync(head.id, body);
-	await storage.addSiteHeadsAsync(head);
+	if (isCreateMode) {
+		await storage.addSiteHeadsAsync(head);
+	} else {
+		const currentHeaders = await storage.loadSiteHeadsAsync();
+		const newHeaders = currentHeaders.filter(i => i.id !== siteId);
+		newHeaders.push(head);
+		await storage.saveSiteHeadsAsync(newHeaders);
+	}
 
 	return {
 		head: head,

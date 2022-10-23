@@ -202,6 +202,11 @@ export interface ISiteConfiguration extends ISiteHeadConfiguration {
 	//#endregion
 }
 
+export type Site = {
+	head: ISiteHeadConfiguration,
+	body: ISiteBodyConfiguration,
+}
+
 export class SiteConfiguration implements ISiteConfiguration {
 
 	private readonly _path: PathMap;

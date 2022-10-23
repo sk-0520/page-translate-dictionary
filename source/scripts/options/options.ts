@@ -4,7 +4,7 @@ import * as localize from '../localize';
 import * as storage from '../storage';
 import * as config from '../config';
 import * as loader from '../loader';
-import * as common from '../common';
+//import * as common from '../common';
 import '../../styles/application-options.scss';
 
 class ImportLog {
@@ -38,7 +38,7 @@ function updateItemInformation(siteHeadConfiguration: config.ISiteHeadConfigurat
 	updatedTimestampElement.textContent = siteHeadConfiguration.updatedTimestamp;
 	updatedTimestampElement.dateTime = siteHeadConfiguration.updatedTimestamp;
 	const hostsElement = dom.requireSelector('[name="hosts"]', itemRootElement);
-
+	hostsElement.innerHTML = '';
 	for (const host of siteHeadConfiguration.hosts) {
 		const li = document.createElement('li');
 		li.textContent = host;
@@ -52,16 +52,21 @@ function addSetting(siteHeadConfiguration: config.ISiteHeadConfiguration) {
 	for (const element of itemRootElement.querySelectorAll<HTMLElement>('*')) {
 		localize.applyElement(element);
 	}
+	dom.requireSelector('.setting-item', itemRootElement).dataset['head'] = JSON.stringify(siteHeadConfiguration);
 
 	dom.requireSelector('[name="action"]', itemRootElement).addEventListener('click', async ev => {
 		ev.preventDefault();
 		const element = ev.currentTarget as HTMLButtonElement;
+		const itemElement = dom.requireClosest('.setting-item', element);
+		const currentSiteHeadConfiguration = JSON.parse(itemElement.dataset['head']!);
 		element.disabled = true;
 		const prev = element.textContent;
 		try {
 			element.textContent = element.dataset['updating']!;
 			//TODO: 更新処理
-			await common.sleepAsync(3 * 1000);
+			const site = await loader.updateAsync(currentSiteHeadConfiguration);
+			itemElement.dataset['head'] = JSON.stringify(site.head);
+			updateItemInformation(site.head, itemElement);
 		} finally {
 			element.disabled = false;
 			element.textContent = prev;
@@ -70,14 +75,14 @@ function addSetting(siteHeadConfiguration: config.ISiteHeadConfiguration) {
 	dom.requireSelector('[name="id"]', itemRootElement).textContent = siteHeadConfiguration.id;
 	dom.requireSelector('[name="delete"]', itemRootElement).addEventListener('click', async ev => {
 		const element = ev.currentTarget as HTMLButtonElement;
-		const itemElement = dom.requireClosest('.list-item', element);
+		const itemElement = dom.requireClosest('.setting-item', element);
 		itemElement.remove();
 
 		const headers = await storage.loadSiteHeadsAsync();
 		const targetHeaders = headers.filter(i => i.id === siteHeadConfiguration.id);
 		const removedHeaders = headers.filter(i => i.id !== siteHeadConfiguration.id);
 		await storage.saveSiteHeadsAsync(removedHeaders);
-		for(const head of targetHeaders) {
+		for (const head of targetHeaders) {
 			await storage.deleteSiteBodyAsync(head.id);
 		}
 	});
@@ -121,11 +126,11 @@ async function importSettingAsync(url: string): Promise<void> {
 		// 内部用データとして取り込み
 		log.add(webextension.i18n.getMessage('options_import_log_convert'));
 
-		const configPair = await loader.saveAsync(url, setting);
+		const site = await loader.saveAsync(url, setting, null);
 
 		log.add(webextension.i18n.getMessage('options_import_log_success'));
 
-		addSetting(configPair.head);
+		addSetting(site.head);
 
 	} catch (ex) {
 		if (ex instanceof Error) {
