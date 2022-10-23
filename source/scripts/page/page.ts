@@ -28,6 +28,7 @@ let pageConfiguration: PageConfiguration | null;
 
 function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
 	for (const siteConfiguration of pageConfiguration.sites) {
+		alert(JSON.stringify(siteConfiguration))
 		for (const [pathPattern, pathConfiguration] of Object.entries(siteConfiguration.path)) {
 			if (url.isEnabledPath(location.pathname, pathPattern)) {
 				logger.trace('パス適合', pathPattern);
@@ -36,6 +37,8 @@ function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
 				} catch (ex) {
 					logger.error(ex);
 				}
+			} else {
+				logger.trace('パス非適合', pathPattern);
 			}
 		}
 	}
@@ -78,7 +81,6 @@ async function updateSiteConfigurationAsync(siteHeadConfiguration: config.ISiteH
 			logger.info('設定のデータバージョン同じ');
 			return null;
 		}
-
 		const site = await loader.saveAsync(siteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id);
 
 		return site.head;

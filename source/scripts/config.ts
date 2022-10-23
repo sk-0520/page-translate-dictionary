@@ -209,16 +209,16 @@ export type Site = {
 
 export class SiteConfiguration implements ISiteConfiguration {
 
-	private readonly _path: PathMap;
-	private readonly _common: ICommonConfiguration;
+	public readonly path: PathMap;
+	public readonly common: ICommonConfiguration;
 
 	public constructor(
 		private readonly head: ISiteHeadConfiguration,
 		body: ISiteBodyConfiguration
 	) {
 		// ここで全部のデータを補正
-		this._path = SiteConfiguration.convertPath(body.path || null);
-		this._common = SiteConfiguration.convertCommon(body.common || null);
+		this.path = SiteConfiguration.convertPath(body.path || null);
+		this.common = SiteConfiguration.convertCommon(body.common || null);
 	}
 
 	//#region function
@@ -343,7 +343,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 				if (querySetting.attributes && typeof querySetting.attributes === 'object') {
 					for (const [name, target] of Object.entries(querySetting.attributes)) {
-						if (!common.isNullOrWhiteSpace(name)) {
+						if (common.isNullOrWhiteSpace(name)) {
 							continue;
 						}
 						const attr = SiteConfiguration.convertTarget(target);
@@ -436,14 +436,6 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 	public get language(): string {
 		return this.head.language;
-	}
-
-	public get path(): PathMap {
-		return this._path;
-	}
-
-	public get common(): ICommonConfiguration {
-		return this._common;
 	}
 
 	//#endregion

@@ -30,6 +30,7 @@
 			"pjax",
 			"prebrowser",
 			"webextension"
-		]
+		],
+		"liveServer.settings.port": 5501
 	}
 }

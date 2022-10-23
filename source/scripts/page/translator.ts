@@ -184,12 +184,21 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 	return translated;
 }
 
+function getCommonKey(s: string): string {
+	const a = s.substring(1);
+	return a.substring(0, a.length - 1);
+}
+
 export function translate(pathConfiguration: config.IPathConfiguration, siteConfiguration: config.ISiteConfiguration, translateConfiguration: config.ITranslateConfiguration): void {
 	for (const [selector, queryConfiguration] of Object.entries(pathConfiguration.selector)) {
-		logger.debug('selector:', selector)
-		const element = document.querySelector(selector);
+		logger.debug('selector:', selector);
+		const currentQuery = selector.startsWith('{') && selector.endsWith('}')
+			? siteConfiguration.common.selector[getCommonKey(selector)]
+			: selector
+			;
+		const element = document.querySelector(currentQuery);
 		if (!element) {
-			logger.debug('selector not match:', selector)
+			logger.debug('selector not match:', currentQuery)
 			continue;
 		}
 
