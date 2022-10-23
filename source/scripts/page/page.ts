@@ -31,7 +31,11 @@ function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
 		for (const [pathPattern, pathConfiguration] of Object.entries(siteConfiguration.path)) {
 			if (url.isEnabledPath(location.pathname, pathPattern)) {
 				logger.trace('パス適合', pathPattern);
-				translator.translate(pathConfiguration, siteConfiguration, pageConfiguration.app.translate);
+				try {
+					translator.translate(pathConfiguration, siteConfiguration, pageConfiguration.app.translate);
+				} catch (ex) {
+					logger.error(ex);
+				}
 			}
 		}
 	}
@@ -68,7 +72,7 @@ async function updateSiteConfigurationAsync(siteHeadConfiguration: config.ISiteH
 			return null;
 		}
 
-		if(force) {
+		if (force) {
 			logger.debug('強制アップデート');
 		} else if (setting.version === siteHeadConfiguration.version) {
 			logger.info('設定のデータバージョン同じ');

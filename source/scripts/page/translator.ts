@@ -138,7 +138,7 @@ function replace(source: string, targetConfiguration: config.ITargetConfiguratio
 			return null;
 
 		default:
-			throw new Error('not impl: ReplaceMode');
+			throw new Error('not impl: ReplaceMode -> ' + replaceMode);
 	}
 }
 

@@ -19,25 +19,25 @@ export interface ISiteInformationConfiguration
 }
 
 export const enum WhiteSpace {
-	Join,
-	Raw,
+	Join = 'join',
+	Raw = 'raw',
 }
 
 export const enum LineBreak {
-	Join,
-	Raw,
+	Join = 'join',
+	Raw = 'raw',
 }
 
 export const enum MatchMode {
-	Partial,
-	Forward,
-	Backward,
-	Regex,
+	Partial = 'partial',
+	Forward = 'forward',
+	Backward = 'backward',
+	Regex = 'regex',
 }
 
 export const enum ReplaceMode {
-	Normal,
-	Common,
+	Normal = 'normal',
+	Common = 'common',
 }
 
 export interface IFilterConfiguration {
@@ -246,8 +246,8 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 		return {
 			trim: type.getPrimaryPropertyOr(raw, 'trim', 'boolean', true),
-			whiteSpace: SiteConfiguration.convertEnum<WhiteSpace>(raw, 'whiteSpace', WhiteSpace.Join),
-			lineBreak: SiteConfiguration.convertEnum<LineBreak>(raw, 'lineBreak', LineBreak.Join),
+			whiteSpace: SiteConfiguration.convertEnum(raw, 'whiteSpace', WhiteSpace.Join),
+			lineBreak: SiteConfiguration.convertEnum(raw, 'lineBreak', LineBreak.Join),
 		};
 	}
 	private static convertMatch(raw: setting.IMatchSetting): IMatchConfiguration | null {
@@ -257,7 +257,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 		return {
 			ignoreCase: raw?.ignoreCase ?? true,
-			mode: SiteConfiguration.convertEnum<MatchMode>(raw, 'mode', MatchMode.Partial),
+			mode: SiteConfiguration.convertEnum(raw, 'mode', MatchMode.Partial),
 			pattern: raw.pattern || '',
 		}
 	}
@@ -267,7 +267,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		}
 
 		return {
-			mode: SiteConfiguration.convertEnum<ReplaceMode>(raw, 'mode', ReplaceMode.Normal),
+			mode: SiteConfiguration.convertEnum(raw, 'mode', ReplaceMode.Normal),
 			value: raw.value || '',
 		};
 	}
