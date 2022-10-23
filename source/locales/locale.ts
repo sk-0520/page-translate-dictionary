@@ -41,6 +41,7 @@ export interface IMessages {
 	options_import_log_start: IMessage,
 	options_import_log_success: IMessage,
 	options_import_log_invalid_url: IMessage,
+	options_import_log_duplicated: IMessage,
 	options_import_log_fetch_url: IMessage,
 	options_import_log_invalid_setting: IMessage,
 	options_import_log_setting: IMessage,

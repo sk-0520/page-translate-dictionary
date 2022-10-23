@@ -45,6 +45,14 @@ const messages: locale.IMessages & locale.MessageMap = {
 	options_import_log_invalid_url: {
 		message: 'URLが正しくない',
 	},
+	options_import_log_duplicated: {
+		message: '既に存在する設定: $ID$',
+		placeholders: {
+			'ID': {
+				content: '$1',
+			},
+		},
+	},
 	options_import_log_fetch_url: {
 		message: '設定取得処理開始: $URL$',
 		placeholders: {

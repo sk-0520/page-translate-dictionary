@@ -4,6 +4,7 @@ import * as setting from './setting';
 import * as config from './config';
 import * as common from './common';
 import * as type from './type';
+import * as storage from './storage';
 
 export function checkUrl(s: string): boolean {
 	return s.startsWith('https://') || s.startsWith('http://');
@@ -86,4 +87,37 @@ export function convertLanguage(language: string | null | undefined): string {
 	return '';
 }
 
-//export function loadAsync(): Promise<>
+export async function hasSiteSettingAsync(url: string): Promise<config.SiteConfigurationId | null> {
+	const heads = await storage.loadSiteHeadsAsync();
+
+	const target = heads.filter(i => i.updateUrl === url);
+	if (!target.length) {
+		return null;
+	}
+
+	return target[0].id;
+}
+
+export async function saveAsync(updateUrl: string, setting: setting.ISiteSetting): Promise<void> {
+	const timestamp = (new Date()).toISOString();
+
+	const head: config.ISiteHeadConfiguration = {
+		id: createSiteConfigurationId(),
+		updateUrl: updateUrl,
+		updatedTimestamp: timestamp,
+		lastCheckedTimestamp: timestamp,
+		name: setting.name,
+		version: setting.version,
+		hosts: setting.hosts,
+		information: convertInformation(setting?.information),
+		level: convertLevel(setting?.level),
+		language: convertLanguage(setting?.language),
+	};
+	const body: config.ISiteBodyConfiguration = {
+		path: setting.path,
+		common: setting.common,
+	};
+
+	await storage.saveSiteBodyAsync(head.id, body);
+	await storage.addSiteHeadsAsync(head);
+}

@@ -45,6 +45,12 @@ async function importSettingAsync(url: string): Promise<void> {
 			return;
 		}
 
+		const existsId = await loader.hasSiteSettingAsync(url);
+		if(existsId !== null) {
+			log.add(webextension.i18n.getMessage('options_import_log_duplicated', existsId));
+			return;
+		}
+
 		log.add(webextension.i18n.getMessage('options_import_log_fetch_url', [url]));
 		const setting = await loader.fetchAsync(url);
 		if (!setting) {
@@ -60,27 +66,7 @@ async function importSettingAsync(url: string): Promise<void> {
 		// 内部用データとして取り込み
 		log.add(webextension.i18n.getMessage('options_import_log_convert'));
 
-		const timestamp = (new Date()).toISOString();
-
-		const head: config.ISiteHeadConfiguration = {
-			id: loader.createSiteConfigurationId(),
-			updateUrl: url,
-			updatedTimestamp: timestamp,
-			lastCheckedTimestamp: timestamp,
-			name: setting.name,
-			version: setting.version,
-			hosts: setting.hosts,
-			information: loader.convertInformation(setting?.information),
-			level: loader.convertLevel(setting?.level),
-			language: loader.convertLanguage(setting?.language),
-		};
-		const body: config.ISiteBodyConfiguration = {
-			path: setting.path,
-			common: setting.common,
-		};
-
-		await storage.saveSiteBodyAsync(head.id, body);
-		await storage.addSiteHeadsAsync(head);
+		await loader.saveAsync(url, setting);
 
 		log.add(webextension.i18n.getMessage('options_import_log_success'));
 
