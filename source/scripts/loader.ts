@@ -57,17 +57,6 @@ export async function fetchAsync(url: string): Promise<setting.ISiteSetting | nu
 	return json as setting.ISiteSetting;
 }
 
-export async function updateAsync(siteHeadConfiguration: config.ISiteHeadConfiguration): Promise<config.Site> {
-	const setting = await fetchAsync(siteHeadConfiguration.updateUrl);
-	if (!setting) {
-		throw new Error('setting error: ' + siteHeadConfiguration.updateUrl);
-	}
-
-	const site = await saveAsync(siteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id);
-
-	return site;
-}
-
 export function createSiteConfigurationId(): config.SiteConfigurationId {
 	return crypto.randomUUID();
 }

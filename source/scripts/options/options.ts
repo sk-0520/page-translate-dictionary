@@ -63,8 +63,13 @@ function addSetting(siteHeadConfiguration: config.ISiteHeadConfiguration) {
 		const prev = element.textContent;
 		try {
 			element.textContent = element.dataset['updating']!;
-			//TODO: 更新処理
-			const site = await loader.updateAsync(currentSiteHeadConfiguration);
+
+			const setting = await loader.fetchAsync(currentSiteHeadConfiguration.updateUrl);
+			if (!setting) {
+				return;
+			}
+
+			const site = await loader.saveAsync(currentSiteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id);
 			itemElement.dataset['head'] = JSON.stringify(site.head);
 			updateItemInformation(site.head, itemElement);
 		} finally {

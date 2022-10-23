@@ -3,6 +3,7 @@ import * as url from '../url';
 import * as logging from '../logging';
 import * as translator from './translator';
 //import * as names from '../names';
+import * as loader from '../loader';
 import * as storage from '../storage';
 import '../../styles/page.scss';
 
@@ -59,14 +60,60 @@ function update(event: Event) {
 	}
 }
 
-async function bootAsync(): Promise<void> {
-	const currentSiteHeadConfigurations = await storage.loadSiteHeadsAsync();
-	const appConfigTask = storage.loadApplicationAsync();
+async function updateSiteConfigurationAsync(siteHeadConfiguration: config.ISiteHeadConfiguration): Promise<config.ISiteHeadConfiguration | null> {
+	const setting = await loader.fetchAsync(siteHeadConfiguration.updateUrl);
+	if (!setting) {
+		logger.warn('設定データ異常');
+		return null;
+	}
 
-	if (!currentSiteHeadConfigurations.length) {
-		logger.trace('無視！');
+	if (setting.version === siteHeadConfiguration.version) {
+		logger.warn('設定データバージョン同じ');
+		return null;
+	}
+
+	const site = await loader.saveAsync(siteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id);
+
+	return site.head;
+}
+
+async function bootAsync(): Promise<void> {
+	const applicationConfiguration = await storage.loadApplicationAsync();
+	const siteHeadConfigurations = await storage.loadSiteHeadsAsync();
+
+	if (!siteHeadConfigurations.length) {
+		logger.trace('設定なし');
 		return;
 	}
+
+	const currentSiteHeadConfigurations = siteHeadConfigurations.filter(i => url.isEnabledHosts(location.host, i.hosts) || url.isEnabledHosts(location.hostname, i.hosts));
+	if (!currentSiteHeadConfigurations.length) {
+		logger.info(`ホストに該当する設定なし: ${location.host}/${location.hostname}`);
+		return;
+	}
+
+	// アップデート確認等々
+	const currentDateTime = new Date();
+	const headItems = new Array<config.ISiteHeadConfiguration>();
+
+	if (applicationConfiguration.setting.autoUpdate) {
+		for (const currentSiteHeadConfiguration of currentSiteHeadConfigurations) {
+			const lastCheckedTimestamp = new Date(currentSiteHeadConfiguration.lastCheckedTimestamp)
+			lastCheckedTimestamp.setDate(lastCheckedTimestamp.getDate() + applicationConfiguration.setting.periodDays);
+
+			if (lastCheckedTimestamp < currentDateTime) {
+				logger.info("UPDATE CHECK", lastCheckedTimestamp.toISOString(), currentDateTime.toISOString(), currentSiteHeadConfiguration.id);
+				const newSiteHead = await updateSiteConfigurationAsync(currentSiteHeadConfiguration);
+
+				headItems.push(newSiteHead || currentSiteHeadConfiguration);
+			} else {
+				headItems.push(currentSiteHeadConfiguration);
+			}
+		}
+	} else {
+		headItems.push(...currentSiteHeadConfigurations);
+	}
+
 
 	const siteItems = new Array<config.ISiteConfiguration>();
 
@@ -80,10 +127,9 @@ async function bootAsync(): Promise<void> {
 	}
 	if (siteItems.length) {
 		logger.debug('きてます！');
-		const appConfig = await appConfigTask;
 		// 設定データ確定
 		pageConfiguration = {
-			app: appConfig,
+			app: applicationConfiguration,
 			sites: siteItems,
 		};
 		return executeAsync(pageConfiguration);
