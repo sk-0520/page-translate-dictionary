@@ -101,11 +101,11 @@
             }
           }
         },
-        "html .class > child + next child[data-custom='xxx'] input" {
+        "html .class > child + next child[data-custom='xxx'] input": {
           // 置き換え処理
         },
         // 共通セレクタの使用
-        "{common-nav-logout}" {
+        "{common-nav-logout}": {
           "text": {
             "replace": {
               // 共通テキストの使用

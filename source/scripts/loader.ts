@@ -1,4 +1,5 @@
 import webextension from "webextension-polyfill";
+import * as JSONC from 'jsonc-parser';
 import * as setting from './setting';
 
 export function checkUrl(s: string): boolean {
@@ -20,7 +21,13 @@ export async function fetchAsync(url: string): Promise<setting.ISiteSetting | nu
 		throw new Error(`HTTP Status: ${response.status} (${response.statusText})`);
 	}
 
-	const json = await response.json();
+	const body = await response.text();
+
+	const json = JSONC.parse(body, undefined, {
+		allowEmptyContent: true,
+		allowTrailingComma: true,
+		disallowComments: true,
+	});
 
 	return json as setting.ISiteSetting;
 }

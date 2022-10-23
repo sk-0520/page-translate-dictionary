@@ -16,13 +16,14 @@
 		"removeComments": false,
 		"sourceMap": true,
 		"target": "es2021",
+		"moduleResolution": "node",
 	},
 	"lib": [
 		"es2021",
 		"dom",
 		"dom.iterable"
 	],
-	"typeRoots" : [
+	"typeRoots": [
 		"./node_modules/@types"
 	],
 	"exclude": [
