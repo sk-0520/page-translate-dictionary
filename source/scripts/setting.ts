@@ -3,6 +3,11 @@
 export interface IInformationSetting {
 	//#region property
 
+	website?: string | null;
+	repository?: string | null;
+	document?: string | null;
+
+
 	//#endregion
 }
 
@@ -84,20 +89,20 @@ export interface ISiteSetting {
 	//#region property
 
 	/** 名前 */
-	name: string | null;
+	name: string;
 	/** バージョン */
-	version: string | null;
-	/** 設定情報 */
-	information: IInformationSetting | null;
+	version: string;
 	/** 対象ホスト */
-	hosts: string[] | null;
+	hosts: string[];
+	/** 設定情報 */
+	information?: IInformationSetting | null;
 	/** 優先度 */
-	level: number | null;
+	level?: number | null;
 	/** 変換先言語 */
-	language: string | null;
+	language?: string | null;
 
 	/** パスに対する変換設定 */
-	path: PathMap | null;
+	path?: PathMap | null;
 
 	/** 変換共通処理 */
 	common?: ICommonSetting | null;

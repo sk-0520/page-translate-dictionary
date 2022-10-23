@@ -30,17 +30,17 @@
   "name": "example trans",
   // バージョン
   "version": "YYYY-MM-DD/x.xx.xxx",
+  // 対象ドメイン
+  "hosts": [
+    "example.com",
+    "www.example.com"
+  ],
   // 設定情報
   "information": {
     "website": "https://",
     "repository": "https://",
     "document": "https://"
   },
-  // 対象ドメイン
-  "hosts": [
-    "example.com",
-    "www.example.com"
-  ],
   // 優先度 0: 通常, 低 < 0 < 高
   "level": 0,
   // 変換先言語

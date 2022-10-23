@@ -30,12 +30,72 @@ function setApplication(applicationConfiguration: config.IApplicationConfigurati
 	dom.requireElementById<HTMLInputElement>('setting_periodDays').value = applicationConfiguration.setting.periodDays.toString();
 }
 
-function setSetting(siteHeadConfiguration: config.ISiteHeadConfiguration) {
+function addSetting(siteHeadConfiguration: config.ISiteHeadConfiguration) {
+}
+
+async function importSettingAsync(url: string): Promise<void> {
+	const log = new ImportLog();
+	log.clear();
+
+	try {
+		log.add(webextension.i18n.getMessage('options_import_log_start'));
+
+		if (!loader.checkUrl(url)) {
+			log.add(webextension.i18n.getMessage('options_import_log_invalid_url'));
+			return;
+		}
+
+		log.add(webextension.i18n.getMessage('options_import_log_fetch_url', [url]));
+		const setting = await loader.fetchAsync(url);
+		if (!setting) {
+			log.add(webextension.i18n.getMessage('options_import_log_invalid_setting'));
+			return;
+		}
+
+		log.add(webextension.i18n.getMessage('options_import_log_setting', [setting.name, setting.version]));
+		for (const host of setting.hosts) {
+			log.add(webextension.i18n.getMessage('options_import_log_host', [host]));
+		}
+
+		// 内部用データとして取り込み
+		log.add(webextension.i18n.getMessage('options_import_log_convert'));
+
+		const timestamp = (new Date()).toISOString();
+
+		const head: config.ISiteHeadConfiguration = {
+			id: loader.createSiteConfigurationId(),
+			updateUrl: url,
+			updatedTimestamp: timestamp,
+			lastCheckedTimestamp: timestamp,
+			name: setting.name,
+			version: setting.version,
+			hosts: setting.hosts,
+			information: loader.convertInformation(setting?.information),
+			level: loader.convertLevel(setting?.level),
+			language: loader.convertLanguage(setting?.language),
+		};
+		const body: config.ISiteBodyConfiguration = {
+			path: setting.path,
+			common: setting.common,
+		};
+
+		await storage.saveSiteBodyAsync(head.id, body);
+		await storage.addSiteHeadsAsync(head);
+
+		log.add(webextension.i18n.getMessage('options_import_log_success'));
+
+	} catch (ex) {
+		if (ex instanceof Error) {
+			log.add(ex.toString());
+		} else {
+			log.add(ex + '');
+		}
+	}
 }
 
 function setSettings(siteHeadConfigurations: ReadonlyArray<config.ISiteHeadConfiguration>) {
 	for (const siteHeadConfiguration of siteHeadConfigurations) {
-		setSetting(siteHeadConfiguration);
+		addSetting(siteHeadConfiguration);
 	}
 
 	dom.requireElementById('import').addEventListener('click', async ev => {
@@ -44,27 +104,7 @@ function setSettings(siteHeadConfigurations: ReadonlyArray<config.ISiteHeadConfi
 		if (url === null) {
 			return;
 		}
-		const log = new ImportLog();
-		log.clear();
-
-		try {
-			if (!loader.checkUrl(url)) {
-				log.add(webextension.i18n.getMessage('options_import_log_invalid_url'));
-				return;
-			}
-
-			const setting = await loader.fetchAsync(url);
-			if(!setting) {
-				log.add(webextension.i18n.getMessage('options_import_log_invalid_setting'));
-				return;
-			}
-		} catch (ex) {
-			if (ex instanceof Error) {
-				log.add(ex.toString());
-			} else {
-				log.add(ex + '');
-			}
-		}
+		await importSettingAsync(url);
 	})
 }
 

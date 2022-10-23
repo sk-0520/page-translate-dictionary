@@ -85,3 +85,22 @@ export function saveApplicationAsync(applicationConfiguration: config.IApplicati
 		[Keys.application]: applicationConfiguration
 	});
 }
+
+export async function saveSiteHeadsAsync(siteHeadConfigurations: ReadonlyArray<config.ISiteHeadConfiguration>): Promise<void> {
+	return webextension.storage.local.set({
+		[Keys.siteHeads]: siteHeadConfigurations
+	});
+}
+
+export async function addSiteHeadsAsync(siteHeadConfigurations: config.ISiteHeadConfiguration): Promise<void> {
+	const heads = await loadSiteHeadsAsync();
+	heads.push(siteHeadConfigurations);
+	await saveSiteHeadsAsync(heads);
+}
+
+export async function saveSiteBodyAsync(id: config.SiteConfigurationId, siteBodyConfiguration: config.ISiteBodyConfiguration): Promise<void> {
+	const key = Keys.siteBody + id;
+	return webextension.storage.local.set({
+		[key]: siteBodyConfiguration,
+	});
+}

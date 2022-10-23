@@ -36,13 +36,48 @@ const messages: locale.IMessages & locale.MessageMap = {
 	options_import_message: {
 		message: 'インポートURL',
 	},
-
+	options_import_log_start: {
+		message: 'インポート開始',
+	},
+	options_import_log_success: {
+		message: 'インポート正常終了',
+	},
 	options_import_log_invalid_url: {
 		message: 'URLが正しくない',
+	},
+	options_import_log_fetch_url: {
+		message: '設定取得処理開始: $URL$',
+		placeholders: {
+			'URL': {
+				content: '$1',
+			},
+		},
 	},
 	options_import_log_invalid_setting: {
 		message: '設定ファイルが正しくない',
 	},
+	options_import_log_setting: {
+		message: '設定データ取得: $NAME$ $VERSION$',
+		placeholders: {
+			'NAME': {
+				content: '$1',
+			},
+			'VERSION': {
+				content: '$2',
+			},
+		},
+	},
+	options_import_log_host: {
+		message: '有効ホスト: $HOST$',
+		placeholders: {
+			'HOST': {
+				content: '$1',
+			},
+		},
+	},
+	options_import_log_convert: {
+		message: '変換処理開始',
+	}
 
 };
 

@@ -168,10 +168,10 @@ export interface ISiteHeadConfiguration {
 	name: string;
 	/** バージョン */
 	version: string;
-	/** 設定情報 */
-	information: ISiteInformationConfiguration;
 	/** 対象ホスト */
 	hosts: string[];
+	/** 設定情報 */
+	information: ISiteInformationConfiguration;
 	/** 優先度 */
 	level: number;
 	/** 変換先言語 */
