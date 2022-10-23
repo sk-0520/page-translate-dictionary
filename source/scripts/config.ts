@@ -7,6 +7,17 @@ import * as common from './common';
 
 export type SiteConfigurationId = string;
 
+export interface ISiteInformationConfiguration
+{
+	//#region property
+
+	websiteUrl: string;
+	repositoryUrl: string;
+	documentUrl: string;
+
+	//#endregion
+}
+
 export const enum WhiteSpace {
 	Join,
 	Raw,
@@ -157,6 +168,8 @@ export interface ISiteHeadConfiguration {
 	name: string;
 	/** バージョン */
 	version: string;
+	/** 設定情報 */
+	information: ISiteInformationConfiguration;
 	/** 対象ホスト */
 	hosts: string[];
 	/** 優先度 */
@@ -402,6 +415,10 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 	public get version(): string {
 		return this.head.version;
+	}
+
+	public get information(): ISiteInformationConfiguration {
+		return this.head.information;
 	}
 
 	public get hosts(): string[] {

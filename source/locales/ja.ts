@@ -28,6 +28,22 @@ const messages: locale.IMessages & locale.MessageMap = {
 	options_tab_header_defines: {
 		message: '定義ファイル一覧',
 	},
+
+	options_tab_content_defines_import: {
+		message: 'インポート',
+	},
+
+	options_import_message: {
+		message: 'インポートURL',
+	},
+
+	options_import_log_invalid_url: {
+		message: 'URLが正しくない',
+	},
+	options_import_log_invalid_setting: {
+		message: '設定ファイルが正しくない',
+	},
+
 };
 
 export default messages;

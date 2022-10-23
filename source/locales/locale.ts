@@ -33,4 +33,11 @@ export interface IMessages {
 	options_tab_content_generic_save: IMessage,
 
 	options_tab_header_defines: IMessage,
+
+	options_tab_content_defines_import: IMessage,
+
+	options_import_message: IMessage,
+
+	options_import_log_invalid_url: IMessage,
+	options_import_log_invalid_setting: IMessage,
 }

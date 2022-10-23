@@ -1,6 +1,10 @@
 
-#loading {
+#processing {
 	margin: 0 auto;
+
+	&.processed {
+		display: none;
+	}
 }
 
 #options {

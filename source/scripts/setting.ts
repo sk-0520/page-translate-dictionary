@@ -1,5 +1,11 @@
 // ユーザー(サイト翻訳機能提供者)があれこれやるやつ
 
+export interface IInformationSetting {
+	//#region property
+
+	//#endregion
+}
+
 export interface IFilterSetting {
 	//#region property
 
@@ -81,6 +87,8 @@ export interface ISiteSetting {
 	name: string | null;
 	/** バージョン */
 	version: string | null;
+	/** 設定情報 */
+	information: IInformationSetting | null;
 	/** 対象ホスト */
 	hosts: string[] | null;
 	/** 優先度 */
