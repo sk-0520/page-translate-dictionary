@@ -63,7 +63,7 @@ function updateItemInformation(siteHeadConfiguration: config.ISiteHeadConfigurat
 }
 
 function addSetting(siteHeadConfiguration: config.ISiteHeadConfiguration) {
-	const templateElement = dom.requireElementById<HTMLTemplateElement>('template-define-item');
+	const templateElement = dom.requireElementById<HTMLTemplateElement>('template-setting-item');
 	const itemRootElement = dom.cloneTemplate(templateElement);
 	for (const element of itemRootElement.querySelectorAll<HTMLElement>('*')) {
 		localize.applyElement(element);
@@ -109,8 +109,8 @@ function addSetting(siteHeadConfiguration: config.ISiteHeadConfiguration) {
 	});
 	updateItemInformation(siteHeadConfiguration, itemRootElement);
 
-	const definesElement = dom.requireElementById<HTMLOListElement>('defines');
-	definesElement.appendChild(itemRootElement);
+	const settingsElement = dom.requireElementById<HTMLOListElement>('settings');
+	settingsElement.appendChild(itemRootElement);
 
 }
 
