@@ -61,20 +61,26 @@ function update(event: Event) {
 }
 
 async function updateSiteConfigurationAsync(siteHeadConfiguration: config.ISiteHeadConfiguration): Promise<config.ISiteHeadConfiguration | null> {
-	const setting = await loader.fetchAsync(siteHeadConfiguration.updateUrl);
-	if (!setting) {
-		logger.warn('設定データ異常');
-		return null;
+	try {
+		const setting = await loader.fetchAsync(siteHeadConfiguration.updateUrl);
+		if (!setting) {
+			logger.warn('設定データ異常');
+			return null;
+		}
+
+		if (setting.version === siteHeadConfiguration.version) {
+			logger.warn('設定データバージョン同じ');
+			return null;
+		}
+
+		const site = await loader.saveAsync(siteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id);
+
+		return site.head;
+	} catch (ex) {
+		console.warn(ex);
 	}
 
-	if (setting.version === siteHeadConfiguration.version) {
-		logger.warn('設定データバージョン同じ');
-		return null;
-	}
-
-	const site = await loader.saveAsync(siteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id);
-
-	return site.head;
+	return null;
 }
 
 async function bootAsync(): Promise<void> {
@@ -86,9 +92,9 @@ async function bootAsync(): Promise<void> {
 		return;
 	}
 
-	const currentSiteHeadConfigurations = siteHeadConfigurations.filter(i => url.isEnabledHosts(location.host, i.hosts) || url.isEnabledHosts(location.hostname, i.hosts));
+	const currentSiteHeadConfigurations = siteHeadConfigurations.filter(i => url.isEnabledHosts(location.host, i.hosts));
 	if (!currentSiteHeadConfigurations.length) {
-		logger.info(`ホストに該当する設定なし: ${location.host}/${location.hostname}`);
+		logger.info(`ホストに該当する設定なし: ${location.host}`);
 		return;
 	}
 
@@ -102,14 +108,32 @@ async function bootAsync(): Promise<void> {
 			lastCheckedTimestamp.setDate(lastCheckedTimestamp.getDate() + applicationConfiguration.setting.periodDays);
 
 			if (lastCheckedTimestamp < currentDateTime) {
-				logger.info("UPDATE CHECK", lastCheckedTimestamp.toISOString(), currentDateTime.toISOString(), currentSiteHeadConfiguration.id);
+				logger.info("UPDATE CHECK", lastCheckedTimestamp.toISOString(), '<', currentDateTime.toISOString(), currentSiteHeadConfiguration.id);
 				const newSiteHead = await updateSiteConfigurationAsync(currentSiteHeadConfiguration);
-
-				headItems.push(newSiteHead || currentSiteHeadConfiguration);
+				if (newSiteHead) {
+					newSiteHead.updatedTimestamp = currentDateTime.toISOString();
+					headItems.push(newSiteHead);
+				} else {
+					headItems.push(currentSiteHeadConfiguration);
+				}
 			} else {
 				headItems.push(currentSiteHeadConfiguration);
 			}
 		}
+
+		for (const head of headItems) {
+			head.lastCheckedTimestamp = currentDateTime.toISOString();
+		}
+
+		let newSiteHeadConfigurations = siteHeadConfigurations;
+		for (const headItem of headItems) {
+			newSiteHeadConfigurations = newSiteHeadConfigurations.filter(i => i.id !== headItem.id);
+		}
+		for (const headItem of headItems) {
+			newSiteHeadConfigurations.push(headItem);
+		}
+
+		storage.saveSiteHeadsAsync(newSiteHeadConfigurations);
 	} else {
 		headItems.push(...currentSiteHeadConfigurations);
 	}
