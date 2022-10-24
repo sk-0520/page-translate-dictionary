@@ -50,9 +50,10 @@
     // 対象パス(正規表現)
     "/": {
       // セレクタに対する処理
-      "selector": {
+      "query": [
         // ID 指定
-        "#id": {
+        {
+          "selector": "#id",
           // 対象要素の textContent
           "text": {
             "filter": {
@@ -101,11 +102,14 @@
             }
           }
         },
-        "html .class > child + next child[data-custom='xxx'] input": {
+        {
+          "selector": "html .class > child + next child[data-custom='xxx'] input",
           // 置き換え処理
         },
-        // 共通セレクタの使用
-        "{common-nav-logout}": {
+        {
+          // 共通セレクタの使用
+          "selector": "common-nav-logout",
+
           "text": {
             "replace": {
               // 共通テキストの使用
@@ -114,7 +118,7 @@
             }
           }
         }
-      }
+      ]
     }
   },
   // 共通設定

@@ -17,6 +17,11 @@ export interface ISiteInformationConfiguration {
 	//#endregion
 }
 
+export const enum SelectorMode {
+	Normal = 'normal',
+	Common = 'common',
+}
+
 export const enum WhiteSpace {
 	Join = 'join',
 	Raw = 'raw',
@@ -78,9 +83,19 @@ export interface ITargetConfiguration {
 	//#endregion
 }
 
+export interface ISelectorConfiguration {
+	//#region property
+
+	mode: SelectorMode;
+	value: string;
+
+	//#endregion
+}
+
 export interface IQueryConfiguration {
 	//#region property
 
+	selector: ISelectorConfiguration;
 	text?: ITargetConfiguration;
 	value?: ITargetConfiguration;
 	attributes: { [name: string]: ITargetConfiguration };
@@ -91,7 +106,7 @@ export interface IQueryConfiguration {
 export interface IPathConfiguration {
 	//#region property
 
-	selector: { [selector: string]: IQueryConfiguration }
+	query: IQueryConfiguration[];
 
 	//#endregion
 }
@@ -236,6 +251,12 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return value as TEnum; // 💩 enum と設定定義が全然ダメ
 	}
 
+	private static convertSelector(raw: setting.ISelectorSetting): ISelectorConfiguration {
+		return {
+			mode: SiteConfiguration.convertEnum(raw, 'mode', SelectorMode.Normal),
+			value: raw.value!,
+		};
+	}
 	private static convertFilter(raw?: setting.IFilterSetting | null): IFilterConfiguration {
 		if (!raw) {
 			return {
@@ -318,26 +339,27 @@ export class SiteConfiguration implements ISiteConfiguration {
 				// alert('1:::::' + key)
 				continue;
 			}
-			if (!('selector' in pathSetting) || !pathSetting.selector || typeof pathSetting.selector !== 'object') {
+			if (!('query' in pathSetting) || !pathSetting.query || !Array.isArray(pathSetting.query)) {
 				// alert('2:::::' + key)
 				continue;
 			}
 			// alert('3:::::' + key)
 
 			const pathConfiguration: IPathConfiguration = {
-				selector: {}
+				query: [],
 			};
 
-			for (const [selector, querySetting] of Object.entries(pathSetting.selector)) {
-				if (common.isNullOrWhiteSpace(selector)) {
+			for (const querySetting of pathSetting.query) {
+				if (!querySetting) {
 					continue;
 				}
-				if (!querySetting) {
+				if (!querySetting.selector || common.isNullOrWhiteSpace(querySetting.selector.value)) {
 					continue;
 				}
 
 				const query: IQueryConfiguration = {
-					attributes: {}
+					selector: SiteConfiguration.convertSelector(querySetting.selector),
+					attributes: {},
 				};
 
 				const text = SiteConfiguration.convertTarget(querySetting.text);
@@ -362,7 +384,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 					}
 				}
 
-				pathConfiguration.selector[selector] = query;
+				pathConfiguration.query.push(query);
 			}
 
 			result[key] = pathConfiguration;

@@ -49,9 +49,19 @@ export interface ITargetSetting {
 	//#endregion
 }
 
+export interface ISelectorSetting {
+	//#region property
+
+	mode?: string | null;
+	value: string | null;
+
+	//#endregion
+}
+
 export interface IQuerySetting {
 	//#region property
 
+	selector?: ISelectorSetting | null;
 	text?: ITargetSetting | null;
 	value?: ITargetSetting | null;
 	attributes?: { [name: string]: ITargetSetting | null; } | null;
@@ -62,7 +72,7 @@ export interface IQuerySetting {
 export interface IPathSetting {
 	//#region property
 
-	selector: { [selector: string]: IQuerySetting | null } | null
+	query: IQuerySetting[] | null;
 
 	//#endregion
 }
