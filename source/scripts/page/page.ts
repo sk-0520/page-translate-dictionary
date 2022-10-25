@@ -2,7 +2,7 @@ import * as config from '../config';
 import * as url from '../url';
 import * as logging from '../logging';
 import * as translator from './translator';
-//import * as names from '../names';
+import * as common from '../common';
 import * as loader from '../loader';
 import * as storage from '../storage';
 import '../../styles/page.scss';
@@ -34,15 +34,20 @@ function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
 		for (const key in siteConfiguration.path) {
 			// alert('key:: ' + key)
 			const pathConfiguration = siteConfiguration.path[key];
-			if (url.isEnabledPath(location.pathname, key)) {
-				logger.trace('パス適合', key);
+			let urlPath = location.pathname;
+			if (pathConfiguration.withSearch && !common.isNullOrEmpty(location.search)) {
+				urlPath += '?' + location.search;
+			}
+
+			if (url.isEnabledPath(urlPath, key)) {
+				logger.trace('パス適合', key, urlPath);
 				try {
 					translator.translate(pathConfiguration, siteConfiguration, pageConfiguration.app.translate);
 				} catch (ex) {
 					logger.error(ex);
 				}
 			} else {
-				logger.trace('パス非適合', key);
+				logger.trace('パス非適合', key, urlPath);
 			}
 		}
 	}

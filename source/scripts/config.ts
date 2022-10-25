@@ -107,6 +107,8 @@ export interface IQueryConfiguration {
 export interface IPathConfiguration {
 	//#region property
 
+	withSearch: boolean;
+
 	query: IQueryConfiguration[];
 
 	import: string[];
@@ -400,6 +402,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 			// alert('3:::::' + key)
 
 			const pathConfiguration: IPathConfiguration = {
+				withSearch: type.getPrimaryPropertyOr(pathSetting, 'withSearch', 'boolean', false),
 				query: [],
 				import: [],
 			};
