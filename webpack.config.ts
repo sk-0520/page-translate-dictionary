@@ -1,7 +1,7 @@
 import * as path from 'path';
-import * as fs from 'fs';
 import webpack from 'webpack';
-import * as locales from './source/locales/locales';
+import ManifestFilePlugin from './source/plugins/ManifestFilePlugin';
+import LocaleFilesPlugin from './source/plugins/LocaleFilesPlugin';
 
 const TerserPlugin = require("terser-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -10,40 +10,40 @@ const inputRootDirectory = path.resolve(__dirname, 'source');
 const inputEntryDirectory = path.resolve(inputRootDirectory, 'entry');
 const outputDirectory = path.resolve(__dirname, 'dist');
 
-function replaceManifestFile(browser: string): void {
-	const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+// function replaceManifestFile(browser: string): void {
+// 	const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
 
-	const inputManifestPath = path.join(inputRootDirectory, 'manifest', `${browser}.json`);
+// 	const inputManifestPath = path.join(inputRootDirectory, 'manifest', `${browser}.json`);
 
-	const packageVersion = packageJson['version'];
+// 	const packageVersion = packageJson['version'];
 
-	const targetJson = JSON.parse(fs.readFileSync(inputManifestPath, 'utf8'));
-	targetJson['version'] = packageVersion;
+// 	const targetJson = JSON.parse(fs.readFileSync(inputManifestPath, 'utf8'));
+// 	targetJson['version'] = packageVersion;
 
-	const outputPath = path.join(outputDirectory, 'manifest.json');
-	if (!fs.existsSync(outputDirectory)) {
-		fs.mkdirSync(outputDirectory);
-	}
-	fs.writeFileSync(outputPath, JSON.stringify(targetJson, undefined, 2), { flag: 'w' });
-}
+// 	const outputPath = path.join(outputDirectory, 'manifest.json');
+// 	if (!fs.existsSync(outputDirectory)) {
+// 		fs.mkdirSync(outputDirectory);
+// 	}
+// 	fs.writeFileSync(outputPath, JSON.stringify(targetJson, undefined, 2), { flag: 'w' });
+// }
 
-function exportLocales(browser: string): void {
-	const outputLocalesDirectory = path.join(outputDirectory, '_locales');
-	if (fs.existsSync(outputLocalesDirectory)) {
-		fs.rmSync(outputLocalesDirectory, { recursive: true });
-	}
-	fs.mkdirSync(outputLocalesDirectory);
+// function exportLocales(browser: string): void {
+// 	const outputLocalesDirectory = path.join(outputDirectory, '_locales');
+// 	if (fs.existsSync(outputLocalesDirectory)) {
+// 		fs.rmSync(outputLocalesDirectory, { recursive: true });
+// 	}
+// 	fs.mkdirSync(outputLocalesDirectory);
 
-	const localeItems = locales.gets();
-	for (const [key, localeItem] of Object.entries(localeItems)) {
-		const outputDirectory = path.join(outputLocalesDirectory, key);
-		fs.mkdirSync(outputDirectory);
+// 	const localeItems = locales.gets();
+// 	for (const [key, localeItem] of Object.entries(localeItems)) {
+// 		const outputDirectory = path.join(outputLocalesDirectory, key);
+// 		fs.mkdirSync(outputDirectory);
 
-		const outputPath = path.join(outputDirectory, 'messages.json');
-		const outputContent = JSON.stringify(localeItem);
-		fs.writeFileSync(outputPath, outputContent);
-	}
-}
+// 		const outputPath = path.join(outputDirectory, 'messages.json');
+// 		const outputContent = JSON.stringify(localeItem);
+// 		fs.writeFileSync(outputPath, outputContent);
+// 	}
+// }
 
 const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Configuration => {
 	/** 本番用か */
@@ -53,8 +53,8 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 		throw Error(env['browser']);
 	}
 
-	replaceManifestFile(env['browser']);
-	exportLocales(env['browser']);
+	//replaceManifestFile(env['browser']);
+	//exportLocales(env['browser']);
 
 	const conf: webpack.Configuration = {
 		mode: args.mode,
@@ -113,6 +113,16 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 				template: path.join(inputRootDirectory, 'views', 'application-options.html'),
 				filename: 'application-options.html',
 				inject: false,
+			}),
+			new ManifestFilePlugin({
+				packageJson: path.join(__dirname, 'package.json'),
+				browser: env['browser'],
+				inputDirectory: path.join(inputRootDirectory, 'manifest'),
+				outputDirectory: path.join(outputDirectory),
+			}),
+			new LocaleFilesPlugin({
+				browser: env['browser'],
+				outputDirectory: path.join(outputDirectory),
 			})
 		],
 	};
