@@ -168,8 +168,10 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 			translated = true;
 		}
 	} else if (element.textContent && queryConfiguration.text) {
+		//TODO: 不要処理多め。落ち着いたら整理
 
 		let node: Text | Element | null = null;
+		let nodeNumber = 0;
 
 		if (queryConfiguration.selector.node) {
 			const textNodes = new Array<{ number: number, node: Text }>();
@@ -180,6 +182,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 			}
 			if((queryConfiguration.selector.node - 1) < textNodes.length) {
 				node = textNodes[queryConfiguration.selector.node - 1].node;
+				nodeNumber = queryConfiguration.selector.node;
 			}
 		}
 
@@ -196,7 +199,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 			} else {
 				element.textContent = output;
 			}
-			element.setAttribute(names.Attributes.text, sourceValue);
+			element.setAttribute(names.Attributes.textHead + nodeNumber, sourceValue);
 			translated = true;
 		}
 	}

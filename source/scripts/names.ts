@@ -8,7 +8,7 @@ export const ClassNames = {
 
 export const Attributes = {
 	translated: baseAttr + 'translated',
-	text: baseAttr + 'translated-text',
+	textHead: baseAttr + 'translated-text-',
 	value: baseAttr + 'translated-value',
 	attributeHead: baseAttr + 'translated-attr-',
 }
