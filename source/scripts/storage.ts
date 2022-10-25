@@ -33,6 +33,7 @@ export async function loadApplicationAsync(): Promise<config.IApplicationConfigu
 		},
 		setting: {
 			autoUpdate: true,
+			updatedBeforeTranslation: false,
 			periodDays: 5,
 		},
 	};

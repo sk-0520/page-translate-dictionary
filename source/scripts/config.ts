@@ -145,6 +145,14 @@ export interface ISettingConfiguration {
 	 */
 	autoUpdate: boolean;
 
+	/**
+	 * 設定のアップデート処理を翻訳前に実施するか。
+	 *
+	 * 対象サーバーが落ちている・見つからない場合に翻訳まで時間がかかるため原則 `false` となる。
+	 * 想定する使用は検証時(`periodDays = 0` と組み合わせてローカルサーバーから設定を取得する感じ)。
+	 */
+	updatedBeforeTranslation: boolean;
+
 
 	/**
 	 * 最終更新確認日から指定した期間を超えた設定を更新対象とする。

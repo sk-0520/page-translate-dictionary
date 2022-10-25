@@ -27,6 +27,7 @@ function setApplication(applicationConfiguration: config.IApplicationConfigurati
 	dom.requireElementById<HTMLInputElement>('translate_markReplacedElement').checked = applicationConfiguration.translate.markReplacedElement;
 
 	dom.requireElementById<HTMLInputElement>('setting_autoUpdate').checked = applicationConfiguration.setting.autoUpdate;
+	dom.requireElementById<HTMLInputElement>('setting_updatedBeforeTranslation').checked = applicationConfiguration.setting.updatedBeforeTranslation;
 	dom.requireElementById<HTMLInputElement>('setting_periodDays').value = applicationConfiguration.setting.periodDays.toString();
 }
 
@@ -188,6 +189,8 @@ async function saveGenericAsync(): Promise<void> {
 	applicationConfiguration.translate.markReplacedElement = dom.requireElementById<HTMLInputElement>('translate_markReplacedElement').checked;
 
 	applicationConfiguration.setting.autoUpdate = dom.requireElementById<HTMLInputElement>('setting_autoUpdate').checked;
+	applicationConfiguration.setting.updatedBeforeTranslation = dom.requireElementById<HTMLInputElement>('setting_updatedBeforeTranslation').checked;
+
 	const rawPeriodDays = dom.requireElementById<HTMLInputElement>('setting_periodDays').value;
 	const periodDays = parseInt(rawPeriodDays);
 	if (!isNaN(periodDays)) {

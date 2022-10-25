@@ -53,7 +53,10 @@
       "query": [
         // ID 指定
         {
-          "selector": "#id",
+          "selector": {
+            "value": "#id",
+            "node": 1,
+          },
           // 対象要素の textContent
           "text": {
             "filter": {
@@ -103,13 +106,17 @@
           }
         },
         {
-          "selector": "html .class > child + next child[data-custom='xxx'] input",
+          "selector": {
+            "value": "html .class > child + next child[data-custom='xxx'] input",
+          }
           // 置き換え処理
         },
         {
           // 共通セレクタの使用
-          "selector": "common-nav-logout",
-
+          "selector": {
+            "mode": "common",
+            "value": "common-nav-logout",
+          },
           "text": {
             "replace": {
               // 共通テキストの使用

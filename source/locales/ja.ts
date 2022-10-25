@@ -17,6 +17,9 @@ const messages: locale.IMessages & locale.MessageMap = {
 	options_tab_content_generic_setting_autoUpdate: {
 		message: '自動更新を行う',
 	},
+	options_tab_content_generic_setting_updatedBeforeTranslation: {
+		message: '翻訳開始前に設定更新処理を行う',
+	},
 	options_tab_content_generic_setting_periodDays: {
 		message: '自動更新期間(日)',
 	},

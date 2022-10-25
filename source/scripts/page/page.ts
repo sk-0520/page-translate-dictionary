@@ -30,8 +30,8 @@ function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
 	for (const siteConfiguration of pageConfiguration.sites) {
 		//alert(JSON.stringify(siteConfiguration.path))
 		//for (const [pathPattern, pathConfiguration] of Object.entries(siteConfiguration.path)) {
-			//alert('siteConfiguration.path-> ' + JSON.stringify(siteConfiguration.path))
-			for(const  key in siteConfiguration.path) {
+		//alert('siteConfiguration.path-> ' + JSON.stringify(siteConfiguration.path))
+		for (const key in siteConfiguration.path) {
 			// alert('key:: ' + key)
 			const pathConfiguration = siteConfiguration.path[key];
 			if (url.isEnabledPath(location.pathname, key)) {
@@ -95,6 +95,45 @@ async function updateSiteConfigurationAsync(siteHeadConfiguration: config.ISiteH
 	return null;
 }
 
+async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: config.ISettingConfiguration, allSiteHeadConfigurations: ReadonlyArray<config.ISiteHeadConfiguration>): Promise<config.ISiteHeadConfiguration[]> {
+	const headItems = new Array<config.ISiteHeadConfiguration>();
+
+	for (const currentSiteHeadConfiguration of allSiteHeadConfigurations) {
+		const lastCheckedTimestamp = new Date(currentSiteHeadConfiguration.lastCheckedTimestamp)
+		lastCheckedTimestamp.setDate(lastCheckedTimestamp.getDate() + setting.periodDays);
+
+		if (lastCheckedTimestamp < currentDateTime) {
+			logger.info("CHECK NEW VERSION", lastCheckedTimestamp.toISOString(), '<', currentDateTime.toISOString(), currentSiteHeadConfiguration.id);
+			const newSiteHead = await updateSiteConfigurationAsync(currentSiteHeadConfiguration, setting.periodDays === 0);
+			if (newSiteHead) {
+				logger.info("UPDATE!!", currentSiteHeadConfiguration.id);
+				newSiteHead.updatedTimestamp = currentDateTime.toISOString();
+				headItems.push(newSiteHead);
+			} else {
+				headItems.push(currentSiteHeadConfiguration);
+			}
+		} else {
+			headItems.push(currentSiteHeadConfiguration);
+		}
+	}
+
+	for (const head of headItems) {
+		head.lastCheckedTimestamp = currentDateTime.toISOString();
+	}
+
+	let newSiteHeadConfigurations = Array.from(allSiteHeadConfigurations);
+	for (const headItem of headItems) {
+		newSiteHeadConfigurations = newSiteHeadConfigurations.filter(i => i.id !== headItem.id);
+	}
+	for (const headItem of headItems) {
+		newSiteHeadConfigurations.push(headItem);
+	}
+
+	await storage.saveSiteHeadsAsync(newSiteHeadConfigurations);
+
+	return headItems;
+}
+
 async function bootAsync(): Promise<void> {
 	const applicationConfiguration = await storage.loadApplicationAsync();
 	const siteHeadConfigurations = await storage.loadSiteHeadsAsync();
@@ -114,39 +153,10 @@ async function bootAsync(): Promise<void> {
 	const currentDateTime = new Date();
 	const headItems = new Array<config.ISiteHeadConfiguration>();
 
-	if (applicationConfiguration.setting.autoUpdate) {
-		for (const currentSiteHeadConfiguration of currentSiteHeadConfigurations) {
-			const lastCheckedTimestamp = new Date(currentSiteHeadConfiguration.lastCheckedTimestamp)
-			lastCheckedTimestamp.setDate(lastCheckedTimestamp.getDate() + applicationConfiguration.setting.periodDays);
-
-			if (lastCheckedTimestamp < currentDateTime) {
-				logger.info("CHECK NEW VERSION", lastCheckedTimestamp.toISOString(), '<', currentDateTime.toISOString(), currentSiteHeadConfiguration.id);
-				const newSiteHead = await updateSiteConfigurationAsync(currentSiteHeadConfiguration, applicationConfiguration.setting.periodDays === 0);
-				if (newSiteHead) {
-					logger.info("UPDATE!!", currentSiteHeadConfiguration.id);
-					newSiteHead.updatedTimestamp = currentDateTime.toISOString();
-					headItems.push(newSiteHead);
-				} else {
-					headItems.push(currentSiteHeadConfiguration);
-				}
-			} else {
-				headItems.push(currentSiteHeadConfiguration);
-			}
-		}
-
-		for (const head of headItems) {
-			head.lastCheckedTimestamp = currentDateTime.toISOString();
-		}
-
-		let newSiteHeadConfigurations = siteHeadConfigurations;
-		for (const headItem of headItems) {
-			newSiteHeadConfigurations = newSiteHeadConfigurations.filter(i => i.id !== headItem.id);
-		}
-		for (const headItem of headItems) {
-			newSiteHeadConfigurations.push(headItem);
-		}
-
-		storage.saveSiteHeadsAsync(newSiteHeadConfigurations);
+	if (applicationConfiguration.setting.updatedBeforeTranslation && applicationConfiguration.setting.autoUpdate) {
+		logger.info('翻訳前 設定更新処理実施');
+		const newHeadItems = await updateSiteConfigurationsAsync(currentDateTime, applicationConfiguration.setting, currentSiteHeadConfigurations);
+		headItems.push(...newHeadItems);
 	} else {
 		headItems.push(...currentSiteHeadConfigurations);
 	}
@@ -162,6 +172,7 @@ async function bootAsync(): Promise<void> {
 			siteItems.push(siteConfiguration);
 		}
 	}
+
 	if (siteItems.length) {
 		logger.debug('きてます！');
 		// 設定データ確定
@@ -169,9 +180,14 @@ async function bootAsync(): Promise<void> {
 			app: applicationConfiguration,
 			sites: siteItems,
 		};
-		return executeAsync(pageConfiguration);
+		await executeAsync(pageConfiguration);
 	} else {
 		logger.trace('きてない・・・', location.pathname);
+	}
+
+	if (!applicationConfiguration.setting.updatedBeforeTranslation && applicationConfiguration.setting.autoUpdate) {
+		logger.debug('翻訳後 設定更新処理実施');
+		updateSiteConfigurationsAsync(currentDateTime, applicationConfiguration.setting, currentSiteHeadConfigurations);
 	}
 
 }

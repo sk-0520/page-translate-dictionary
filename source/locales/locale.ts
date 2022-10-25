@@ -28,6 +28,7 @@ export interface IMessages {
 
 	options_tab_content_generic_setting: IMessage,
 	options_tab_content_generic_setting_autoUpdate: IMessage,
+	options_tab_content_generic_setting_updatedBeforeTranslation: IMessage,
 	options_tab_content_generic_setting_periodDays: IMessage,
 
 	options_tab_content_generic_save: IMessage,
