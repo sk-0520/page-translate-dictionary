@@ -89,6 +89,7 @@ export interface ISelectorConfiguration {
 	mode: SelectorMode;
 	value: string;
 	node: number;
+	all: boolean;
 
 	//#endregion
 }
@@ -272,6 +273,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 			mode: SiteConfiguration.convertEnum(raw, 'mode', SelectorMode.Normal),
 			value: raw.value!,
 			node: type.getPrimaryPropertyOr(raw, 'node', 'number', 0),
+			all: type.getPrimaryPropertyOr(raw, 'all', 'boolean', false),
 		};
 	}
 	private static convertFilter(raw?: setting.IFilterSetting | null): IFilterConfiguration {
@@ -290,14 +292,17 @@ export class SiteConfiguration implements ISiteConfiguration {
 		};
 	}
 	private static convertMatch(raw: setting.IMatchSetting): IMatchConfiguration | null {
-		if (!type.hasPrimaryProperty(raw, 'pattern', 'boolean')) {
+		if (!type.hasPrimaryProperty(raw, 'pattern', 'string')) {
+			return null;
+		}
+		if (common.isNullOrEmpty(raw.pattern)) {
 			return null;
 		}
 
 		return {
-			ignoreCase: raw?.ignoreCase ?? true,
+			ignoreCase: type.getPrimaryPropertyOr(raw, 'ignoreCase', 'boolean', true),
 			mode: SiteConfiguration.convertEnum(raw, 'mode', MatchMode.Partial),
-			pattern: raw.pattern || '',
+			pattern: raw.pattern!,
 		}
 	}
 	private static convertReplace(raw?: setting.IReplaceSetting | null): IReplaceConfiguration | null {

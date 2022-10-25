@@ -50,15 +50,22 @@
     // 対象パス(正規表現)
     "/": {
       // パスにクエリ部分を含めるか
-      "withSearch": false,
+      "withSearch": true,
       // セレクタに対する処理
       "query": [
         // ID 指定
         {
           "selector": {
+            // セレクタ種別
+            //  normal: 通常
+            //  common: 共通
+            "mode": "normal",
             "value": "#id",
             // テキストノードの指定。 childNodes の #text だけを集計した 1 基底の番号: <span>[1]<br />[2]<br />[3]</span>
-            "node": 3, 
+            // -1 を指定した場合は全テキストノードが対象となる(matchによる制御を想定)
+            "node": 3,
+            // セレクタを全要素に適用するか
+            "all": false
           },
           // 対象要素の textContent
           "text": {

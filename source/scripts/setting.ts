@@ -55,6 +55,7 @@ export interface ISelectorSetting {
 	mode?: string | null;
 	value: string | null;
 	node?: number | null;
+	all?: boolean | null;
 
 	//#endregion
 }

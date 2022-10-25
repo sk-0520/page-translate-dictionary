@@ -168,39 +168,44 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 			translated = true;
 		}
 	} else if (element.textContent && queryConfiguration.text) {
-		//TODO: 不要処理多め。落ち着いたら整理
 
-		let node: Text | Element | null = null;
-		let nodeNumber = 0;
+		const nodes = new Map<number, Text|Element>();
 
 		if (queryConfiguration.selector.node) {
-			const textNodes = new Array<{ number: number, node: Text }>();
-			for (const [number, node] of element.childNodes.entries()) {
+			const textNodes = new Array<Text>();
+			for (const node of element.childNodes) {
 				if (node instanceof Text) {
-					textNodes.push({ number: number, node: node });
+					textNodes.push(node);
 				}
 			}
-			if ((queryConfiguration.selector.node - 1) < textNodes.length) {
-				node = textNodes[queryConfiguration.selector.node - 1].node;
-				nodeNumber = queryConfiguration.selector.node;
+
+			if (queryConfiguration.selector.node === -1 && queryConfiguration.text.match) {
+				// 全てのテキストノードを対象とする(条件設定は必須)
+				for (let i = 0; i < textNodes.length; i++) {
+					nodes.set(i + 1, textNodes[i]);
+				}
+			} else if ((queryConfiguration.selector.node - 1) < textNodes.length) {
+				const node = textNodes[queryConfiguration.selector.node - 1];
+				nodes.set(queryConfiguration.selector.node, node);
 			}
 		}
 
-		if (!node) {
-			node = element;
+		if (!nodes.size) {
+			nodes.set(0, element);
 		}
+		for(const [number, node] of nodes) {
+			const sourceValue = node.textContent || '';
 
-		const sourceValue = node.textContent || '';
-
-		const output = replace(sourceValue, queryConfiguration.text, siteConfiguration);
-		if (output) {
-			if (node instanceof Text) {
-				node.textContent = output;
-			} else {
-				element.textContent = output;
+			const output = replace(sourceValue, queryConfiguration.text, siteConfiguration);
+			if (output) {
+				if (node instanceof Text) {
+					node.textContent = output;
+				} else {
+					element.textContent = output;
+				}
+				element.setAttribute(names.Attributes.textHead + number, sourceValue);
+				translated = true;
 			}
-			element.setAttribute(names.Attributes.textHead + nodeNumber, sourceValue);
-			translated = true;
 		}
 	}
 
@@ -212,25 +217,37 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 }
 
 function translateCore(queryConfiguration: config.IQueryConfiguration, siteConfiguration: config.ISiteConfiguration, translateConfiguration: config.ITranslateConfiguration): void {
-	logger.debug('selector:', queryConfiguration.selector);
+	logger.debug('query:', queryConfiguration);
 
-	const currentQuery = queryConfiguration.selector.mode === config.SelectorMode.Common
+	const currentSelectors = queryConfiguration.selector.mode === config.SelectorMode.Common
 		? siteConfiguration.common.selector[queryConfiguration.selector.value]
 		: queryConfiguration.selector.value
 		;
-	const element = document.querySelector(currentQuery);
-	if (!element) {
-		logger.debug('selector not match:', currentQuery)
+
+	const elements = new Array<Element>();
+
+	if (queryConfiguration.selector.all) {
+		const elementList = document.querySelectorAll(currentSelectors);
+		elements.push(...elementList);
+	} else {
+		const element = document.querySelector(currentSelectors);
+		if (element) {
+			elements.push(element);
+		}
+	}
+	if (!elements.length) {
+		logger.debug('selector not match:', currentSelectors)
 		return;
 	}
 
-	logger.debug(queryConfiguration);
-
-	if (translateElement(element, queryConfiguration, siteConfiguration)) {
-		if (translateConfiguration.markReplacedElement) {
-			element.classList.add(names.ClassNames.mark);
+	for (const element of elements) {
+		if (translateElement(element, queryConfiguration, siteConfiguration)) {
+			if (translateConfiguration.markReplacedElement) {
+				element.classList.add(names.ClassNames.mark);
+			}
 		}
 	}
+
 }
 
 export function translate(pathConfiguration: config.IPathConfiguration, siteConfiguration: config.ISiteConfiguration, translateConfiguration: config.ITranslateConfiguration): void {
