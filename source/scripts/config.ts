@@ -109,6 +109,8 @@ export interface IPathConfiguration {
 
 	query: IQueryConfiguration[];
 
+	import: string[];
+
 	//#endregion
 }
 
@@ -123,6 +125,9 @@ export interface ICommonConfiguration {
 
 	/** 共通テキスト設定 */
 	text: { [key: string]: string }
+
+	/** 共通クエリ設定 */
+	query: { [key: string]: IQueryConfiguration }
 
 	//#endregion
 }
@@ -325,6 +330,45 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return result;
 	}
 
+	private static convertQuery(raw: setting.IQuerySetting | null): IQueryConfiguration | null {
+		if (!raw) {
+			return null;
+		}
+
+		if (!raw.selector || common.isNullOrWhiteSpace(raw.selector.value)) {
+			return null;
+		}
+
+		const query: IQueryConfiguration = {
+			selector: SiteConfiguration.convertSelector(raw.selector),
+			attributes: {},
+		};
+
+		const text = SiteConfiguration.convertTarget(raw.text);
+		if (text) {
+			query.text = text;
+		}
+
+		const value = SiteConfiguration.convertTarget(raw.value);
+		if (value) {
+			query.value = value;
+		}
+
+		if (raw.attributes && typeof raw.attributes === 'object') {
+			for (const [name, target] of Object.entries(raw.attributes)) {
+				if (common.isNullOrWhiteSpace(name)) {
+					continue;
+				}
+				const attr = SiteConfiguration.convertTarget(target);
+				if (attr) {
+					query.attributes[name] = attr;
+				}
+			}
+		}
+
+		return query;
+	}
+
 	public static convertPath(raw: setting.PathMap | null): PathMap {
 		if (!raw) {
 			return {};
@@ -357,44 +401,26 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 			const pathConfiguration: IPathConfiguration = {
 				query: [],
+				import: [],
 			};
 
 			for (const querySetting of pathSetting.query) {
-				if (!querySetting) {
+				const query = SiteConfiguration.convertQuery(querySetting);
+				if (!query) {
 					continue;
-				}
-				if (!querySetting.selector || common.isNullOrWhiteSpace(querySetting.selector.value)) {
-					continue;
-				}
-
-				const query: IQueryConfiguration = {
-					selector: SiteConfiguration.convertSelector(querySetting.selector),
-					attributes: {},
-				};
-
-				const text = SiteConfiguration.convertTarget(querySetting.text);
-				if (text) {
-					query.text = text;
-				}
-
-				const value = SiteConfiguration.convertTarget(querySetting.value);
-				if (value) {
-					query.value = value;
-				}
-
-				if (querySetting.attributes && typeof querySetting.attributes === 'object') {
-					for (const [name, target] of Object.entries(querySetting.attributes)) {
-						if (common.isNullOrWhiteSpace(name)) {
-							continue;
-						}
-						const attr = SiteConfiguration.convertTarget(target);
-						if (attr) {
-							query.attributes[name] = attr;
-						}
-					}
 				}
 
 				pathConfiguration.query.push(query);
+			}
+
+			if (type.hasArrayProperty(pathSetting, 'import')) {
+				for (const name of pathSetting.import!) { //TODO: !
+					if (typeof name !== 'string') {
+						continue;
+					}
+
+					pathConfiguration.import.push(name);
+				}
 			}
 
 			result[key] = pathConfiguration;
@@ -410,12 +436,14 @@ export class SiteConfiguration implements ISiteConfiguration {
 			return {
 				selector: {},
 				text: {},
+				query: {},
 			};
 		}
 
 		const result: ICommonConfiguration = {
 			selector: {},
 			text: {},
+			query: {},
 		};
 
 		if ('selector' in raw && raw.selector && typeof raw.selector === 'object') {
@@ -430,6 +458,17 @@ export class SiteConfiguration implements ISiteConfiguration {
 			for (const [key, text] of Object.entries(raw.text)) {
 				if (!common.isNullOrWhiteSpace(text)) {
 					result.text[key] = text!;
+				}
+			}
+		}
+
+		if ('query' in raw && raw.query && typeof raw.query === 'object') {
+			for (const [key, querySetting] of Object.entries(raw.query)) {
+				if (!common.isNullOrWhiteSpace(key)) {
+					const query = SiteConfiguration.convertQuery(querySetting);
+					if (query) {
+						result.query[key] = query!;
+					}
 				}
 			}
 		}

@@ -75,6 +75,8 @@ export interface IPathSetting {
 
 	query: IQuerySetting[] | null;
 
+	import?: string[] | null;
+
 	//#endregion
 }
 
@@ -85,10 +87,13 @@ export interface ICommonSetting {
 	//#region property
 
 	/** 共通セレクタ設定 */
-	selector?: { [key: string]: string | null } | null
+	selector?: { [key: string]: string | null } | null;
 
 	/** 共通テキスト設定 */
-	text?: { [key: string]: string | null } | null
+	text?: { [key: string]: string | null } | null;
+
+	/** 共通クエリ設定 */
+	query?: { [key: string]: IQuerySetting | null } | null;
 
 	//#endregion
 }

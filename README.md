@@ -126,6 +126,10 @@
             }
           }
         }
+      ],
+      // 共通クエリの使用
+      "import": [
+        "common-query"
       ]
     }
   },
@@ -138,6 +142,15 @@
     // 共通テキスト設定
     "text": {
       "common-nav-logout": "ログアウト",
+    },
+    // 共通クエリ設定
+    "query": {
+      "common-query": {
+        "selector": {
+        },
+        "text": {
+        }
+      }
     }
   }
 }

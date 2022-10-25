@@ -180,13 +180,13 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 					textNodes.push({ number: number, node: node });
 				}
 			}
-			if((queryConfiguration.selector.node - 1) < textNodes.length) {
+			if ((queryConfiguration.selector.node - 1) < textNodes.length) {
 				node = textNodes[queryConfiguration.selector.node - 1].node;
 				nodeNumber = queryConfiguration.selector.node;
 			}
 		}
 
-		if(!node) {
+		if (!node) {
 			node = element;
 		}
 
@@ -194,7 +194,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 
 		const output = replace(sourceValue, queryConfiguration.text, siteConfiguration);
 		if (output) {
-			if(node instanceof Text) {
+			if (node instanceof Text) {
 				node.textContent = output;
 			} else {
 				element.textContent = output;
@@ -211,25 +211,38 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 	return translated;
 }
 
-export function translate(pathConfiguration: config.IPathConfiguration, siteConfiguration: config.ISiteConfiguration, translateConfiguration: config.ITranslateConfiguration): void {
-	for (const queryConfiguration of pathConfiguration.query) {
-		logger.debug('selector:', queryConfiguration.selector);
-		const currentQuery = queryConfiguration.selector.mode === config.SelectorMode.Common
-			? siteConfiguration.common.selector[queryConfiguration.selector.value]
-			: queryConfiguration.selector.value
-			;
-		const element = document.querySelector(currentQuery);
-		if (!element) {
-			logger.debug('selector not match:', currentQuery)
-			continue;
+function translateCore(queryConfiguration: config.IQueryConfiguration, siteConfiguration: config.ISiteConfiguration, translateConfiguration: config.ITranslateConfiguration): void {
+	logger.debug('selector:', queryConfiguration.selector);
+
+	const currentQuery = queryConfiguration.selector.mode === config.SelectorMode.Common
+		? siteConfiguration.common.selector[queryConfiguration.selector.value]
+		: queryConfiguration.selector.value
+		;
+	const element = document.querySelector(currentQuery);
+	if (!element) {
+		logger.debug('selector not match:', currentQuery)
+		return;
+	}
+
+	logger.debug(queryConfiguration);
+
+	if (translateElement(element, queryConfiguration, siteConfiguration)) {
+		if (translateConfiguration.markReplacedElement) {
+			element.classList.add(names.ClassNames.mark);
 		}
+	}
+}
 
-		logger.debug(queryConfiguration);
+export function translate(pathConfiguration: config.IPathConfiguration, siteConfiguration: config.ISiteConfiguration, translateConfiguration: config.ITranslateConfiguration): void {
 
-		if (translateElement(element, queryConfiguration, siteConfiguration)) {
-			if (translateConfiguration.markReplacedElement) {
-				element.classList.add(names.ClassNames.mark);
-			}
+	for (const queryConfiguration of pathConfiguration.query) {
+		translateCore(queryConfiguration, siteConfiguration, translateConfiguration);
+	}
+
+	for (const name of pathConfiguration.import) {
+		if (name in siteConfiguration.common.query) {
+			const queryConfiguration = siteConfiguration.common.query[name];
+			translateCore(queryConfiguration, siteConfiguration, translateConfiguration);
 		}
 	}
 }
