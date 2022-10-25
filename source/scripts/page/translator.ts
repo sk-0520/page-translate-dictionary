@@ -132,7 +132,7 @@ function matchText(input: string, matchConfiguration: config.IMatchConfiguration
 function replace(source: string, targetConfiguration: config.ITargetConfiguration, siteConfiguration: config.ISiteConfiguration): string | null {
 	const inputText = filterText(source, targetConfiguration.filter);
 
-	const replaceMode = targetConfiguration.replace.mode ?? config.ReplaceMode.Normal;
+	const replaceMode = targetConfiguration.replace.mode;
 
 	if (targetConfiguration.match) {
 		const matchResult = matchText(inputText, targetConfiguration.match);
@@ -214,7 +214,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 				}
 			}
 
-			if (queryConfiguration.selector.node === -1 && queryConfiguration.text.match) {
+			if (queryConfiguration.selector.node < 0 && queryConfiguration.text.match) {
 				// 全てのテキストノードを対象とする(条件設定は必須)
 				for (let i = 0; i < textNodes.length; i++) {
 					nodes.set(i + 1, textNodes[i]);
@@ -240,6 +240,10 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 				}
 				element.setAttribute(names.Attributes.textHead + number, sourceValue);
 				translated = true;
+
+				if (queryConfiguration.selector.node === -1) {
+					break;
+				}
 			}
 		}
 	}
@@ -249,6 +253,20 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 	}
 
 	return translated;
+}
+
+function translatedOver(ev: Event): void {
+	let target = ev.currentTarget as HTMLElement | null;
+	if (target) {
+		target.style.cssText = 'background-color: red !important;'
+	}
+}
+
+function translatedLeave(ev:Event): void{
+	let target = ev.currentTarget as HTMLElement | null;
+	if (target) {
+		target.style.background = 'none';
+	}
 }
 
 function translateCore(queryConfiguration: config.IQueryConfiguration, siteConfiguration: config.ISiteConfiguration, translateConfiguration: config.ITranslateConfiguration): void {
@@ -279,6 +297,14 @@ function translateCore(queryConfiguration: config.IQueryConfiguration, siteConfi
 		if (translateElement(element, queryConfiguration, siteConfiguration)) {
 			if (translateConfiguration.markReplacedElement) {
 				element.classList.add(names.ClassNames.mark);
+
+				element.removeEventListener('mouseover', translatedOver);
+				element.removeEventListener('mouseleave', translatedLeave);
+
+				element.addEventListener('mouseover', translatedOver);
+				element.addEventListener('mouseleave', translatedLeave);
+
+				element.innerHTML += "<strong>#</strong>"
 			}
 		}
 	}
