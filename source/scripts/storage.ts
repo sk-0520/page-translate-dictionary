@@ -17,17 +17,7 @@ const Keys = {
  * @returns 読み込み失敗時はデフォルトデータとしてのアプリケーション設定を返す。
  */
 export async function loadApplicationAsync(): Promise<config.IApplicationConfiguration> {
-	const record = await webextension.storage.local.get(Keys.application);
-	if (record && Keys.application in record) {
-		const obj = record[Keys.application];
-		if (type.isApplicationConfiguration(obj)) {
-			return obj;
-		}
-	}
-
-	logger.info('アプリ設定初期データ返却');
-
-	return {
+	const defaultConfiguration: config.IApplicationConfiguration = {
 		translate: {
 			markReplacedElement: true,
 		},
@@ -37,6 +27,18 @@ export async function loadApplicationAsync(): Promise<config.IApplicationConfigu
 			periodDays: 5,
 		},
 	};
+
+	const record = await webextension.storage.local.get(Keys.application);
+	if (record && Keys.application in record) {
+		const obj = { ...defaultConfiguration, ...record[Keys.application] };
+		if (type.isApplicationConfiguration(obj)) {
+			return obj;
+		}
+	}
+
+	logger.info('アプリ設定初期データ返却');
+
+	return defaultConfiguration;
 }
 
 /**

@@ -58,6 +58,7 @@ class MatchResult {
 
 //ITargetConfiguration
 function filterText(input: string, filterConfiguration: config.IFilterConfiguration): string {
+	//TODO: フィルタ処理
 	return input;
 }
 
