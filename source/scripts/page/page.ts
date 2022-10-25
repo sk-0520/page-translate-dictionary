@@ -61,9 +61,11 @@ function executeAsync(pageConfiguration: PageConfiguration): Promise<void> {
 	// const progressElement = createProgressElement();
 	// document.body.appendChild(progressElement);
 	try {
+		console.time('PAGE');
 		return executeCoreAsync(pageConfiguration);
 	} finally {
 		// document.body.removeChild(progressElement);
+		console.timeEnd('PAGE');
 	}
 
 	return Promise.resolve();

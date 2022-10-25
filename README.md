@@ -87,6 +87,7 @@
               //  partial: 部分一致
               //  forward: 前方一致
               //  backward: 後方一致
+              //  perfect: 完全一致
               //  regex: 正規表現 ?<NAME> 使用可能
               "mode": "partial",
               // 大文字小文字を区別するか

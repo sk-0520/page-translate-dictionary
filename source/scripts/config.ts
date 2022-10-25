@@ -36,6 +36,7 @@ export const enum MatchMode {
 	Partial = 'partial',
 	Forward = 'forward',
 	Backward = 'backward',
+	Perfect = 'perfect',
 	Regex = 'regex',
 }
 

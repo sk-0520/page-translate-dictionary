@@ -89,7 +89,41 @@ function matchText(input: string, matchConfiguration: config.IMatchConfiguration
 			return MatchResult.none();
 
 		case config.MatchMode.Forward:
+			if (matchConfiguration.ignoreCase) {
+				if (input.toLowerCase().startsWith(matchConfiguration.pattern.toLowerCase())) {
+					return MatchResult.matchedPlain();
+				}
+			} else {
+				if (input.startsWith(matchConfiguration.pattern)) {
+					return MatchResult.matchedPlain();
+				}
+			}
+			return MatchResult.none();
+
 		case config.MatchMode.Backward:
+			if (matchConfiguration.ignoreCase) {
+				if (input.toLowerCase().endsWith(matchConfiguration.pattern.toLowerCase())) {
+					return MatchResult.matchedPlain();
+				}
+			} else {
+				if (input.endsWith(matchConfiguration.pattern)) {
+					return MatchResult.matchedPlain();
+				}
+			}
+			return MatchResult.none();
+
+		case config.MatchMode.Perfect:
+			if (matchConfiguration.ignoreCase) {
+				if (input.toLowerCase() === matchConfiguration.pattern.toLowerCase()) {
+					return MatchResult.matchedPlain();
+				}
+			} else {
+				if (input === matchConfiguration.pattern) {
+					return MatchResult.matchedPlain();
+				}
+			}
+			return MatchResult.none();
+
 		default:
 			return MatchResult.none();
 	}
@@ -170,7 +204,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 		}
 	} else if (element.textContent && queryConfiguration.text) {
 
-		const nodes = new Map<number, Text|Element>();
+		const nodes = new Map<number, Text | Element>();
 
 		if (queryConfiguration.selector.node) {
 			const textNodes = new Array<Text>();
@@ -194,7 +228,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 		if (!nodes.size) {
 			nodes.set(0, element);
 		}
-		for(const [number, node] of nodes) {
+		for (const [number, node] of nodes) {
 			const sourceValue = node.textContent || '';
 
 			const output = replace(sourceValue, queryConfiguration.text, siteConfiguration);
