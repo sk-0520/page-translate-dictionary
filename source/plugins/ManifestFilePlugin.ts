@@ -12,7 +12,7 @@ export interface ManifestFileOptions {
 export default class ManifestFilePlugin {
 	public static readonly pluginName = 'ManifestFilePlugin';
 
-	private _canCreate = true;
+	private _canGenerate = true;
 
 	constructor(private _options: ManifestFileOptions) {
 	}
@@ -53,7 +53,7 @@ export default class ManifestFilePlugin {
 			if(compilation.modifiedFiles) {
 				if (this.getWatchFilePaths().filter(i => compilation.modifiedFiles.has(i)).length) {
 					console.debug(ManifestFilePlugin.pluginName, 'UPDATE');
-					this._canCreate = true;
+					this._canGenerate = true;
 				}
 			}
 		});
@@ -65,11 +65,11 @@ export default class ManifestFilePlugin {
 				}
 			}
 
-			if (this._canCreate) {
+			if (this._canGenerate) {
 				this.createManifestFile();
 			}
 
-			this._canCreate = false;
+			this._canGenerate = false;
 		});
 	}
 

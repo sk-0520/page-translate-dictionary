@@ -10,6 +10,9 @@ export interface LocaleFilesOptions {
 
 export default class LocaleFilesPlugin {
 	public static readonly pluginName = 'LocaleFilesPlugin';
+	private static readonly baseDir = path.join(__dirname, '../locales');
+
+	private _canGenerate = true;
 
 	constructor(private _options: LocaleFilesOptions) {
 	}
@@ -29,17 +32,39 @@ export default class LocaleFilesPlugin {
 			const outputPath = path.join(outputDirectory, 'messages.json');
 			const outputContent = JSON.stringify(localeItem);
 			fs.writeFileSync(outputPath, outputContent);
+			console.log(LocaleFilesPlugin.pluginName, '[create]', outputPath);
 		}
 	}
 
-	apply(compiler: webpack.Compiler) {
-		if (compiler.watchMode) {
-			compiler.hooks.watchRun.tapPromise(LocaleFilesPlugin.pluginName, async (compilation) => {
-			});
-		}
 
-		compiler.hooks.beforeCompile.tapPromise(LocaleFilesPlugin.pluginName, async (compilation) => {
-			this.exportLocales();
+	apply(compiler: webpack.Compiler) {
+		compiler.hooks.watchRun.tapPromise(LocaleFilesPlugin.pluginName, async (compilation) => {
+			if (compilation.modifiedFiles) {
+				for (const path of compilation.modifiedFiles) {
+					if (path.startsWith(LocaleFilesPlugin.baseDir)) {
+						console.debug(LocaleFilesPlugin.pluginName, 'UPDATE');
+						this._canGenerate = true;
+					}
+				}
+			}
+		});
+
+		compiler.hooks.afterCompile.tapPromise(LocaleFilesPlugin.pluginName, async (compilation) => {
+			if (compiler.watchMode) {
+				const files = fs.readdirSync(LocaleFilesPlugin.baseDir)
+					.filter(i => i.endsWith('.ts'))
+					.map(i => path.join(LocaleFilesPlugin.baseDir, i))
+					;
+				for (const file of files) {
+					compilation.fileDependencies.add(file);
+				}
+			}
+
+			if (this._canGenerate) {
+				this.exportLocales();
+			}
+
+			this._canGenerate = false;
 		});
 	}
 
