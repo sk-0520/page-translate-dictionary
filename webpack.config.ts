@@ -10,41 +10,6 @@ const inputRootDirectory = path.resolve(__dirname, 'source');
 const inputEntryDirectory = path.resolve(inputRootDirectory, 'entry');
 const outputDirectory = path.resolve(__dirname, 'dist');
 
-// function replaceManifestFile(browser: string): void {
-// 	const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-
-// 	const inputManifestPath = path.join(inputRootDirectory, 'manifest', `${browser}.json`);
-
-// 	const packageVersion = packageJson['version'];
-
-// 	const targetJson = JSON.parse(fs.readFileSync(inputManifestPath, 'utf8'));
-// 	targetJson['version'] = packageVersion;
-
-// 	const outputPath = path.join(outputDirectory, 'manifest.json');
-// 	if (!fs.existsSync(outputDirectory)) {
-// 		fs.mkdirSync(outputDirectory);
-// 	}
-// 	fs.writeFileSync(outputPath, JSON.stringify(targetJson, undefined, 2), { flag: 'w' });
-// }
-
-// function exportLocales(browser: string): void {
-// 	const outputLocalesDirectory = path.join(outputDirectory, '_locales');
-// 	if (fs.existsSync(outputLocalesDirectory)) {
-// 		fs.rmSync(outputLocalesDirectory, { recursive: true });
-// 	}
-// 	fs.mkdirSync(outputLocalesDirectory);
-
-// 	const localeItems = locales.gets();
-// 	for (const [key, localeItem] of Object.entries(localeItems)) {
-// 		const outputDirectory = path.join(outputLocalesDirectory, key);
-// 		fs.mkdirSync(outputDirectory);
-
-// 		const outputPath = path.join(outputDirectory, 'messages.json');
-// 		const outputContent = JSON.stringify(localeItem);
-// 		fs.writeFileSync(outputPath, outputContent);
-// 	}
-// }
-
 const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Configuration => {
 	/** 本番用か */
 	const isProduction = args.mode === 'production';
@@ -52,9 +17,6 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 	if (!env['browser'].length) {
 		throw Error(env['browser']);
 	}
-
-	//replaceManifestFile(env['browser']);
-	//exportLocales(env['browser']);
 
 	const conf: webpack.Configuration = {
 		mode: args.mode,
