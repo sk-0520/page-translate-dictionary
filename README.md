@@ -55,7 +55,8 @@
         {
           "selector": {
             "value": "#id",
-            "node": 1,
+            // テキストノードの指定。 childNodes の #text だけを集計した 1 基底の番号: <span>[1]<br />[2]<br />[3]</span>
+            "node": 3, 
           },
           // 対象要素の textContent
           "text": {

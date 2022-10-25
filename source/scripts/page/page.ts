@@ -64,8 +64,8 @@ function executeAsync(pageConfiguration: PageConfiguration): Promise<void> {
 	return Promise.resolve();
 }
 
-function update(event: Event) {
-	logger.info('update');
+function updatedPage(event: Event) {
+	logger.info('updatedPage');
 	if (pageConfiguration) {
 		executeAsync(pageConfiguration);
 	}
@@ -193,8 +193,8 @@ async function bootAsync(): Promise<void> {
 }
 
 export function boot() {
-	document.addEventListener('pjax:end', ev => update(ev));
-	document.addEventListener('turbo:render', ev => update(ev));
+	document.addEventListener('pjax:end', ev => updatedPage(ev));
+	document.addEventListener('turbo:render', ev => updatedPage(ev));
 
 	bootAsync();
 }

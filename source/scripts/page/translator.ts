@@ -168,10 +168,34 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 			translated = true;
 		}
 	} else if (element.textContent && queryConfiguration.text) {
-		const sourceValue = element.textContent;
+
+		let node: Text | Element | null = null;
+
+		if (queryConfiguration.selector.node) {
+			const textNodes = new Array<{ number: number, node: Text }>();
+			for (const [number, node] of element.childNodes.entries()) {
+				if (node instanceof Text) {
+					textNodes.push({ number: number, node: node });
+				}
+			}
+			if((queryConfiguration.selector.node - 1) < textNodes.length) {
+				node = textNodes[queryConfiguration.selector.node - 1].node;
+			}
+		}
+
+		if(!node) {
+			node = element;
+		}
+
+		const sourceValue = node.textContent || '';
+
 		const output = replace(sourceValue, queryConfiguration.text, siteConfiguration);
 		if (output) {
-			element.textContent = output;
+			if(node instanceof Text) {
+				node.textContent = output;
+			} else {
+				element.textContent = output;
+			}
 			element.setAttribute(names.Attributes.text, sourceValue);
 			translated = true;
 		}

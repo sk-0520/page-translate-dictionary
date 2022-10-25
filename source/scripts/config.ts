@@ -88,6 +88,7 @@ export interface ISelectorConfiguration {
 
 	mode: SelectorMode;
 	value: string;
+	node: number;
 
 	//#endregion
 }
@@ -263,6 +264,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return {
 			mode: SiteConfiguration.convertEnum(raw, 'mode', SelectorMode.Normal),
 			value: raw.value!,
+			node: type.getPrimaryPropertyOr(raw, 'node', 'number', 0),
 		};
 	}
 	private static convertFilter(raw?: setting.IFilterSetting | null): IFilterConfiguration {
