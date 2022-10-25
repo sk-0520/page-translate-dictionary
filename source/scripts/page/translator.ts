@@ -255,20 +255,6 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 	return translated;
 }
 
-function translatedOver(ev: Event): void {
-	let target = ev.currentTarget as HTMLElement | null;
-	if (target) {
-		target.style.cssText = 'background-color: red !important;'
-	}
-}
-
-function translatedLeave(ev:Event): void{
-	let target = ev.currentTarget as HTMLElement | null;
-	if (target) {
-		target.style.background = 'none';
-	}
-}
-
 function translateCore(queryConfiguration: config.IQueryConfiguration, siteConfiguration: config.ISiteConfiguration, translateConfiguration: config.ITranslateConfiguration): void {
 	logger.debug('query:', queryConfiguration);
 
@@ -297,14 +283,6 @@ function translateCore(queryConfiguration: config.IQueryConfiguration, siteConfi
 		if (translateElement(element, queryConfiguration, siteConfiguration)) {
 			if (translateConfiguration.markReplacedElement) {
 				element.classList.add(names.ClassNames.mark);
-
-				element.removeEventListener('mouseover', translatedOver);
-				element.removeEventListener('mouseleave', translatedLeave);
-
-				element.addEventListener('mouseover', translatedOver);
-				element.addEventListener('mouseleave', translatedLeave);
-
-				element.innerHTML += "<strong>#</strong>"
 			}
 		}
 	}
@@ -322,5 +300,10 @@ export function translate(pathConfiguration: config.IPathConfiguration, siteConf
 			const queryConfiguration = siteConfiguration.common.query[name];
 			translateCore(queryConfiguration, siteConfiguration, translateConfiguration);
 		}
+	}
+
+	const makClassNames = document.getElementsByClassName(names.ClassNames.mark);
+	if(makClassNames.length) {
+		// ここでロケーションバーとサイドバーの合わせ技したい
 	}
 }
