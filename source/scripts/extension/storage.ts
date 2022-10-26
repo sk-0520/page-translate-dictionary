@@ -1,10 +1,6 @@
 import webextension from "webextension-polyfill";
 import * as type from "./type-guard";
 import * as config from "./config";
-import * as logging from "../core/logging";
-
-const logger = logging.create('storage');
-
 
 const Keys = {
 	application: 'application',
@@ -36,7 +32,7 @@ export async function loadApplicationAsync(): Promise<config.IApplicationConfigu
 		}
 	}
 
-	logger.info('アプリ設定初期データ返却');
+	console.info('アプリ設定初期データ返却');
 
 	return defaultConfiguration;
 }
@@ -55,7 +51,7 @@ export async function loadSiteHeadsAsync(): Promise<Array<config.ISiteHeadConfig
 			if (type.isSiteHeadConfiguration(item)) {
 				result.push(item);
 			} else {
-				logger.warn('type error', item);
+				console.warn('type error', item);
 			}
 		}
 
@@ -79,7 +75,7 @@ export async function loadSiteBodyAsync(id: config.SiteConfigurationId): Promise
 		return obj as config.ISiteBodyConfiguration;
 	}
 
-	logger.warn('null', id);
+	console.warn('null', id);
 	return null;
 }
 

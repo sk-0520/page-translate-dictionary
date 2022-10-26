@@ -1,10 +1,7 @@
 import * as config from '../config';
-import * as logging from '../../core/logging';
 import * as names from '../names';
 import * as type from '../type-guard';
 import * as replacer from './replacer';
-
-const logger = logging.create('translator');
 
 function translateElement(element: Element, queryConfiguration: config.IQueryConfiguration, siteConfiguration: config.ISiteConfiguration): boolean {
 	let translated = false;
@@ -85,7 +82,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 }
 
 function translateCore(queryConfiguration: config.IQueryConfiguration, siteConfiguration: config.ISiteConfiguration, translateConfiguration: config.ITranslateConfiguration): void {
-	logger.debug('query:', queryConfiguration);
+	console.debug('query:', queryConfiguration);
 
 	const currentSelectors = queryConfiguration.selector.mode === config.SelectorMode.Common
 		? siteConfiguration.common.selector[queryConfiguration.selector.value]
@@ -104,7 +101,7 @@ function translateCore(queryConfiguration: config.IQueryConfiguration, siteConfi
 		}
 	}
 	if (!elements.length) {
-		logger.debug('selector not match:', currentSelectors)
+		console.debug('selector not match:', currentSelectors)
 		return;
 	}
 

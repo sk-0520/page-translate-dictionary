@@ -1,7 +1,4 @@
 import * as config from '../config';
-import * as logging from '../../core/logging';
-
-const logger = logging.create('matching');
 
 export class MatchResult {
 	//#region variable
@@ -76,7 +73,7 @@ export function matchText(input: string, matchConfiguration: config.IMatchConfig
 					return MatchResult.matchedRegex(regex);
 				}
 			} catch (ex) {
-				logger.warn(ex);
+				console.warn(ex);
 			}
 			return MatchResult.none();
 
