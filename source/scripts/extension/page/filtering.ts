@@ -1,5 +1,5 @@
 import * as config from '../config';
-import * as logging from '../logging';
+import * as logging from '../../core/logging';
 
 const logger = logging.create('filtering');
 

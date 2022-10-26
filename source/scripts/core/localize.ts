@@ -1,5 +1,5 @@
 import webextension from "webextension-polyfill";
-import * as common from "./common";
+import * as string from "./string";
 
 /**
  * 拡張機能の要素に対してローカライズを実施。
@@ -17,13 +17,13 @@ export function applyElement(element: HTMLElement): void {
 
 		if (attribute.name === 'data-we-text') {
 			const message = webextension.i18n.getMessage(attribute.value);
-			if (!common.isNullOrWhiteSpace(message)) {
+			if (!string.isNullOrWhiteSpace(message)) {
 				element.textContent = message;
 			}
 		} else {
 			const attrName = attribute.name.substring('data-we-'.length);
 			const message = webextension.i18n.getMessage(attribute.value);
-			if (!common.isNullOrWhiteSpace(message)) {
+			if (!string.isNullOrWhiteSpace(message)) {
 				element.setAttribute(attrName, message);
 			}
 		}

@@ -1,4 +1,4 @@
-import Wildcard from '../scripts/wildcard';
+import Wildcard from '../../scripts/core/wildcard';
 
 describe('Wildcard', () => {
 	test('test', () =>{

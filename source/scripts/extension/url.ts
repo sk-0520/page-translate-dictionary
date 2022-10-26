@@ -1,4 +1,4 @@
-import Wildcard from "./wildcard";
+import Wildcard from "../core/wildcard";
 
 export function isEnabledHosts(hostName: string, hostPatterns: string[]): boolean {
 	for (const hostPattern of hostPatterns) {

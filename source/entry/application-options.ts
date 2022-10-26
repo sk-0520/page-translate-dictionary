@@ -1,3 +1,3 @@
-import * as options from '../scripts/options/options';
+import * as options from '../scripts/extension/options/options';
 
 options.boot();

@@ -1,4 +1,4 @@
-import * as common from '../scripts/common'
+import * as common from '../../scripts/core/common'
 
 describe('common', () => {
 	test('toBoolean', () => {
@@ -20,26 +20,6 @@ describe('common', () => {
 		expect(common.toString(true)).toBe('true');
 	});
 
-	test('isNullOrEmpty', () => {
-		expect(common.isNullOrEmpty(undefined)).toBe(true);
-		expect(common.isNullOrEmpty(null)).toBe(true);
-		expect(common.isNullOrEmpty('')).toBe(true);
-		expect(common.isNullOrEmpty(' ')).toBe(false);
-		expect(common.isNullOrEmpty('a')).toBe(false);
-	});
-
-	test('isNullOrWhiteSpace', () => {
-		expect(common.isNullOrWhiteSpace(undefined)).toBe(true);
-		expect(common.isNullOrWhiteSpace(null)).toBe(true);
-		expect(common.isNullOrWhiteSpace('')).toBe(true);
-		expect(common.isNullOrWhiteSpace(' ')).toBe(true);
-		expect(common.isNullOrWhiteSpace('a')).toBe(false);
-		expect(common.isNullOrWhiteSpace("\r")).toBe(true);
-		expect(common.isNullOrWhiteSpace("\n")).toBe(true);
-		expect(common.isNullOrWhiteSpace("\r\n")).toBe(true);
-		expect(common.isNullOrWhiteSpace(" \r\n \r\n ")).toBe(true);
-	});
-
 	test('padding', () => {
 		expect(common.padding(0, 2, ' ')).toBe(' 0');
 		expect(common.padding(1, 2, ' ')).toBe(' 1');
@@ -52,5 +32,4 @@ describe('common', () => {
 		expect(() => common.padding(-1, 10, '0')).toThrow();
 		expect(() => common.padding(1, 10, '00')).toThrow();
 	});
-
 });

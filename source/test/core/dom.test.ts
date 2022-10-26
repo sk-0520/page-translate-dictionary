@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import * as dom from '../scripts/dom';
+import * as dom from '../../scripts/core/dom';
 
 describe('dom', () => {
 	test('requireElementById', () => {

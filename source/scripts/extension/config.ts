@@ -2,8 +2,8 @@
  * 内部使用する(ある程度データが確定している)設定
  */
 import * as setting from './setting';
-import * as type from './type';
-import * as common from './common';
+import * as type from '../core/type';
+import * as string from '../core/string';
 
 export type SiteConfigurationId = string;
 
@@ -296,7 +296,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		if (!type.hasPrimaryProperty(raw, 'pattern', 'string')) {
 			return null;
 		}
-		if (common.isNullOrEmpty(raw.pattern)) {
+		if (string.isNullOrEmpty(raw.pattern)) {
 			return null;
 		}
 
@@ -343,7 +343,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 			return null;
 		}
 
-		if (!raw.selector || common.isNullOrWhiteSpace(raw.selector.value)) {
+		if (!raw.selector || string.isNullOrWhiteSpace(raw.selector.value)) {
 			return null;
 		}
 
@@ -364,7 +364,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 		if (raw.attributes && typeof raw.attributes === 'object') {
 			for (const [name, target] of Object.entries(raw.attributes)) {
-				if (common.isNullOrWhiteSpace(name)) {
+				if (string.isNullOrWhiteSpace(name)) {
 					continue;
 				}
 				const attr = SiteConfiguration.convertTarget(target);
@@ -393,7 +393,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		for (const key in raw) {
 			const pathSetting = raw[key];
 
-			if (common.isNullOrWhiteSpace(key)) {
+			if (string.isNullOrWhiteSpace(key)) {
 				// alert('0:::::' + key)
 				continue;
 			}
@@ -457,7 +457,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 		if ('selector' in raw && raw.selector && typeof raw.selector === 'object') {
 			for (const [key, selector] of Object.entries(raw.selector)) {
-				if (!common.isNullOrWhiteSpace(selector)) {
+				if (!string.isNullOrWhiteSpace(selector)) {
 					result.selector[key] = selector!;
 				}
 			}
@@ -465,7 +465,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 		if ('text' in raw && raw.text && typeof raw.text === 'object') {
 			for (const [key, text] of Object.entries(raw.text)) {
-				if (!common.isNullOrWhiteSpace(text)) {
+				if (!string.isNullOrWhiteSpace(text)) {
 					result.text[key] = text!;
 				}
 			}
@@ -473,7 +473,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 		if ('query' in raw && raw.query && typeof raw.query === 'object') {
 			for (const [key, querySetting] of Object.entries(raw.query)) {
-				if (!common.isNullOrWhiteSpace(key)) {
+				if (!string.isNullOrWhiteSpace(key)) {
 					const query = SiteConfiguration.convertQuery(querySetting);
 					if (query) {
 						result.query[key] = query!;
