@@ -4,24 +4,8 @@ import * as localize from '../localize';
 import * as storage from '../storage';
 import * as config from '../config';
 import * as loader from '../loader';
+import ImportLogger from './import-logger';
 import '../../styles/application-options.scss';
-
-class ImportLog {
-	private _logElement: HTMLOListElement;
-	constructor() {
-		this._logElement = dom.requireElementById<HTMLOListElement>('import-log');
-	}
-
-	public clear() {
-		this._logElement.innerHTML = '';
-	}
-
-	public add(message: string) {
-		const li = document.createElement('li');
-		li.textContent = message;
-		this._logElement.appendChild(li);
-	}
-}
 
 function setApplication(applicationConfiguration: config.IApplicationConfiguration) {
 	dom.requireElementById<HTMLInputElement>('translate_markReplacedElement').checked = applicationConfiguration.translate.markReplacedElement;
@@ -120,7 +104,7 @@ function addSetting(siteHeadConfiguration: config.ISiteHeadConfiguration) {
 }
 
 async function importSettingAsync(url: string): Promise<void> {
-	const log = new ImportLog();
+	const log = new ImportLogger();
 	log.clear();
 
 	try {
