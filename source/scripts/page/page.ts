@@ -2,7 +2,7 @@ import * as config from '../config';
 import * as url from '../url';
 import * as logging from '../logging';
 import * as translator from './translator';
-import * as common from '../common';
+import * as string from '../core/string';
 import * as loader from '../loader';
 import * as storage from '../storage';
 import '../../styles/page.scss';
@@ -35,7 +35,7 @@ function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
 			// alert('key:: ' + key)
 			const pathConfiguration = siteConfiguration.path[key];
 			let urlPath = location.pathname;
-			if (pathConfiguration.withSearch && !common.isNullOrEmpty(location.search)) {
+			if (pathConfiguration.withSearch && !string.isNullOrEmpty(location.search)) {
 				urlPath += '?' + location.search;
 			}
 

@@ -2,9 +2,9 @@ import webextension from "webextension-polyfill";
 import * as JSONC from 'jsonc-parser';
 import * as setting from './setting';
 import * as config from './config';
-import * as common from './common';
 import * as type from './type';
 import * as storage from './storage';
+import * as string from "./core/string";
 
 export function checkUrl(s: string): boolean {
 	const starts = [
@@ -24,7 +24,7 @@ export function throwIfInvalidString(obj: any, property: string) {
 	if (!type.hasPrimaryProperty(obj, property, 'string')) {
 		throw new Error(property);
 	}
-	if (common.isNullOrWhiteSpace(obj[property])) {
+	if (string.isNullOrWhiteSpace(obj[property])) {
 		throw new Error(property);
 	}
 }
@@ -110,7 +110,7 @@ export async function hasSiteSettingAsync(url: string): Promise<config.SiteConfi
 
 export async function saveAsync(updateUrl: string, setting: setting.ISiteSetting, siteId: config.SiteConfigurationId | null): Promise<config.Site> {
 	const timestamp = (new Date()).toISOString();
-	const isCreateMode = common.isNullOrWhiteSpace(siteId);
+	const isCreateMode = string.isNullOrWhiteSpace(siteId);
 
 	const head: config.ISiteHeadConfiguration = {
 		id: isCreateMode ? createSiteConfigurationId() : siteId!,
