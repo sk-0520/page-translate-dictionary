@@ -1,4 +1,4 @@
-import * as common from './common';
+import * as string from './string';
 
 export default class Wildcard {
 	//#region variable
@@ -8,7 +8,7 @@ export default class Wildcard {
 	//#endregion
 
 	public constructor(pattern: string) {
-		const regexPattern = common.escapeRegex(pattern)
+		const regexPattern = string.escapeRegex(pattern)
 			.replaceAll("\\?", '.')
 			.replaceAll("\\*", '.*')
 		;
