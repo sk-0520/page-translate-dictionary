@@ -27,10 +27,9 @@ export default class ManifestFilePlugin {
 	private createManifestFile(): void {
 		const packageJson = JSON.parse(fs.readFileSync(this._options.packageJson, 'utf8'));
 
-		const packageVersion = packageJson['version'];
-
 		const targetJson = JSON.parse(fs.readFileSync(this.getInputManifestFilePath(), 'utf8'));
-		targetJson['version'] = packageVersion;
+		targetJson['name'] = packageJson['name'];
+		targetJson['version'] = packageJson['version'];
 
 		const outputPath = path.join(this._options.outputDirectory, 'manifest.json');
 		if (!fs.existsSync(this._options.outputDirectory)) {

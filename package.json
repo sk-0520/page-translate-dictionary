@@ -1,7 +1,6 @@
 {
 	"name": "page-translate-dictionary",
 	"version": "1.0.0",
-	"description": "夢語るだけのREADME。",
 	"main": "index.js",
 	"scripts": {
 		"test:script": "jest --runInBand",
