@@ -98,9 +98,23 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 						compress: {
 							pure_funcs: [
 								'console.assert',
+								'console.table',
+								'console.dirxml',
+
+								'console.count',
+								'console.countReset',
+
+								'console.time',
+								'console.timeEnd',
+								'console.timeLog',
+								'console.timeStamp',
+
+								'console.profile',
+								'console.profileEnd',
+
 								'console.trace',
 								'console.debug',
-								'console.table',
+								'console.log',
 							]
 						}
 					}
