@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import fs from 'fs';
-import * as locales from '../locales/locales';
+import ja from '../locales/ja';
 
 export interface LocaleFilesOptions {
 	browser: string;
@@ -24,7 +24,10 @@ export default class LocaleFilesPlugin {
 		}
 		fs.mkdirSync(outputLocalesDirectory);
 
-		const localeItems = locales.gets();
+		const localeItems = {
+			ja: ja,
+		};
+
 		for (const [key, localeItem] of Object.entries(localeItems)) {
 			const outputDirectory = path.join(outputLocalesDirectory, key);
 			fs.mkdirSync(outputDirectory);
