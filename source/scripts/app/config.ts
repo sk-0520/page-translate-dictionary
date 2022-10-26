@@ -2,7 +2,7 @@
  * 内部使用する(ある程度データが確定している)設定
  */
 import * as setting from './setting';
-import * as type from './type';
+import * as type from '../core/type';
 import * as string from '../core/string';
 
 export type SiteConfigurationId = string;

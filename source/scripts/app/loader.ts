@@ -2,7 +2,7 @@ import webextension from "webextension-polyfill";
 import * as JSONC from 'jsonc-parser';
 import * as setting from './setting';
 import * as config from './config';
-import * as type from './type';
+import * as type from '../core/type';
 import * as storage from './storage';
 import * as string from "../core/string";
 

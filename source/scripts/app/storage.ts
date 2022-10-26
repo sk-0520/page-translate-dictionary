@@ -1,5 +1,5 @@
 import webextension from "webextension-polyfill";
-import * as type from "./type";
+import * as type from "./type-guard";
 import * as config from "./config";
 import * as logging from "../core/logging";
 
