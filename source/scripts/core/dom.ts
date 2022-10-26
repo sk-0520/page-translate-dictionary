@@ -20,22 +20,22 @@ export function requireElementById<THtmlElement extends HTMLElement>(elementId: 
  * @param element
  * @returns
  */
-export function requireSelector<THtmlElement extends HTMLElement>(selector: string, element: HTMLElement | null = null): THtmlElement {
+export function requireSelector<TElement extends Element>(selector: string, element: Element | null = null): TElement {
 	const result = (element ?? document).querySelector(selector);
 	if (!result) {
 		throw new Error(selector);
 	}
 
-	return result as THtmlElement;
+	return result as TElement;
 }
 
-export function requireClosest<THtmlElement extends HTMLElement>(selector: string, element: HTMLElement): THtmlElement {
+export function requireClosest<TElement extends Element>(selector: string, element: HTMLElement): TElement {
 	const result = element.closest(selector);
 	if (!result) {
 		throw new Error(selector);
 	}
 
-	return result as THtmlElement;
+	return result as TElement;
 }
 
 /**
@@ -43,10 +43,10 @@ export function requireClosest<THtmlElement extends HTMLElement>(selector: strin
  * @param element Formに所属する要素。
  * @returns
  */
-export function getParentForm(element: HTMLElement): HTMLFormElement {
+export function getParentForm(element: Element): HTMLFormElement {
 	const formElement = element.closest<HTMLFormElement>('form');
 	if (formElement === null) {
-		throw new Error(element.outerText);
+		throw new Error(element.outerHTML);
 	}
 
 	return formElement;

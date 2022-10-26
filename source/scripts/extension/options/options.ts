@@ -57,12 +57,12 @@ function addSetting(siteHeadConfiguration: config.ISiteHeadConfiguration) {
 	for (const element of itemRootElement.querySelectorAll<HTMLElement>('*')) {
 		localize.applyElement(element);
 	}
-	dom.requireSelector('.setting-item', itemRootElement).dataset['head'] = JSON.stringify(siteHeadConfiguration);
+	dom.requireSelector<HTMLElement>('.setting-item', itemRootElement).dataset['head'] = JSON.stringify(siteHeadConfiguration);
 
 	dom.requireSelector('[name="action"]', itemRootElement).addEventListener('click', async ev => {
 		ev.preventDefault();
 		const element = ev.currentTarget as HTMLButtonElement;
-		const itemElement = dom.requireClosest('.setting-item', element);
+		const itemElement = dom.requireClosest<HTMLElement>('.setting-item', element);
 		const currentSiteHeadConfiguration = JSON.parse(itemElement.dataset['head']!);
 		element.disabled = true;
 		const prev = element.textContent;
