@@ -5,7 +5,7 @@ import * as translator from './translator';
 import * as string from '../../core/string';
 import * as loader from '../loader';
 import * as storage from '../storage';
-import '../../../styles/page.scss';
+import '../../../styles/extension/page.scss';
 
 const logger = logging.create('page-content');
 

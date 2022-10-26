@@ -5,7 +5,7 @@ import * as storage from '../storage';
 import * as config from '../config';
 import * as loader from '../loader';
 import ImportLogger from './import-logger';
-import '../../../styles/application-options.scss';
+import '../../../styles/extension/application-options.scss';
 
 function setApplication(applicationConfiguration: config.IApplicationConfiguration) {
 	dom.requireElementById<HTMLInputElement>('translate_markReplacedElement').checked = applicationConfiguration.translate.markReplacedElement;
