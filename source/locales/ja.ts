@@ -1,6 +1,10 @@
 import * as locale from './locale';
 
 const messages: locale.IMessages & locale.MessageMap = {
+	we_description: {
+		message: '特定の要素(ノード)に対する辞書的置き換え処理'
+	},
+
 	options_tab_header_generic: {
 		message: '基本設定',
 	},

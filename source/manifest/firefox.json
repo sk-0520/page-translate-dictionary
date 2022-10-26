@@ -1,15 +1,10 @@
 {
-	"description": "description",
 	"manifest_version": 2,
 	"applications": {
 		"gecko": {
 			"id": "{0fffffff-ffff-ffff-ffff-fffffffffff0}",
 			"strict_min_version": "60.0"
 		}
-	},
-	"developer": {
-		"name": "sk",
-		"url": "https://github.com/sk-0520/page-translate-dictionary/"
 	},
 	"permissions": [
 		"storage",

@@ -1,6 +1,7 @@
 {
 	"name": "page-translate-dictionary",
 	"version": "1.0.0",
+	"description": "__MSG_we_description__",
 	"main": "index.js",
 	"scripts": {
 		"test:script": "jest --runInBand",
@@ -26,7 +27,7 @@
 	"bugs": {
 		"url": "https://github.com/sk-0520/page-translate-dictionary/issues"
 	},
-	"homepage": "https://github.com/sk-0520/page-translate-dictionary#readme",
+	"homepage": "https://github.com/sk-0520/page-translate-dictionary",
 	"jest": {
 		"moduleFileExtensions": [
 			"ts",

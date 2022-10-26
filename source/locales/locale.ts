@@ -21,6 +21,8 @@ export interface IMessage {
 export type MessageMap = { [name: string]: IMessage };
 
 export interface IMessages {
+	we_description: IMessage,
+
 	options_tab_header_generic: IMessage,
 
 	options_tab_content_generic_translate: IMessage,
