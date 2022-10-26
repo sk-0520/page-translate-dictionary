@@ -1,11 +1,11 @@
 import * as config from '../config';
 import * as url from '../url';
-import * as logging from '../logging';
+import * as logging from '../../core/logging';
 import * as translator from './translator';
-import * as string from '../core/string';
+import * as string from '../../core/string';
 import * as loader from '../loader';
 import * as storage from '../storage';
-import '../../styles/page.scss';
+import '../../../styles/page.scss';
 
 const logger = logging.create('page-content');
 

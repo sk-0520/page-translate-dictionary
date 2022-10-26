@@ -1,4 +1,4 @@
-import * as type from '../scripts/type';
+import * as type from '../scripts/app/type';
 
 describe('type', () => {
 	test('hasPrimaryProperty', () => {

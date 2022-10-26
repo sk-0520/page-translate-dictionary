@@ -1,5 +1,5 @@
 import * as config from '../config';
-import * as logging from '../logging';
+import * as logging from '../../core/logging';
 import * as filtering from './filtering';
 import * as matching from './matching';
 

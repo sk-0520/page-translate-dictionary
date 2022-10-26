@@ -1,4 +1,4 @@
-import * as dom from '../dom';
+import * as dom from '../../core/dom';
 
 export default class ImportLogger {
 	private _logElement: HTMLOListElement;

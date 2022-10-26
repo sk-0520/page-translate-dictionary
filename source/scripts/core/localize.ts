@@ -1,5 +1,5 @@
 import webextension from "webextension-polyfill";
-import * as string from "./core/string";
+import * as string from "./string";
 
 /**
  * 拡張機能の要素に対してローカライズを実施。

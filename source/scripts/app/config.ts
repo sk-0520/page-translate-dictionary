@@ -3,7 +3,7 @@
  */
 import * as setting from './setting';
 import * as type from './type';
-import * as string from './core/string';
+import * as string from '../core/string';
 
 export type SiteConfigurationId = string;
 

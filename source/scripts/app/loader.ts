@@ -4,7 +4,7 @@ import * as setting from './setting';
 import * as config from './config';
 import * as type from './type';
 import * as storage from './storage';
-import * as string from "./core/string";
+import * as string from "../core/string";
 
 export function checkUrl(s: string): boolean {
 	const starts = [

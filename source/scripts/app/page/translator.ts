@@ -1,5 +1,5 @@
 import * as config from '../config';
-import * as logging from '../logging';
+import * as logging from '../../core/logging';
 import * as names from '../names';
 import * as type from '../type';
 import * as replacer from './replacer';
