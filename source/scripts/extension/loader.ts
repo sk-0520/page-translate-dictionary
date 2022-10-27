@@ -6,21 +6,7 @@ import * as type from '../core/type';
 import * as storage from './storage';
 import * as string from "../core/string";
 
-export function checkUrl(s: string): boolean {
-	const starts = [
-		'https://',
-		'http://',
-	];
-	for(const start of starts) {
-		if(s.startsWith(start) && start.length < s.length) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-export function throwIfInvalidString(obj: any, property: string) {
+function throwIfInvalidString(obj: any, property: string) {
 	if (!type.hasPrimaryProperty(obj, property, 'string')) {
 		throw new Error(property);
 	}

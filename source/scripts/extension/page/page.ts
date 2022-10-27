@@ -1,5 +1,5 @@
 import * as config from '../config';
-import * as url from '../url';
+import * as uri from '../uri';
 import * as translator from './translator';
 import * as string from '../../core/string';
 import * as loader from '../loader';
@@ -36,7 +36,7 @@ function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
 				urlPath += '?' + location.search;
 			}
 
-			if (url.isEnabledPath(urlPath, key)) {
+			if (uri.isEnabledPath(urlPath, key)) {
 				console.trace('パス適合', key, urlPath);
 				try {
 					translator.translate(pathConfiguration, siteConfiguration, pageConfiguration.app.translate);
@@ -147,7 +147,7 @@ async function bootAsync(): Promise<void> {
 		return;
 	}
 
-	const currentSiteHeadConfigurations = siteHeadConfigurations.filter(i => url.isEnabledHosts(location.host, i.hosts));
+	const currentSiteHeadConfigurations = siteHeadConfigurations.filter(i => uri.isEnabledHosts(location.host, i.hosts));
 	if (!currentSiteHeadConfigurations.length) {
 		console.info(`ホストに該当する設定なし: ${location.host}`);
 		return;

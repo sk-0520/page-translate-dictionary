@@ -3,6 +3,7 @@ import * as dom from '../../core/dom';
 import * as localize from '../../core/localize';
 import * as storage from '../storage';
 import * as config from '../config';
+import * as uri from '../uri';
 import * as loader from '../loader';
 import ImportLogger from './import-logger';
 import '../../../styles/extension/application-options.scss';
@@ -42,7 +43,7 @@ function updateItemInformation(siteHeadConfiguration: config.ISiteHeadConfigurat
 	for (const detail of details) {
 		const detailElement = dom.requireSelector<HTMLAnchorElement>(`[name="${detail.name}"]`, itemRootElement);
 
-		if (loader.checkUrl(detail.url)) {
+		if (uri.isHttpUrl(detail.url)) {
 			detailElement.href = detail.url;
 			detailElement.textContent = detail.url;
 		} else {
@@ -110,7 +111,7 @@ async function importSettingAsync(url: string): Promise<void> {
 	try {
 		log.add(webextension.i18n.getMessage('options_import_log_start'));
 
-		if (!loader.checkUrl(url)) {
+		if (!uri.isHttpUrl(url)) {
 			log.add(webextension.i18n.getMessage('options_import_log_invalid_url'));
 			return;
 		}
