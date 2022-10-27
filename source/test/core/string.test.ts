@@ -21,6 +21,14 @@ describe('string', () => {
 		expect(string.isNullOrWhiteSpace(" \r\n \r\n ")).toBe(true);
 	});
 
+	test('replaceAllImpl', () => {
+		expect(string.replaceAllImpl('abcabcABCABC', 'a', '-')).toBe('-bc-bcABCABC');
+		expect(string.replaceAllImpl('abcabcABCABC', /a/, '-')).toBe('-bc-bcABCABC');
+		expect(string.replaceAllImpl('abcabcABCABC', /a/i, '-')).toBe('-bc-bc-BC-BC');
+		expect(string.replaceAllImpl('abcabcABCABC', /a/g, '-')).toBe('-bc-bcABCABC');
+		expect(string.replaceAllImpl('abcabcABCABC', /a/gi, '-')).toBe('-bc-bc-BC-BC');
+	})
+
 	test('padding', () => {
 		expect(string.padding(0, 2, ' ')).toBe(' 0');
 		expect(string.padding(1, 2, ' ')).toBe(' 1');

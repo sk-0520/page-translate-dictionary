@@ -29,6 +29,13 @@ export function requireSelector<TElement extends Element>(selector: string, elem
 	return result as TElement;
 }
 
+/**
+ * セレクタから先祖要素を取得。
+ *
+ * @param selector
+ * @param element
+ * @returns
+ */
 export function requireClosest<TElement extends Element>(selector: string, element: HTMLElement): TElement {
 	const result = element.closest(selector);
 	if (!result) {
@@ -83,7 +90,7 @@ export function toCustomKey(kebab: string, removeDataAttributeBegin: boolean = t
  *
  * @param element 要素。
  * @param dataKey データ属性名。
- * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
+ * @param removeDataAttributeBegin 先頭の `data-` を破棄するか。
  * @returns
  */
 export function getDataset(element: HTMLOrSVGElement, dataKey: string, removeDataAttributeBegin: boolean = true): string {

@@ -1,13 +1,14 @@
+import TimeSpan from './timespan';
 
 /**
  * 非同期待機
  *
- * @param msec 停止時間(ミリ秒)
+ * @param msec 停止時間
  */
-export function sleepAsync(msec: number): Promise<void> {
+export function sleepAsync(timeSpan: TimeSpan): Promise<void> {
 	return new Promise((resolve, _) => {
 		setTimeout(() => {
 			resolve()
-		}, msec);
+		}, timeSpan.totalMilliseconds);
 	});
 }

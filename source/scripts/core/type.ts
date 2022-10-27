@@ -1,6 +1,6 @@
 type TypeOfType = 'string' | 'number' | 'bigint' | 'boolean' | 'symbol' | 'undefined' | 'object' | 'function';
 
-export function hasProperty(obj: any, key: string): boolean {
+export function hasProperty(obj: any, key: string): obj is Record<string, unknown> {
 	if (!obj) {
 		return false;
 	}
@@ -37,7 +37,7 @@ export function toBoolean(s: string | null | undefined): boolean {
 		return false;
 	}
 
-	return s.toLowerCase() == 'true';
+	return s.toLowerCase() === 'true';
 }
 
 export function toString(input: any): string {

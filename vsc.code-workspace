@@ -29,6 +29,7 @@
 			"endregion",
 			"pjax",
 			"prebrowser",
+			"timespan",
 			"webextension"
 		],
 		"liveServer.settings.port": 5501

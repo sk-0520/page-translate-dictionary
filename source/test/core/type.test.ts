@@ -2,24 +2,24 @@ import * as type from '../../scripts/core/type';
 
 describe('type', () => {
 	test('hasPrimaryProperty', () => {
-		expect(type.hasPrimaryProperty({}, 'a', 'number')).toBe(false);
-		expect(type.hasPrimaryProperty({ a: undefined }, 'a', 'number')).toBe(false);
-		expect(type.hasPrimaryProperty({ a: null }, 'a', 'number')).toBe(false);
-		expect(type.hasPrimaryProperty({ a: 1 }, 'a', 'number')).toBe(true);
-		expect(type.hasPrimaryProperty({ A: 1 }, 'a', 'number')).toBe(false);
-		expect(type.hasPrimaryProperty({ a: '1' }, 'a', 'number')).toBe(false);
+		expect(type.hasPrimaryProperty({}, 'a', 'number')).toBeFalsy();
+		expect(type.hasPrimaryProperty({ a: undefined }, 'a', 'number')).toBeFalsy();
+		expect(type.hasPrimaryProperty({ a: null }, 'a', 'number')).toBeFalsy();
+		expect(type.hasPrimaryProperty({ a: 1 }, 'a', 'number')).toBeTruthy();
+		expect(type.hasPrimaryProperty({ A: 1 }, 'a', 'number')).toBeFalsy();
+		expect(type.hasPrimaryProperty({ a: '1' }, 'a', 'number')).toBeFalsy();
 	});
 
 	test('toBoolean', () => {
-		expect(type.toBoolean(null)).toBe(false);
-		expect(type.toBoolean(undefined)).toBe(false);
-		expect(type.toBoolean("")).toBe(false);
-		expect(type.toBoolean("t")).toBe(false);
-		expect(type.toBoolean("f")).toBe(false);
-		expect(type.toBoolean("false")).toBe(false);
-		expect(type.toBoolean("FALSE")).toBe(false);
-		expect(type.toBoolean("true")).toBe(true);
-		expect(type.toBoolean("TRUE")).toBe(true);
+		expect(type.toBoolean(null)).toBeFalsy();
+		expect(type.toBoolean(undefined)).toBeFalsy();
+		expect(type.toBoolean("")).toBeFalsy();
+		expect(type.toBoolean("t")).toBeFalsy();
+		expect(type.toBoolean("f")).toBeFalsy();
+		expect(type.toBoolean("false")).toBeFalsy();
+		expect(type.toBoolean("FALSE")).toBeFalsy();
+		expect(type.toBoolean("true")).toBeTruthy();
+		expect(type.toBoolean("TRUE")).toBeTruthy();
 	});
 
 	test('toString', () => {
