@@ -9,7 +9,7 @@ import * as string from "./string";
  *
  * @param element
  */
-export function applyElement(element: HTMLElement): void {
+export function applyElement(element: Element): void {
 	for (const attribute of element.attributes) {
 		if (!attribute.name.startsWith('data-we-')) {
 			continue;

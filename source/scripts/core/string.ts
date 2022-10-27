@@ -12,10 +12,6 @@ export function isNullOrWhiteSpace(s?: string | null): boolean {
 	return s.trim().length === 0;
 }
 
-export function escapeRegex(source: string) {
-	return source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
 export function padding(input: number, width: number, c: string): string {
 	if (input < 0) {
 		throw new Error('input is negative');

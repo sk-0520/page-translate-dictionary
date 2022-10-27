@@ -1,4 +1,4 @@
-type TypeOfType = "string" | "number" | "bigint" | "boolean" | "symbol" | "undefined" | "object" | "function";
+type TypeOfType = 'string' | 'number' | 'bigint' | 'boolean' | 'symbol' | 'undefined' | 'object' | 'function';
 
 export function hasProperty(obj: any, key: string): boolean {
 	if (!obj) {
