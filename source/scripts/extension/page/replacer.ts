@@ -3,12 +3,12 @@ import * as filtering from './filtering';
 import * as matching from './matching';
 
 export function replace(source: string, targetConfiguration: config.ITargetConfiguration, siteConfiguration: config.ISiteConfiguration): string | null {
-	const inputText = filtering.filterText(source, targetConfiguration.filter);
+	const inputText = filtering.filter(source, targetConfiguration.filter);
 
 	const replaceMode = targetConfiguration.replace.mode;
 
 	if (targetConfiguration.match) {
-		const matchResult = matching.matchText(inputText, targetConfiguration.match);
+		const matchResult = matching.match(inputText, targetConfiguration.match);
 		if (!matchResult.matched) {
 			return null;
 		}

@@ -89,7 +89,7 @@
               //  forward: 前方一致
               //  backward: 後方一致
               //  perfect: 完全一致
-              //  regex: 正規表現 ?<NAME> 使用可能
+              //  regex: 正規表現 (?<NAME>) 使用可能
               "mode": "partial",
               // 大文字小文字を区別するか
               "ignoreCase": true,
@@ -101,7 +101,7 @@
               //  normal: 通常
               //  common: 共通
               "mode": "normal",
-              // 置き換え文字列 match が正規表現の場合で指定がある場合 ${NAME} を使用可能
+              // 置き換え文字列 match が正規表現の場合で指定がある場合 ?{NAME} を $<NAME> で使用可能
               "value": "text",
             }
           },

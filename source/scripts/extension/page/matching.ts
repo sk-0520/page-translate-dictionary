@@ -51,7 +51,7 @@ export class MatchResult {
 	//#endregion
 }
 
-export function matchText(input: string, matchConfiguration: config.IMatchConfiguration): MatchResult {
+export function match(input: string, matchConfiguration: config.IMatchConfiguration): MatchResult {
 	switch (matchConfiguration.mode) {
 		case config.MatchMode.Partial:
 			let index = -1;
@@ -62,18 +62,6 @@ export function matchText(input: string, matchConfiguration: config.IMatchConfig
 			}
 			if (index !== -1) {
 				return MatchResult.matchedPlain();
-			}
-			return MatchResult.none();
-
-		case config.MatchMode.Regex:
-			const flags = matchConfiguration.ignoreCase ? 'mi' : 'm';
-			try {
-				const regex = new RegExp(matchConfiguration.pattern, flags);
-				if (regex.test(input)) {
-					return MatchResult.matchedRegex(regex);
-				}
-			} catch (ex) {
-				console.warn(ex);
 			}
 			return MatchResult.none();
 
@@ -110,6 +98,18 @@ export function matchText(input: string, matchConfiguration: config.IMatchConfig
 				if (input === matchConfiguration.pattern) {
 					return MatchResult.matchedPlain();
 				}
+			}
+			return MatchResult.none();
+
+		case config.MatchMode.Regex:
+			const flags = matchConfiguration.ignoreCase ? 'gi' : 'g';
+			try {
+				const regex = new RegExp(matchConfiguration.pattern, flags);
+				if (regex.test(input)) {
+					return MatchResult.matchedRegex(regex);
+				}
+			} catch (ex) {
+				console.warn(ex);
 			}
 			return MatchResult.none();
 
