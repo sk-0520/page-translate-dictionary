@@ -33,10 +33,10 @@ const messages: locale.IMessages & locale.MessageMap = {
 	},
 
 	options_tab_header_settings: {
-		message: '設定ファイル一覧',
+		message: '設定ファイル',
 	},
 	options_tab_content_settings_item: {
-		message: '設定ファイル',
+		message: '設定ファイル一覧',
 	},
 	options_tab_content_settings_item_name: {
 		message: '設定名',
@@ -91,21 +91,21 @@ const messages: locale.IMessages & locale.MessageMap = {
 	},
 
 	options_tab_content_settings_import: {
-		message: 'インポート',
+		message: '取り込み',
 	},
 
 	options_tab_content_settings_import_submit: {
-		message: 'インポート実行',
+		message: '取り込み実行',
 	},
 
 	options_import_message: {
-		message: 'インポートURL',
+		message: '取り込みURL',
 	},
 	options_import_log_start: {
-		message: 'インポート開始',
+		message: '取り込み開始',
 	},
 	options_import_log_success: {
-		message: 'インポート正常終了',
+		message: '取り込み正常終了',
 	},
 	options_import_log_invalid_url: {
 		message: 'URLが正しくない',
