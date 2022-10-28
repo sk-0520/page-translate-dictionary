@@ -1,10 +1,11 @@
 import * as path from 'path';
+
 import webpack from 'webpack';
+import TerserPlugin from 'terser-webpack-plugin';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+
 import ManifestFilePlugin from './source/plugins/ManifestFilePlugin';
 import LocaleFilesPlugin from './source/plugins/LocaleFilesPlugin';
-
-const TerserPlugin = require("terser-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 const inputRootDirectory = path.resolve(__dirname, 'source');
 const inputEntryDirectory = path.resolve(inputRootDirectory, 'entry');
