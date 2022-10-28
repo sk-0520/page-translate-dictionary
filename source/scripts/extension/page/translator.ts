@@ -3,14 +3,14 @@ import * as names from '../names';
 import * as type from '../type-guard';
 import * as replacer from './replacer';
 
-function translateElement(element: Element, queryConfiguration: config.IQueryConfiguration, siteConfiguration: config.ISiteConfiguration): boolean {
+function translateElement(element: Element, queryConfiguration: config.IQueryConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): boolean {
 	let translated = false;
 
 	if (queryConfiguration.attributes) {
 		for (const [attributeName, targetConfiguration] of Object.entries(queryConfiguration.attributes)) {
 			const sourceValue = element.getAttribute(attributeName);
 			if (sourceValue) {
-				const output = replacer.replace(sourceValue, targetConfiguration, siteConfiguration);
+				const output = replacer.replace(sourceValue, targetConfiguration, commonConfiguration, site);
 				if (output) {
 					element.setAttribute(attributeName, output);
 					element.setAttribute(names.Attributes.attributeHead + attributeName, sourceValue);
@@ -22,7 +22,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 
 	if (type.isInputElement(element) && queryConfiguration.value) {
 		const sourceValue = element.value;
-		const output = replacer.replace(sourceValue, queryConfiguration.value, siteConfiguration);
+		const output = replacer.replace(sourceValue, queryConfiguration.value, commonConfiguration, site);
 		if (output) {
 			element.value = output;
 			element.setAttribute(names.Attributes.value, sourceValue);
@@ -57,7 +57,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 		for (const [number, node] of nodes) {
 			const sourceValue = node.textContent || '';
 
-			const output = replacer.replace(sourceValue, queryConfiguration.text, siteConfiguration);
+			const output = replacer.replace(sourceValue, queryConfiguration.text, commonConfiguration, site);
 			if (output) {
 				if (node instanceof Text) {
 					node.textContent = output;
@@ -106,7 +106,7 @@ function translateCore(queryConfiguration: config.IQueryConfiguration, siteConfi
 	}
 
 	for (const element of elements) {
-		if (translateElement(element, queryConfiguration, siteConfiguration)) {
+		if (translateElement(element, queryConfiguration, siteConfiguration.common, siteConfiguration)) {
 			if (translateConfiguration.markReplacedElement) {
 				element.classList.add(names.ClassNames.mark);
 			}
@@ -129,7 +129,7 @@ export function translate(pathConfiguration: config.IPathConfiguration, siteConf
 	}
 
 	const makClassNames = document.getElementsByClassName(names.ClassNames.mark);
-	if(makClassNames.length) {
+	if (makClassNames.length) {
 		// ここでロケーションバーとサイドバーの合わせ技したい
 	}
 }

@@ -2,13 +2,13 @@ import * as config from '../config';
 import * as filtering from './filtering';
 import * as matching from './matching';
 
-export function replace(source: string, targetConfiguration: config.ITargetConfiguration, siteConfiguration: config.ISiteConfiguration): string | null {
-	const inputText = filtering.filter(source, targetConfiguration.filter);
+export function replace(source: string, targetConfiguration: config.ITargetConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): string | null {
+	const inputText = filtering.filter(source, targetConfiguration.filter, site);
 
 	const replaceMode = targetConfiguration.replace.mode;
 
 	if (targetConfiguration.match) {
-		const matchResult = matching.match(inputText, targetConfiguration.match);
+		const matchResult = matching.match(inputText, targetConfiguration.match, site);
 		if (!matchResult.matched) {
 			return null;
 		}
@@ -33,8 +33,8 @@ export function replace(source: string, targetConfiguration: config.ITargetConfi
 			return targetConfiguration.replace.value;
 
 		case config.ReplaceMode.Common:
-			if (siteConfiguration.common && siteConfiguration.common.text) {
-				const text = siteConfiguration.common.text[targetConfiguration.replace.value];
+			if (commonConfiguration && commonConfiguration.text) {
+				const text = commonConfiguration.text[targetConfiguration.replace.value];
 				if (text) {
 					return text;
 				} else {

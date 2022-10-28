@@ -7,6 +7,13 @@ import * as string from '../core/string';
 
 export type SiteConfigurationId = string;
 
+export interface ISite {
+	/** 設定データの一意キー(自動採番) */
+	id: SiteConfigurationId;
+	/** 名前 */
+	name: string;
+}
+
 export interface ISiteInformationConfiguration {
 	//#region property
 
@@ -184,11 +191,9 @@ export interface IApplicationConfiguration {
 	//#endregion
 }
 
-export interface ISiteHeadConfiguration {
+export interface ISiteHeadConfiguration extends ISite {
 	//#region property
 
-	/** 設定データの一意キー(自動採番) */
-	id: SiteConfigurationId,
 	/** 設定ファイルのダウンロードURL */
 	updateUrl: string,
 	/** 設定ファイルの最終更新日 */
@@ -196,8 +201,6 @@ export interface ISiteHeadConfiguration {
 	/** 設定ファイルの最終更新確認日 */
 	lastCheckedTimestamp: string,
 
-	/** 名前 */
-	name: string;
 	/** バージョン */
 	version: string;
 	/** 対象ホスト */
@@ -208,6 +211,13 @@ export interface ISiteHeadConfiguration {
 	level: number;
 	/** 変換先言語 */
 	language: string;
+
+	//#endregion
+
+	//#region ISite
+
+	id: SiteConfigurationId,
+	name: string;
 
 	//#endregion
 }
