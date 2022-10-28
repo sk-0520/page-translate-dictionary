@@ -64,8 +64,6 @@ function executeAsync(pageConfiguration: PageConfiguration): Promise<void> {
 		// document.body.removeChild(progressElement);
 		console.timeEnd('PAGE');
 	}
-
-	return Promise.resolve();
 }
 
 function updatedPage(event: Event) {
