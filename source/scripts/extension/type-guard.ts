@@ -31,5 +31,5 @@ export function isSiteHeadConfiguration(obj: any): obj is config.ISiteHeadConfig
 		&& 'hosts' in obj && Array.isArray(obj.hosts)
 		&& 'level' in obj && typeof obj.level === 'number'
 		&& 'language' in obj && typeof obj.language === 'string'
-		;
+	;
 }
