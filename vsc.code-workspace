@@ -32,6 +32,16 @@
 			"timespan",
 			"webextension"
 		],
+		"auto-close-tag.activationOnLanguage": [
+			"xml",
+			"html"
+		],
 		"liveServer.settings.port": 5501
+	},
+	"extensions": {
+		"recommendations": [
+			"awwsky.region-marker",
+			"SantaCodes.santacodes-region-viewer"
+		]
 	}
 }
