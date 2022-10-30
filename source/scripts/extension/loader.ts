@@ -111,8 +111,8 @@ export async function saveAsync(updateUrl: string, setting: setting.SiteSetting,
 		language: convertLanguage(setting?.language),
 	};
 	const body: config.SiteBodyConfiguration = {
-		path: setting.path,
-		common: setting.common,
+		path: setting.path ?? {},
+		common: setting.common ?? {},
 	};
 
 	await storage.saveSiteBodyAsync(head.id, body);

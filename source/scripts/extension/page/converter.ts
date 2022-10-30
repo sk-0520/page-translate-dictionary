@@ -27,7 +27,7 @@ function convertText(inputText: string, replaceConfiguration: config.ReplaceConf
 
 		case config.ReplaceMode.Common:
 			if (commonConfiguration && commonConfiguration.text) {
-				const text = commonConfiguration.text[replaceConfiguration.value];
+				const text = commonConfiguration.text.get(replaceConfiguration.value);
 				if (text) {
 					return text;
 				} else {

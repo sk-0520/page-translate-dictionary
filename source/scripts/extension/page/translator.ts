@@ -6,16 +6,14 @@ import * as converter from './converter';
 function translateElement(element: Element, queryConfiguration: config.QueryConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): boolean {
 	let translated = false;
 
-	if (queryConfiguration.attributes) {
-		for (const [attributeName, targetConfiguration] of Object.entries(queryConfiguration.attributes)) {
-			const sourceValue = element.getAttribute(attributeName);
-			if (sourceValue) {
-				const output = converter.convert(sourceValue, targetConfiguration, commonConfiguration, site);
-				if (output) {
-					element.setAttribute(attributeName, output);
-					element.setAttribute(names.Attributes.attributeHead + attributeName, sourceValue);
-					translated = true;
-				}
+	for (const [attributeName, targetConfiguration] of queryConfiguration.attributes) {
+		const sourceValue = element.getAttribute(attributeName);
+		if (sourceValue) {
+			const output = converter.convert(sourceValue, targetConfiguration, commonConfiguration, site);
+			if (output) {
+				element.setAttribute(attributeName, output);
+				element.setAttribute(names.Attributes.attributeHead + attributeName, sourceValue);
+				translated = true;
 			}
 		}
 	}
@@ -81,13 +79,18 @@ function translateElement(element: Element, queryConfiguration: config.QueryConf
 	return translated;
 }
 
-function translateCore(queryConfiguration: config.QueryConfiguration, siteConfiguration: config.SiteConfiguration, translateConfiguration: config.TranslateConfiguration): void {
+function translateCore(queryConfiguration: config.QueryConfiguration, siteConfiguration: config.SiteConfiguration, translateConfiguration: Readonly<config.TranslateConfiguration>): void {
 	console.debug('query:', queryConfiguration);
 
 	const currentSelectors = queryConfiguration.selector.mode === config.SelectorMode.Common
-		? siteConfiguration.common.selector[queryConfiguration.selector.value]
+		? siteConfiguration.common.selector.get(queryConfiguration.selector.value)
 		: queryConfiguration.selector.value
 		;
+
+	if (!currentSelectors) {
+		console.debug('empty currentSelectors');
+		return;
+	}
 
 	const elements = new Array<Element>();
 
@@ -115,15 +118,15 @@ function translateCore(queryConfiguration: config.QueryConfiguration, siteConfig
 
 }
 
-export function translate(pathConfiguration: config.PathConfiguration, siteConfiguration: config.SiteConfiguration, translateConfiguration: config.TranslateConfiguration): void {
+export function translate(pathConfiguration: config.PathConfiguration, siteConfiguration: config.SiteConfiguration, translateConfiguration: Readonly<config.TranslateConfiguration>): void {
 
 	for (const queryConfiguration of pathConfiguration.query) {
 		translateCore(queryConfiguration, siteConfiguration, translateConfiguration);
 	}
 
 	for (const name of pathConfiguration.import) {
-		if (name in siteConfiguration.common.query) {
-			const queryConfiguration = siteConfiguration.common.query[name];
+		const queryConfiguration = siteConfiguration.common.query.get(name);
+		if (queryConfiguration) {
 			translateCore(queryConfiguration, siteConfiguration, translateConfiguration);
 		}
 	}

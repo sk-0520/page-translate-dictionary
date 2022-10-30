@@ -15,17 +15,17 @@ export type SiteInternalId = string;
  */
 export interface SiteId {
 	/** 設定データの一意キー(自動採番) */
-	id: SiteInternalId;
+	readonly id: SiteInternalId;
 	/** 名前 */
-	name: string;
+	readonly name: string;
 }
 
 export interface InformationConfiguration {
 	//#region property
 
-	websiteUrl: string;
-	repositoryUrl: string;
-	documentUrl: string;
+	readonly websiteUrl: string;
+	readonly repositoryUrl: string;
+	readonly documentUrl: string;
 
 	//#endregion
 }
@@ -61,9 +61,9 @@ export const enum ReplaceMode {
 export interface FilterConfiguration {
 	//#region property
 
-	trim: boolean;
-	whiteSpace: WhiteSpace;
-	lineBreak: LineBreak;
+	readonly trim: boolean;
+	readonly whiteSpace: WhiteSpace;
+	readonly lineBreak: LineBreak;
 
 	//#endregion
 }
@@ -71,10 +71,10 @@ export interface FilterConfiguration {
 export interface MatchConfiguration {
 	//#region property
 
-	mode: MatchMode;
-	ignoreCase: boolean;
-	pattern: string;
-	replace: ReplaceConfiguration;
+	readonly mode: MatchMode;
+	readonly ignoreCase: boolean;
+	readonly pattern: string;
+	readonly replace: ReplaceConfiguration;
 
 	//#endregion
 }
@@ -82,8 +82,8 @@ export interface MatchConfiguration {
 export interface ReplaceConfiguration {
 	//#region property
 
-	mode: ReplaceMode;
-	value: string;
+	readonly mode: ReplaceMode;
+	readonly value: string;
 
 	//#endregion
 }
@@ -91,9 +91,9 @@ export interface ReplaceConfiguration {
 export interface TargetConfiguration {
 	//#region property
 
-	filter: FilterConfiguration;
-	matches: Array<MatchConfiguration>;
-	replace: ReplaceConfiguration | null;
+	readonly filter: FilterConfiguration;
+	readonly matches: ReadonlyArray<MatchConfiguration>;
+	readonly replace: ReplaceConfiguration | null;
 
 	//#endregion
 }
@@ -101,10 +101,10 @@ export interface TargetConfiguration {
 export interface SelectorConfiguration {
 	//#region property
 
-	mode: SelectorMode;
-	value: string;
-	node: number;
-	all: boolean;
+	readonly mode: SelectorMode;
+	readonly value: string;
+	readonly node: number;
+	readonly all: boolean;
 
 	//#endregion
 }
@@ -112,10 +112,10 @@ export interface SelectorConfiguration {
 export interface QueryConfiguration {
 	//#region property
 
-	selector: SelectorConfiguration;
-	text?: TargetConfiguration;
-	value?: TargetConfiguration;
-	attributes: { [name: string]: TargetConfiguration };
+	readonly selector: SelectorConfiguration;
+	readonly text: TargetConfiguration | null;
+	readonly value: TargetConfiguration | null;
+	readonly attributes: ReadonlyMap<string, TargetConfiguration>;
 
 	//#endregion
 }
@@ -123,11 +123,11 @@ export interface QueryConfiguration {
 export interface PathConfiguration {
 	//#region property
 
-	withSearch: boolean;
+	readonly withSearch: boolean;
 
-	query: QueryConfiguration[];
+	readonly query: ReadonlyArray<QueryConfiguration>;
 
-	import: string[];
+	readonly import: ReadonlyArray<string>;
 
 	//#endregion
 }
@@ -139,13 +139,13 @@ export interface CommonConfiguration {
 	//#region property
 
 	/** 共通セレクタ設定 */
-	selector: { [key: string]: string }
+	readonly selector: ReadonlyMap<string, string>;
 
 	/** 共通テキスト設定 */
-	text: { [key: string]: string }
+	readonly text: ReadonlyMap<string, string>;
 
 	/** 共通クエリ設定 */
-	query: { [key: string]: QueryConfiguration }
+	readonly query: ReadonlyMap<string, QueryConfiguration>;
 
 	//#endregion
 }
@@ -232,9 +232,9 @@ export interface SiteHeadConfiguration extends SiteId {
 export interface SiteBodyConfiguration {
 	//#region property
 
-	path?: setting.PathMap | null
+	path: setting.PathMap;
 
-	common?: setting.CommonSetting | null;
+	common: setting.CommonSetting;
 
 	//#endregion
 }
@@ -252,8 +252,8 @@ export interface SiteConfiguration extends SiteHeadConfiguration {
 }
 
 export type SiteData = {
-	head: SiteHeadConfiguration,
-	body: SiteBodyConfiguration,
+	readonly head: SiteHeadConfiguration,
+	readonly body: SiteBodyConfiguration,
 }
 
 export class SiteConfigurationImpl implements SiteConfiguration {
@@ -412,21 +412,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 			return null;
 		}
 
-		const query: QueryConfiguration = {
-			selector: this.convertSelector(raw.selector),
-			attributes: {},
-		};
-
-		const text = this.convertTarget(raw.text);
-		if (text) {
-			query.text = text;
-		}
-
-		const value = this.convertTarget(raw.value);
-		if (value) {
-			query.value = value;
-		}
-
+		const attributeMap = new Map<string,TargetConfiguration>();
 		if (raw.attributes && typeof raw.attributes === 'object') {
 			for (const [name, target] of Object.entries(raw.attributes)) {
 				if (string.isNullOrWhiteSpace(name)) {
@@ -434,10 +420,17 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 				}
 				const attr = this.convertTarget(target);
 				if (attr) {
-					query.attributes[name] = attr;
+					attributeMap.set(name, attr);
 				}
 			}
 		}
+
+		const query: QueryConfiguration = {
+			selector: this.convertSelector(raw.selector),
+			text: this.convertTarget(raw.text),
+			value: this.convertTarget(raw.value),
+			attributes: attributeMap,
+		};
 
 		return query;
 	}
@@ -472,30 +465,32 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 			}
 			// alert('3:::::' + key)
 
-			const pathConfiguration: PathConfiguration = {
-				withSearch: type.getPrimaryPropertyOr(pathSetting, 'withSearch', 'boolean', false),
-				query: [],
-				import: [],
-			};
-
+			const queryItems = new Array<QueryConfiguration>();
 			for (const querySetting of pathSetting.query) {
 				const query = this.convertQuery(querySetting);
 				if (!query) {
 					continue;
 				}
 
-				pathConfiguration.query.push(query);
+				queryItems.push(query);
 			}
 
+			const importItems = new Array<string>();
 			if (type.hasArrayProperty(pathSetting, 'import')) {
 				for (const name of pathSetting.import!) { //TODO: !
 					if (typeof name !== 'string') {
 						continue;
 					}
 
-					pathConfiguration.import.push(name);
+					importItems.push(name);
 				}
 			}
+
+			const pathConfiguration: PathConfiguration = {
+				withSearch: type.getPrimaryPropertyOr(pathSetting, 'withSearch', 'boolean', false),
+				query: queryItems,
+				import: importItems,
+			};
 
 			result[key] = pathConfiguration;
 		}
@@ -508,44 +503,47 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 	public convertCommon(raw: setting.CommonSetting | null): CommonConfiguration {
 		if (!raw) {
 			return {
-				selector: {},
-				text: {},
-				query: {},
+				selector: new Map(),
+				text: new Map(),
+				query: new Map(),
 			};
 		}
 
-		const result: CommonConfiguration = {
-			selector: {},
-			text: {},
-			query: {},
-		};
-
+		const selectorMap = new Map<string, string>();
 		if ('selector' in raw && raw.selector && typeof raw.selector === 'object') {
 			for (const [key, selector] of Object.entries(raw.selector)) {
 				if (!string.isNullOrWhiteSpace(selector)) {
-					result.selector[key] = selector!;
+					selectorMap.set(key, selector!);
 				}
 			}
 		}
 
+		const textMap = new Map<string, string>();
 		if ('text' in raw && raw.text && typeof raw.text === 'object') {
 			for (const [key, text] of Object.entries(raw.text)) {
 				if (!string.isNullOrWhiteSpace(text)) {
-					result.text[key] = text!;
+					textMap.set(key, text!);
 				}
 			}
 		}
 
+		const queryMap = new Map<string, QueryConfiguration>();
 		if ('query' in raw && raw.query && typeof raw.query === 'object') {
 			for (const [key, querySetting] of Object.entries(raw.query)) {
 				if (!string.isNullOrWhiteSpace(key)) {
 					const query = this.convertQuery(querySetting);
 					if (query) {
-						result.query[key] = query!;
+						queryMap.set(key, query);
 					}
 				}
 			}
 		}
+
+		const result: CommonConfiguration = {
+			selector: selectorMap,
+			text: textMap,
+			query: queryMap,
+		};
 
 		return result;
 	}
