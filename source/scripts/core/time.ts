@@ -64,7 +64,7 @@ export class TimeSpan {
 	}
 
 	public equals(timeSpan: TimeSpan): boolean {
-		return timeSpan.ticks === this.ticks;
+		return this.ticks === timeSpan.ticks;
 	}
 
 	public compare(timeSpan: TimeSpan): number {
@@ -162,6 +162,8 @@ export class DateTime {
 		return new DateTime(date, isUtc);
 	}
 
+	//#region create
+
 	public static create(year: number, month: number, day: number): DateTime;
 	public static create(year: number, month: number, day: number, hour: number): DateTime;
 	public static create(year: number, month: number, day: number, hour: number, minute: number): DateTime;
@@ -170,7 +172,9 @@ export class DateTime {
 	public static create(year: number, month: number, day: number, hour?: number, minute?: number, second?: number, millisecond?: number): DateTime {
 		return this.createCore(false, year, month, day, hour, minute, second, millisecond);
 	}
+	//#endregion
 
+	//#region createUtc
 	public static createUtc(year: number, month: number, day: number): DateTime;
 	public static createUtc(year: number, month: number, day: number, hour: number): DateTime;
 	public static createUtc(year: number, month: number, day: number, hour: number, minute: number): DateTime;
@@ -178,6 +182,21 @@ export class DateTime {
 	public static createUtc(year: number, month: number, day: number, hour: number, minute: number, second: number, millisecond: number): DateTime;
 	public static createUtc(year: number, month: number, day: number, hour?: number, minute?: number, second?: number, millisecond?: number): DateTime {
 		return this.createCore(true, year, month, day, hour, minute, second, millisecond);
+	}
+	//#endregion
+
+	public add(timeSpan: TimeSpan): DateTime {
+		const current = this._timestamp.getTime();
+		const addTime = new Date(current + timeSpan.ticks);
+		return new DateTime(addTime, this.isUtc);
+	}
+
+	public equals(dateTime: DateTime): boolean {
+		return this._timestamp.getTime() === dateTime._timestamp.getTime();
+	}
+
+	public compare(dateTime: DateTime): number {
+		return this._timestamp.getTime() - dateTime._timestamp.getTime();
 	}
 
 	//#endregion

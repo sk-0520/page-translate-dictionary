@@ -113,5 +113,25 @@ describe('time', () => {
 			expect(expected.second).toBe(second);
 			expect(expected.millisecond).toBe(millisecond);
 		});
+
+		test('add', () => {
+			expect(DateTime.createUtc(2000, 1, 2).add(TimeSpan.fromDays(1)).equals(DateTime.createUtc(2000, 1, 3))).toBeTruthy()
+			expect(DateTime.createUtc(2000, 1, 2).add(TimeSpan.fromDays(-1)).equals(DateTime.createUtc(2000, 1, 1))).toBeTruthy()
+		});
+
+		test.each([
+			[0, DateTime.createUtc(2000, 1, 2), DateTime.createUtc(2000, 1, 2)],
+			[-1, DateTime.createUtc(2000, 1, 2), DateTime.createUtc(2000, 1, 3)],
+			[+1, DateTime.createUtc(2000, 1, 2), DateTime.createUtc(2000, 1, 1)],
+		])('compare', (expected, a, b) => {
+			const actual = a.compare(b);
+			if (actual < 0) {
+				expect(expected).toBe(-1);
+			} else if (0 < actual) {
+				expect(expected).toBe(+1);
+			} else {
+				expect(expected).toBe(0);
+			}
+		});
 	});
 });
