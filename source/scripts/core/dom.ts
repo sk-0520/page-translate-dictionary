@@ -123,21 +123,21 @@ export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallbac
 }
 
 
-/**
- * 指定要素を兄弟間で上下させる。
- * @param current 対象要素。
- * @param isUp 上に移動させるか(偽の場合下に移動)。
- */
-export function moveElement(current: HTMLElement, isUp: boolean): void {
-	const refElement = isUp
-		? current.previousElementSibling
-		: current.nextElementSibling
-		;
+// /**
+//  * 指定要素を兄弟間で上下させる。
+//  * @param current 対象要素。
+//  * @param isUp 上に移動させるか(偽の場合下に移動)。
+//  */
+// export function moveElement(current: HTMLElement, isUp: boolean): void {
+// 	const refElement = isUp
+// 		? current.previousElementSibling
+// 		: current.nextElementSibling
+// 		;
 
-	if (refElement) {
-		const newItem = isUp ? current : refElement;
-		const oldItem = isUp ? refElement : current;
-		current.parentElement!.insertBefore(newItem, oldItem);
-	}
-}
+// 	if (refElement) {
+// 		const newItem = isUp ? current : refElement;
+// 		const oldItem = isUp ? refElement : current;
+// 		current.parentElement!.insertBefore(newItem, oldItem);
+// 	}
+// }
 
