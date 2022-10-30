@@ -40,7 +40,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 				}
 			}
 
-			if (queryConfiguration.selector.node < 0 && queryConfiguration.text.match) {
+			if (queryConfiguration.selector.node < 0 && queryConfiguration.text.matches) {
 				// 全てのテキストノードを対象とする(条件設定は必須)
 				for (let i = 0; i < textNodes.length; i++) {
 					nodes.set(i + 1, textNodes[i]);
