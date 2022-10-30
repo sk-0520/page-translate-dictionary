@@ -101,60 +101,44 @@ export class DateTime {
 	}
 
 	public get year(): number {
-		return this.isUtc
-			? this._timestamp.getUTCFullYear()
-			: this._timestamp.getFullYear()
+		return this._timestamp.getFullYear()
 			;
 	}
 
 	public get month(): number {
-		const rawMonth = this.isUtc
-			? this._timestamp.getUTCMonth()
-			: this._timestamp.getMonth()
+		const rawMonth = this._timestamp.getMonth()
 			;
 
 		return rawMonth + 1;
 	}
 
 	public get day(): number {
-		return this.isUtc
-			? this._timestamp.getUTCDate()
-			: this._timestamp.getDate()
+		return this._timestamp.getDate()
 			;
 	}
 
 	public get dayOfWeek(): DayOfWeek {
-		return this.isUtc
-			? this._timestamp.getUTCDay()
-			: this._timestamp.getDay()
+		return this._timestamp.getDay()
 			;
 	}
 
 	public get hour(): number {
-		return this.isUtc
-			? this._timestamp.getUTCHours()
-			: this._timestamp.getHours()
+		return this._timestamp.getHours()
 			;
 	}
 
 	public get minute(): number {
-		return this.isUtc
-			? this._timestamp.getUTCMinutes()
-			: this._timestamp.getMinutes()
+		return this._timestamp.getMinutes()
 			;
 	}
 
 	public get second(): number {
-		return this.isUtc
-			? this._timestamp.getUTCSeconds()
-			: this._timestamp.getSeconds()
+		return this._timestamp.getSeconds()
 			;
 	}
 
 	public get millisecond(): number {
-		return this.isUtc
-			? this._timestamp.getUTCMilliseconds()
-			: this._timestamp.getMilliseconds()
+		return this._timestamp.getMilliseconds()
 			;
 	}
 

@@ -85,7 +85,7 @@ describe('time', () => {
 			[2000, 1, 2, 3, 4, 5, 0, DateTime.create(2000, 1, 2, 3, 4, 5)],
 			[2000, 1, 2, 3, 4, 5, 6, DateTime.create(2000, 1, 2, 3, 4, 5, 6)],
 		])('create', (year: number, month: number, day: number, hour: number, minute: number, second: number, millisecond: number, expected: DateTime) => {
-			expect(expected.isUtc).toBeTruthy();
+			expect(expected.isUtc).toBeFalsy();
 			expect(expected.year).toBe(year);
 			expect(expected.month).toBe(month);
 			expect(expected.day).toBe(day);
