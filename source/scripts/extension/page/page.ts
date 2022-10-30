@@ -97,10 +97,10 @@ async function updateSiteConfigurationAsync(siteHeadConfiguration: config.SiteHe
 	return null;
 }
 
-async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: config.SettingConfiguration, allSiteHeadConfigurations: ReadonlyArray<config.SiteHeadConfiguration>): Promise<config.SiteHeadConfiguration[]> {
+async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: config.SettingConfiguration, allSiteHeadConfigurations: ReadonlyArray<config.SiteHeadConfiguration>, currentSiteHeadConfigurations: ReadonlyArray<config.SiteHeadConfiguration>): Promise<config.SiteHeadConfiguration[]> {
 	const headItems = new Array<config.SiteHeadConfiguration>();
 
-	for (const currentSiteHeadConfiguration of allSiteHeadConfigurations) {
+	for (const currentSiteHeadConfiguration of currentSiteHeadConfigurations) {
 		const lastCheckedTimestamp = new Date(currentSiteHeadConfiguration.lastCheckedTimestamp)
 		lastCheckedTimestamp.setDate(lastCheckedTimestamp.getDate() + setting.periodDays);
 
@@ -138,14 +138,14 @@ async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: con
 
 async function bootAsync(): Promise<void> {
 	const applicationConfiguration = await storage.loadApplicationAsync();
-	const siteHeadConfigurations = await storage.loadSiteHeadsAsync();
+	const allSiteHeadConfigurations = await storage.loadSiteHeadsAsync();
 
-	if (!siteHeadConfigurations.length) {
+	if (!allSiteHeadConfigurations.length) {
 		console.trace('設定なし');
 		return;
 	}
 
-	const currentSiteHeadConfigurations = siteHeadConfigurations.filter(i => uri.isEnabledHosts(location.host, i.hosts));
+	const currentSiteHeadConfigurations = allSiteHeadConfigurations.filter(i => uri.isEnabledHosts(location.host, i.hosts));
 	if (!currentSiteHeadConfigurations.length) {
 		console.info(`ホストに該当する設定なし: ${location.host}`);
 		return;
@@ -157,7 +157,7 @@ async function bootAsync(): Promise<void> {
 
 	if (applicationConfiguration.setting.updatedBeforeTranslation && applicationConfiguration.setting.autoUpdate) {
 		console.info('翻訳前 設定更新処理実施');
-		const newHeadItems = await updateSiteConfigurationsAsync(currentDateTime, applicationConfiguration.setting, currentSiteHeadConfigurations);
+		const newHeadItems = await updateSiteConfigurationsAsync(currentDateTime, applicationConfiguration.setting, allSiteHeadConfigurations, currentSiteHeadConfigurations);
 		headItems.push(...newHeadItems);
 	} else {
 		headItems.push(...currentSiteHeadConfigurations);
@@ -189,7 +189,7 @@ async function bootAsync(): Promise<void> {
 
 	if (!applicationConfiguration.setting.updatedBeforeTranslation && applicationConfiguration.setting.autoUpdate) {
 		console.debug('翻訳後 設定更新処理実施');
-		updateSiteConfigurationsAsync(currentDateTime, applicationConfiguration.setting, currentSiteHeadConfigurations);
+		updateSiteConfigurationsAsync(currentDateTime, applicationConfiguration.setting, allSiteHeadConfigurations, currentSiteHeadConfigurations);
 	}
 
 }
