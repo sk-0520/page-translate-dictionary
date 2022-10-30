@@ -117,6 +117,12 @@ describe('time', () => {
 		test('add', () => {
 			expect(DateTime.createUtc(2000, 1, 2).add(TimeSpan.fromDays(1)).equals(DateTime.createUtc(2000, 1, 3))).toBeTruthy()
 			expect(DateTime.createUtc(2000, 1, 2).add(TimeSpan.fromDays(-1)).equals(DateTime.createUtc(2000, 1, 1))).toBeTruthy()
+			expect(DateTime.createUtc(2022, 2, 28).add(TimeSpan.fromDays(1)).equals(DateTime.createUtc(2022, 3, 1))).toBeTruthy()
+			expect(DateTime.createUtc(2022, 3, 1).add(TimeSpan.fromDays(-1)).equals(DateTime.createUtc(2022, 2, 28))).toBeTruthy()
+			expect(DateTime.createUtc(2024, 2, 28).add(TimeSpan.fromDays(1)).equals(DateTime.createUtc(2024, 2, 29))).toBeTruthy()
+			expect(DateTime.createUtc(2024, 2, 29).add(TimeSpan.fromDays(0)).equals(DateTime.createUtc(2024, 2, 29))).toBeTruthy()
+			expect(DateTime.createUtc(2024, 3, 1).add(TimeSpan.fromDays(-1)).equals(DateTime.createUtc(2024, 2, 29))).toBeTruthy()
+			expect(DateTime.createUtc(2024, 2, 29).add(TimeSpan.fromDays(-1)).equals(DateTime.createUtc(2024, 2, 28))).toBeTruthy()
 		});
 
 		test.each([
