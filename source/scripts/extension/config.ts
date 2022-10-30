@@ -268,7 +268,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 	//#region function
 
-	private convertEnum<TEnum>(raw: any | null | undefined, key: string, fallbackValue: TEnum): TEnum {
+	private convertEnum<TEnum>(raw: any | null | undefined, key: string, fallbackValue: TEnum, map: Map<string, TEnum>): TEnum {
 		if (!raw) {
 			return fallbackValue;
 		}
@@ -276,17 +276,26 @@ export class SiteConfiguration implements ISiteConfiguration {
 			return fallbackValue;
 		}
 
-		const value = raw[key];
-		return value as TEnum; // 💩 enum と設定定義が全然ダメ
+		const value = map.get(raw[key]);
+		if (value) {
+			return value;
+		}
+
+		return fallbackValue;
 	}
 
 	private convertSelector(raw: setting.ISelectorSetting): ISelectorConfiguration {
-		return {
-			mode: this.convertEnum(raw, 'mode', SelectorMode.Normal),
+		const result: ISelectorConfiguration = {
+			mode: this.convertEnum(raw, 'mode', SelectorMode.Normal, new Map([
+				['normal', SelectorMode.Normal],
+				['common', SelectorMode.Common],
+			])),
 			value: raw.value!,
 			node: type.getPrimaryPropertyOr(raw, 'node', 'number', 0),
 			all: type.getPrimaryPropertyOr(raw, 'all', 'boolean', false),
 		};
+
+		return result;
 	}
 	private convertFilter(raw?: setting.IFilterSetting | null): IFilterConfiguration {
 		if (!raw) {
@@ -297,12 +306,21 @@ export class SiteConfiguration implements ISiteConfiguration {
 			};
 		}
 
-		return {
+		const result: IFilterConfiguration = {
 			trim: type.getPrimaryPropertyOr(raw, 'trim', 'boolean', true),
-			whiteSpace: this.convertEnum(raw, 'whiteSpace', WhiteSpace.Join),
-			lineBreak: this.convertEnum(raw, 'lineBreak', LineBreak.Join),
+			whiteSpace: this.convertEnum(raw, 'whiteSpace', WhiteSpace.Join, new Map([
+				['join', WhiteSpace.Join],
+				['raw', WhiteSpace.Raw],
+			])),
+			lineBreak: this.convertEnum(raw, 'lineBreak', LineBreak.Join, new Map([
+				['join', LineBreak.Join],
+				['raw', LineBreak.Raw],
+			])),
 		};
+
+		return result;
 	}
+
 	private convertMatch(raw: setting.IMatchSetting): IMatchConfiguration | null {
 		if (!type.hasPrimaryProperty(raw, 'pattern', 'string')) {
 			return null;
@@ -312,17 +330,26 @@ export class SiteConfiguration implements ISiteConfiguration {
 		}
 
 		const replace = this.convertReplace(raw.replace);
-		if(!replace) {
+		if (!replace) {
 			return null;
 		}
 
-		return {
+		const result: IMatchConfiguration = {
 			ignoreCase: type.getPrimaryPropertyOr(raw, 'ignoreCase', 'boolean', true),
-			mode: this.convertEnum(raw, 'mode', MatchMode.Partial),
+			mode: this.convertEnum(raw, 'mode', MatchMode.Partial, new Map([
+				['partial', MatchMode.Partial],
+				['forward', MatchMode.Forward],
+				['backward', MatchMode.Backward],
+				['perfect', MatchMode.Perfect],
+				['regex', MatchMode.Regex],
+			])),
 			pattern: raw.pattern!,
 			replace: replace,
-		}
+		};
+
+		return result;
 	}
+
 	private convertMatches(raw?: ReadonlyArray<setting.IMatchSetting> | null): IMatchConfiguration[] {
 		if (!raw) {
 			return [];
@@ -345,7 +372,10 @@ export class SiteConfiguration implements ISiteConfiguration {
 		}
 
 		return {
-			mode: this.convertEnum(raw, 'mode', ReplaceMode.Normal),
+			mode: this.convertEnum(raw, 'mode', ReplaceMode.Normal, new Map([
+				['normal', ReplaceMode.Normal],
+				['common', ReplaceMode.Common],
+			])),
 			value: raw.value || '',
 		};
 	}

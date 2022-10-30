@@ -14,8 +14,8 @@ export interface IFilterSetting {
 	//#region property
 
 	trim?: boolean;
-	whiteSpace?: string | null;
-	lineBreak?: string | null;
+	whiteSpace?: 'join' | 'raw' | null;
+	lineBreak?: 'join' | 'raw' | null;
 
 	//#endregion
 }
@@ -23,7 +23,7 @@ export interface IFilterSetting {
 export interface IMatchSetting {
 	//#region property
 
-	mode?: string | null;
+	mode?: 'partial' | 'forward' | 'backward' | 'perfect' | 'regex' | null;
 	ignoreCase?: boolean | null;
 	pattern?: string | null;
 	replace?: IReplaceSetting | null;
@@ -34,7 +34,7 @@ export interface IMatchSetting {
 export interface IReplaceSetting {
 	//#region property
 
-	mode?: string | null;
+	mode?: 'normal' | 'common' | null;
 	value: string | null;
 
 	//#endregion
@@ -53,7 +53,7 @@ export interface ITargetSetting {
 export interface ISelectorSetting {
 	//#region property
 
-	mode?: string | null;
+	mode?: 'normal' | 'common' | null;
 	value: string | null;
 	node?: number | null;
 	all?: boolean | null;
