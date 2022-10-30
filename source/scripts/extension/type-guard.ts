@@ -9,19 +9,19 @@ export function isInputElement(element: Element): element is HTMLInputElement {
 	return element.tagName === 'INPUT';
 }
 
-export function isTranslateConfiguration(obj: any): obj is config.ITranslateConfiguration {
+export function isTranslateConfiguration(obj: any): obj is config.TranslateConfiguration {
 	return obj
 		&& 'markReplacedElement' in obj && typeof obj.markReplacedElement === 'boolean'
 		;
 }
 
-export function isApplicationConfiguration(obj: any): obj is config.IApplicationConfiguration {
+export function isApplicationConfiguration(obj: any): obj is config.ApplicationConfiguration {
 	return obj
 		&& 'translate' in obj && isTranslateConfiguration(obj.translate)
 		;
 }
 
-export function isSiteHeadConfiguration(obj: any): obj is config.ISiteHeadConfiguration {
+export function isSiteHeadConfiguration(obj: any): obj is config.SiteHeadConfiguration {
 	return obj
 		&& 'id' in obj && typeof obj.id === 'string'
 		&& 'updateUrl' in obj && typeof obj.updateUrl === 'string'

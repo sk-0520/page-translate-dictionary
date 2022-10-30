@@ -2,7 +2,7 @@ import * as config from '../config';
 import * as filtering from './filtering';
 import * as matching from './matching';
 
-function convertRegex(inputText: string, match: config.IMatchConfiguration, matchResult: matching.MatchResult, replaceConfiguration: config.IReplaceConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): string | null {
+function convertRegex(inputText: string, match: config.MatchConfiguration, matchResult: matching.MatchResult, replaceConfiguration: config.ReplaceConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): string | null {
 	try {
 		console.debug('I: ', match.replace.value);
 
@@ -18,7 +18,7 @@ function convertRegex(inputText: string, match: config.IMatchConfiguration, matc
 	return null;
 }
 
-function convertText(inputText: string, replaceConfiguration: config.IReplaceConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): string | null {
+function convertText(inputText: string, replaceConfiguration: config.ReplaceConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): string | null {
 	const replaceMode = replaceConfiguration.mode;
 
 	switch (replaceMode) {
@@ -43,7 +43,7 @@ function convertText(inputText: string, replaceConfiguration: config.IReplaceCon
 	}
 }
 
-export function convert(source: string, targetConfiguration: config.ITargetConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): string | null {
+export function convert(source: string, targetConfiguration: config.TargetConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): string | null {
 	const inputText = filtering.filter(source, targetConfiguration.filter, site);
 	console.debug(inputText);
 

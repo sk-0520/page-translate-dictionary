@@ -7,14 +7,14 @@ import * as string from '../core/string';
 
 export type SiteConfigurationId = string;
 
-export interface ISite {
+export interface SiteId {
 	/** 設定データの一意キー(自動採番) */
 	id: SiteConfigurationId;
 	/** 名前 */
 	name: string;
 }
 
-export interface ISiteInformationConfiguration {
+export interface InformationConfiguration {
 	//#region property
 
 	websiteUrl: string;
@@ -52,7 +52,7 @@ export const enum ReplaceMode {
 	Common = 'common',
 }
 
-export interface IFilterConfiguration {
+export interface FilterConfiguration {
 	//#region property
 
 	trim: boolean;
@@ -62,18 +62,18 @@ export interface IFilterConfiguration {
 	//#endregion
 }
 
-export interface IMatchConfiguration {
+export interface MatchConfiguration {
 	//#region property
 
 	mode: MatchMode;
 	ignoreCase: boolean;
 	pattern: string;
-	replace: IReplaceConfiguration;
+	replace: ReplaceConfiguration;
 
 	//#endregion
 }
 
-export interface IReplaceConfiguration {
+export interface ReplaceConfiguration {
 	//#region property
 
 	mode: ReplaceMode;
@@ -82,17 +82,17 @@ export interface IReplaceConfiguration {
 	//#endregion
 }
 
-export interface ITargetConfiguration {
+export interface TargetConfiguration {
 	//#region property
 
-	filter: IFilterConfiguration;
-	matches: Array<IMatchConfiguration>;
-	replace: IReplaceConfiguration | null;
+	filter: FilterConfiguration;
+	matches: Array<MatchConfiguration>;
+	replace: ReplaceConfiguration | null;
 
 	//#endregion
 }
 
-export interface ISelectorConfiguration {
+export interface SelectorConfiguration {
 	//#region property
 
 	mode: SelectorMode;
@@ -103,23 +103,23 @@ export interface ISelectorConfiguration {
 	//#endregion
 }
 
-export interface IQueryConfiguration {
+export interface QueryConfiguration {
 	//#region property
 
-	selector: ISelectorConfiguration;
-	text?: ITargetConfiguration;
-	value?: ITargetConfiguration;
-	attributes: { [name: string]: ITargetConfiguration };
+	selector: SelectorConfiguration;
+	text?: TargetConfiguration;
+	value?: TargetConfiguration;
+	attributes: { [name: string]: TargetConfiguration };
 
 	//#endregion
 }
 
-export interface IPathConfiguration {
+export interface PathConfiguration {
 	//#region property
 
 	withSearch: boolean;
 
-	query: IQueryConfiguration[];
+	query: QueryConfiguration[];
 
 	import: string[];
 
@@ -129,7 +129,7 @@ export interface IPathConfiguration {
 /**
  * 共通設定
  */
-export interface ICommonConfiguration {
+export interface CommonConfiguration {
 	//#region property
 
 	/** 共通セレクタ設定 */
@@ -139,12 +139,12 @@ export interface ICommonConfiguration {
 	text: { [key: string]: string }
 
 	/** 共通クエリ設定 */
-	query: { [key: string]: IQueryConfiguration }
+	query: { [key: string]: QueryConfiguration }
 
 	//#endregion
 }
 
-export interface ITranslateConfiguration {
+export interface TranslateConfiguration {
 	//#region property
 
 	/**
@@ -155,7 +155,7 @@ export interface ITranslateConfiguration {
 	//#endregion
 }
 
-export interface ISettingConfiguration {
+export interface SettingConfiguration {
 	//#region property
 
 	/**
@@ -183,16 +183,16 @@ export interface ISettingConfiguration {
 	//#endregion
 }
 
-export interface IApplicationConfiguration {
+export interface ApplicationConfiguration {
 	//#region property
 
-	translate: ITranslateConfiguration;
-	setting: ISettingConfiguration;
+	translate: TranslateConfiguration;
+	setting: SettingConfiguration;
 
 	//#endregion
 }
 
-export interface ISiteHeadConfiguration extends ISite {
+export interface SiteHeadConfiguration extends SiteId {
 	//#region property
 
 	/** 設定ファイルのダウンロードURL */
@@ -207,7 +207,7 @@ export interface ISiteHeadConfiguration extends ISite {
 	/** 対象ホスト */
 	hosts: string[];
 	/** 設定情報 */
-	information: ISiteInformationConfiguration;
+	information: InformationConfiguration;
 	/** 優先度 */
 	level: number;
 	/** 変換先言語 */
@@ -223,41 +223,41 @@ export interface ISiteHeadConfiguration extends ISite {
 	//#endregion
 }
 
-export interface ISiteBodyConfiguration {
+export interface SiteBodyConfiguration {
 	//#region property
 
 	path?: setting.PathMap | null
 
-	common?: setting.ICommonSetting | null;
+	common?: setting.CommonSetting | null;
 
 	//#endregion
 }
 
-export type PathMap = { [path: string]: IPathConfiguration };
+export type PathMap = { [path: string]: PathConfiguration };
 
-export interface ISiteConfiguration extends ISiteHeadConfiguration {
+export interface SiteConfiguration extends SiteHeadConfiguration {
 	//#region property
 
 	path: PathMap;
 
-	common: ICommonConfiguration;
+	common: CommonConfiguration;
 
 	//#endregion
 }
 
-export type Site = {
-	head: ISiteHeadConfiguration,
-	body: ISiteBodyConfiguration,
+export type SiteData = {
+	head: SiteHeadConfiguration,
+	body: SiteBodyConfiguration,
 }
 
-export class SiteConfiguration implements ISiteConfiguration {
+export class SiteConfigurationImpl implements SiteConfiguration {
 
 	public readonly path: PathMap;
-	public readonly common: ICommonConfiguration;
+	public readonly common: CommonConfiguration;
 
 	public constructor(
-		private readonly head: ISiteHeadConfiguration,
-		body: ISiteBodyConfiguration
+		private readonly head: SiteHeadConfiguration,
+		body: SiteBodyConfiguration
 	) {
 		// ここで全部のデータを補正
 		//alert('body.path = ' + JSON.stringify(body.path));
@@ -284,8 +284,8 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return fallbackValue;
 	}
 
-	private convertSelector(raw: setting.ISelectorSetting): ISelectorConfiguration {
-		const result: ISelectorConfiguration = {
+	private convertSelector(raw: setting.SelectorSetting): SelectorConfiguration {
+		const result: SelectorConfiguration = {
 			mode: this.convertEnum(raw, 'mode', SelectorMode.Normal, new Map([
 				['normal', SelectorMode.Normal],
 				['common', SelectorMode.Common],
@@ -297,7 +297,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 		return result;
 	}
-	private convertFilter(raw?: setting.IFilterSetting | null): IFilterConfiguration {
+	private convertFilter(raw?: setting.FilterSetting | null): FilterConfiguration {
 		if (!raw) {
 			return {
 				trim: true,
@@ -306,7 +306,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 			};
 		}
 
-		const result: IFilterConfiguration = {
+		const result: FilterConfiguration = {
 			trim: type.getPrimaryPropertyOr(raw, 'trim', 'boolean', true),
 			whiteSpace: this.convertEnum(raw, 'whiteSpace', WhiteSpace.Join, new Map([
 				['join', WhiteSpace.Join],
@@ -321,7 +321,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return result;
 	}
 
-	private convertMatch(raw: setting.IMatchSetting): IMatchConfiguration | null {
+	private convertMatch(raw: setting.MatchSetting): MatchConfiguration | null {
 		if (!type.hasPrimaryProperty(raw, 'pattern', 'string')) {
 			return null;
 		}
@@ -334,7 +334,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 			return null;
 		}
 
-		const result: IMatchConfiguration = {
+		const result: MatchConfiguration = {
 			ignoreCase: type.getPrimaryPropertyOr(raw, 'ignoreCase', 'boolean', true),
 			mode: this.convertEnum(raw, 'mode', MatchMode.Partial, new Map([
 				['partial', MatchMode.Partial],
@@ -350,12 +350,12 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return result;
 	}
 
-	private convertMatches(raw?: ReadonlyArray<setting.IMatchSetting> | null): IMatchConfiguration[] {
+	private convertMatches(raw?: ReadonlyArray<setting.MatchSetting> | null): MatchConfiguration[] {
 		if (!raw) {
 			return [];
 		}
 
-		const result = new Array<IMatchConfiguration>();
+		const result = new Array<MatchConfiguration>();
 		for (const item of raw) {
 			const match = this.convertMatch(item);
 			if (match) {
@@ -366,7 +366,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return result;
 	}
 
-	private convertReplace(raw?: setting.IReplaceSetting | null): IReplaceConfiguration | null {
+	private convertReplace(raw?: setting.ReplaceSetting | null): ReplaceConfiguration | null {
 		if (!raw) {
 			return null;
 		}
@@ -380,7 +380,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		};
 	}
 
-	private convertTarget(raw?: setting.ITargetSetting | null): ITargetConfiguration | null {
+	private convertTarget(raw?: setting.TargetSetting | null): TargetConfiguration | null {
 		if (!raw) {
 			return null;
 		}
@@ -389,7 +389,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		const matches = this.convertMatches(raw.matches);
 		const replace = this.convertReplace(raw.replace);
 
-		const result: ITargetConfiguration = {
+		const result: TargetConfiguration = {
 			filter: filter,
 			matches: matches,
 			replace: replace,
@@ -397,7 +397,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return result;
 	}
 
-	private convertQuery(raw: setting.IQuerySetting | null): IQueryConfiguration | null {
+	private convertQuery(raw: setting.QuerySetting | null): QueryConfiguration | null {
 		if (!raw) {
 			return null;
 		}
@@ -406,7 +406,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 			return null;
 		}
 
-		const query: IQueryConfiguration = {
+		const query: QueryConfiguration = {
 			selector: this.convertSelector(raw.selector),
 			attributes: {},
 		};
@@ -466,7 +466,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 			}
 			// alert('3:::::' + key)
 
-			const pathConfiguration: IPathConfiguration = {
+			const pathConfiguration: PathConfiguration = {
 				withSearch: type.getPrimaryPropertyOr(pathSetting, 'withSearch', 'boolean', false),
 				query: [],
 				import: [],
@@ -499,7 +499,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return result;
 	}
 
-	public convertCommon(raw: setting.ICommonSetting | null): ICommonConfiguration {
+	public convertCommon(raw: setting.CommonSetting | null): CommonConfiguration {
 		if (!raw) {
 			return {
 				selector: {},
@@ -508,7 +508,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 			};
 		}
 
-		const result: ICommonConfiguration = {
+		const result: CommonConfiguration = {
 			selector: {},
 			text: {},
 			query: {},
@@ -572,7 +572,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return this.head.version;
 	}
 
-	public get information(): ISiteInformationConfiguration {
+	public get information(): InformationConfiguration {
 		return this.head.information;
 	}
 

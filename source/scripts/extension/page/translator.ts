@@ -3,7 +3,7 @@ import * as names from '../names';
 import * as type from '../type-guard';
 import * as converter from './converter';
 
-function translateElement(element: Element, queryConfiguration: config.IQueryConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): boolean {
+function translateElement(element: Element, queryConfiguration: config.QueryConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): boolean {
 	let translated = false;
 
 	if (queryConfiguration.attributes) {
@@ -81,7 +81,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 	return translated;
 }
 
-function translateCore(queryConfiguration: config.IQueryConfiguration, siteConfiguration: config.ISiteConfiguration, translateConfiguration: config.ITranslateConfiguration): void {
+function translateCore(queryConfiguration: config.QueryConfiguration, siteConfiguration: config.SiteConfiguration, translateConfiguration: config.TranslateConfiguration): void {
 	console.debug('query:', queryConfiguration);
 
 	const currentSelectors = queryConfiguration.selector.mode === config.SelectorMode.Common
@@ -115,7 +115,7 @@ function translateCore(queryConfiguration: config.IQueryConfiguration, siteConfi
 
 }
 
-export function translate(pathConfiguration: config.IPathConfiguration, siteConfiguration: config.ISiteConfiguration, translateConfiguration: config.ITranslateConfiguration): void {
+export function translate(pathConfiguration: config.PathConfiguration, siteConfiguration: config.SiteConfiguration, translateConfiguration: config.TranslateConfiguration): void {
 
 	for (const queryConfiguration of pathConfiguration.query) {
 		translateCore(queryConfiguration, siteConfiguration, translateConfiguration);

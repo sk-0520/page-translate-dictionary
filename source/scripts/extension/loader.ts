@@ -15,7 +15,7 @@ function throwIfInvalidString(obj: any, property: string) {
 	}
 }
 
-export async function fetchAsync(url: string): Promise<setting.ISiteSetting | null> {
+export async function fetchAsync(url: string): Promise<setting.SiteSetting | null> {
 	const manifest = webextension.runtime.getManifest();
 
 	const response = await fetch(url, {
@@ -50,15 +50,15 @@ export async function fetchAsync(url: string): Promise<setting.ISiteSetting | nu
 		}
 	}
 
-	return json as setting.ISiteSetting;
+	return json as setting.SiteSetting;
 }
 
 export function createSiteConfigurationId(): config.SiteConfigurationId {
 	return crypto.randomUUID();
 }
 
-export function convertInformation(information: setting.IInformationSetting | null | undefined): config.ISiteInformationConfiguration {
-	const result: config.ISiteInformationConfiguration = {
+export function convertInformation(information: setting.InformationSetting | null | undefined): config.InformationConfiguration {
+	const result: config.InformationConfiguration = {
 		websiteUrl: type.getPrimaryPropertyOr(information, 'website', 'string', ''),
 		repositoryUrl: type.getPrimaryPropertyOr(information, 'repository', 'string', ''),
 		documentUrl: type.getPrimaryPropertyOr(information, 'document', 'string', ''),
@@ -94,11 +94,11 @@ export async function hasSiteSettingAsync(url: string): Promise<config.SiteConfi
 	return target[0].id;
 }
 
-export async function saveAsync(updateUrl: string, setting: setting.ISiteSetting, siteId: config.SiteConfigurationId | null): Promise<config.Site> {
+export async function saveAsync(updateUrl: string, setting: setting.SiteSetting, siteId: config.SiteConfigurationId | null): Promise<config.SiteData> {
 	const timestamp = (new Date()).toISOString();
 	const isCreateMode = string.isNullOrWhiteSpace(siteId);
 
-	const head: config.ISiteHeadConfiguration = {
+	const head: config.SiteHeadConfiguration = {
 		id: isCreateMode ? createSiteConfigurationId() : siteId!,
 		updateUrl: updateUrl,
 		updatedTimestamp: timestamp,
@@ -110,7 +110,7 @@ export async function saveAsync(updateUrl: string, setting: setting.ISiteSetting
 		level: convertLevel(setting?.level),
 		language: convertLanguage(setting?.language),
 	};
-	const body: config.ISiteBodyConfiguration = {
+	const body: config.SiteBodyConfiguration = {
 		path: setting.path,
 		common: setting.common,
 	};

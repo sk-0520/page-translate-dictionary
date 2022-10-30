@@ -7,8 +7,8 @@ import * as storage from '../storage';
 import '../../../styles/extension/page.scss';
 
 type PageConfiguration = {
-	app: config.IApplicationConfiguration,
-	sites: ReadonlyArray<config.ISiteConfiguration>,
+	app: config.ApplicationConfiguration,
+	sites: ReadonlyArray<config.SiteConfiguration>,
 };
 let pageConfiguration: PageConfiguration | null;
 
@@ -73,7 +73,7 @@ function updatedPage(event: Event) {
 	}
 }
 
-async function updateSiteConfigurationAsync(siteHeadConfiguration: config.ISiteHeadConfiguration, force: boolean): Promise<config.ISiteHeadConfiguration | null> {
+async function updateSiteConfigurationAsync(siteHeadConfiguration: config.SiteHeadConfiguration, force: boolean): Promise<config.SiteHeadConfiguration | null> {
 	try {
 		const setting = await loader.fetchAsync(siteHeadConfiguration.updateUrl);
 		if (!setting) {
@@ -97,8 +97,8 @@ async function updateSiteConfigurationAsync(siteHeadConfiguration: config.ISiteH
 	return null;
 }
 
-async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: config.ISettingConfiguration, allSiteHeadConfigurations: ReadonlyArray<config.ISiteHeadConfiguration>): Promise<config.ISiteHeadConfiguration[]> {
-	const headItems = new Array<config.ISiteHeadConfiguration>();
+async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: config.SettingConfiguration, allSiteHeadConfigurations: ReadonlyArray<config.SiteHeadConfiguration>): Promise<config.SiteHeadConfiguration[]> {
+	const headItems = new Array<config.SiteHeadConfiguration>();
 
 	for (const currentSiteHeadConfiguration of allSiteHeadConfigurations) {
 		const lastCheckedTimestamp = new Date(currentSiteHeadConfiguration.lastCheckedTimestamp)
@@ -153,7 +153,7 @@ async function bootAsync(): Promise<void> {
 
 	// アップデート確認等々
 	const currentDateTime = new Date();
-	const headItems = new Array<config.ISiteHeadConfiguration>();
+	const headItems = new Array<config.SiteHeadConfiguration>();
 
 	if (applicationConfiguration.setting.updatedBeforeTranslation && applicationConfiguration.setting.autoUpdate) {
 		console.info('翻訳前 設定更新処理実施');
@@ -164,13 +164,13 @@ async function bootAsync(): Promise<void> {
 	}
 
 
-	const siteItems = new Array<config.ISiteConfiguration>();
+	const siteItems = new Array<config.SiteConfiguration>();
 
 	const sortedCurrentSiteHeadConfigurations = currentSiteHeadConfigurations.sort((a, b) => a.level - b.level);
 	for (const siteHeadConfiguration of sortedCurrentSiteHeadConfigurations) {
 		const rawBody = await storage.loadSiteBodyAsync(siteHeadConfiguration.id);
 		if (rawBody) {
-			const siteConfiguration = new config.SiteConfiguration(siteHeadConfiguration, rawBody);
+			const siteConfiguration = new config.SiteConfigurationImpl(siteHeadConfiguration, rawBody);
 			siteItems.push(siteConfiguration);
 		}
 	}

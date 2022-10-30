@@ -8,7 +8,7 @@ import * as loader from '../loader';
 import ImportLogger from './import-logger';
 import '../../../styles/extension/application-options.scss';
 
-function setApplication(applicationConfiguration: config.IApplicationConfiguration) {
+function setApplication(applicationConfiguration: config.ApplicationConfiguration) {
 	dom.requireElementById<HTMLInputElement>('translate_markReplacedElement').checked = applicationConfiguration.translate.markReplacedElement;
 
 	dom.requireElementById<HTMLInputElement>('setting_autoUpdate').checked = applicationConfiguration.setting.autoUpdate;
@@ -16,7 +16,7 @@ function setApplication(applicationConfiguration: config.IApplicationConfigurati
 	dom.requireElementById<HTMLInputElement>('setting_periodDays').value = applicationConfiguration.setting.periodDays.toString();
 }
 
-function updateItemInformation(siteHeadConfiguration: config.ISiteHeadConfiguration, itemRootElement: HTMLElement) {
+function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfiguration, itemRootElement: HTMLElement) {
 	dom.requireSelector('[name="name"]', itemRootElement).textContent = siteHeadConfiguration.name;
 	dom.requireSelector('[name="version"]', itemRootElement).textContent = siteHeadConfiguration.version;
 	const updatedTimestampElement = dom.requireSelector<HTMLTimeElement>('[name="updated-timestamp"]', itemRootElement);
@@ -56,7 +56,7 @@ function updateItemInformation(siteHeadConfiguration: config.ISiteHeadConfigurat
 	}
 }
 
-function addSetting(siteHeadConfiguration: config.ISiteHeadConfiguration) {
+function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 	const templateElement = dom.requireElementById<HTMLTemplateElement>('template-setting-item');
 	const itemRootElement = dom.cloneTemplate(templateElement);
 	for (const element of itemRootElement.querySelectorAll<HTMLElement>('*')) {
@@ -156,7 +156,7 @@ async function importSettingAsync(url: string): Promise<void> {
 	}
 }
 
-function setSettings(siteHeadConfigurations: ReadonlyArray<config.ISiteHeadConfiguration>) {
+function setSettings(siteHeadConfigurations: ReadonlyArray<config.SiteHeadConfiguration>) {
 	for (const siteHeadConfiguration of siteHeadConfigurations) {
 		addSetting(siteHeadConfiguration);
 	}

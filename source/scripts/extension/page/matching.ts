@@ -51,7 +51,7 @@ export class MatchResult {
 	//#endregion
 }
 
-export function match(input: string, matchConfiguration: config.IMatchConfiguration, site: config.ISite): MatchResult {
+export function match(input: string, matchConfiguration: config.MatchConfiguration, site: config.SiteId): MatchResult {
 	switch (matchConfiguration.mode) {
 		case config.MatchMode.Partial:
 			let index = -1;

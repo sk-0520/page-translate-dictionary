@@ -1,6 +1,6 @@
 // ユーザー(サイト翻訳機能提供者)があれこれやるやつ
 
-export interface IInformationSetting {
+export interface InformationSetting {
 	//#region property
 
 	website?: string | null;
@@ -10,7 +10,7 @@ export interface IInformationSetting {
 	//#endregion
 }
 
-export interface IFilterSetting {
+export interface FilterSetting {
 	//#region property
 
 	trim?: boolean;
@@ -20,18 +20,18 @@ export interface IFilterSetting {
 	//#endregion
 }
 
-export interface IMatchSetting {
+export interface MatchSetting {
 	//#region property
 
 	mode?: 'partial' | 'forward' | 'backward' | 'perfect' | 'regex' | null;
 	ignoreCase?: boolean | null;
 	pattern?: string | null;
-	replace?: IReplaceSetting | null;
+	replace?: ReplaceSetting | null;
 
 	//#endregion
 }
 
-export interface IReplaceSetting {
+export interface ReplaceSetting {
 	//#region property
 
 	mode?: 'normal' | 'common' | null;
@@ -40,17 +40,17 @@ export interface IReplaceSetting {
 	//#endregion
 }
 
-export interface ITargetSetting {
+export interface TargetSetting {
 	//#region property
 
-	filter?: IFilterSetting | null;
-	matches?: Array<IMatchSetting> | null;
-	replace?: IReplaceSetting | null;
+	filter?: FilterSetting | null;
+	matches?: Array<MatchSetting> | null;
+	replace?: ReplaceSetting | null;
 
 	//#endregion
 }
 
-export interface ISelectorSetting {
+export interface SelectorSetting {
 	//#region property
 
 	mode?: 'normal' | 'common' | null;
@@ -61,21 +61,21 @@ export interface ISelectorSetting {
 	//#endregion
 }
 
-export interface IQuerySetting {
+export interface QuerySetting {
 	//#region property
 
-	selector?: ISelectorSetting | null;
-	text?: ITargetSetting | null;
-	value?: ITargetSetting | null;
-	attributes?: { [name: string]: ITargetSetting | null; } | null;
+	selector?: SelectorSetting | null;
+	text?: TargetSetting | null;
+	value?: TargetSetting | null;
+	attributes?: { [name: string]: TargetSetting | null; } | null;
 
 	//#endregion
 }
 
-export interface IPathSetting {
+export interface PathSetting {
 	//#region property
 
-	query: IQuerySetting[] | null;
+	query: QuerySetting[] | null;
 
 	import?: string[] | null;
 
@@ -85,7 +85,7 @@ export interface IPathSetting {
 /**
  * 共通設定
  */
-export interface ICommonSetting {
+export interface CommonSetting {
 	//#region property
 
 	/** 共通セレクタ設定 */
@@ -95,14 +95,14 @@ export interface ICommonSetting {
 	text?: { [key: string]: string | null } | null;
 
 	/** 共通クエリ設定 */
-	query?: { [key: string]: IQuerySetting | null } | null;
+	query?: { [key: string]: QuerySetting | null } | null;
 
 	//#endregion
 }
 
-export type PathMap = { [path: string]: IPathSetting | null };
+export type PathMap = { [path: string]: PathSetting | null };
 
-export interface ISiteSetting {
+export interface SiteSetting {
 	//#region property
 
 	/** 名前 */
@@ -112,7 +112,7 @@ export interface ISiteSetting {
 	/** 対象ホスト */
 	hosts: string[];
 	/** 設定情報 */
-	information?: IInformationSetting | null;
+	information?: InformationSetting | null;
 	/** 優先度 */
 	level?: number | null;
 	/** 変換先言語 */
@@ -122,7 +122,7 @@ export interface ISiteSetting {
 	path?: PathMap | null;
 
 	/** 変換共通処理 */
-	common?: ICommonSetting | null;
+	common?: CommonSetting | null;
 
 	//#endregion
 }
