@@ -2,7 +2,7 @@ import * as config from '../config';
 import * as filtering from './filtering';
 import * as matching from './matching';
 
-function replaceRegex(inputText: string, match: config.IMatchConfiguration, matchResult: matching.MatchResult, replaceConfiguration: config.IReplaceConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): string | null {
+function convertRegex(inputText: string, match: config.IMatchConfiguration, matchResult: matching.MatchResult, replaceConfiguration: config.IReplaceConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): string | null {
 	try {
 		console.debug('I: ', match.replace.value);
 
@@ -18,7 +18,7 @@ function replaceRegex(inputText: string, match: config.IMatchConfiguration, matc
 	return null;
 }
 
-function replaceText(inputText: string, replaceConfiguration: config.IReplaceConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): string | null {
+function convertText(inputText: string, replaceConfiguration: config.IReplaceConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): string | null {
 	const replaceMode = replaceConfiguration.mode;
 
 	switch (replaceMode) {
@@ -43,7 +43,7 @@ function replaceText(inputText: string, replaceConfiguration: config.IReplaceCon
 	}
 }
 
-export function replace(source: string, targetConfiguration: config.ITargetConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): string | null {
+export function convert(source: string, targetConfiguration: config.ITargetConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): string | null {
 	const inputText = filtering.filter(source, targetConfiguration.filter, site);
 	console.debug(inputText);
 
@@ -54,12 +54,12 @@ export function replace(source: string, targetConfiguration: config.ITargetConfi
 		}
 
 		if (matchResult.isRegex) {
-			const result = replaceRegex(inputText, match, matchResult, match.replace, commonConfiguration, site);
+			const result = convertRegex(inputText, match, matchResult, match.replace, commonConfiguration, site);
 			if (result) {
 				return result;
 			}
 		} else {
-			const result = replaceText(inputText, match.replace, commonConfiguration, site);
+			const result = convertText(inputText, match.replace, commonConfiguration, site);
 			if (result) {
 				return result;
 			}
@@ -67,7 +67,7 @@ export function replace(source: string, targetConfiguration: config.ITargetConfi
 	}
 
 	if (targetConfiguration.replace) {
-		const result = replaceText(inputText, targetConfiguration.replace, commonConfiguration, site);
+		const result = convertText(inputText, targetConfiguration.replace, commonConfiguration, site);
 		if (result) {
 			return result;
 		}

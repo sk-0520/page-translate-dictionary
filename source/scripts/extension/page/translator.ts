@@ -1,7 +1,7 @@
 import * as config from '../config';
 import * as names from '../names';
 import * as type from '../type-guard';
-import * as replacer from './replacer';
+import * as converter from './converter';
 
 function translateElement(element: Element, queryConfiguration: config.IQueryConfiguration, commonConfiguration: config.ICommonConfiguration, site: config.ISite): boolean {
 	let translated = false;
@@ -10,7 +10,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 		for (const [attributeName, targetConfiguration] of Object.entries(queryConfiguration.attributes)) {
 			const sourceValue = element.getAttribute(attributeName);
 			if (sourceValue) {
-				const output = replacer.replace(sourceValue, targetConfiguration, commonConfiguration, site);
+				const output = converter.convert(sourceValue, targetConfiguration, commonConfiguration, site);
 				if (output) {
 					element.setAttribute(attributeName, output);
 					element.setAttribute(names.Attributes.attributeHead + attributeName, sourceValue);
@@ -22,7 +22,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 
 	if (type.isInputElement(element) && queryConfiguration.value) {
 		const sourceValue = element.value;
-		const output = replacer.replace(sourceValue, queryConfiguration.value, commonConfiguration, site);
+		const output = converter.convert(sourceValue, queryConfiguration.value, commonConfiguration, site);
 		if (output) {
 			element.value = output;
 			element.setAttribute(names.Attributes.value, sourceValue);
@@ -57,7 +57,7 @@ function translateElement(element: Element, queryConfiguration: config.IQueryCon
 		for (const [number, node] of nodes) {
 			const sourceValue = node.textContent || '';
 
-			const output = replacer.replace(sourceValue, queryConfiguration.text, commonConfiguration, site);
+			const output = converter.convert(sourceValue, queryConfiguration.text, commonConfiguration, site);
 			if (output) {
 				if (node instanceof Text) {
 					node.textContent = output;
