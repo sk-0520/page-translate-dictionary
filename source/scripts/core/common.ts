@@ -1,4 +1,4 @@
-import TimeSpan from './time';
+import { TimeSpan } from './time';
 
 /**
  * 非同期待機

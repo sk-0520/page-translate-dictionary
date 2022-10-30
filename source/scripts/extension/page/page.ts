@@ -66,11 +66,22 @@ function executeAsync(pageConfiguration: PageConfiguration): Promise<void> {
 	}
 }
 
-function updatedPage(event: Event) {
-	console.info('updatedPage');
+function updatedPage(event: Event): Promise<void> {
+	console.log('updatedPage');
 	if (pageConfiguration) {
-		executeAsync(pageConfiguration);
+		return executeAsync(pageConfiguration);
 	}
+
+	return Promise.resolve();
+}
+
+function modifyPageAsync(mutations: MutationRecord[]): Promise<void> {
+	console.log('modifyPage', mutations);
+	if (pageConfiguration) {
+		return executeAsync(pageConfiguration);
+	}
+
+	return Promise.resolve();
 }
 
 async function updateSiteConfigurationAsync(siteHeadConfiguration: config.SiteHeadConfiguration, force: boolean): Promise<config.SiteHeadConfiguration | null> {
@@ -136,19 +147,19 @@ async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: con
 	return headItems;
 }
 
-async function bootAsync(): Promise<void> {
+async function bootAsync(): Promise<boolean> {
 	const applicationConfiguration = await storage.loadApplicationAsync();
 	const allSiteHeadConfigurations = await storage.loadSiteHeadsAsync();
 
 	if (!allSiteHeadConfigurations.length) {
 		console.trace('設定なし');
-		return;
+		return false;
 	}
 
 	const currentSiteHeadConfigurations = allSiteHeadConfigurations.filter(i => uri.isEnabledHosts(location.host, i.hosts));
 	if (!currentSiteHeadConfigurations.length) {
 		console.info(`ホストに該当する設定なし: ${location.host}`);
-		return;
+		return false;
 	}
 
 	// アップデート確認等々
@@ -192,11 +203,27 @@ async function bootAsync(): Promise<void> {
 		updateSiteConfigurationsAsync(currentDateTime, applicationConfiguration.setting, allSiteHeadConfigurations, currentSiteHeadConfigurations);
 	}
 
+	return 0 < siteItems.length;
 }
 
 export function boot() {
 	document.addEventListener('pjax:end', ev => updatedPage(ev));
 	document.addEventListener('turbo:render', ev => updatedPage(ev));
 
-	bootAsync();
+	bootAsync().then(fit => {
+		if(!fit) {
+			return;
+		}
+		const bodyMutationOptions: MutationObserverInit = {
+			childList: true,
+			subtree: true,
+		};
+		var bodyMutationObserver = new MutationObserver(mutations => {
+			bodyMutationObserver.disconnect();
+			modifyPageAsync(mutations).then(() => {
+				bodyMutationObserver.observe(document.body, bodyMutationOptions);
+			});
+		});
+		bodyMutationObserver.observe(document.body, bodyMutationOptions);
+	})
 }
