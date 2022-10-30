@@ -101,45 +101,35 @@ export class DateTime {
 	}
 
 	public get year(): number {
-		return this._timestamp.getFullYear()
-			;
+		return this._timestamp.getFullYear();
 	}
 
 	public get month(): number {
-		const rawMonth = this._timestamp.getMonth()
-			;
-
-		return rawMonth + 1;
+		return this._timestamp.getMonth() + 1;
 	}
 
 	public get day(): number {
-		return this._timestamp.getDate()
-			;
+		return this._timestamp.getDate();
 	}
 
 	public get dayOfWeek(): DayOfWeek {
-		return this._timestamp.getDay()
-			;
+		return this._timestamp.getDay();
 	}
 
 	public get hour(): number {
-		return this._timestamp.getHours()
-			;
+		return this._timestamp.getHours();
 	}
 
 	public get minute(): number {
-		return this._timestamp.getMinutes()
-			;
+		return this._timestamp.getMinutes();
 	}
 
 	public get second(): number {
-		return this._timestamp.getSeconds()
-			;
+		return this._timestamp.getSeconds();
 	}
 
 	public get millisecond(): number {
-		return this._timestamp.getMilliseconds()
-			;
+		return this._timestamp.getMilliseconds();
 	}
 
 	//#endregion
@@ -151,7 +141,9 @@ export class DateTime {
 	}
 
 	public static utcNow(): DateTime {
-		return new DateTime(new Date(), true);
+		const now = new Date();
+		const utc = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds());
+		return new DateTime(new Date(utc), true);
 	}
 
 	private static createCore(isUtc: boolean, year: number, month: number, day: number, hour?: number, minute?: number, second?: number, millisecond?: number): DateTime {
