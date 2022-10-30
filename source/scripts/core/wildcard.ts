@@ -1,4 +1,5 @@
 import * as regex from './regex';
+import * as string from './string';
 
 /**
  * ワイルドカード処理。
@@ -18,10 +19,18 @@ export default class Wildcard {
 	 * @param pattern ワイルドカードパターン。
 	 */
 	public constructor(pattern: string) {
-		const regexPattern = regex.escape(pattern)
-			.replaceAll("\\?", '.')
-			.replaceAll("\\*", '.*')
-			;
+		// const regexPattern = regex.escape(pattern)
+		// 	.replaceAll("\\?", '.')
+		// 	.replaceAll("\\*", '.*')
+		// 	;
+		const regexPattern = string.replaceAll(
+			string.replaceAll(
+				regex.escape(pattern),
+				"\\?",
+				'.'
+			),
+			"\\*", '.*'
+		);
 
 		this._regex = new RegExp('^' + regexPattern + '$');
 	}

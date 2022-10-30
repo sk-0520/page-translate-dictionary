@@ -45,7 +45,6 @@ function convertText(inputText: string, replaceConfiguration: config.ReplaceConf
 
 export function convert(source: string, targetConfiguration: config.TargetConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): string | null {
 	const inputText = filtering.filter(source, targetConfiguration.filter, site);
-	console.debug(inputText);
 
 	for (const match of targetConfiguration.matches) {
 		const matchResult = matching.match(inputText, match, site);

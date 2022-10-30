@@ -5,11 +5,17 @@ import * as setting from './setting';
 import * as type from '../core/type';
 import * as string from '../core/string';
 
-export type SiteConfigurationId = string;
+/**
+ * 拡張機能内で識別するための設定ID。
+ */
+export type SiteInternalId = string;
 
+/**
+ * 各処理でどの設定を使用しているか表現するためのID。
+ */
 export interface SiteId {
 	/** 設定データの一意キー(自動採番) */
-	id: SiteConfigurationId;
+	id: SiteInternalId;
 	/** 名前 */
 	name: string;
 }
@@ -25,31 +31,31 @@ export interface InformationConfiguration {
 }
 
 export const enum SelectorMode {
-	Normal = 'normal',
-	Common = 'common',
+	Normal,
+	Common,
 }
 
 export const enum WhiteSpace {
-	Join = 'join',
-	Raw = 'raw',
+	Join,
+	Raw,
 }
 
 export const enum LineBreak {
-	Join = 'join',
-	Raw = 'raw',
+	Join,
+	Raw,
 }
 
 export const enum MatchMode {
-	Partial = 'partial',
-	Forward = 'forward',
-	Backward = 'backward',
-	Perfect = 'perfect',
-	Regex = 'regex',
+	Partial,
+	Forward,
+	Backward,
+	Perfect,
+	Regex,
 }
 
 export const enum ReplaceMode {
-	Normal = 'normal',
-	Common = 'common',
+	Normal,
+	Common,
 }
 
 export interface FilterConfiguration {
@@ -217,7 +223,7 @@ export interface SiteHeadConfiguration extends SiteId {
 
 	//#region ISite
 
-	id: SiteConfigurationId,
+	id: SiteInternalId,
 	name: string;
 
 	//#endregion

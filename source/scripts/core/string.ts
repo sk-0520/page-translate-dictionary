@@ -1,3 +1,5 @@
+import * as regex from './regex';
+
 export function isNullOrEmpty(s?: string | null): boolean {
 	if (!s) {
 		return true;
@@ -21,7 +23,7 @@ export function replaceAllImpl(source: string, searchValue: string | RegExp, rep
 		return source.replace(new RegExp(searchValue.source, flags), replaceValue);
 	}
 
-	return source.replace(new RegExp(searchValue, 'g'), replaceValue);
+	return source.replace(new RegExp(regex.escape(searchValue), 'g'), replaceValue);
 
 }
 

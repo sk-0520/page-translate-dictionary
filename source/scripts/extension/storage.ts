@@ -66,7 +66,7 @@ export async function loadSiteHeadsAsync(): Promise<Array<config.SiteHeadConfigu
  * @param id
  * @returns 存在しない場合は `null`。存在する場合は多分本体データを返す(型確認をしない)
  */
-export async function loadSiteBodyAsync(id: config.SiteConfigurationId): Promise<config.SiteBodyConfiguration | null> {
+export async function loadSiteBodyAsync(id: config.SiteInternalId): Promise<config.SiteBodyConfiguration | null> {
 	const key = Keys.siteBody + id;
 	const record = await webextension.storage.local.get(key);
 	if (record && key in record) {
@@ -97,14 +97,14 @@ export async function addSiteHeadsAsync(siteHeadConfigurations: config.SiteHeadC
 	await saveSiteHeadsAsync(heads);
 }
 
-export async function saveSiteBodyAsync(id: config.SiteConfigurationId, siteBodyConfiguration: config.SiteBodyConfiguration): Promise<void> {
+export async function saveSiteBodyAsync(id: config.SiteInternalId, siteBodyConfiguration: config.SiteBodyConfiguration): Promise<void> {
 	const key = Keys.siteBody + id;
 	return webextension.storage.local.set({
 		[key]: siteBodyConfiguration,
 	});
 }
 
-export async function deleteSiteBodyAsync(id: config.SiteConfigurationId): Promise<void> {
+export async function deleteSiteBodyAsync(id: config.SiteInternalId): Promise<void> {
 	const key = Keys.siteBody + id;
 	return webextension.storage.local.remove(key);
 }

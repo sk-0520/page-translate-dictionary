@@ -53,7 +53,7 @@ export async function fetchAsync(url: string): Promise<setting.SiteSetting | nul
 	return json as setting.SiteSetting;
 }
 
-export function createSiteConfigurationId(): config.SiteConfigurationId {
+export function createSiteInternalId(): config.SiteInternalId {
 	return crypto.randomUUID();
 }
 
@@ -83,7 +83,7 @@ export function convertLanguage(language: string | null | undefined): string {
 	return '';
 }
 
-export async function hasSiteSettingAsync(url: string): Promise<config.SiteConfigurationId | null> {
+export async function hasSiteSettingAsync(url: string): Promise<config.SiteInternalId | null> {
 	const heads = await storage.loadSiteHeadsAsync();
 
 	const target = heads.filter(i => i.updateUrl === url);
@@ -94,12 +94,12 @@ export async function hasSiteSettingAsync(url: string): Promise<config.SiteConfi
 	return target[0].id;
 }
 
-export async function saveAsync(updateUrl: string, setting: setting.SiteSetting, siteId: config.SiteConfigurationId | null): Promise<config.SiteData> {
+export async function saveAsync(updateUrl: string, setting: setting.SiteSetting, siteId: config.SiteInternalId | null): Promise<config.SiteData> {
 	const timestamp = (new Date()).toISOString();
 	const isCreateMode = string.isNullOrWhiteSpace(siteId);
 
 	const head: config.SiteHeadConfiguration = {
-		id: isCreateMode ? createSiteConfigurationId() : siteId!,
+		id: isCreateMode ? createSiteInternalId() : siteId!,
 		updateUrl: updateUrl,
 		updatedTimestamp: timestamp,
 		lastCheckedTimestamp: timestamp,
