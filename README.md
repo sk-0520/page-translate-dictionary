@@ -62,13 +62,13 @@
             "mode": "normal",
             "value": "#id",
             // テキストノードの指定。 childNodes の #text だけを集計した 1 基底の番号: <span>[1]<br />[2]<br />[3]</span>
-            // 負数を指定した場合は全テキストノードが対象となる(matchによる制御を想定)
+            // 負数を指定した場合は全テキストノードが対象となる(matchesによる制御を想定)
             // `-1` を指定すれば一致時点で後続終了、`-2`(負数-1未満) を指定した場合はすべて処理。
             "node": 3,
             // セレクタを全要素に適用するか
             "all": false
           },
-          // 対象要素の textContent
+          // 対象要素の (Element/Text).textContent
           "text": {
             "filter": {
               // トリムを実施するか
@@ -83,25 +83,32 @@
               "lineBreak": "join"
             },
             // 条件
-            "match": {
-              // 判定方法
-              //  partial: 部分一致
-              //  forward: 前方一致
-              //  backward: 後方一致
-              //  perfect: 完全一致
-              //  regex: 正規表現 (?<NAME>) 使用可能
-              "mode": "partial",
-              // 大文字小文字を区別するか
-              "ignoreCase": true,
-              // パターン
-              "pattern": "pattern"
-            },
+            "matches": [
+                {
+                // 判定方法
+                //  partial: 部分一致
+                //  forward: 前方一致
+                //  backward: 後方一致
+                //  perfect: 完全一致
+                //  regex: 正規表現 (?<NAME>) 使用可能
+                "mode": "partial",
+                // 大文字小文字を区別するか
+                "ignoreCase": true,
+                // パターン
+                "pattern": "pattern",
+                "replace": {
+                  // 置き換え方法
+                  //  normal: 通常
+                  //  common: 共通
+                  "mode": "normal",
+                  // 条件が正規表現の場合で指定がある場合 ?{NAME} を $<NAME> で使用可能
+                  "value": "text",
+                }
+              }
+            ],
+            // 置き換え(matches に該当しない場合)
             "replace": {
-              // 置き換え方法
-              //  normal: 通常
-              //  common: 共通
               "mode": "normal",
-              // 置き換え文字列 match が正規表現の場合で指定がある場合 ?{NAME} を $<NAME> で使用可能
               "value": "text",
             }
           },

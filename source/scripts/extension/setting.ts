@@ -25,7 +25,8 @@ export interface IMatchSetting {
 
 	mode?: string | null;
 	ignoreCase?: boolean | null;
-	pattern: string | null;
+	pattern?: string | null;
+	replace?: IReplaceSetting | null;
 
 	//#endregion
 }
@@ -43,8 +44,8 @@ export interface ITargetSetting {
 	//#region property
 
 	filter?: IFilterSetting | null;
-	match?: IMatchSetting | null;
-	replace: IReplaceSetting | null;
+	matches?: Array<IMatchSetting> | null;
+	replace?: IReplaceSetting | null;
 
 	//#endregion
 }

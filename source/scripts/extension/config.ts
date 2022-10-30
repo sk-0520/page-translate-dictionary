@@ -68,6 +68,7 @@ export interface IMatchConfiguration {
 	mode: MatchMode;
 	ignoreCase: boolean;
 	pattern: string;
+	replace: IReplaceConfiguration;
 
 	//#endregion
 }
@@ -85,8 +86,8 @@ export interface ITargetConfiguration {
 	//#region property
 
 	filter: IFilterConfiguration;
-	match: IMatchConfiguration | null;
-	replace: IReplaceConfiguration;
+	matches: Array<IMatchConfiguration>;
+	replace: IReplaceConfiguration | null;
 
 	//#endregion
 }
@@ -260,14 +261,14 @@ export class SiteConfiguration implements ISiteConfiguration {
 	) {
 		// ここで全部のデータを補正
 		//alert('body.path = ' + JSON.stringify(body.path));
-		this.path = SiteConfiguration.convertPath(body.path || null);
+		this.path = this.convertPath(body.path || null);
 		//alert('this.path = ' + JSON.stringify(this.path));
-		this.common = SiteConfiguration.convertCommon(body.common || null);
+		this.common = this.convertCommon(body.common || null);
 	}
 
 	//#region function
 
-	private static convertEnum<TEnum>(raw: any | null | undefined, key: string, fallbackValue: TEnum): TEnum {
+	private convertEnum<TEnum>(raw: any | null | undefined, key: string, fallbackValue: TEnum): TEnum {
 		if (!raw) {
 			return fallbackValue;
 		}
@@ -279,15 +280,15 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return value as TEnum; // 💩 enum と設定定義が全然ダメ
 	}
 
-	private static convertSelector(raw: setting.ISelectorSetting): ISelectorConfiguration {
+	private convertSelector(raw: setting.ISelectorSetting): ISelectorConfiguration {
 		return {
-			mode: SiteConfiguration.convertEnum(raw, 'mode', SelectorMode.Normal),
+			mode: this.convertEnum(raw, 'mode', SelectorMode.Normal),
 			value: raw.value!,
 			node: type.getPrimaryPropertyOr(raw, 'node', 'number', 0),
 			all: type.getPrimaryPropertyOr(raw, 'all', 'boolean', false),
 		};
 	}
-	private static convertFilter(raw?: setting.IFilterSetting | null): IFilterConfiguration {
+	private convertFilter(raw?: setting.IFilterSetting | null): IFilterConfiguration {
 		if (!raw) {
 			return {
 				trim: true,
@@ -298,11 +299,11 @@ export class SiteConfiguration implements ISiteConfiguration {
 
 		return {
 			trim: type.getPrimaryPropertyOr(raw, 'trim', 'boolean', true),
-			whiteSpace: SiteConfiguration.convertEnum(raw, 'whiteSpace', WhiteSpace.Join),
-			lineBreak: SiteConfiguration.convertEnum(raw, 'lineBreak', LineBreak.Join),
+			whiteSpace: this.convertEnum(raw, 'whiteSpace', WhiteSpace.Join),
+			lineBreak: this.convertEnum(raw, 'lineBreak', LineBreak.Join),
 		};
 	}
-	private static convertMatch(raw: setting.IMatchSetting): IMatchConfiguration | null {
+	private convertMatch(raw: setting.IMatchSetting): IMatchConfiguration | null {
 		if (!type.hasPrimaryProperty(raw, 'pattern', 'string')) {
 			return null;
 		}
@@ -310,45 +311,63 @@ export class SiteConfiguration implements ISiteConfiguration {
 			return null;
 		}
 
+		const replace = this.convertReplace(raw.replace);
+		if(!replace) {
+			return null;
+		}
+
 		return {
 			ignoreCase: type.getPrimaryPropertyOr(raw, 'ignoreCase', 'boolean', true),
-			mode: SiteConfiguration.convertEnum(raw, 'mode', MatchMode.Partial),
+			mode: this.convertEnum(raw, 'mode', MatchMode.Partial),
 			pattern: raw.pattern!,
+			replace: replace,
 		}
 	}
-	private static convertReplace(raw?: setting.IReplaceSetting | null): IReplaceConfiguration | null {
+	private convertMatches(raw?: ReadonlyArray<setting.IMatchSetting> | null): IMatchConfiguration[] {
+		if (!raw) {
+			return [];
+		}
+
+		const result = new Array<IMatchConfiguration>();
+		for (const item of raw) {
+			const match = this.convertMatch(item);
+			if (match) {
+				result.push(match);
+			}
+		}
+
+		return result;
+	}
+
+	private convertReplace(raw?: setting.IReplaceSetting | null): IReplaceConfiguration | null {
 		if (!raw) {
 			return null;
 		}
 
 		return {
-			mode: SiteConfiguration.convertEnum(raw, 'mode', ReplaceMode.Normal),
+			mode: this.convertEnum(raw, 'mode', ReplaceMode.Normal),
 			value: raw.value || '',
 		};
 	}
 
-	private static convertTarget(raw?: setting.ITargetSetting | null): ITargetConfiguration | null {
+	private convertTarget(raw?: setting.ITargetSetting | null): ITargetConfiguration | null {
 		if (!raw) {
 			return null;
 		}
 
-		const filter = SiteConfiguration.convertFilter(raw.filter);
-		const match = raw.match ? SiteConfiguration.convertMatch(raw.match) : null;
-		const replace = SiteConfiguration.convertReplace(raw.replace);
-
-		if (!replace) {
-			return null;
-		}
+		const filter = this.convertFilter(raw.filter);
+		const matches = this.convertMatches(raw.matches);
+		const replace = this.convertReplace(raw.replace);
 
 		const result: ITargetConfiguration = {
 			filter: filter,
-			match: match,
+			matches: matches,
 			replace: replace,
 		};
 		return result;
 	}
 
-	private static convertQuery(raw: setting.IQuerySetting | null): IQueryConfiguration | null {
+	private convertQuery(raw: setting.IQuerySetting | null): IQueryConfiguration | null {
 		if (!raw) {
 			return null;
 		}
@@ -358,16 +377,16 @@ export class SiteConfiguration implements ISiteConfiguration {
 		}
 
 		const query: IQueryConfiguration = {
-			selector: SiteConfiguration.convertSelector(raw.selector),
+			selector: this.convertSelector(raw.selector),
 			attributes: {},
 		};
 
-		const text = SiteConfiguration.convertTarget(raw.text);
+		const text = this.convertTarget(raw.text);
 		if (text) {
 			query.text = text;
 		}
 
-		const value = SiteConfiguration.convertTarget(raw.value);
+		const value = this.convertTarget(raw.value);
 		if (value) {
 			query.value = value;
 		}
@@ -377,7 +396,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 				if (string.isNullOrWhiteSpace(name)) {
 					continue;
 				}
-				const attr = SiteConfiguration.convertTarget(target);
+				const attr = this.convertTarget(target);
 				if (attr) {
 					query.attributes[name] = attr;
 				}
@@ -387,7 +406,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return query;
 	}
 
-	public static convertPath(raw: setting.PathMap | null): PathMap {
+	public convertPath(raw: setting.PathMap | null): PathMap {
 		if (!raw) {
 			return {};
 		}
@@ -424,7 +443,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 			};
 
 			for (const querySetting of pathSetting.query) {
-				const query = SiteConfiguration.convertQuery(querySetting);
+				const query = this.convertQuery(querySetting);
 				if (!query) {
 					continue;
 				}
@@ -450,7 +469,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		return result;
 	}
 
-	public static convertCommon(raw: setting.ICommonSetting | null): ICommonConfiguration {
+	public convertCommon(raw: setting.ICommonSetting | null): ICommonConfiguration {
 		if (!raw) {
 			return {
 				selector: {},
@@ -484,7 +503,7 @@ export class SiteConfiguration implements ISiteConfiguration {
 		if ('query' in raw && raw.query && typeof raw.query === 'object') {
 			for (const [key, querySetting] of Object.entries(raw.query)) {
 				if (!string.isNullOrWhiteSpace(key)) {
-					const query = SiteConfiguration.convertQuery(querySetting);
+					const query = this.convertQuery(querySetting);
 					if (query) {
 						result.query[key] = query!;
 					}
