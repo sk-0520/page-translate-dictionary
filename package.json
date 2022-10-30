@@ -1,5 +1,5 @@
 {
-	"name": "page-translate-dictionary",
+	"name": "page-translation-dictionary",
 	"version": "1.0.0",
 	"description": "__MSG_we_description__",
 	"main": "index.js",
@@ -21,14 +21,14 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/sk-0520/page-translate-dictionary.git"
+		"url": "git+https://github.com/sk-0520/page-translation-dictionary.git"
 	},
 	"author": "sk",
 	"license": "WTFPL",
 	"bugs": {
-		"url": "https://github.com/sk-0520/page-translate-dictionary/issues"
+		"url": "https://github.com/sk-0520/page-translation-dictionary/issues"
 	},
-	"homepage": "https://github.com/sk-0520/page-translate-dictionary",
+	"homepage": "https://github.com/sk-0520/page-translation-dictionary",
 	"jest": {
 		"moduleFileExtensions": [
 			"ts",

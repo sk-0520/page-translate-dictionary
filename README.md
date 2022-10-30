@@ -1,4 +1,4 @@
-# page-translate
+# page-translation-dictionary
 
 夢語るだけのREADME。
 
