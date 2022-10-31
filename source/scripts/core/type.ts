@@ -1,4 +1,5 @@
-type TypeOfBuildIn = 'string' | 'number' | 'bigint' | 'boolean' | 'symbol' | 'undefined' | 'object' | 'function';
+type TypeOfPrimitive = 'string' | 'number' | 'bigint' | 'boolean';
+//type TypeOfBuildIn = 'string' | 'number' | 'bigint' | 'boolean' | 'symbol' | 'undefined' | 'object' | 'function';
 
 export function hasProperty(obj: any, key: string): obj is Record<string, unknown> {
 	if (!obj) {
@@ -11,19 +12,19 @@ export function hasProperty(obj: any, key: string): obj is Record<string, unknow
 	return true;
 }
 
-export function hasPrimaryProperty(obj: any, key: string, type: TypeOfBuildIn): boolean {
+export function hasPrimaryProperty(obj: any, key: string, type: TypeOfPrimitive): boolean {
 	return hasProperty(obj, key) && typeof obj[key] === type;
 }
 
 export function hasObjectProperty(obj: any, key: string): boolean {
-	return hasPrimaryProperty(obj, key, 'object') && obj[key]
+	return hasProperty(obj, key) && typeof obj[key] === 'object';
 }
 
 export function hasArrayProperty(obj: any, key: string): boolean {
 	return hasProperty(obj, key) && Array.isArray(obj[key]);
 }
 
-export function getPrimaryPropertyOr<TResult>(obj: any, key: string, type: TypeOfBuildIn, fallbackValue: TResult): TResult {
+export function getPrimaryPropertyOr<TResult>(obj: any, key: string, type: TypeOfPrimitive, fallbackValue: TResult): TResult {
 	if (hasPrimaryProperty(obj, key, type)) {
 		return obj[key] as TResult;
 	}
