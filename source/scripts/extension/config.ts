@@ -84,6 +84,7 @@ export interface ReplaceConfiguration {
 
 	readonly mode: ReplaceMode;
 	readonly value: string;
+	readonly regex: ReadonlyMap<string, ReadonlyMap<string, string>>;
 
 	//#endregion
 }
@@ -377,13 +378,33 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 			return null;
 		}
 
-		return {
+		const regexMap = new Map<string, Map<string, string>>();
+		if ('regex' in raw && raw.regex) {
+			for (const [name, rawMap] of Object.entries(raw.regex)) {
+				if (!rawMap) {
+					continue;
+				}
+
+				const map = new Map<string, string>();
+				for (const [key, value] of Object.entries(rawMap)) {
+					map.set(key, value);
+				}
+				if (map.size) {
+					regexMap.set(name, map);
+				}
+			}
+		}
+
+		const result: ReplaceConfiguration = {
 			mode: this.convertEnum(raw, 'mode', ReplaceMode.Normal, new Map([
 				['normal', ReplaceMode.Normal],
 				['common', ReplaceMode.Common],
 			])),
 			value: raw.value || '',
+			regex: regexMap,
 		};
+
+		return result;
 	}
 
 	private convertTarget(raw?: setting.TargetSetting | null): TargetConfiguration | null {
@@ -412,7 +433,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 			return null;
 		}
 
-		const attributeMap = new Map<string,TargetConfiguration>();
+		const attributeMap = new Map<string, TargetConfiguration>();
 		if (raw.attributes && typeof raw.attributes === 'object') {
 			for (const [name, target] of Object.entries(raw.attributes)) {
 				if (string.isNullOrWhiteSpace(name)) {

@@ -6,10 +6,36 @@ function convertRegex(inputText: string, match: config.MatchConfiguration, match
 	try {
 		console.debug('I: ', match.replace.value);
 
-		// https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/String/replace#%E8%A7%A3%E8%AA%AC
-		const result = inputText.replace(matchResult.regex, match.replace.value);
+		if (match.replace.regex.size) {
+			matchResult.regex.lastIndex = 0; // まじかお前
+			const regexArray = matchResult.regex.exec(inputText)!;
+			const regexGroups = regexArray.groups!;
 
-		return result;
+			return match.replace.value.replace(
+				/\$<(.+?)>/g,
+				m => {
+					const name = m.substring(2, m.length - 1);
+					const nameValue = regexGroups[name];
+					if (nameValue) {
+						const nameMap = match.replace.regex.get(name);
+						if (nameMap) {
+							const result = nameMap.get(nameValue);
+							if (result) {
+								return result;
+							}
+						}
+
+						return nameValue;
+					}
+
+					return m;
+				}
+			);
+		} else {
+			// https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/String/replace#%E8%A7%A3%E8%AA%AC
+			const result = inputText.replace(matchResult.regex, match.replace.value);
+			return result;
+		}
 
 	} catch (e) {
 		console.error('catch --> ' + e);

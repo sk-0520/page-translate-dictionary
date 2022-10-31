@@ -36,6 +36,7 @@ export interface ReplaceSetting {
 
 	mode?: 'normal' | 'common' | null;
 	value: string | null;
+	regex?: { [name: string]: { [key: string]: string } } | null;
 
 	//#endregion
 }
