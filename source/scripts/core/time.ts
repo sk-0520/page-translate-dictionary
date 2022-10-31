@@ -1,3 +1,5 @@
+import * as number from './number';
+
 /**
  * 時間を扱う。
  *
@@ -101,35 +103,60 @@ export class DateTime {
 	}
 
 	public get year(): number {
-		return this._timestamp.getFullYear();
+		return this.isUtc
+			? this._timestamp.getUTCFullYear()
+			: this._timestamp.getFullYear()
+			;
 	}
 
 	public get month(): number {
-		return this._timestamp.getMonth() + 1;
+		const month = this.isUtc
+			? this._timestamp.getUTCMonth()
+			: this._timestamp.getMonth()
+			;
+		return month + 1;
 	}
 
 	public get day(): number {
-		return this._timestamp.getDate();
+		return this.isUtc
+			? this._timestamp.getUTCDate()
+			: this._timestamp.getDate()
+			;
 	}
 
 	public get dayOfWeek(): DayOfWeek {
-		return this._timestamp.getDay();
+		return this.isUtc
+			? this._timestamp.getUTCDay()
+			: this._timestamp.getDay()
+			;
 	}
 
 	public get hour(): number {
-		return this._timestamp.getHours();
+		return this.isUtc
+			? this._timestamp.getUTCHours()
+			: this._timestamp.getHours()
+			;
 	}
 
 	public get minute(): number {
-		return this._timestamp.getMinutes();
+		return this.isUtc
+			? this._timestamp.getUTCMinutes()
+			: this._timestamp.getMinutes()
+			;
 	}
 
 	public get second(): number {
-		return this._timestamp.getSeconds();
+		return this.isUtc
+			? this._timestamp.getUTCSeconds()
+			: this._timestamp.getSeconds()
+			;
 	}
 
 	public get millisecond(): number {
-		return this._timestamp.getMilliseconds();
+		return this.isUtc
+			? this._timestamp.getUTCMilliseconds()
+			: this._timestamp.getMilliseconds()
+			;
 	}
 
 	//#endregion
@@ -149,15 +176,29 @@ export class DateTime {
 	private static createCore(isUtc: boolean, year: number, month: number, day: number, hour?: number, minute?: number, second?: number, millisecond?: number): DateTime {
 		let date: Date | null = null;
 		if (hour === undefined) {
-			date = new Date(year, month - 1, day);
+			date = isUtc
+				? new Date(Date.UTC(year, month - 1, day))
+				: new Date(year, month - 1, day)
+				;
 		} else if (minute === undefined) {
-			date = new Date(year, month - 1, day, hour);
+			date = isUtc
+				? new Date(Date.UTC(year, month - 1, day, hour))
+				: new Date(year, month - 1, day, hour)
+				;
 		} else if (second === undefined) {
-			date = new Date(year, month - 1, day, hour, minute);
+			date = isUtc
+				? new Date(Date.UTC(year, month - 1, day, hour, minute))
+				: new Date(year, month - 1, day, hour, minute);
 		} else if (millisecond === undefined) {
-			date = new Date(year, month - 1, day, hour, minute, second);
+			date = isUtc
+				? new Date(Date.UTC(year, month - 1, day, hour, minute, second))
+				: new Date(year, month - 1, day, hour, minute, second)
+				;
 		} else {
-			date = new Date(year, month - 1, day, hour, minute, second, millisecond);
+			date = isUtc
+				? new Date(Date.UTC(year, month - 1, day, hour, minute, second, millisecond))
+				: new Date(year, month - 1, day, hour, minute, second, millisecond)
+				;
 		}
 		return new DateTime(date, isUtc);
 	}
@@ -185,6 +226,15 @@ export class DateTime {
 	}
 	//#endregion
 
+	public static parse(timestamp: string): DateTime | null {
+		const date = new Date(timestamp);
+		if (Number.isNaN(date.getDate())) {
+			return null;
+		}
+
+		return new DateTime(date, false);
+	}
+
 	public add(timeSpan: TimeSpan): DateTime {
 		const current = this._timestamp.getTime();
 		const addTime = new Date(current + timeSpan.ticks);
@@ -197,6 +247,60 @@ export class DateTime {
 
 	public compare(dateTime: DateTime): number {
 		return this._timestamp.getTime() - dateTime._timestamp.getTime();
+	}
+
+	public toString(format?: string): string {
+		if (format === undefined) {
+			return this._timestamp.toISOString();
+		}
+
+		switch (format) {
+			case 'U':
+				return this._timestamp.toUTCString();
+
+			case 'S':
+				return this._timestamp.toString();
+
+			case 'L':
+				return this._timestamp.toLocaleString();
+
+			default:
+				break;
+		}
+
+		const map = new Map([
+			//['y', (this.year.toString())],
+			//['yy', number.padding(this.year - 2000, 2, '0')],
+			//['yyy', number.padding(this.year, 3, '0')],
+			['yyyy', number.padding(this.year, 4, '0')],
+			['yyyyy', number.padding(this.year, 5, '0')],
+
+
+			['M', this.month.toString()],
+			['MM', number.padding(this.month, 2, '0')],
+
+			['d', this.day.toString()],
+			['dd', number.padding(this.day, 2, '0')],
+
+			['H', this.hour.toString()],
+			['HH', number.padding(this.hour, 2, '0')],
+
+			['m', this.minute.toString()],
+			['mm', number.padding(this.minute, 2, '0')],
+
+			['s', this.second.toString()],
+			['ss', number.padding(this.second, 2, '0')],
+		]);
+
+		const pattern = Array.from(map.keys())
+			.sort((a, b) => b.length - a.length)
+			.join('|')
+			;
+
+		return format.replace(
+			new RegExp('(' + pattern + ')', 'g'),
+			m => map.get(m) ?? m
+		);
 	}
 
 	//#endregion

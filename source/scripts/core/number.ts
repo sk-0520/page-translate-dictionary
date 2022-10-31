@@ -8,7 +8,7 @@
  * @param c 埋め文字。
  * @returns
  */
- export function padding(input: number, width: number, c: string): string {
+export function padding(input: number, width: number, c: string): string {
 	if (input < 0) {
 		throw new Error('input is negative');
 	}

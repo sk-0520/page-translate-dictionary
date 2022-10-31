@@ -139,5 +139,25 @@ describe('time', () => {
 				expect(expected).toBe(0);
 			}
 		});
+
+		test.each([
+			['4321', 'yyyy'],
+			['04321', 'yyyyy'],
+			['1', 'M'],
+			['01', 'MM'],
+			['2', 'd'],
+			['02', 'dd'],
+			['3', 'H'],
+			['03', 'HH'],
+			['4', 'm'],
+			['04', 'mm'],
+			['5', 's'],
+			['05', 'ss'],
+			['43210102030405', 'yyyyMMddHHmmss'],
+		])('toString', (expected, s) => {
+			const dateTime = DateTime.createUtc(4321, 1, 2, 3, 4, 5, 6);
+			const actual = dateTime.toString(s);
+			expect(actual).toBe(expected);
+		});
 	});
 });
