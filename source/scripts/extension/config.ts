@@ -61,9 +61,9 @@ export const enum ReplaceMode {
 export interface FilterConfiguration {
 	//#region property
 
-	readonly trim: boolean;
-	readonly whiteSpace: WhiteSpace;
 	readonly lineBreak: LineBreak;
+	readonly whiteSpace: WhiteSpace;
+	readonly trim: boolean;
 
 	//#endregion
 }
@@ -307,22 +307,22 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 	private convertFilter(raw?: setting.FilterSetting | null): FilterConfiguration {
 		if (!raw) {
 			return {
-				trim: true,
-				whiteSpace: WhiteSpace.Join,
 				lineBreak: LineBreak.Join,
+				whiteSpace: WhiteSpace.Join,
+				trim: true,
 			};
 		}
 
 		const result: FilterConfiguration = {
-			trim: type.getPrimaryPropertyOr(raw, 'trim', 'boolean', true),
-			whiteSpace: this.convertEnum(raw, 'whiteSpace', WhiteSpace.Join, new Map([
-				['join', WhiteSpace.Join],
-				['raw', WhiteSpace.Raw],
-			])),
 			lineBreak: this.convertEnum(raw, 'lineBreak', LineBreak.Join, new Map([
 				['join', LineBreak.Join],
 				['raw', LineBreak.Raw],
 			])),
+			whiteSpace: this.convertEnum(raw, 'whiteSpace', WhiteSpace.Join, new Map([
+				['join', WhiteSpace.Join],
+				['raw', WhiteSpace.Raw],
+			])),
+			trim: type.getPrimaryPropertyOr(raw, 'trim', 'boolean', true),
 		};
 
 		return result;

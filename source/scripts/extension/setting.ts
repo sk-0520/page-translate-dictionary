@@ -13,9 +13,9 @@ export interface InformationSetting {
 export interface FilterSetting {
 	//#region property
 
-	trim?: boolean;
-	whiteSpace?: 'join' | 'raw' | null;
 	lineBreak?: 'join' | 'raw' | null;
+	whiteSpace?: 'join' | 'raw' | null;
+	trim?: boolean;
 
 	//#endregion
 }

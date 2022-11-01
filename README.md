@@ -71,16 +71,16 @@
           // 対象要素の (Element/Text).textContent
           "text": {
             "filter": {
-              // トリムを実施するか
-              "trim": true,
+              // 改行をどう扱うか
+              //  join: 半角スペース1つに置き換える
+              //  raw: そのまま
+              "lineBreak": "join",
               // 改行以外のホワイトスペースの扱い
               //  join: 半角スペース1つに置き換える
               //  raw: 半角スペース1つに置き換える
               "whiteSpace": "",
-              // 改行をどう扱うか
-              //  join: 半角スペース1つに置き換える
-              //  raw: そのまま
-              "lineBreak": "join"
+              // トリムを実施するか
+              "trim": true,
             },
             // 条件
             "matches": [
