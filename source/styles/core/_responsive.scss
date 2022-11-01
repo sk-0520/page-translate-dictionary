@@ -1,0 +1,19 @@
+
+$s: 'smart-phone';
+$m: 'tablet';
+$l: 'computer';
+
+$_minWidthTablet: 768;
+$_minWidthComputer: 980;
+
+$breakpoints: (
+	$s: 'screen and (max-width: ' + ($_minWidthTablet - 1) + 'px)',
+	$m: 'screen and (min-width: ' + $_minWidthTablet +  'px) and (max-width: ' + ($_minWidthComputer - 1) + 'px)',
+	$l: 'screen and (min-width: ' + $_minWidthComputer + 'px)',
+) !default;
+
+@mixin media($targetBreakPoint) {
+	@media #{map-get($breakpoints, $targetBreakPoint)} {
+		@content;
+	}
+}

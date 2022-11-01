@@ -1,6 +1,7 @@
 @forward 'normalize-scss';
 
-@forward "../core/tab";
+@use "../core/tab";
+@use "../core/responsive" as responsive;
 
 #processing {
 	margin: 0 auto;
@@ -18,6 +19,10 @@
 
 h2 {
 	background: red;
+
+	@include responsive.media(responsive.$s) {
+		background: lime;
+	}
 }
 
 details {
