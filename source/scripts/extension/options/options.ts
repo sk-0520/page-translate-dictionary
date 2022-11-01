@@ -31,10 +31,6 @@ function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfigurati
 		const hostElement = dom.requireSelector('[name="host"]', hostRootElement);
 		hostElement.textContent = host;
 
-		const jumpElement = dom.requireSelector<HTMLAnchorElement>('[name="jump"]', hostRootElement);
-		jumpElement.href = "http://" + host;
-
-
 		hostsElement.appendChild(hostRootElement);
 	}
 

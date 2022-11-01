@@ -21,7 +21,7 @@ export async function fetchAsync(url: string): Promise<setting.SiteSetting | nul
 	const response = await fetch(url, {
 		method: 'GET',
 		headers: {
-			//'Content-Type': 'application/json',
+			'User-Agent': navigator.userAgent,
 			'X-WebExtensions': `${manifest.name} ${manifest.version}`,
 		},
 	});
