@@ -66,6 +66,7 @@
 		"rimraf": "^3.0.2",
 		"sass": "^1.55.0",
 		"sass-loader": "^13.1.0",
+		"sharp": "^0.31.1",
 		"style-loader": "^3.3.1",
 		"svgo": "^3.0.0",
 		"ts-jest": "^29.0.3",

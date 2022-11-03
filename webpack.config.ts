@@ -6,11 +6,12 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 
-
 import ManifestFilePlugin from './source/plugins/ManifestFilePlugin';
 import LocaleFilesPlugin from './source/plugins/LocaleFilesPlugin';
+import SvgToPngPlugin from './source/plugins/SvgToPngPlugin';
 
 const inputRootDirectory = path.resolve(__dirname, 'source');
+const inputIconsDirectory = path.resolve(__dirname, 'icons');
 const inputEntryDirectory = path.resolve(inputRootDirectory, 'entry');
 const outputDirectory = path.resolve(__dirname, 'dist');
 
@@ -110,12 +111,17 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 				packageJson: path.join(__dirname, 'package.json'),
 				browser: env['browser'],
 				inputDirectory: path.join(inputRootDirectory, 'manifest'),
-				outputDirectory: path.join(outputDirectory),
+				outputDirectory: outputDirectory,
 			}),
 			new LocaleFilesPlugin({
 				browser: env['browser'],
-				outputDirectory: path.join(outputDirectory),
-			})
+				outputDirectory: outputDirectory,
+			}),
+			new SvgToPngPlugin({
+				browser: env['browser'],
+				inputDirectory: inputIconsDirectory,
+				outputDirectory: outputDirectory,
+			}),
 		],
 	};
 
