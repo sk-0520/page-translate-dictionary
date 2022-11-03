@@ -60,6 +60,15 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 	}
 	dom.requireSelector<HTMLElement>('.setting-item', itemRootElement).dataset['head'] = JSON.stringify(siteHeadConfiguration);
 
+	dom.requireSelector('[name="editor"]', itemRootElement).addEventListener('click', async ev => {
+		ev.preventDefault();
+
+		const editorUri = webextension.runtime.getURL('setting-editor.html');
+		webextension.tabs.create({
+			url: editorUri + '?setting=' + siteHeadConfiguration.id,
+		})
+	});
+
 	dom.requireSelector('[name="action"]', itemRootElement).addEventListener('click', async ev => {
 		ev.preventDefault();
 		const element = ev.currentTarget as HTMLButtonElement;

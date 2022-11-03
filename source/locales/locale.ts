@@ -53,9 +53,10 @@ export interface IMessages {
 	options_tab_content_settings_item_details_document: IMessage,
 	options_tab_content_settings_item_details_id: IMessage,
 	options_tab_content_settings_item_details_actions: IMessage,
-	options_tab_content_settings_item_details_actions_delete: IMessage,
+	options_tab_content_settings_item_details_actions_editor: IMessage,
 	options_tab_content_settings_item_details_actions_update: IMessage,
 	options_tab_content_settings_item_details_actions_updating: IMessage,
+	options_tab_content_settings_item_details_actions_delete: IMessage,
 
 	options_tab_content_settings_import: IMessage,
 
@@ -70,4 +71,15 @@ export interface IMessages {
 	options_import_log_setting: IMessage,
 	options_import_log_host: IMessage,
 	options_import_log_convert: IMessage,
+
+	editor_tab_header_editor: IMessage,
+	editor_tab_content_editor_head: IMessage,
+	editor_tab_content_editor_head_name: IMessage,
+	editor_tab_content_editor_head_id: IMessage,
+
+	editor_tab_content_editor_path: IMessage,
+
+	editor_tab_content_editor_common: IMessage,
+
+	editor_tab_header_raw: IMessage,
 }

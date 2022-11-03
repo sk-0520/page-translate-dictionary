@@ -80,14 +80,17 @@ const messages: locale.IMessages & locale.MessageMap = {
 	options_tab_content_settings_item_details_actions: {
 		message: '処理',
 	},
-	options_tab_content_settings_item_details_actions_delete: {
-		message: '削除',
+	options_tab_content_settings_item_details_actions_editor: {
+		message: '編集',
 	},
 	options_tab_content_settings_item_details_actions_update: {
 		message: '更新',
 	},
 	options_tab_content_settings_item_details_actions_updating: {
 		message: '更新中',
+	},
+	options_tab_content_settings_item_details_actions_delete: {
+		message: '削除',
 	},
 
 	options_tab_content_settings_import: {
@@ -150,8 +153,30 @@ const messages: locale.IMessages & locale.MessageMap = {
 	},
 	options_import_log_convert: {
 		message: '変換処理開始',
-	}
+	},
 
+	editor_tab_header_editor: {
+		message: 'エディタ',
+	},
+	editor_tab_content_editor_head: {
+		message: '設定',
+	},
+	editor_tab_content_editor_head_name: {
+		message: '名前',
+	},
+	editor_tab_content_editor_head_id: {
+		message: '内部ID',
+	},
+	editor_tab_content_editor_path: {
+		message: 'パス',
+	},
+	editor_tab_content_editor_common: {
+		message: '共通',
+	},
+
+	editor_tab_header_raw: {
+		message: '生データ',
+	},
 };
 
 export default messages;
