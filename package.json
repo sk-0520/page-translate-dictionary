@@ -1,6 +1,6 @@
 {
 	"name": "page-translation-dictionary",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "__MSG_we_description__",
 	"main": "index.js",
 	"scripts": {

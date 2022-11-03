@@ -1,0 +1,32 @@
+@forward 'normalize-scss';
+
+@use "../core/tab";
+@use "../core/responsive" as responsive;
+
+#processing {
+	margin: 0 auto;
+
+	&.processed {
+		display: none;
+	}
+}
+
+#options {
+	&.loading {
+		display: none;
+	}
+}
+
+h2 {
+	background: red;
+
+	@include responsive.media(responsive.$s) {
+		background: lime;
+	}
+}
+
+details {
+	summary {
+		cursor: pointer;
+	}
+}

@@ -27,8 +27,9 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 		mode: args.mode,
 
 		entry: {
-			"page-content": path.join(inputEntryDirectory, 'page-content.ts'),
-			"application-options": path.join(inputEntryDirectory, 'application-options.ts'),
+			'page-content': path.join(inputEntryDirectory, 'page-content.ts'),
+			'application-options': path.join(inputEntryDirectory, 'application-options.ts'),
+			'setting-editor': path.join(inputEntryDirectory, 'setting-editor.ts'),
 		},
 
 		devtool: isProduction ? false : 'inline-source-map',
@@ -81,10 +82,15 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 				filename: 'application-options.html',
 				inject: false,
 			}),
+			new HtmlWebpackPlugin({
+				template: path.join(inputRootDirectory, 'views', 'setting-editor.html'),
+				filename: 'setting-editor.html',
+				inject: false,
+			}),
 			new CopyWebpackPlugin({
 				patterns: [
 					{
-						from: path.resolve(__dirname, 'icons'),
+						from: inputIconsDirectory,
 						to: outputDirectory,
 					}
 				],
