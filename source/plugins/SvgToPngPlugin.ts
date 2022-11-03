@@ -28,13 +28,16 @@ export default class SvgToPngPlugin {
 	}
 
 	private async createPngFilesAsync(): Promise<void> {
+		// const scales = [
+		// 	16, 18, 20, 24, 28,
+		// 	32, 40,
+		// 	48, 56, 60, 64,
+		// 	72, 80, 84, 96, 112, 128, 160,
+		// 	192, 224,
+		// 	256, 320, 384, 448, 512,
+		// ];
 		const scales = [
-			16, 18, 20, 24, 28,
-			32, 40,
-			// 48, 56, 60, 64,
-			// 72, 80, 84, 96, 112, 128, 160,
-			// 192, 224,
-			// 256, 320, 384, 448, 512,
+			16, 32, 48, 96
 		];
 		const svgFiles = this.getSvgFiles();
 		for (const svgFile of svgFiles) {
