@@ -4,6 +4,8 @@ import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
+import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
+
 
 import ManifestFilePlugin from './source/plugins/ManifestFilePlugin';
 import LocaleFilesPlugin from './source/plugins/LocaleFilesPlugin';
@@ -85,6 +87,24 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 						to: outputDirectory,
 					}
 				],
+			}),
+			new ImageMinimizerPlugin({
+				test: /\.(svg)$/i,
+				minimizer: {
+					filename: '[name].svg',
+					implementation: ImageMinimizerPlugin.svgoMinify,
+					options: {
+						options: {
+							encodeOptions: {
+								multipass: true,
+								plugins: [
+									// see: https://github.com/svg/svgo#default-preset
+									"preset-default",
+								],
+							},
+						},
+					},
+				},
 			}),
 			new ManifestFilePlugin({
 				packageJson: path.join(__dirname, 'package.json'),
