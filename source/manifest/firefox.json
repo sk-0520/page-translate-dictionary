@@ -10,6 +10,12 @@
 		"storage",
 		"<all_urls>"
 	],
+	"icons": {
+		"16": "extension-icon.svg",
+		"32": "extension-icon.svg",
+		"48": "extension-icon.svg",
+		"96": "extension-icon.svg"
+	},
 	"default_locale": "ja",
 	"content_scripts": [
 		{
