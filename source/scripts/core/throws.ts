@@ -7,4 +7,10 @@ export class NotImplementedError extends Error {
 	}
 }
 
+export class InvalidOperationError extends Error {
+	constructor(message?: string | undefined) {
+		super(message);
+		this.name = 'InvalidOperationError';
+	}
+}
 

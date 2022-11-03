@@ -26,6 +26,7 @@
 		"html.format.indentInnerHtml": true,
 		"html.format.wrapLineLength": 0,
 		"cSpell.words": [
+			"deref",
 			"endregion",
 			"pjax",
 			"prebrowser",
