@@ -3,6 +3,7 @@ import * as path from 'path';
 import webpack from 'webpack';
 import TerserPlugin from 'terser-webpack-plugin';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 import ManifestFilePlugin from './source/plugins/ManifestFilePlugin';
 import LocaleFilesPlugin from './source/plugins/LocaleFilesPlugin';
@@ -31,7 +32,7 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 
 		output: {
 			filename: '[name].js',
-			path: outputDirectory
+			path: outputDirectory,
 		},
 
 		module: {
@@ -76,6 +77,14 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 				template: path.join(inputRootDirectory, 'views', 'application-options.html'),
 				filename: 'application-options.html',
 				inject: false,
+			}),
+			new CopyWebpackPlugin({
+				patterns: [
+					{
+						from: path.resolve(__dirname, 'icons'),
+						to: outputDirectory,
+					}
+				],
 			}),
 			new ManifestFilePlugin({
 				packageJson: path.join(__dirname, 'package.json'),
