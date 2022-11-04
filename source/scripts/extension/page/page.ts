@@ -3,14 +3,23 @@ import * as uri from '../uri';
 import * as translator from './translator';
 import * as string from '../../core/string';
 import * as loader from '../loader';
+import * as names from '../names';
 import * as storage from '../storage';
 import '../../../styles/extension/page.scss';
 
-type PageConfiguration = {
+type PageCache = {
+	/** アプリケーション設定 */
 	app: config.ApplicationConfiguration,
+	/** サイト設定 */
 	sites: ReadonlyArray<config.SiteConfiguration>,
+	// /** 翻訳済み要素とその設定 */
+	// translatedTargets: Map<config.QueryConfiguration, WeakSet<Element>>,
+	/** 監視対象要素 TODO: Query は複数に対応しないと設定と矛盾が出る */
+	watchers: Map<Element, config.QueryConfiguration>,
+	/** 監視対象要素 */
+	observer: MutationObserver;
 };
-let pageConfiguration: PageConfiguration | null;
+let pageCache: PageCache | null;
 
 // function createProgressElement(): HTMLElement {
 // 	const progressElement = document.createElement('div');
@@ -23,8 +32,17 @@ let pageConfiguration: PageConfiguration | null;
 // 	return progressElement;
 // }
 
-function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
-	for (const siteConfiguration of pageConfiguration.sites) {
+function notifyBrowserIfTranslated() {
+	const makClassNames = document.getElementsByClassName(names.ClassNames.mark);
+	if (makClassNames.length) {
+		// ここでロケーションバーとサイドバーの合わせ技したい
+	}
+}
+
+function executeCoreAsync(pageCache: PageCache, translateOptions: translator.TranslateOptions): Promise<Array<translator.TranslatedTarget>> {
+	let targets = new Array<translator.TranslatedTarget>();
+
+	for (const siteConfiguration of pageCache.sites) {
 		//alert(JSON.stringify(siteConfiguration.path))
 		//for (const [pathPattern, pathConfiguration] of Object.entries(siteConfiguration.path)) {
 		//alert('siteConfiguration.path-> ' + JSON.stringify(siteConfiguration.path))
@@ -39,7 +57,7 @@ function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
 			if (uri.isEnabledPath(urlPath, key)) {
 				console.trace('パス適合', key, urlPath);
 				try {
-					translator.translate(pathConfiguration, siteConfiguration, pageConfiguration.app.translate);
+					targets = translator.translate(pathConfiguration, siteConfiguration, pageCache.app.translate, translateOptions);
 				} catch (ex) {
 					console.error(ex);
 				}
@@ -49,27 +67,89 @@ function executeCoreAsync(pageConfiguration: PageConfiguration): Promise<void> {
 		}
 	}
 
-	return Promise.resolve();
+	notifyBrowserIfTranslated();
+
+	return Promise.resolve(targets);
 }
 
+function toMutationObserverInit(queryConfiguration: config.QueryConfiguration): MutationObserverInit {
+	const options: MutationObserverInit = {
+		childList: false,
+		subtree: false,
+	};
+
+	if (queryConfiguration.text) {
+		options.characterData = true;
+	}
+	if (queryConfiguration.attributes.size) {
+		options.attributes = true;
+		options.attributeFilter = [...queryConfiguration.attributes.keys()];
+	}
+
+	return options;
+}
+
+/**
+ * 翻訳済み要素のキャッシュ・監視追加
+ * @param pageCache 更新対象（直接操作される点に注意）
+ * @param targets 翻訳済みデータ
+ */
+function updatePageCache(pageCache: PageCache, targets: ReadonlyArray<translator.TranslatedTarget>) {
+	//
+	pageCache.observer.disconnect();
+
+	for (const target of targets) {
+		// let translatedTarget = pageCache.translatedTargets.get(target.queryConfiguration);
+		// if (translatedTarget) {
+		// 	for (const element of target.elements) {
+		// 		translatedTarget.add(element);
+		// 	}
+		// } else {
+		// 	translatedTarget = new WeakSet(target.elements);
+		// 	pageCache.translatedTargets.set(target.queryConfiguration, translatedTarget);
+		// }
+
+		// 監視登録
+		if (target.queryConfiguration.selector.watch) {
+			for (const element of target.elements) {
+				if (!pageCache.watchers.has(element)) {
+					console.debug('監視追加', target.queryConfiguration);
+					pageCache.watchers.set(element, target.queryConfiguration);
+				}
+			}
+		}
+	}
+
+	for (const [element, queryConfiguration] of pageCache.watchers) {
+		const init = toMutationObserverInit(queryConfiguration);
+		console.debug('監視対象', queryConfiguration, init);
+		pageCache.observer.observe(element, init);
+	}
 
 
-function executeAsync(pageConfiguration: PageConfiguration): Promise<void> {
+}
+
+async function executeAsync(pageCache: PageCache, translateOptions: translator.TranslateOptions): Promise<void> {
 	// const progressElement = createProgressElement();
 	// document.body.appendChild(progressElement);
+	let targets: Array<translator.TranslatedTarget>;
 	try {
 		console.time('TRANSLATE');
-		return executeCoreAsync(pageConfiguration);
+		targets = await executeCoreAsync(pageCache, translateOptions);
 	} finally {
 		// document.body.removeChild(progressElement);
 		console.timeEnd('TRANSLATE');
 	}
+
+	updatePageCache(pageCache, targets);
 }
 
-function updatedPage(event: Event): Promise<void> {
+function updatedPageAsync(event: Event): Promise<void> {
 	console.log('updatedPage');
-	if (pageConfiguration) {
-		return executeAsync(pageConfiguration);
+	if (pageCache) {
+		return executeAsync(pageCache, {
+			ignoreTranslated: false,
+		});
 	}
 
 	return Promise.resolve();
@@ -77,10 +157,18 @@ function updatedPage(event: Event): Promise<void> {
 
 function modifyPageAsync(mutations: MutationRecord[]): Promise<void> {
 	console.log('modifyPage', mutations);
-	if (pageConfiguration) {
-		return executeAsync(pageConfiguration);
+	if (pageCache) {
+		return executeAsync(pageCache, {
+			ignoreTranslated: true,
+		});
 	}
 
+	return Promise.resolve();
+}
+
+async function onWatchMutationAsync(mutations: MutationRecord[], observer: MutationObserver): Promise<void> {
+	console.log('なんかきた', mutations);
+	alert('onWatchMutationAsync');
 	return Promise.resolve();
 }
 
@@ -175,7 +263,6 @@ async function bootAsync(): Promise<boolean> {
 		headItems.push(...currentSiteHeadConfigurations);
 	}
 
-
 	const siteItems = new Array<config.SiteConfiguration>();
 
 	const sortedCurrentSiteHeadConfigurations = currentSiteHeadConfigurations.sort((a, b) => a.level - b.level);
@@ -191,14 +278,37 @@ async function bootAsync(): Promise<boolean> {
 	if (siteItems.length) {
 		console.debug('きてます！');
 		// 設定データ確定
-		pageConfiguration = {
+		pageCache = {
 			app: applicationConfiguration,
 			sites: siteItems,
+			//translatedTargets: new Map(),
+			watchers: new Map(),
+			observer: new MutationObserver((x, a) => {
+				alert();
+				onWatchMutationAsync(x, a);
+			}),
 		};
-		await executeAsync(pageConfiguration);
+		await executeAsync(pageCache, {
+			ignoreTranslated: false,
+		});
 	} else {
 		console.trace('きてない・・・', location.pathname);
 	}
+
+	// 子孫が追加された場合の監視(追加の監視の身で既にある要素は `watch` で対応すること)
+	const bodyMutationOptions: MutationObserverInit = {
+		childList: true,
+		subtree: true,
+	};
+	const bodyMutationObserver = new MutationObserver(async mutations => {
+		bodyMutationObserver.disconnect();
+
+		await modifyPageAsync(mutations);
+
+		bodyMutationObserver.observe(document.body, bodyMutationOptions);
+	});
+	bodyMutationObserver.observe(document.body, bodyMutationOptions);
+
 
 	if (!applicationConfiguration.setting.updatedBeforeTranslation && applicationConfiguration.setting.autoUpdate) {
 		console.debug('翻訳後 設定更新処理実施');
@@ -209,23 +319,8 @@ async function bootAsync(): Promise<boolean> {
 }
 
 export function boot() {
-	document.addEventListener('pjax:end', ev => updatedPage(ev));
-	document.addEventListener('turbo:render', ev => updatedPage(ev));
+	document.addEventListener('pjax:end', ev => updatedPageAsync(ev));
+	document.addEventListener('turbo:render', ev => updatedPageAsync(ev));
 
-	bootAsync().then(fit => {
-		if (!fit) {
-			return;
-		}
-		const bodyMutationOptions: MutationObserverInit = {
-			childList: true,
-			subtree: true,
-		};
-		var bodyMutationObserver = new MutationObserver(mutations => {
-			bodyMutationObserver.disconnect();
-			modifyPageAsync(mutations).then(() => {
-				bodyMutationObserver.observe(document.body, bodyMutationOptions);
-			});
-		});
-		bodyMutationObserver.observe(document.body, bodyMutationOptions);
-	})
+	bootAsync();
 }

@@ -2,7 +2,18 @@ import * as config from '../config';
 import * as names from '../names';
 import * as converter from './converter';
 
-function translateElement(element: Element, queryConfiguration: config.QueryConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): boolean {
+export interface TranslateOptions {
+	/** 翻訳済み要素は無視するか */
+	readonly ignoreTranslated: boolean;
+}
+
+/** 翻訳済み要素とその設定 */
+export interface TranslatedTarget {
+	elements: ReadonlyArray<Element>;
+	queryConfiguration: config.QueryConfiguration;
+}
+
+export function translateElement(element: Element, queryConfiguration: config.QueryConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): boolean {
 	let translated = false;
 
 	for (const [attributeName, targetConfiguration] of queryConfiguration.attributes) {
@@ -70,7 +81,7 @@ function translateElement(element: Element, queryConfiguration: config.QueryConf
 	return translated;
 }
 
-function translateCore(queryConfiguration: config.QueryConfiguration, siteConfiguration: config.SiteConfiguration, translateConfiguration: Readonly<config.TranslateConfiguration>): void {
+function translateCore(queryConfiguration: config.QueryConfiguration, siteConfiguration: config.SiteConfiguration, translateConfiguration: Readonly<config.TranslateConfiguration>, translateOptions: TranslateOptions): TranslatedTarget | null {
 	console.debug('query:', queryConfiguration);
 
 	const currentSelectors = queryConfiguration.selector.mode === config.SelectorMode.Common
@@ -80,7 +91,7 @@ function translateCore(queryConfiguration: config.QueryConfiguration, siteConfig
 
 	if (!currentSelectors) {
 		console.debug('empty currentSelectors');
-		return;
+		return null;
 	}
 
 	const elements = new Array<Element>();
@@ -96,10 +107,17 @@ function translateCore(queryConfiguration: config.QueryConfiguration, siteConfig
 	}
 	if (!elements.length) {
 		console.debug('selector not match:', currentSelectors)
-		return;
+		return null;
 	}
 
 	for (const element of elements) {
+		if (translateOptions.ignoreTranslated) {
+			if (element.hasAttribute(names.Attributes.translated)) {
+				console.debug('ignore', element.outerHTML);
+				continue;
+			}
+		}
+
 		if (translateElement(element, queryConfiguration, siteConfiguration.common, siteConfiguration)) {
 			if (translateConfiguration.markReplacedElement) {
 				element.classList.add(names.ClassNames.mark);
@@ -107,23 +125,34 @@ function translateCore(queryConfiguration: config.QueryConfiguration, siteConfig
 		}
 	}
 
+	const result: TranslatedTarget = {
+		elements: elements,
+		queryConfiguration: queryConfiguration,
+	};
+
+	return result;
 }
 
-export function translate(pathConfiguration: config.PathConfiguration, siteConfiguration: config.SiteConfiguration, translateConfiguration: Readonly<config.TranslateConfiguration>): void {
+export function translate(pathConfiguration: config.PathConfiguration, siteConfiguration: config.SiteConfiguration, translateConfiguration: Readonly<config.TranslateConfiguration>, translateOptions: TranslateOptions): Array<TranslatedTarget> {
+
+	const targets = new Array<TranslatedTarget>();
 
 	for (const queryConfiguration of pathConfiguration.query) {
-		translateCore(queryConfiguration, siteConfiguration, translateConfiguration);
+		const target = translateCore(queryConfiguration, siteConfiguration, translateConfiguration, translateOptions);
+		if (target) {
+			targets.push(target);
+		}
 	}
 
 	for (const name of pathConfiguration.import) {
 		const queryConfiguration = siteConfiguration.common.query.get(name);
 		if (queryConfiguration) {
-			translateCore(queryConfiguration, siteConfiguration, translateConfiguration);
+			const target = translateCore(queryConfiguration, siteConfiguration, translateConfiguration, translateOptions);
+			if (target) {
+				targets.push(target);
+			}
 		}
 	}
 
-	const makClassNames = document.getElementsByClassName(names.ClassNames.mark);
-	if (makClassNames.length) {
-		// ここでロケーションバーとサイドバーの合わせ技したい
-	}
+	return targets;
 }

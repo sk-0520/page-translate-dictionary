@@ -58,6 +58,7 @@ export interface SelectorSetting {
 	value: string | null;
 	node?: number | null;
 	all?: boolean | null;
+	watch?: boolean | null;
 
 	//#endregion
 }

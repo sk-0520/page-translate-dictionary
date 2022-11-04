@@ -106,6 +106,7 @@ export interface SelectorConfiguration {
 	readonly value: string;
 	readonly node: number;
 	readonly all: boolean;
+	readonly watch: boolean;
 
 	//#endregion
 }
@@ -299,6 +300,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 			value: raw.value!,
 			node: type.getPrimaryPropertyOr(raw, 'node', 'number', 0),
 			all: type.getPrimaryPropertyOr(raw, 'all', 'boolean', false),
+			watch: type.getPrimaryPropertyOr(raw, 'watch', 'boolean', false),
 		};
 
 		return result;
@@ -386,7 +388,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 
 				const map = new Map<string, string>();
 				for (const [key, value] of Object.entries(rawMap)) {
-					if(value) {
+					if (value) {
 						map.set(key, value);
 					}
 				}

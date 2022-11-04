@@ -66,7 +66,9 @@
             // `-1` を指定すれば一致時点で後続終了、`-2`(負数-1未満) を指定した場合はすべて処理。
             "node": 3,
             // セレクタを全要素に適用するか
-            "all": false
+            "all": false,
+            // 対象用を監視対象とするか
+            "watch": false,
           },
           // 対象要素の (Element/Text).textContent
           "text": {
