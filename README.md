@@ -121,10 +121,6 @@
               "value": "text",
             }
           },
-          // 対象要素の value 値
-          "value": {
-            // value を持つものだけ
-          },
           // 対象要素の属性
           "attributes": {
             // 属性名

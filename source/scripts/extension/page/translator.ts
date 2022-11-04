@@ -1,6 +1,5 @@
 import * as config from '../config';
 import * as names from '../names';
-import * as type from '../type-guard';
 import * as converter from './converter';
 
 function translateElement(element: Element, queryConfiguration: config.QueryConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): boolean {
@@ -18,15 +17,7 @@ function translateElement(element: Element, queryConfiguration: config.QueryConf
 		}
 	}
 
-	if (type.isInputElement(element) && queryConfiguration.value) {
-		const sourceValue = element.value;
-		const output = converter.convert(sourceValue, queryConfiguration.value, commonConfiguration, site);
-		if (output) {
-			element.value = output;
-			element.setAttribute(names.Attributes.value, sourceValue);
-			translated = true;
-		}
-	} else if (element.textContent && queryConfiguration.text) {
+	if (element.textContent && queryConfiguration.text) {
 
 		const nodes = new Map<number, Text | Element>();
 

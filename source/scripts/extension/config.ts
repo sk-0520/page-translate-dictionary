@@ -115,7 +115,6 @@ export interface QueryConfiguration {
 
 	readonly selector: SelectorConfiguration;
 	readonly text: TargetConfiguration | null;
-	readonly value: TargetConfiguration | null;
 	readonly attributes: ReadonlyMap<string, TargetConfiguration>;
 
 	//#endregion
@@ -451,7 +450,6 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		const query: QueryConfiguration = {
 			selector: this.convertSelector(raw.selector),
 			text: this.convertTarget(raw.text),
-			value: this.convertTarget(raw.value),
 			attributes: attributeMap,
 		};
 

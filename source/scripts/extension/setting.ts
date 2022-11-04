@@ -67,7 +67,6 @@ export interface QuerySetting {
 
 	selector?: SelectorSetting | null;
 	text?: TargetSetting | null;
-	value?: TargetSetting | null;
 	attributes?: { [name: string]: TargetSetting | null; } | null;
 
 	//#endregion
