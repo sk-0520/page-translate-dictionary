@@ -58,11 +58,11 @@ function executeAsync(pageConfiguration: PageConfiguration): Promise<void> {
 	// const progressElement = createProgressElement();
 	// document.body.appendChild(progressElement);
 	try {
-		console.time('PAGE');
+		console.time('TRANSLATE');
 		return executeCoreAsync(pageConfiguration);
 	} finally {
 		// document.body.removeChild(progressElement);
-		console.timeEnd('PAGE');
+		console.timeEnd('TRANSLATE');
 	}
 }
 
@@ -148,6 +148,7 @@ async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: con
 }
 
 async function bootAsync(): Promise<boolean> {
+	console.time('PAGE');
 	const applicationConfiguration = await storage.loadApplicationAsync();
 	const allSiteHeadConfigurations = await storage.loadSiteHeadsAsync();
 
@@ -186,6 +187,7 @@ async function bootAsync(): Promise<boolean> {
 		}
 	}
 
+	console.timeEnd('PAGE');
 	if (siteItems.length) {
 		console.debug('きてます！');
 		// 設定データ確定
@@ -211,7 +213,7 @@ export function boot() {
 	document.addEventListener('turbo:render', ev => updatedPage(ev));
 
 	bootAsync().then(fit => {
-		if(!fit) {
+		if (!fit) {
 			return;
 		}
 		const bodyMutationOptions: MutationObserverInit = {
