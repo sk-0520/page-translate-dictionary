@@ -39,7 +39,7 @@ function notifyBrowserIfTranslated() {
 	}
 }
 
-function executeCoreAsync(pageCache: PageCache, translateOptions: translator.TranslateOptions): Promise<Array<translator.TranslatedTarget>> {
+function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.TranslatedTarget>> {
 	let targets = new Array<translator.TranslatedTarget>();
 
 	for (const siteConfiguration of pageCache.sites) {
@@ -55,14 +55,14 @@ function executeCoreAsync(pageCache: PageCache, translateOptions: translator.Tra
 			}
 
 			if (uri.isEnabledPath(urlPath, key)) {
-				console.trace('パス適合', key, urlPath);
+				console.log('パス適合', key, urlPath);
 				try {
-					targets = translator.translate(pathConfiguration, siteConfiguration, pageCache.app.translate, translateOptions);
+					targets = translator.translate(pathConfiguration, siteConfiguration, pageCache.app.translate);
 				} catch (ex) {
 					console.error(ex);
 				}
 			} else {
-				console.trace('パス非適合', key, urlPath);
+				console.log('パス非適合', key, urlPath);
 			}
 		}
 	}
@@ -113,7 +113,7 @@ function updatePageCache(pageCache: PageCache, targets: ReadonlyArray<translator
 		if (target.queryConfiguration.selector.watch) {
 			for (const element of target.elements) {
 				if (!pageCache.watchers.has(element)) {
-					console.debug('監視追加', target.queryConfiguration);
+					console.debug('監視追加', element.textContent, target.queryConfiguration);
 					pageCache.watchers.set(element, target.queryConfiguration);
 				}
 			}
@@ -129,13 +129,13 @@ function updatePageCache(pageCache: PageCache, targets: ReadonlyArray<translator
 
 }
 
-async function executeAsync(pageCache: PageCache, translateOptions: translator.TranslateOptions): Promise<void> {
+async function executeAsync(pageCache: PageCache): Promise<void> {
 	// const progressElement = createProgressElement();
 	// document.body.appendChild(progressElement);
 	let targets: Array<translator.TranslatedTarget>;
 	try {
 		console.time('TRANSLATE');
-		targets = await executeCoreAsync(pageCache, translateOptions);
+		targets = await executeCoreAsync(pageCache);
 	} finally {
 		// document.body.removeChild(progressElement);
 		console.timeEnd('TRANSLATE');
@@ -147,9 +147,7 @@ async function executeAsync(pageCache: PageCache, translateOptions: translator.T
 function updatedPageAsync(event: Event): Promise<void> {
 	console.log('updatedPage');
 	if (pageCache) {
-		return executeAsync(pageCache, {
-			ignoreTranslated: false,
-		});
+		return executeAsync(pageCache);
 	}
 
 	return Promise.resolve();
@@ -158,9 +156,7 @@ function updatedPageAsync(event: Event): Promise<void> {
 function modifyPageAsync(mutations: MutationRecord[]): Promise<void> {
 	console.log('modifyPage', mutations);
 	if (pageCache) {
-		return executeAsync(pageCache, {
-			ignoreTranslated: true,
-		});
+		return executeAsync(pageCache);
 	}
 
 	return Promise.resolve();
@@ -288,9 +284,7 @@ async function bootAsync(): Promise<boolean> {
 				onWatchMutationAsync(x, a);
 			}),
 		};
-		await executeAsync(pageCache, {
-			ignoreTranslated: false,
-		});
+		await executeAsync(pageCache);
 	} else {
 		console.trace('きてない・・・', location.pathname);
 	}
