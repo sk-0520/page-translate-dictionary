@@ -89,11 +89,11 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 		const itemElement = dom.requireClosest('.setting-item', element);
 		itemElement.remove();
 
-		const headers = await storage.loadSiteHeadsAsync();
-		const targetHeaders = headers.filter(i => i.id === siteHeadConfiguration.id);
-		const removedHeaders = headers.filter(i => i.id !== siteHeadConfiguration.id);
-		await storage.saveSiteHeadsAsync(removedHeaders);
-		for (const head of targetHeaders) {
+		const heads = await storage.loadSiteHeadsAsync();
+		const targetHeads = heads.filter(i => i.id === siteHeadConfiguration.id);
+		const removedHeads = heads.filter(i => i.id !== siteHeadConfiguration.id);
+		await storage.saveSiteHeadsAsync(removedHeads);
+		for (const head of targetHeads) {
 			await storage.deleteSiteBodyAsync(head.id);
 		}
 	});
@@ -189,15 +189,15 @@ async function saveGenericAsync(): Promise<void> {
 
 async function bootAsync(): Promise<void> {
 	const applicationTask = storage.loadApplicationAsync();
-	const siteHeadersTask = storage.loadSiteHeadsAsync();
+	const siteHeadsTask = storage.loadSiteHeadsAsync();
 
 	localize.applyView();
 
 	const application = await applicationTask;
 	setApplication(application);
 
-	let siteHeaders = await siteHeadersTask;
-	siteHeaders = siteHeaders.sort((a, b) => {
+	let siteHeads = await siteHeadsTask;
+	siteHeads = siteHeads.sort((a, b) => {
 		if (a.name === b.name) {
 			return a.name.localeCompare(b.name);
 		}
@@ -205,7 +205,7 @@ async function bootAsync(): Promise<void> {
 		return a.id.localeCompare(b.id);
 	});
 
-	setSettings(siteHeaders);
+	setSettings(siteHeads);
 
 	dom.requireElementById('generic').addEventListener('submit', async ev => {
 		ev.preventDefault();
