@@ -5,7 +5,7 @@ import * as storage from '../storage';
 import * as config from '../config';
 import * as uri from '../uri';
 import * as loader from '../loader';
-import ImportLogger from './import-logger';
+import ImportLogger from './ImportLogger';
 import '../../../styles/extension/application-options.scss';
 
 function setApplication(applicationConfiguration: config.ApplicationConfiguration) {

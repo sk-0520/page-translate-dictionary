@@ -1,10 +1,17 @@
 import * as dom from '../../core/dom';
 
 export default class ImportLogger {
-	private _logElement: HTMLOListElement;
+	//#region variable
+
+	private readonly _logElement: HTMLOListElement;
+
+	//#endregion
+
 	constructor() {
 		this._logElement = dom.requireElementById<HTMLOListElement>('import-log');
 	}
+
+	//#region function
 
 	public clear() {
 		this._logElement.innerHTML = '';
@@ -15,4 +22,6 @@ export default class ImportLogger {
 		li.textContent = message;
 		this._logElement.appendChild(li);
 	}
+
+	//#endregion
 }
