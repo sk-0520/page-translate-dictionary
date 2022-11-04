@@ -7,7 +7,7 @@
    viewBox="0 0 12.7 12.7"
    version="1.1"
    id="svg5"
-   sodipodi:docname="extension.svg"
+   sodipodi:docname="extension-icon.svg"
    inkscape:version="1.2 (dc2aedaf03, 2022-05-15)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -23,22 +23,153 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:document-units="mm"
-     showgrid="false"
+     showgrid="true"
      inkscape:zoom="11.930303"
-     inkscape:cx="19.9492"
-     inkscape:cy="27.032004"
-     inkscape:window-width="1117"
+     inkscape:cx="24.601219"
+     inkscape:cy="26.361443"
+     inkscape:window-width="1565"
      inkscape:window-height="968"
-     inkscape:window-x="712"
-     inkscape:window-y="33"
+     inkscape:window-x="357"
+     inkscape:window-y="28"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer3" />
+     inkscape:current-layer="layer6"
+     inkscape:lockguides="false">
+    <inkscape:grid
+       type="xygrid"
+       id="grid9076" />
+  </sodipodi:namedview>
   <defs
-     id="defs2" />
+     id="defs2">
+    <inkscape:path-effect
+       effect="mirror_symmetry"
+       start_point="6.1929087,1.3337974"
+       end_point="6.1929087,10.557635"
+       center_point="6.1929087,5.945716"
+       id="path-effect25172"
+       is_visible="true"
+       lpeversion="1.2"
+       lpesatellites=""
+       mode="free"
+       discard_orig_path="false"
+       fuse_paths="false"
+       oposite_fuse="false"
+       split_items="false"
+       split_open="false"
+       link_styles="false" />
+    <inkscape:path-effect
+       effect="lattice2"
+       gridpoint0="0.59782565,1.9506481"
+       gridpoint1="6.1884643,1.9506481"
+       gridpoint2="0.59782565,10.557417"
+       gridpoint3="6.1884643,10.557417"
+       gridpoint4="1.9954853,1.9506481"
+       gridpoint5="4.7908046,1.9506481"
+       gridpoint6="1.9954853,10.557417"
+       gridpoint7="4.7908046,10.557417"
+       gridpoint8x9="3.3709675,1.3296803"
+       gridpoint10x11="3.4153224,9.8477393"
+       gridpoint12="0.59782565,4.1023402"
+       gridpoint13="6.1884643,4.1023402"
+       gridpoint14="0.59782565,8.4057245"
+       gridpoint15="6.1884643,8.4057245"
+       gridpoint16="1.9954853,4.1023402"
+       gridpoint17="4.7908046,4.1023402"
+       gridpoint18="1.9954853,8.4057245"
+       gridpoint19="4.7908046,8.4057245"
+       gridpoint20x21="3.393145,4.1023402"
+       gridpoint22x23="3.393145,8.4057245"
+       gridpoint24x26="0.59782565,6.2540324"
+       gridpoint25x27="6.1884643,6.2540324"
+       gridpoint28x30="1.9954853,6.2540324"
+       gridpoint29x31="4.7908046,6.2540324"
+       gridpoint32x33x34x35="3.393145,6.2540324"
+       id="path-effect24421"
+       is_visible="true"
+       lpeversion="1"
+       horizontal_mirror="false"
+       vertical_mirror="false"
+       perimetral="false"
+       live_update="true" />
+    <inkscape:path-effect
+       effect="envelope"
+       id="path-effect23693"
+       is_visible="true"
+       lpeversion="1"
+       yy="true"
+       xx="true"
+       bendpath1="M 0.59782565,1.9506481 H 6.1884643"
+       bendpath2="M 6.1884643,1.9506481 V 10.557417"
+       bendpath3="M 0.59782565,10.557417 H 6.1884643"
+       bendpath4="M 0.59782565,1.9506481 V 10.557417" />
+    <inkscape:path-effect
+       effect="offset"
+       id="path-effect22965"
+       is_visible="true"
+       lpeversion="1.2"
+       linejoin_type="miter"
+       unit="mm"
+       offset="0"
+       miter_limit="4"
+       attempt_force_join="false"
+       update_on_knot_move="true" />
+  </defs>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="辞書">
+    <g
+       inkscape:groupmode="layer"
+       id="layer6"
+       inkscape:label="左"
+       class="UnoptimicedTransforms"
+       inkscape:path-effect="#path-effect24421;#path-effect25172">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.52916667;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+         id="rect5133"
+         width="5.5906386"
+         height="8.6067686"
+         x="0.59782565"
+         y="1.9506481"
+         inkscape:label="ページ"
+         d="M 0.59782565,1.9506481 C 1.1139353,1.9534022 1.5939172,1.7184585 2.2464294,1.5206052 2.9047293,1.3209971 3.4364979,1.2771508 4.0764186,1.4094037 c 0.5860509,0.1211197 1.1173118,0.3475148 1.4986763,0.4487637 0.3818805,0.1013859 0.6133694,0.092481 0.6133694,0.092481 0.01,2.8794836 0,8.6067689 0,8.6067689 -0.5134706,0.0028 -0.9863602,-0.261473 -1.6402268,-0.48917 C 3.8906974,9.8392712 3.358835,9.7863512 2.7174611,9.9365354 2.130178,10.074054 1.5969926,10.334026 1.2140369,10.450655 0.83040202,10.56749 0.59782565,10.557417 0.59782565,10.557417 Z m 11.19016635,0 C 11.271882,1.9534022 10.7919,1.7184585 10.139388,1.5206052 9.4810881,1.3209971 8.9493195,1.2771508 8.3093988,1.4094037 7.7233479,1.5305234 7.192087,1.7569185 6.8107225,1.8581674 6.428842,1.9595533 6.1973531,1.9506481 6.1973531,1.9506481 c -0.01,2.8794836 0,8.6067689 0,8.6067689 0.5134706,0.0028 0.9863602,-0.261473 1.6402268,-0.48917 C 8.49512,9.8392712 9.0269824,9.7863512 9.6683563,9.9365354 c 0.5872827,0.1375186 1.1204687,0.3974906 1.5034247,0.5141196 0.383634,0.116835 0.616211,0.106762 0.616211,0.106762 z"
+         sodipodi:type="rect" />
+      <g
+         inkscape:groupmode="layer"
+         id="layer4"
+         inkscape:label="辞書 1">
+        <path
+           style="fill:none;fill-opacity:1;stroke:#646464;stroke-width:0.498338;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1"
+           d="M 1.5151401,2.7203703 C 2.2952352,2.4641262 2.9276362,2.1802299 3.8698234,2.3234523 4.6680239,2.4447872 5.294254,2.7313947 5.294254,2.7313947 m 5.576423,-0.011024 C 10.090582,2.4641262 9.4581812,2.1802299 8.515994,2.3234523 7.7177935,2.4447872 7.0915634,2.7313947 7.0915634,2.7313947"
+           id="path6820"
+           inkscape:original-d="M 1.5203718,2.9120048 H 5.2991847" />
+        <path
+           style="fill:none;fill-opacity:1;stroke:#646464;stroke-width:0.498338;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1"
+           d="M 1.517596,4.2844009 C 2.3009729,4.0214576 2.9371441,3.7302922 3.8774139,3.8772135 4.6738223,4.0016558 5.2965685,4.2957077 5.2965685,4.2957077 M 10.868221,4.2844009 C 10.084845,4.0214576 9.4486733,3.7302922 8.5084035,3.8772135 7.7119951,4.0016558 7.0892489,4.2957077 7.0892489,4.2957077"
+           id="path6820-5"
+           inkscape:original-d="M 1.5203716,4.4809474 H 5.2991845" />
+        <path
+           style="fill:none;fill-opacity:1;stroke:#646464;stroke-width:0.498338;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1"
+           d="M 1.5200675,5.8584112 C 2.3067506,5.5887259 2.9467091,5.2902451 3.8850528,5.4408889 4.6796698,5.5684586 5.2988979,5.8700023 5.2988979,5.8700023 M 10.86575,5.8584112 C 10.079067,5.5887259 9.4391083,5.2902451 8.5007646,5.4408889 7.7061476,5.5684586 7.0869195,5.8700023 7.0869195,5.8700023"
+           id="path6820-5-9"
+           inkscape:original-d="M 1.5203714,6.0599011 H 5.2991843" />
+        <path
+           style="fill:none;fill-opacity:1;stroke:#646464;stroke-width:0.498338;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1"
+           d="M 1.5225552,7.4424028 C 2.3125686,7.1659327 2.9563322,6.8600902 3.8927407,7.0144804 4.6855672,7.1451975 5.3012425,7.4542803 5.3012425,7.4542803 M 10.863262,7.4424028 C 10.073249,7.1659327 9.4294852,6.8600902 8.4930767,7.0144804 7.7002502,7.1451975 7.0845749,7.4542803 7.0845749,7.4542803"
+           id="path6820-5-9-1"
+           inkscape:original-d="M 1.5203717,7.6488676 H 5.2991846" />
+        <path
+           style="fill:none;fill-opacity:1;stroke:#646464;stroke-width:0.498338;stroke-linecap:round;stroke-linejoin:bevel;stroke-dasharray:none;stroke-opacity:1"
+           d="M 1.5250731,9.0457323 C 2.3184605,8.7623947 2.9660695,8.4491006 3.9005222,8.6072827 4.6915489,8.741186 5.3036155,9.0578996 5.3036155,9.0578996 M 10.860744,9.0457323 C 10.067357,8.7623947 9.4197479,8.4491006 8.4852952,8.6072827 7.6942685,8.741186 7.0822019,9.0578996 7.0822019,9.0578996"
+           id="path6820-5-9-1-3"
+           inkscape:original-d="M 1.5203718,9.2572327 H 5.2991847" />
+      </g>
+    </g>
+  </g>
   <g
      inkscape:label="A"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     style="display:none">
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.87607px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.121902"
@@ -54,20 +185,9 @@
   </g>
   <g
      inkscape:groupmode="layer"
-     id="layer3"
-     inkscape:label="辞書">
-    <rect
-       style="fill:#803300;fill-opacity:0.498141;stroke:#000000;stroke-width:0.102747;stroke-linecap:round;stroke-linejoin:round"
-       id="rect224"
-       width="3.2351565"
-       height="3.5678179"
-       x="4.6142769"
-       y="4.680809" />
-  </g>
-  <g
-     inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="あ">
+     inkscape:label="あ"
+     style="display:none">
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.79346px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.119837"
