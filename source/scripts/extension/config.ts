@@ -387,7 +387,9 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 
 				const map = new Map<string, string>();
 				for (const [key, value] of Object.entries(rawMap)) {
-					map.set(key, value);
+					if(value) {
+						map.set(key, value);
+					}
 				}
 				if (map.size) {
 					regexMap.set(name, map);
