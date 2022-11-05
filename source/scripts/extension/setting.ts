@@ -1,83 +1,210 @@
 // ユーザー(サイト翻訳機能提供者)があれこれやるやつ
 
+/**
+ * 設定情報。
+ */
 export interface InformationSetting {
 	//#region property
 
+	/** 作者サイト */
 	website?: string | null;
+	/** リポジトリ */
 	repository?: string | null;
+	/** 設定に関する説明 */
 	document?: string | null;
 
 	//#endregion
 }
 
+/**
+ * フィルタリング設定。
+ */
 export interface FilterSetting {
 	//#region property
 
+	/**
+	 * テキストの改行の扱い。
+	 *
+	 * * `join`: 半角スペース1つに置き換える
+	 * * `raw`: そのまま
+	 */
 	lineBreak?: 'join' | 'raw' | null;
-	whiteSpace?: 'join' | 'raw' | null;
+	/**
+	 * ホワイトスペース(注意: 改行は含まない)の扱い。
+	 *
+	 * * `join`: 半角スペース1つに置き換える
+	 * * `raw`: そのまま
+	 */
+	 whiteSpace?: 'join' | 'raw' | null;
+	 /**
+	  * トリムを実施するか。
+	  */
 	trim?: boolean;
 
 	//#endregion
 }
 
+/**
+ * 一致設定。
+ */
 export interface MatchSetting {
 	//#region property
 
+	/**
+	 * パターン。
+	 *
+	 * * `partial`: 部分一致
+	 * * `forward`: 前方一致
+	 * * `backward`: 後方一致
+	 * * `perfect`: 完全一致
+	 * * `regex`: 正規表現
+	 */
 	mode?: 'partial' | 'forward' | 'backward' | 'perfect' | 'regex' | null;
+	/**
+	 * 大文字小文字を無視するか。
+	 */
 	ignoreCase?: boolean | null;
+	/**
+	 * パターン。
+	 */
 	pattern?: string | null;
+	/**
+	 * 置き換え処理。
+	 */
 	replace?: ReplaceSetting | null;
 
 	//#endregion
 }
 
+/**
+ * 置き換え設定。
+ */
 export interface ReplaceSetting {
 	//#region property
 
+	/**
+	 * 置き換え方法。
+	 *
+	 * * `normal`: 通常
+	 * * `common`: 共通テキストから割り当て
+	 */
 	mode?: 'normal' | 'common' | null;
-	value: string | null;
+	/**
+	 * 置き換え値。
+	 *
+	 * * 置き換え方法が共通の場合、該当する共通テキストを設定。
+	 * * 条件が正規表現の場合で指定がある場合 `(?<NAME>)` を `$<NAME>` で使用可能。
+	 */
+	value?: string | null;
+
+	/**
+	 * 正規表現による置き換え値。
+	 *
+	 * 条件が正規表現の場合にキャプチャグループ名に対する置き換え文字列を指定(未指定・一致しない場合にもと文字列)
+	 */
 	regex?: { [name: string]: { [key: string]: string | null } } | null;
 
 	//#endregion
 }
 
+/**
+ * 対象要素(のテキスト・属性それぞれ)に対する設定。
+ */
 export interface TargetSetting {
 	//#region property
 
+	/** フィルタリング */
 	filter?: FilterSetting | null;
+	/** 一致条件一覧 */
 	matches?: Array<MatchSetting> | null;
+	/**
+	 * 置き換え設定。
+	 *
+	 * 一致条件一覧に合致しなければこれが使用される。
+	 */
 	replace?: ReplaceSetting | null;
 
 	//#endregion
 }
 
+/**
+ * セレクタ設定。
+ */
 export interface SelectorSetting {
 	//#region property
 
+	/**
+	 * セレクタ種別
+	 *
+	 * * `normal`: 通常
+	 * * `common`: 共通セレクタから割り当て
+	 */
 	mode?: 'normal' | 'common' | null;
+	/**
+	 * セレクタ。
+	 *
+	 * * セレクタ種別が共通の場合、該当する共通セレクタを設定。
+	 */
 	value: string | null;
+	/**
+	 * テキストノード指定。
+	 *
+	 * `Element.childNodes` の `Text` だけを集計した 1 基底の番号: `<span>[1]<br />[2]<br />[3]</span>`
+	 *
+	 * 負数を指定した場合は全テキストノードが対象となる(matchesによる制御を想定)
+	 *
+	 * `-1`: 一致時点で後続終了
+	 * `-2`: すべて処理。
+	 */
 	node?: number | null;
+	/**
+	 * セレクタを全要素に適用するか
+	 */
 	all?: boolean | null;
+	/**
+	 * 対象用を監視対象とするか
+	 */
 	watch?: boolean | null;
 
 	//#endregion
 }
 
+/**
+ * クエリ設定。
+ */
 export interface QuerySetting {
 	//#region property
 
+	/**
+	 * セレクタ。
+	 */
 	selector?: SelectorSetting | null;
+	/**
+	 * テキスト置き換え設定。
+	 */
 	text?: TargetSetting | null;
+	/**
+	 * 属性置き換え設定。
+	 */
 	attributes?: { [name: string]: TargetSetting | null; } | null;
 
 	//#endregion
 }
 
+/**
+ * パス設定。
+ */
 export interface PathSetting {
 	//#region property
 
-	query: QuerySetting[] | null;
+	/**
+	 * クエリ一覧。
+	 */
+	query?: QuerySetting[] | null;
 
+	/**
+	 * 取り込み共通セレクタ。
+	 */
 	import?: string[] | null;
 
 	//#endregion
