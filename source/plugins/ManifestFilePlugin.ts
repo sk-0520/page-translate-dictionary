@@ -31,10 +31,15 @@ export default class ManifestFilePlugin {
 		targetJson['name'] = packageJson['name'];
 		targetJson['version'] = packageJson['version'];
 		targetJson['description'] = packageJson['description'];
-		targetJson['developer'] = {
-			'name': packageJson['author'],
-			'url': packageJson['homepage'],
-		};
+
+		switch (this._options.browser) {
+			case 'firefox':
+				targetJson['developer'] = {
+					'name': packageJson['author'],
+					'url': packageJson['homepage'],
+				};
+				break;
+		}
 
 		const outputPath = path.join(this._options.outputDirectory, 'manifest.json');
 		if (!fs.existsSync(this._options.outputDirectory)) {
@@ -54,7 +59,7 @@ export default class ManifestFilePlugin {
 
 	public apply(compiler: webpack.Compiler) {
 		compiler.hooks.watchRun.tapPromise(ManifestFilePlugin.pluginName, async (compilation) => {
-			if(compilation.modifiedFiles) {
+			if (compilation.modifiedFiles) {
 				if (this.getWatchFilePaths().filter(i => compilation.modifiedFiles.has(i)).length) {
 					console.debug(ManifestFilePlugin.pluginName, 'UPDATE');
 					this._canGenerate = true;

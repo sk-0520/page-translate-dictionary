@@ -1,6 +1,6 @@
 {
 	"name": "page-translation-dictionary",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "__MSG_we_description__",
 	"main": "index.js",
 	"scripts": {
@@ -8,7 +8,9 @@
 		"test:script": "jest --runInBand",
 		"test": "npm-run-all --sequential test:script",
 		"build:firefox": "webpack --mode=production --config=webpack.config.ts --env=browser=firefox",
+		"build:chrome": "webpack --mode=production --config=webpack.config.ts --env=browser=chrome",
 		"watch:firefox": "webpack --watch --cache --mode=development --config=webpack.config.ts --env=browser=firefox",
+		"watch:chrome": "webpack --watch --cache --mode=development --config=webpack.config.ts --env=browser=chrome",
 		"browser:firefox": "web-ext run --source-dir=./dist --start-url about:debugging about:addons",
 		"prebrowser:firefox-env": "mkdirp X:\\fx",
 		"browser:firefox-env": "npm run browser:firefox -- --keep-profile-changes --firefox-profile=X:\\fx ",
