@@ -240,6 +240,7 @@ export interface SiteHeadConfiguration extends SiteId {
 	//#endregion
 }
 
+//TODO: 補正するのでプロパティの型はよくないはず(未調査)
 export interface SiteBodyConfiguration {
 	//#region property
 
