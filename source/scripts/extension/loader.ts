@@ -111,6 +111,7 @@ export async function saveAsync(updateUrl: string, setting: setting.SiteSetting,
 		language: convertLanguage(setting?.language),
 	};
 	const body: config.SiteBodyConfiguration = {
+		watch: setting.watch ?? {},
 		path: setting.path ?? {},
 		common: setting.common ?? {},
 	};

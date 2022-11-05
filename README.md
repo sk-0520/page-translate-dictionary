@@ -45,6 +45,15 @@
   "level": 0,
   // 変換先言語
   "language": "ja-JP",
+  "event": {
+    "window": [
+      // window 監視対象イベント
+    ],
+    "document": [
+      // document 監視対象イベント
+      "pjax:end",
+    ],
+  },
   // パス
   "path": {
     // 対象パス(正規表現)

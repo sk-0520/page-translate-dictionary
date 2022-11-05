@@ -133,6 +133,16 @@ export interface PathConfiguration {
 	//#endregion
 }
 
+export interface WatchConfiguration {
+	//#region property
+
+	window: Array<string>;
+
+	document: Array<string>;
+
+	//#endregion
+}
+
 /**
  * 共通設定
  */
@@ -233,6 +243,8 @@ export interface SiteHeadConfiguration extends SiteId {
 export interface SiteBodyConfiguration {
 	//#region property
 
+	watch: setting.WatchSetting;
+
 	path: setting.PathMap;
 
 	common: setting.CommonSetting;
@@ -244,6 +256,8 @@ export type PathMap = { [path: string]: PathConfiguration };
 
 export interface SiteConfiguration extends SiteHeadConfiguration {
 	//#region property
+
+	watch: WatchConfiguration;
 
 	path: PathMap;
 
@@ -259,6 +273,7 @@ export type SiteData = {
 
 export class SiteConfigurationImpl implements SiteConfiguration {
 
+	public readonly watch: WatchConfiguration;
 	public readonly path: PathMap;
 	public readonly common: CommonConfiguration;
 
@@ -267,10 +282,9 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		body: SiteBodyConfiguration
 	) {
 		// ここで全部のデータを補正
-		//alert('body.path = ' + JSON.stringify(body.path));
-		this.path = this.convertPath(body.path || null);
-		//alert('this.path = ' + JSON.stringify(this.path));
-		this.common = this.convertCommon(body.common || null);
+		this.watch = this.convertWatch(body.watch);
+		this.path = this.convertPath(body.path);
+		this.common = this.convertCommon(body.common);
 	}
 
 	//#region function
@@ -291,6 +305,36 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		return fallbackValue;
 	}
 
+	private convertWatch(raw?: setting.WatchSetting | null): WatchConfiguration {
+		if (!raw) {
+			return {
+				window: [],
+				document: [],
+			};
+		}
+
+		function toStringArray(raw: setting.WatchSetting, key: keyof setting.WatchSetting) {
+			const eventNames = new Array<string>();
+			if (type.hasArrayProperty(raw, key)) {
+				const window = raw[key]!;
+				for (const name of window) {
+					if (!string.isNullOrWhiteSpace(name)) {
+						eventNames.push(name);
+					}
+				}
+			}
+			return eventNames;
+		}
+
+		const result: WatchConfiguration = {
+			window: toStringArray(raw, 'window'),
+			document: toStringArray(raw, 'document'),
+		};
+
+		return result;
+	}
+
+
 	private convertSelector(raw: setting.SelectorSetting): SelectorConfiguration {
 		const result: SelectorConfiguration = {
 			mode: this.convertEnum(raw, 'mode', SelectorMode.Normal, new Map([
@@ -305,6 +349,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 
 		return result;
 	}
+
 	private convertFilter(raw?: setting.FilterSetting | null): FilterConfiguration {
 		if (!raw) {
 			return {
@@ -458,7 +503,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		return query;
 	}
 
-	public convertPath(raw: setting.PathMap | null): PathMap {
+	public convertPath(raw?: setting.PathMap | null): PathMap {
 		if (!raw) {
 			return {};
 		}
@@ -523,7 +568,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		return result;
 	}
 
-	public convertCommon(raw: setting.CommonSetting | null): CommonConfiguration {
+	public convertCommon(raw?: setting.CommonSetting | null): CommonConfiguration {
 		if (!raw) {
 			return {
 				selector: new Map(),

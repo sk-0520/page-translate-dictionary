@@ -284,6 +284,19 @@ async function bootAsync(): Promise<boolean> {
 				onWatchMutationAsync(x, a);
 			}),
 		};
+
+		// イベント監視設定追加
+		for(const siteItem of siteItems) {
+			for(const eventName of siteItem.watch.window) {
+				console.info('event:window', siteItem.name, eventName);
+				window.addEventListener(eventName, ev => updatedPageAsync(ev));
+			}
+			for(const eventName of siteItem.watch.document) {
+				console.info('event:document', siteItem.name, eventName);
+				document.addEventListener(eventName, ev => updatedPageAsync(ev));
+			}
+		}
+
 		await executeAsync(pageCache);
 	} else {
 		console.trace('きてない・・・', location.pathname);
@@ -313,8 +326,5 @@ async function bootAsync(): Promise<boolean> {
 }
 
 export function boot() {
-	document.addEventListener('pjax:end', ev => updatedPageAsync(ev));
-	document.addEventListener('turbo:render', ev => updatedPageAsync(ev));
-
 	bootAsync();
 }
