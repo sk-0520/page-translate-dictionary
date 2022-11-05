@@ -165,39 +165,4 @@
       </g>
     </g>
   </g>
-  <g
-     inkscape:label="A"
-     inkscape:groupmode="layer"
-     id="layer1"
-     style="display:none">
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.87607px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.121902"
-       x="0.73019862"
-       y="4.2402081"
-       id="text1850"
-       transform="scale(1.0095679,0.99052277)"><tspan
-         sodipodi:role="line"
-         id="tspan1848"
-         style="stroke-width:0.121902"
-         x="0.73019862"
-         y="4.2402081">A</tspan></text>
-  </g>
-  <g
-     inkscape:groupmode="layer"
-     id="layer2"
-     inkscape:label="あ"
-     style="display:none">
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.79346px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.119837"
-       x="7.6444025"
-       y="11.6976"
-       id="text2069"><tspan
-         sodipodi:role="line"
-         id="tspan2067"
-         style="stroke-width:0.119837"
-         x="7.6444025"
-         y="11.6976">あ</tspan></text>
-  </g>
 </svg>
