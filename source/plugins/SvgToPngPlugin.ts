@@ -19,6 +19,10 @@ export default class SvgToPngPlugin {
 	}
 
 	private getSvgFiles(): Array<string> {
+		if (this._options.browser === 'firefox') {
+			return [];
+		}
+
 		const sgvFiles = fs.readdirSync(this._options.inputDirectory)
 			.filter(i => i.endsWith('.svg'))
 			.map(i => path.join(this._options.inputDirectory, i))
