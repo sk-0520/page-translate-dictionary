@@ -145,7 +145,7 @@ async function executeAsync(pageCache: PageCache): Promise<void> {
 }
 
 function updatedPageAsync(event: Event): Promise<void> {
-	console.log('updatedPage');
+	console.log('updatedPage', event);
 	if (pageCache) {
 		return executeAsync(pageCache);
 	}
@@ -289,7 +289,7 @@ async function bootAsync(): Promise<boolean> {
 		console.trace('きてない・・・', location.pathname);
 	}
 
-	// 子孫が追加された場合の監視(追加の監視の身で既にある要素は `watch` で対応すること)
+	// 子孫が追加された場合の監視(追加の監視のみで、既にある要素は `watch` で対応すること)
 	const bodyMutationOptions: MutationObserverInit = {
 		childList: true,
 		subtree: true,

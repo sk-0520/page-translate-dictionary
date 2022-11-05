@@ -84,7 +84,22 @@ export interface PathSetting {
 }
 
 /**
- * 共通設定
+ * 監視設定。
+ */
+export interface WatchSetting {
+	//#region property
+
+	/** `window` に対する更新検知対象のイベント名 */
+	window?: Array<string> | null;
+
+	/** `document` に対する更新検知対象のイベント名 */
+	document?: Array<string> | null;
+
+	//#endregion
+}
+
+/**
+ * 共通設定。
  */
 export interface CommonSetting {
 	//#region property
@@ -118,6 +133,9 @@ export interface SiteSetting {
 	level?: number | null;
 	/** 変換先言語 */
 	language?: string | null;
+
+	/** 監視設定 */
+	watch?: WatchSetting | null;
 
 	/** パスに対する変換設定 */
 	path?: PathMap | null;
