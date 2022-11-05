@@ -1,4 +1,4 @@
-@forward 'normalize-scss';
+@forward '../../../node_modules/normalize-sass/normalize.sass';
 
 @use "../core/tab";
 @use "../core/responsive" as responsive;
