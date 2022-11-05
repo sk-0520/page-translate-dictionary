@@ -163,8 +163,7 @@ function modifyPageAsync(mutations: MutationRecord[]): Promise<void> {
 }
 
 async function onWatchMutationAsync(mutations: MutationRecord[], observer: MutationObserver): Promise<void> {
-	console.log('なんかきた', mutations);
-	alert('onWatchMutationAsync');
+	console.trace('なんかきた: 現状未検証処理', mutations);
 	return Promise.resolve();
 }
 

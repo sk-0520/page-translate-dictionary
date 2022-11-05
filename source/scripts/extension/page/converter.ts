@@ -73,6 +73,7 @@ export function convert(source: string, targetConfiguration: config.TargetConfig
 	const inputText = filtering.filter(source, targetConfiguration.filter, site);
 
 	for (const match of targetConfiguration.matches) {
+
 		const matchResult = matching.match(inputText, match, site);
 		if (!matchResult.matched) {
 			continue;

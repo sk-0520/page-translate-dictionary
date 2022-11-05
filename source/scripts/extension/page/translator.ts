@@ -11,13 +11,17 @@ export interface TranslatedTarget {
 export function translateElement(element: Element, queryConfiguration: config.QueryConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): boolean {
 	let translated = false;
 
+	const sourceSave = !element.hasAttribute(names.Attributes.translated);
+
 	for (const [attributeName, targetConfiguration] of queryConfiguration.attributes) {
 		const sourceValue = element.getAttribute(attributeName);
 		if (sourceValue) {
 			const output = converter.convert(sourceValue, targetConfiguration, commonConfiguration, site);
 			if (output) {
 				element.setAttribute(attributeName, output);
-				element.setAttribute(names.Attributes.attributeHead + attributeName, sourceValue);
+				if (sourceSave) {
+					element.setAttribute(names.Attributes.attributeHead + attributeName, sourceValue);
+				}
 				translated = true;
 			}
 		}
@@ -59,7 +63,10 @@ export function translateElement(element: Element, queryConfiguration: config.Qu
 				} else {
 					element.textContent = output;
 				}
-				element.setAttribute(names.Attributes.textHead + number, sourceValue);
+
+				if (sourceSave) {
+					element.setAttribute(names.Attributes.textHead + number, sourceValue);
+				}
 				translated = true;
 
 				if (queryConfiguration.selector.node === -1) {
