@@ -9,7 +9,10 @@ jobs:
 
     strategy:
       matrix:
-        BROWSER: ["firefox"]
+        BROWSER: [
+          "firefox",
+          "chrome"
+        ]
 
     steps:
       - name: <Checkout> Repository
