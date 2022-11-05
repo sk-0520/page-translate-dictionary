@@ -17,7 +17,9 @@
 		"debug:firefox": "npm run build:firefox && npm-run-all --parallel watch:firefox browser:firefox",
 		"debug:firefox-env": "npm run build:firefox && npm-run-all --parallel watch:firefox browser:firefox-env",
 		"lint:firefox": "web-ext lint --source-dir=./dist",
+		"lint:chrome": "echo 0",
 		"output:firefox": "cd dist && web-ext build",
+		"output:chrome": "cd dist && web-ext build",
 		"check": "ncu",
 		"update": "ncu -u && npm install"
 	},
