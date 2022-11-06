@@ -6,6 +6,7 @@ import * as config from '../config';
 import * as uri from '../uri';
 import * as loader from '../loader';
 import ImportLogger from './ImportLogger';
+import * as extensions from '../extensions';
 import '../../../styles/extension/application-options.scss';
 
 function setApplication(applicationConfiguration: config.ApplicationConfiguration) {
@@ -187,7 +188,7 @@ async function saveGenericAsync(): Promise<void> {
 	await storage.saveApplicationAsync(applicationConfiguration);
 }
 
-async function bootAsync(): Promise<void> {
+async function bootAsync(extension: extensions.Extension): Promise<void> {
 	const applicationTask = storage.loadApplicationAsync();
 	const siteHeadsTask = storage.loadSiteHeadsAsync();
 
@@ -216,6 +217,6 @@ async function bootAsync(): Promise<void> {
 	dom.requireElementById('processing').classList.add('processed');
 }
 
-export function boot() {
-	bootAsync();
+export function boot(extension: extensions.Extension) {
+	bootAsync(extension);
 }

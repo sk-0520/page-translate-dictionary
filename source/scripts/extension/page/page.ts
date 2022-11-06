@@ -5,6 +5,8 @@ import * as string from '../../core/string';
 import * as loader from '../loader';
 import * as names from '../names';
 import * as storage from '../storage';
+import * as extensions from '../extensions';
+
 import '../../../styles/extension/page-content.scss';
 
 type PageCache = {
@@ -230,7 +232,7 @@ async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: con
 	return headItems;
 }
 
-async function bootAsync(): Promise<boolean> {
+async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 	console.time('PAGE');
 	const applicationConfiguration = await storage.loadApplicationAsync();
 	const allSiteHeadConfigurations = await storage.loadSiteHeadsAsync();
@@ -324,6 +326,6 @@ async function bootAsync(): Promise<boolean> {
 	return 0 < siteItems.length;
 }
 
-export function boot() {
-	bootAsync();
+export function boot(extension: extensions.Extension) {
+	bootAsync(extension);
 }
