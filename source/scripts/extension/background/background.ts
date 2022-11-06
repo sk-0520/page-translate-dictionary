@@ -17,41 +17,105 @@ function setBadgeTextAsync(details: webextension.Action.SetBadgeTextDetailsType,
 	}
 }
 
-function applyEnablePageIconAsync(pageInformation: messages.PageInformation, extension: extensions.Extension): Promise<void> {
+function setBadgeTextColor(details: webextension.Action.SetBadgeTextColorDetailsType, extension: extensions.Extension): void {
+	switch (extension.kind) {
+		case extensions.BrowserKind.Firefox:
+			webextension.browserAction.setBadgeTextColor(details);
+			break;
+
+		case extensions.BrowserKind.Chrome:
+			webextension.action.setBadgeTextColor(details);
+			break;
+
+		default:
+			throw new throws.NotImplementedError();
+	}
+}
+
+function setBadgeBackgroundColorAsync(details: webextension.Action.SetBadgeBackgroundColorDetailsType, extension: extensions.Extension): Promise<void> {
+	switch (extension.kind) {
+		case extensions.BrowserKind.Firefox:
+			return webextension.browserAction.setBadgeBackgroundColor(details);
+
+		case extensions.BrowserKind.Chrome:
+			return webextension.action.setBadgeBackgroundColor(details);
+
+		default:
+			throw new throws.NotImplementedError();
+	}
+}
+
+async function setBadgeAsync(tabId: number |undefined, text: string, foregroundColor: string, backgroundColor: string, extension: extensions.Extension): Promise<void> {
+	setBadgeTextColor({
+		color: foregroundColor,
+		tabId: tabId,
+	}, extension);
+	await setBadgeTextAsync({
+		text: text,
+		tabId: tabId,
+	}, extension);
+	await setBadgeBackgroundColorAsync({
+		color: backgroundColor,
+		tabId: tabId,
+	}, extension);
+}
+
+async function applyEnablePageIconAsync(tabId: number |undefined ,pageInformation: messages.PageInformation, extension: extensions.Extension): Promise<void> {
 	if (pageInformation.settings.length) {
 		// 設定あり
-		setBadgeTextAsync({
-			text: pageInformation.translatedElementCount.toString(),
-		}, extension);
+		await setBadgeAsync(
+			tabId,
+			pageInformation.translatedElementCount.toString(),
+			'#eee',
+			'#222',
+			extension
+		)
 	} else {
 		// 設定なし
-		setBadgeTextAsync({
-			text: '🤔',
-		}, extension);
+		await setBadgeAsync(
+			tabId,
+			'🤔',
+			'#222',
+			'#ccc',
+			extension
+		)
 	}
 
 	return Promise.resolve();
 }
 
-function applyDisablePageIconAsync(extension: extensions.Extension): Promise<void> {
-	return setBadgeTextAsync({
-		text: '✖',
-	}, extension);
+async function applyDisablePageIconAsync(tabId: number |undefined , extension: extensions.Extension): Promise<void> {
+	await setBadgeAsync(
+		tabId,
+		'✖',
+		'#111',
+		'#ccc',
+		extension
+	);
 }
 
 async function changedActiveTabAsync(tab: webextension.Tabs.Tab | undefined, extension: extensions.Extension): Promise<void> {
-	console.log(tab);
+	console.log('tab', tab);
 
 	if (tab && tab.id && tab.url && uri.isUserUrl(tab.url)) {
-		// TODO: 翻訳データ(有無も)をアイコン反映
-		const reply: messages.Replay & messages.PageInformation = await webextension.tabs.sendMessage(tab.id, {
-			kind: messages.MessageKind.GetPageInformation,
-		} as messages.Message);
+		try {
+			const reply: messages.Replay & messages.PageInformation = await webextension.tabs.sendMessage(tab.id, {
+				kind: messages.MessageKind.GetPageInformation,
+			} as messages.Message);
+			console.log('reply', reply);
+			applyEnablePageIconAsync(tab.id, reply, extension);
+		} catch (ex) {
+			console.debug('応答なし(差し込んでない)', ex);
+			applyEnablePageIconAsync(tab.id, {
+				translatedElementCount: 0,
+				translatedTotalCount: 0,
+				settings: []
+			}, extension);
 
-		applyEnablePageIconAsync(reply, extension);
+		}
 	} else {
 		// 翻訳対象外アイコン反映
-		applyDisablePageIconAsync(extension);
+		applyDisablePageIconAsync(tab?.id, extension);
 	}
 }
 
@@ -61,10 +125,12 @@ async function onTabActivatedAsync(activeInfo: webextension.Tabs.OnActivatedActi
 }
 
 async function receiveMessageAsync(message: messages.Message, sender: webextension.Runtime.MessageSender, extension: extensions.Extension): Promise<void> {
+	console.trace(message, sender);
+
 	switch (message?.kind) {
 		case messages.MessageKind.NotifyPageInformation:
 			//TODO: 型チェック
-			applyEnablePageIconAsync(message as messages.PageInformation, extension);
+			applyEnablePageIconAsync(sender.tab?.id, message as messages.PageInformation, extension);
 			break;
 
 		default:
@@ -74,6 +140,8 @@ async function receiveMessageAsync(message: messages.Message, sender: webextensi
 }
 
 export function boot(extension: extensions.Extension) {
+	console.info('background boot!');
+
 	webextension.tabs.onActivated.addListener(ev => onTabActivatedAsync(ev, extension));
 	webextension.runtime.onMessage.addListener((message, sender) => receiveMessageAsync(message, sender, extension));
 

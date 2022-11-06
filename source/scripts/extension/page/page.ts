@@ -3,6 +3,7 @@ import * as config from '../config';
 import * as uri from '../uri';
 import * as translator from './translator';
 import * as string from '../../core/string';
+import * as throws from '../../core/throws';
 import * as loader from '../loader';
 import * as messages from '../messages';
 import * as names from '../names';
@@ -131,6 +132,7 @@ async function executeAsync(pageCache: PageCache): Promise<void> {
 	try {
 		console.time('TRANSLATE');
 		targets = await executeCoreAsync(pageCache);
+		await sendMessageAsync(messages.MessageKind.NotifyPageInformation);
 	} finally {
 		// document.body.removeChild(progressElement);
 		console.timeEnd('TRANSLATE');
@@ -225,8 +227,7 @@ async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: con
 	return headItems;
 }
 
-async function receiveMessageAsync(message: messages.Message, sender: webextension.Runtime.MessageSender): Promise<messages.Replay & messages.PageInformation> {
-	message.kind
+function getPageInformation(): messages.PageInformation {
 	if (!pageCache) {
 		return {
 			translatedElementCount: 0,
@@ -237,13 +238,35 @@ async function receiveMessageAsync(message: messages.Message, sender: webextensi
 
 	const translatedElementList = document.querySelectorAll(`[${names.Attributes.translated}]`);
 
-	const result: messages.Replay & messages.PageInformation = {
+	const result: messages.PageInformation = {
 		translatedElementCount: translatedElementList.length,
 		translatedTotalCount: 0, // TODO: 属性数から実際の件数を取得
 		settings: pageCache.sites,
 	};
 
 	return result;
+}
+
+function sendMessageAsync<T>(kind: messages.MessageKind.NotifyPageInformation): Promise<T> {
+	switch (kind) {
+		case messages.MessageKind.NotifyPageInformation:
+			const result: messages.Message & messages.PageInformation = getPageInformation();
+			result.kind = kind;
+			return webextension.runtime.sendMessage(result);
+	}
+}
+
+
+async function receiveMessageAsync(message: messages.Message, sender: webextension.Runtime.MessageSender): Promise<messages.Replay> {
+	switch (message.kind) {
+		case messages.MessageKind.GetPageInformation: {
+			const result: messages.Replay = getPageInformation();
+			return result;
+		}
+
+		default:
+			throw new throws.NotImplementedError();
+	}
 }
 
 async function bootAsync(extension: extensions.Extension): Promise<boolean> {
@@ -253,12 +276,14 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 
 	if (!allSiteHeadConfigurations.length) {
 		console.trace('設定なし');
+		sendMessageAsync(messages.MessageKind.NotifyPageInformation);
 		return false;
 	}
 
 	const currentSiteHeadConfigurations = allSiteHeadConfigurations.filter(i => uri.isEnabledHosts(location.host, i.hosts));
 	if (!currentSiteHeadConfigurations.length) {
 		console.info(`ホストに該当する設定なし: ${location.host}`);
+		sendMessageAsync(messages.MessageKind.NotifyPageInformation);
 		return false;
 	}
 
