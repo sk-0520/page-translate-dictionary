@@ -1,0 +1,24 @@
+#disabled {
+	display: block;
+
+	&.inactive {
+		display: none;
+	}
+
+	.logo {
+		display: block;
+		margin: 0 auto;
+	}
+}
+
+#enabled {
+	display: none;
+
+	&.active {
+		display: block;
+	}
+}
+
+h1 {
+	text-align: center;
+}

@@ -41,7 +41,7 @@ export default class SvgToPngPlugin {
 		// 	256, 320, 384, 448, 512,
 		// ];
 		const scales = [
-			16, 32, 48, 96
+			16, 32, 48, 96, 128,
 		];
 		const svgFiles = this.getSvgFiles();
 		for (const svgFile of svgFiles) {

@@ -9,6 +9,7 @@
 	"permissions": [
 		"storage",
 		"unlimitedStorage",
+		"tabs",
 		"<all_urls>"
 	],
 	"icons": {
@@ -29,6 +30,16 @@
 			]
 		}
 	],
+	"browser_action": {
+		"default_icon": "extension-icon.svg",
+		"default_title": "ptd",
+		"default_popup": "popup-action.html"
+	},
+	"background": {
+		"scripts": [
+			"background.js"
+		]
+	},
 	"options_ui": {
 		"open_in_tab": true,
 		"page": "application-options.html"

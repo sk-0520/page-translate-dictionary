@@ -1,11 +1,16 @@
+import webextension from 'webextension-polyfill';
 import * as config from '../config';
 import * as uri from '../uri';
 import * as translator from './translator';
 import * as string from '../../core/string';
+import * as throws from '../../core/throws';
 import * as loader from '../loader';
+import * as messages from '../messages';
 import * as names from '../names';
 import * as storage from '../storage';
-import '../../../styles/extension/page.scss';
+import * as extensions from '../extensions';
+
+import '../../../styles/extension/page-content.scss';
 
 type PageCache = {
 	/** アプリケーション設定 */
@@ -31,13 +36,6 @@ let pageCache: PageCache | null;
 
 // 	return progressElement;
 // }
-
-function notifyBrowserIfTranslated() {
-	const makClassNames = document.getElementsByClassName(names.ClassNames.mark);
-	if (makClassNames.length) {
-		// ここでロケーションバーとサイドバーの合わせ技したい
-	}
-}
 
 function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.TranslatedTarget>> {
 	let targets = new Array<translator.TranslatedTarget>();
@@ -66,8 +64,6 @@ function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.Transl
 			}
 		}
 	}
-
-	notifyBrowserIfTranslated();
 
 	return Promise.resolve(targets);
 }
@@ -136,6 +132,7 @@ async function executeAsync(pageCache: PageCache): Promise<void> {
 	try {
 		console.time('TRANSLATE');
 		targets = await executeCoreAsync(pageCache);
+		await sendMessageAsync(messages.MessageKind.NotifyPageInformation);
 	} finally {
 		// document.body.removeChild(progressElement);
 		console.timeEnd('TRANSLATE');
@@ -230,21 +227,81 @@ async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: con
 	return headItems;
 }
 
-async function bootAsync(): Promise<boolean> {
+function getPageInformation(): messages.PageInformation {
+	if (!pageCache) {
+		return {
+			translatedElementCount: 0,
+			translatedTotalCount: 0,
+			settings: [],
+		};
+	}
+
+	const translatedElementList = document.querySelectorAll(`[${names.Attributes.translated}]`);
+
+	const result: messages.PageInformation = {
+		translatedElementCount: translatedElementList.length,
+		translatedTotalCount: 0, // TODO: 属性数から実際の件数を取得
+		settings: pageCache.sites.map(i => {
+			const head: config.SiteHeadConfiguration = {
+				updateUrl: i.updateUrl,
+				updatedTimestamp: i.updatedTimestamp,
+				lastCheckedTimestamp: i.lastCheckedTimestamp,
+				version: i.version,
+				hosts: i.hosts,
+				information: i.information,
+				level: i.level,
+				language: i.language,
+				id: i.id,
+				name: i.name,
+			};
+			return head;
+		}),
+	};
+
+	return result;
+}
+
+function sendMessageAsync<T>(kind: messages.MessageKind.NotifyPageInformation): Promise<T> {
+	switch (kind) {
+		case messages.MessageKind.NotifyPageInformation:
+			const result: messages.Message & messages.PageInformation = getPageInformation();
+			result.kind = kind;
+			return webextension.runtime.sendMessage(result);
+	}
+}
+
+
+async function receiveMessageAsync(message: messages.Message, sender: webextension.Runtime.MessageSender): Promise<messages.Replay> {
+	switch (message.kind) {
+		case messages.MessageKind.GetPageInformation: {
+			const result: messages.Replay = getPageInformation();
+			return result;
+		}
+
+		default:
+			throw new throws.NotImplementedError();
+	}
+}
+
+async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 	console.time('PAGE');
 	const applicationConfiguration = await storage.loadApplicationAsync();
 	const allSiteHeadConfigurations = await storage.loadSiteHeadsAsync();
 
 	if (!allSiteHeadConfigurations.length) {
 		console.trace('設定なし');
+		sendMessageAsync(messages.MessageKind.NotifyPageInformation);
 		return false;
 	}
 
 	const currentSiteHeadConfigurations = allSiteHeadConfigurations.filter(i => uri.isEnabledHosts(location.host, i.hosts));
 	if (!currentSiteHeadConfigurations.length) {
 		console.info(`ホストに該当する設定なし: ${location.host}`);
+		sendMessageAsync(messages.MessageKind.NotifyPageInformation);
 		return false;
 	}
+
+	webextension.runtime.onMessage.addListener((message, sender) => receiveMessageAsync(message, sender));
 
 	// アップデート確認等々
 	const currentDateTime = new Date();
@@ -279,18 +336,17 @@ async function bootAsync(): Promise<boolean> {
 			//translatedTargets: new Map(),
 			watchers: new Map(),
 			observer: new MutationObserver((x, a) => {
-				alert();
 				onWatchMutationAsync(x, a);
 			}),
 		};
 
 		// イベント監視設定追加
-		for(const siteItem of siteItems) {
-			for(const eventName of siteItem.watch.window) {
+		for (const siteItem of siteItems) {
+			for (const eventName of siteItem.watch.window) {
 				console.info('event:window', siteItem.name, eventName);
 				window.addEventListener(eventName, ev => updatedPageAsync(ev));
 			}
-			for(const eventName of siteItem.watch.document) {
+			for (const eventName of siteItem.watch.document) {
 				console.info('event:document', siteItem.name, eventName);
 				document.addEventListener(eventName, ev => updatedPageAsync(ev));
 			}
@@ -324,6 +380,6 @@ async function bootAsync(): Promise<boolean> {
 	return 0 < siteItems.length;
 }
 
-export function boot() {
-	bootAsync();
+export function boot(extension: extensions.Extension) {
+	bootAsync(extension);
 }

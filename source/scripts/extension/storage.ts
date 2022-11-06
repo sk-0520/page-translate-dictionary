@@ -6,6 +6,7 @@ const Keys = {
 	application: 'application',
 	siteHeads: 'site-head',
 	siteBody: 'site-body-',
+	background: 'background',
 }
 
 /**

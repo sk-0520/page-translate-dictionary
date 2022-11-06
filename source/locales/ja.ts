@@ -5,6 +5,29 @@ const messages: locale.IMessages & locale.MessageMap = {
 		message: '特定の要素のテキスト(かテキストノードか属性か値)に対する辞書的置き換え処理'
 	},
 
+	popup_disabled_title: {
+		message: '非適用ページ',
+	},
+	popup_disabled_description_extension: {
+		message: 'http(s):// か file:// から始まる URL で本拡張機能は有効になります。',
+	},
+	popup_disabled_description_setting: {
+		message: '表示中ページに該当する設定が見つかりませんでした。',
+	},
+
+	popup_enabled_title: {
+		message: '適用ページ',
+	},
+	popup_enabled_element_count: {
+		message: '要素数',
+	},
+	popup_enabled_total_count: {
+		message: '適用数',
+	},
+	popup_enabled_settings: {
+		message: '適用設定ファイル一覧',
+	},
+
 	options_tab_header_generic: {
 		message: '基本設定',
 	},
