@@ -29,6 +29,7 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 		entry: {
 			"page-content": path.join(inputEntryDirectory, 'page-content.ts'),
 			"application-options": path.join(inputEntryDirectory, 'application-options.ts'),
+			"popup-action": path.join(inputEntryDirectory, 'popup-action.ts'),
 		},
 
 		devtool: isProduction ? false : 'inline-source-map',
@@ -79,6 +80,11 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 			new HtmlWebpackPlugin({
 				template: path.join(inputRootDirectory, 'views', 'application-options.html'),
 				filename: 'application-options.html',
+				inject: false,
+			}),
+			new HtmlWebpackPlugin({
+				template: path.join(inputRootDirectory, 'views', 'popup-action.html'),
+				filename: 'popup-action.html',
 				inject: false,
 			}),
 			new CopyWebpackPlugin({

@@ -5,7 +5,7 @@ import * as string from '../../core/string';
 import * as loader from '../loader';
 import * as names from '../names';
 import * as storage from '../storage';
-import '../../../styles/extension/page.scss';
+import '../../../styles/extension/page-content.scss';
 
 type PageCache = {
 	/** アプリケーション設定 */
