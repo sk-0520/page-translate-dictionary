@@ -1,8 +1,24 @@
-
 #x {
-font-weight: bold;
+	font-weight: bold;
 }
 
 #y {
-	background-color: red;;
+	background-color: red;
+	;
+}
+
+#disabled {
+	display: block;
+
+	&.inactive {
+		display: none;
+	}
+}
+
+#enabled {
+	display: none;
+
+	&.active {
+		display: block;
+	}
 }

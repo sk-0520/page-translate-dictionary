@@ -1,16 +1,35 @@
 import webextension from 'webextension-polyfill';
+import * as dom from '../../core/dom';
 import * as extensions from '../extensions';
 import * as messages from '../messages';
 import '../../../styles/extension/popup-action.scss';
+
+function changeEnablePopup(isEnabled: boolean) {
+	const disabledElement = dom.requireElementById('disabled');
+	const enabledElement = dom.requireElementById('enabled');
+
+	if (isEnabled) {
+		disabledElement.classList.add('inactive');
+		enabledElement.classList.add('active');;
+	} else {
+		disabledElement.classList.remove('inactive');
+		enabledElement.classList.remove('active');;
+	}
+}
 
 function applyEnablePopupAsync(tab: webextension.Tabs.Tab, pageInformation: messages.PageInformation, extension: extensions.Extension): Promise<void> {
 	document.getElementById('x')!.textContent = tab.url!;
 	document.getElementById('y')!.textContent = tab.title!;
 
+	changeEnablePopup(true);
+
+
 	return Promise.resolve();
 }
 
 function applyDisablePopupAsync(tab: webextension.Tabs.Tab, extension: extensions.Extension): Promise<void> {
+	changeEnablePopup(false);
+
 	return Promise.resolve();
 }
 

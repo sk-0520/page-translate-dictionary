@@ -62,22 +62,25 @@ async function setBadgeAsync(tabId: number |undefined, text: string, foregroundC
 }
 
 function setActionEnableAsync(tabId: number |undefined, isEnabled: boolean, extension: extensions.Extension): Promise<void> {
-	switch (extension.kind) {
-		case extensions.BrowserKind.Firefox:
-			return isEnabled
-				? webextension.browserAction.enable(tabId)
-				: webextension.browserAction.disable(tabId)
-			;
+	return Promise.resolve();
 
-		case extensions.BrowserKind.Chrome:
-			return isEnabled
-				? webextension.action.enable(tabId)
-				: webextension.action.disable(tabId)
-			;
+	// 別に変えんでもいいかなぁ
+	// switch (extension.kind) {
+	// 	case extensions.BrowserKind.Firefox:
+	// 		return isEnabled
+	// 			? webextension.browserAction.enable(tabId)
+	// 			: webextension.browserAction.disable(tabId)
+	// 		;
 
-		default:
-			throw new throws.NotImplementedError();
-	}
+	// 	case extensions.BrowserKind.Chrome:
+	// 		return isEnabled
+	// 			? webextension.action.enable(tabId)
+	// 			: webextension.action.disable(tabId)
+	// 		;
+
+	// 	default:
+	// 		throw new throws.NotImplementedError();
+	// }
 }
 
 async function applyEnablePageIconAsync(tabId: number |undefined ,pageInformation: messages.PageInformation, extension: extensions.Extension): Promise<void> {
