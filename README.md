@@ -42,7 +42,7 @@
     "document": "https://"
   },
   // 優先度 0: 通常, 低 < 0 < 高
-  "level": 0,
+  "priority": 0,
   // 変換先言語
   "language": "ja-JP",
   "event": {

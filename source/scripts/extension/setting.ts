@@ -256,8 +256,13 @@ export interface SiteSetting {
 	hosts: string[];
 	/** 設定情報 */
 	information?: InformationSetting | null;
-	/** 優先度 */
-	level?: number | null;
+	/**
+	 * 優先度
+	 *
+	 * * 通常: 0
+	 * * 低 < 0 < 高
+	 */
+	priority?: number | null;
 	/** 変換先言語 */
 	language?: string | null;
 

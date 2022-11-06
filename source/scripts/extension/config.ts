@@ -226,7 +226,7 @@ export interface SiteHeadConfiguration extends SiteId {
 	/** 設定情報 */
 	information: InformationConfiguration;
 	/** 優先度 */
-	level: number;
+	priority: number;
 	/** 変換先言語 */
 	language: string;
 
@@ -653,8 +653,8 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		return this.head.hosts;
 	}
 
-	public get level(): number {
-		return this.head.level;
+	public get priority(): number {
+		return this.head.priority;
 	}
 
 	public get language(): string {

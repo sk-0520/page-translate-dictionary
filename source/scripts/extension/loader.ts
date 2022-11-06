@@ -67,9 +67,9 @@ export function convertInformation(information: setting.InformationSetting | nul
 	return result;
 }
 
-export function convertLevel(level: number | null | undefined): number {
-	if (typeof level === 'number') {
-		return level;
+export function convertPriority(priority: number | null | undefined): number {
+	if (typeof priority === 'number') {
+		return priority;
 	}
 
 	return 0;
@@ -107,7 +107,7 @@ export async function saveAsync(updateUrl: string, setting: setting.SiteSetting,
 		version: setting.version,
 		hosts: setting.hosts,
 		information: convertInformation(setting?.information),
-		level: convertLevel(setting?.level),
+		priority: convertPriority(setting?.priority),
 		language: convertLanguage(setting?.language),
 	};
 	const body: config.SiteBodyConfiguration = {

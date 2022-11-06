@@ -249,7 +249,7 @@ function getPageInformation(): messages.PageInformation {
 				version: i.version,
 				hosts: i.hosts,
 				information: i.information,
-				level: i.level,
+				priority: i.priority,
 				language: i.language,
 				id: i.id,
 				name: i.name,
@@ -317,7 +317,7 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 
 	const siteItems = new Array<config.SiteConfiguration>();
 
-	const sortedCurrentSiteHeadConfigurations = currentSiteHeadConfigurations.sort((a, b) => a.level - b.level);
+	const sortedCurrentSiteHeadConfigurations = currentSiteHeadConfigurations.sort((a, b) => a.priority - b.priority);
 	for (const siteHeadConfiguration of sortedCurrentSiteHeadConfigurations) {
 		const rawBody = await storage.loadSiteBodyAsync(siteHeadConfiguration.id);
 		if (rawBody) {
