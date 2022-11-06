@@ -1,8 +1,10 @@
+import webextension from 'webextension-polyfill';
 import * as config from '../config';
 import * as uri from '../uri';
 import * as translator from './translator';
 import * as string from '../../core/string';
 import * as loader from '../loader';
+import * as messages from '../messages';
 import * as names from '../names';
 import * as storage from '../storage';
 import * as extensions from '../extensions';
@@ -35,9 +37,9 @@ let pageCache: PageCache | null;
 // }
 
 function notifyBrowserIfTranslated() {
-	const makClassNames = document.getElementsByClassName(names.ClassNames.mark);
-	if (makClassNames.length) {
-		// ここでロケーションバーとサイドバーの合わせ技したい
+	const element = document.querySelector(`[${names.Attributes.translated}]`);
+	if (element) {
+	} else {
 	}
 }
 
@@ -232,6 +234,26 @@ async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: con
 	return headItems;
 }
 
+async function receiveMessageAsync(message: messages.PageMessage, sender: webextension.Runtime.MessageSender): Promise<messages.PageInformationReplay> {
+	if (!pageCache) {
+		return {
+			translatedElementCount: 0,
+			translatedTotalCount: 0,
+			settings: [],
+		};
+	}
+
+	const translatedElementList = document.querySelectorAll(`[${names.Attributes.translated}]`);
+
+	const result: messages.PageInformationReplay = {
+		translatedElementCount: translatedElementList.length,
+		translatedTotalCount: 0, // TODO: 属性数から実際の件数を取得
+		settings: pageCache.sites,
+	};
+
+	return result;
+}
+
 async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 	console.time('PAGE');
 	const applicationConfiguration = await storage.loadApplicationAsync();
@@ -247,6 +269,8 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 		console.info(`ホストに該当する設定なし: ${location.host}`);
 		return false;
 	}
+
+	webextension.runtime.onMessage.addListener((message, sender) => receiveMessageAsync(message, sender));
 
 	// アップデート確認等々
 	const currentDateTime = new Date();
@@ -287,12 +311,12 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 		};
 
 		// イベント監視設定追加
-		for(const siteItem of siteItems) {
-			for(const eventName of siteItem.watch.window) {
+		for (const siteItem of siteItems) {
+			for (const eventName of siteItem.watch.window) {
 				console.info('event:window', siteItem.name, eventName);
 				window.addEventListener(eventName, ev => updatedPageAsync(ev));
 			}
-			for(const eventName of siteItem.watch.document) {
+			for (const eventName of siteItem.watch.document) {
 				console.info('event:document', siteItem.name, eventName);
 				document.addEventListener(eventName, ev => updatedPageAsync(ev));
 			}

@@ -663,3 +663,11 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 
 	//#endregion
 }
+
+export interface BackgroundPageItem {
+	tabId: number;
+}
+
+export interface BackgroundData {
+	items: Array<BackgroundPageItem>;
+}
