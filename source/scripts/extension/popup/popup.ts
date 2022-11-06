@@ -1,6 +1,6 @@
 import webextension from 'webextension-polyfill';
 import * as dom from '../../core/dom';
-import * as localize from '../../core/localize';
+import * as localize from '../localize';
 import * as extensions from '../extensions';
 import * as messages from '../messages';
 import '../../../styles/extension/popup-action.scss';

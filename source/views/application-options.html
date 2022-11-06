@@ -10,45 +10,45 @@
 	<body>
 		<template id="template-setting-item">
 			<li class="setting-item">
-				<strong name="name" data-we-title="options_tab_content_settings_item_name"></strong>
-				<code name="version" data-we-title="options_tab_content_settings_item_version"></code>
-				<time name="updated-timestamp" data-we-title="options_tab_content_settings_item_updatedTimestamp"></time>
+				<strong name="name" data-ext-title="options_tab_content_settings_item_name"></strong>
+				<code name="version" data-ext-title="options_tab_content_settings_item_version"></code>
+				<time name="updated-timestamp" data-ext-title="options_tab_content_settings_item_updatedTimestamp"></time>
 				<details>
-					<summary data-we-text="options_tab_content_settings_item_hosts"></summary>
+					<summary data-ext-text="options_tab_content_settings_item_hosts"></summary>
 					<ul name="hosts" class="hosts"><!-- template-setting-item-host --></ul>
 				</details>
 				<details>
-					<summary data-we-text="options_tab_content_settings_item_details"></summary>
+					<summary data-ext-text="options_tab_content_settings_item_details"></summary>
 					<table>
 						<tbody>
 							<tr>
-								<td data-we-text="options_tab_content_settings_item_details_updateUrl"></td>
+								<td data-ext-text="options_tab_content_settings_item_details_updateUrl"></td>
 								<td><a name="update-url"></a></td>
 							</tr>
 							<tr>
-								<td data-we-text="options_tab_content_settings_item_details_website"></td>
+								<td data-ext-text="options_tab_content_settings_item_details_website"></td>
 								<td><a name="website-url"></a></td>
 							</tr>
 							<tr>
-								<td data-we-text="options_tab_content_settings_item_details_repository"></td>
+								<td data-ext-text="options_tab_content_settings_item_details_repository"></td>
 								<td><a name="repository-url"></a></td>
 							</tr>
 							<tr>
-								<td data-we-text="options_tab_content_settings_item_details_document"></td>
+								<td data-ext-text="options_tab_content_settings_item_details_document"></td>
 								<td><a name="document-url"></a></td>
 							</tr>
 
 							<tr>
-								<td data-we-text="options_tab_content_settings_item_details_id">options_tab_content_settings_item_details_id</td>
+								<td data-ext-text="options_tab_content_settings_item_details_id">options_tab_content_settings_item_details_id</td>
 								<td>
 									<code name="id"></code>
 								</td>
 							</tr>
 							<tr>
-								<td data-we-text="options_tab_content_settings_item_details_actions">options_tab_content_settings_item_details_actions</td>
+								<td data-ext-text="options_tab_content_settings_item_details_actions">options_tab_content_settings_item_details_actions</td>
 								<td>
-									<button name="action" type="button" data-we-text="options_tab_content_settings_item_details_actions_update" data-we-data-updating="options_tab_content_settings_item_details_actions_updating">options_tab_content_settings_item_details_actions_update</button>
-									<button name="delete" type="button" data-we-text="options_tab_content_settings_item_details_actions_delete">options_tab_content_settings_item_details_actions_delete</button>
+									<button name="action" type="button" data-ext-text="options_tab_content_settings_item_details_actions_update" data-ext-data-updating="options_tab_content_settings_item_details_actions_updating">options_tab_content_settings_item_details_actions_update</button>
+									<button name="delete" type="button" data-ext-text="options_tab_content_settings_item_details_actions_delete">options_tab_content_settings_item_details_actions_delete</button>
 								</td>
 							</tr>
 						</tbody>
@@ -67,59 +67,59 @@
 		<div id="options" class="loading tab">
 
 			<input name="tab" class="tab_check" type="radio" id="options_tab_header_generic" checked />
-			<label for="options_tab_header_generic" class="tab_header" data-we-text="options_tab_header_generic">options_tab_header_generic</label>
+			<label for="options_tab_header_generic" class="tab_header" data-ext-text="options_tab_header_generic">options_tab_header_generic</label>
 			<div class="tab_content">
 				<form id="generic">
 					<section>
-						<h2 data-we-text="options_tab_content_generic_translate"></h2>
+						<h2 data-ext-text="options_tab_content_generic_translate"></h2>
 						<ul>
 							<li>
 								<label>
 									<input id="translate_markReplacedElement" type="checkbox" />
-									<span data-we-text="options_tab_content_generic_translate_markReplacedElement">options_tab_content_generic_translate_markReplacedElement</span>
+									<span data-ext-text="options_tab_content_generic_translate_markReplacedElement">options_tab_content_generic_translate_markReplacedElement</span>
 								</label>
 							</li>
 						</ul>
 					</section>
 					<section>
-						<h2 data-we-text="options_tab_content_generic_setting">options_tab_content_generic_setting</h2>
+						<h2 data-ext-text="options_tab_content_generic_setting">options_tab_content_generic_setting</h2>
 						<ul>
 							<li>
 								<label>
 									<input id="setting_autoUpdate" type="checkbox" />
-									<span data-we-text="options_tab_content_generic_setting_autoUpdate">options_tab_content_generic_setting_autoUpdate</span>
+									<span data-ext-text="options_tab_content_generic_setting_autoUpdate">options_tab_content_generic_setting_autoUpdate</span>
 								</label>
 							</li>
 							<li>
 								<label>
 									<input id="setting_updatedBeforeTranslation" type="checkbox" />
-									<span data-we-text="options_tab_content_generic_setting_updatedBeforeTranslation">options_tab_content_generic_setting_updatedBeforeTranslation</span>
+									<span data-ext-text="options_tab_content_generic_setting_updatedBeforeTranslation">options_tab_content_generic_setting_updatedBeforeTranslation</span>
 								</label>
 							</li>
 							<li>
 								<label for="setting_periodDays">
-									<span data-we-text="options_tab_content_generic_setting_periodDays">options_tab_content_generic_setting_periodDays</span>
+									<span data-ext-text="options_tab_content_generic_setting_periodDays">options_tab_content_generic_setting_periodDays</span>
 								</label>
 								<input id="setting_periodDays" type="number" min="0" max="365" />
 							</li>
 						</ul>
 					</section>
-					<button data-we-text="options_tab_content_generic_save">options_tab_content_generic_save</button>
+					<button data-ext-text="options_tab_content_generic_save">options_tab_content_generic_save</button>
 				</form>
 			</div>
 
 			<input name="tab" class="tab_check" type="radio" id="options_tab_header_settings" />
-			<label for="options_tab_header_settings" class="tab_header" data-we-text="options_tab_header_settings">options_tab_header_settings</label>
+			<label for="options_tab_header_settings" class="tab_header" data-ext-text="options_tab_header_settings">options_tab_header_settings</label>
 			<div class="tab_content">
 				<section>
-					<h2 data-we-text="options_tab_content_settings_item">options_tab_content_settings_item</h2>
+					<h2 data-ext-text="options_tab_content_settings_item">options_tab_content_settings_item</h2>
 					<ul id="settings">
 						<!-- #template-setting-item -->
 					</ul>
 				</section>
 				<section>
-					<h2 data-we-text="options_tab_content_settings_import">options_tab_content_settings_import</h2>
-					<button id="import" data-we-text="options_tab_content_settings_import_submit">import</button>
+					<h2 data-ext-text="options_tab_content_settings_import">options_tab_content_settings_import</h2>
+					<button id="import" data-ext-text="options_tab_content_settings_import_submit">import</button>
 					<ol id="import-log"></ol>
 				</section>
 			</div>

@@ -1,6 +1,6 @@
 import webextension from "webextension-polyfill";
 import * as dom from '../../core/dom';
-import * as localize from '../../core/localize';
+import * as localize from '../localize';
 import * as storage from '../storage';
 import * as config from '../config';
 import * as uri from '../uri';
