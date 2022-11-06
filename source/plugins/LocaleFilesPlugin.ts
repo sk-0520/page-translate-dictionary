@@ -1,10 +1,11 @@
 import webpack from 'webpack';
 import path from 'path';
 import fs from 'fs';
-import ja from '../locales/ja';
+import ts from 'typescript';
 
 export interface LocaleFilesOptions {
 	browser: string;
+	inputDirectory: string;
 	outputDirectory: string;
 }
 
@@ -24,15 +25,18 @@ export default class LocaleFilesPlugin {
 		}
 		fs.mkdirSync(outputLocalesDirectory);
 
-		const localeItems = {
-			ja: ja,
-		};
+		const localeItems = new Map([
+			['ja', 'ja.ts'],
+		].map(i => [i[0], path.join(this._options.inputDirectory, i[1])]));
 
-		for (const [key, localeItem] of Object.entries(localeItems)) {
+		for (const [key, localePath] of localeItems) {
 			const outputDirectory = path.join(outputLocalesDirectory, key);
 			fs.mkdirSync(outputDirectory);
 
 			const outputPath = path.join(outputDirectory, 'messages.json');
+			const localeTypeScript = fs.readFileSync(localePath).toString();
+			const localeJavaScript = ts.transpile(localeTypeScript);
+			const localeItem = eval(localeJavaScript);
 			const outputContent = JSON.stringify(localeItem);
 			fs.writeFileSync(outputPath, outputContent);
 			console.log(LocaleFilesPlugin.pluginName, '[create]', outputPath);

@@ -122,6 +122,7 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 			}),
 			new LocaleFilesPlugin({
 				browser: env['browser'],
+				inputDirectory: path.join(inputRootDirectory, 'locales'),
 				outputDirectory: outputDirectory,
 			}),
 			new SvgToPngPlugin({
