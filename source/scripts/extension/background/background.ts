@@ -17,14 +17,15 @@ function setBadgeTextAsync(details: webextension.Action.SetBadgeTextDetailsType,
 	}
 }
 
-function setBadgeTextColor(details: webextension.Action.SetBadgeTextColorDetailsType, extension: extensions.Extension): void {
+function setBadgeForegroundColor(details: webextension.Action.SetBadgeTextColorDetailsType, extension: extensions.Extension): void {
 	switch (extension.kind) {
 		case extensions.BrowserKind.Firefox:
 			webextension.browserAction.setBadgeTextColor(details);
 			break;
 
 		case extensions.BrowserKind.Chrome:
-			webextension.action.setBadgeTextColor(details);
+			// chrome は色変わらない？
+			//webextension.action.setBadgeTextColor(details);
 			break;
 
 		default:
@@ -46,7 +47,7 @@ function setBadgeBackgroundColorAsync(details: webextension.Action.SetBadgeBackg
 }
 
 async function setBadgeAsync(tabId: number |undefined, text: string, foregroundColor: string, backgroundColor: string, extension: extensions.Extension): Promise<void> {
-	setBadgeTextColor({
+	setBadgeForegroundColor({
 		color: foregroundColor,
 		tabId: tabId,
 	}, extension);
@@ -60,6 +61,25 @@ async function setBadgeAsync(tabId: number |undefined, text: string, foregroundC
 	}, extension);
 }
 
+function setActionEnableAsync(tabId: number |undefined, isEnabled: boolean, extension: extensions.Extension): Promise<void> {
+	switch (extension.kind) {
+		case extensions.BrowserKind.Firefox:
+			return isEnabled
+				? webextension.browserAction.enable(tabId)
+				: webextension.browserAction.disable(tabId)
+			;
+
+		case extensions.BrowserKind.Chrome:
+			return isEnabled
+				? webextension.action.enable(tabId)
+				: webextension.action.disable(tabId)
+			;
+
+		default:
+			throw new throws.NotImplementedError();
+	}
+}
+
 async function applyEnablePageIconAsync(tabId: number |undefined ,pageInformation: messages.PageInformation, extension: extensions.Extension): Promise<void> {
 	if (pageInformation.settings.length) {
 		// 設定あり
@@ -69,16 +89,18 @@ async function applyEnablePageIconAsync(tabId: number |undefined ,pageInformatio
 			'#eee',
 			'#222',
 			extension
-		)
+		);
+		await setActionEnableAsync(tabId, true, extension);
 	} else {
 		// 設定なし
 		await setBadgeAsync(
 			tabId,
-			'🤔',
-			'#222',
+			'-',
+			'#111',
 			'#ccc',
 			extension
-		)
+		);
+		await setActionEnableAsync(tabId, false, extension);
 	}
 
 	return Promise.resolve();
@@ -87,11 +109,12 @@ async function applyEnablePageIconAsync(tabId: number |undefined ,pageInformatio
 async function applyDisablePageIconAsync(tabId: number |undefined , extension: extensions.Extension): Promise<void> {
 	await setBadgeAsync(
 		tabId,
-		'✖',
+		'*',
 		'#111',
 		'#ccc',
 		extension
 	);
+	await setActionEnableAsync(tabId, false, extension);
 }
 
 async function changedActiveTabAsync(tab: webextension.Tabs.Tab | undefined, extension: extensions.Extension): Promise<void> {
@@ -111,7 +134,6 @@ async function changedActiveTabAsync(tab: webextension.Tabs.Tab | undefined, ext
 				translatedTotalCount: 0,
 				settings: []
 			}, extension);
-
 		}
 	} else {
 		// 翻訳対象外アイコン反映
