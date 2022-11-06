@@ -8,17 +8,36 @@
 	</head>
 
 	<body>
-		<p id="x">POPUP!</p>
-		<p id="y">POPUP!</p>
+		<template id="template-setting-item">
+			<li class="setting-item">
+				<span name="settings_item_name"></span>
+			</li>
+		</template>
 
-		<div id="disabled">
-			<p>disabled</p>
-			<img src="extension-icon.svg" />
-		</div>
+		<main>
+			<section id="disabled">
+				<h1 data-we-text="popup_disabled_title">popup_disabled_title</h1>
+				<img class="logo" src="extension-icon.svg" />
+				<p data-we-text="popup_disabled_description_extension">popup_disabled_description_extension</p>
+				<p data-we-text="popup_disabled_description_setting">popup_disabled_description_setting</p>
+			</section>
 
-		<div id="enabled">
-			<p>enabled</p>
-		</div>
+			<section id="enabled">
+				<h1 data-we-text="popup_enabled_title">popup_enabled_title</h1>
+				<dl>
+					<dt data-we-text="popup_enabled_element_count">popup_enabled_element_count</dt>
+					<dd id="element_count"></dd>
+
+					<dt data-we-text="popup_enabled_total_count">popup_enabled_total_count</dt>
+					<dd id="total_count"></dd>
+
+					<dt data-we-text="popup_enabled_settings">popup_enabled_settings</dt>
+					<ul id="settings">
+						<!-- #template-setting-item -->
+					</dd>
+				</dl>
+			</section>
+		</main>
 
 		<!-- webpack -->
 		<script src="popup-action.js"></script>

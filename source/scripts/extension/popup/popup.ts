@@ -1,5 +1,6 @@
 import webextension from 'webextension-polyfill';
 import * as dom from '../../core/dom';
+import * as localize from '../../core/localize';
 import * as extensions from '../extensions';
 import * as messages from '../messages';
 import '../../../styles/extension/popup-action.scss';
@@ -18,11 +19,27 @@ function changeEnablePopup(isEnabled: boolean) {
 }
 
 function applyEnablePopupAsync(tab: webextension.Tabs.Tab, pageInformation: messages.PageInformation, extension: extensions.Extension): Promise<void> {
-	document.getElementById('x')!.textContent = tab.url!;
-	document.getElementById('y')!.textContent = tab.title!;
-
 	changeEnablePopup(true);
 
+	const elementCountElement = dom.requireElementById('element_count');
+	elementCountElement.textContent = pageInformation.translatedElementCount.toString();
+	const totalCountElement = dom.requireElementById('total_count');
+	totalCountElement.textContent = pageInformation.translatedTotalCount.toString();
+
+	const templateElement = dom.requireElementById<HTMLTemplateElement>('template-setting-item');
+	const settingElement = dom.requireElementById('settings');
+	settingElement.innerHTML = '';
+	for(const setting of pageInformation.settings) {
+		const itemElement = dom.cloneTemplate(templateElement);
+
+		dom.requireSelector('[name="settings_item_name"]', itemElement).textContent = setting.name;
+
+		for (const element of itemElement.querySelectorAll<HTMLElement>('*')) {
+			localize.applyElement(element);
+		}
+
+		settingElement.appendChild(itemElement);
+	}
 
 	return Promise.resolve();
 }
@@ -38,6 +55,7 @@ async function applyTabAsync(tab: webextension.Tabs.Tab, extension: extensions.E
 		const reply: messages.Replay & messages.PageInformation = await webextension.tabs.sendMessage(tab.id!, {
 			kind: messages.MessageKind.GetPageInformation,
 		} as messages.Message);
+		console.trace('POPUP reply', reply);
 		return applyEnablePopupAsync(tab, reply, extension);
 	} catch (ex) {
 		console.debug('応答なし(差し込んでない)', ex);
@@ -58,7 +76,8 @@ async function bootAsync(extension: extensions.Extension): Promise<void> {
 	}
 
 	const tab = tabs[0];
-	return applyTabAsync(tab, extension);
+	await applyTabAsync(tab, extension);
+	localize.applyView();
 }
 
 export function boot(extension: extensions.Extension) {

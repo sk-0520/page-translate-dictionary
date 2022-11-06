@@ -1,17 +1,13 @@
-#x {
-	font-weight: bold;
-}
-
-#y {
-	background-color: red;
-	;
-}
-
 #disabled {
 	display: block;
 
 	&.inactive {
 		display: none;
+	}
+
+	.logo {
+		display: block;
+		margin: 0 auto;
 	}
 }
 
@@ -21,4 +17,8 @@
 	&.active {
 		display: block;
 	}
+}
+
+h1 {
+	text-align: center;
 }

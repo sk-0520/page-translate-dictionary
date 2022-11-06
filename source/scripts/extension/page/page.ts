@@ -241,7 +241,21 @@ function getPageInformation(): messages.PageInformation {
 	const result: messages.PageInformation = {
 		translatedElementCount: translatedElementList.length,
 		translatedTotalCount: 0, // TODO: 属性数から実際の件数を取得
-		settings: pageCache.sites,
+		settings: pageCache.sites.map(i => {
+			const head: config.SiteHeadConfiguration = {
+				updateUrl: i.updateUrl,
+				updatedTimestamp: i.updatedTimestamp,
+				lastCheckedTimestamp: i.lastCheckedTimestamp,
+				version: i.version,
+				hosts: i.hosts,
+				information: i.information,
+				level: i.level,
+				language: i.language,
+				id: i.id,
+				name: i.name,
+			};
+			return head;
+		}),
 	};
 
 	return result;
