@@ -10,7 +10,6 @@
 * 特定のページに対するパターン定義を取り込んで翻訳する
   * 翻訳者がしんどい
   * ユーザーは自然に読める
-*
 
 ## なぜ作るか
 
@@ -21,6 +20,29 @@
 ## Node
 
 * node: `18.4.0`
+
+### .npmrc
+
+* `npm scripts` の `*-env` 系スクリプトはプロジェクトディレクトリ直下の `.npmrc` の環境変数を使用する。
+  * **注意** 前提をいきなり覆すが、 Chrome を実行する場合 `PTD_CHROME_APPLICATION` の設定は必須となる
+* `.npmrc` を使用する場合、正しいパス・設定が行われている前提となる
+* Windows で動かすことが前提となっていることに注意
+
+```properties
+# npm scripts: *-env 系の環境を設定
+# 変数名の先頭に PTD_ を付与すること
+# 環境変数自体は
+
+# Firefox 設定
+# プロファイルディレクトリ
+PTD_FIREFOX_PROFILE_DIRECTORY=X:\fx
+
+# Chrome 設定
+# アプリパス
+PTD_CHROME_APPLICATION=C:\Program Files\Google\Chrome\Application\chrome.exe
+# プロファイルディレクトリ
+PTD_CHROME_PROFILE_DIRECTORY=X:\ch
+```
 
 ## 設定項目
 
