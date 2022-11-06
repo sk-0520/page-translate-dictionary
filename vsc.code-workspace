@@ -36,7 +36,15 @@
 			"xml",
 			"html"
 		],
-		"liveServer.settings.port": 5501
+		"npm.scriptExplorerExclude": [
+			"test$",
+			"pre",
+			"^(?!.*-env$)browser:.*$",
+			"^(?!.*-env$)debug:.*$",
+			"output",
+			"lint",
+			"^(check|update)$"
+		]
 	},
 	"extensions": {
 		"recommendations": [

@@ -2,6 +2,30 @@
 
 夢語るだけのREADME。
 
+## Build
+
+### Node
+
+* node: `18.4.0`
+
+### Firefox
+
+```cmd
+npm ci
+npm run build:firefox
+npm run output:firefox
+cd dist/web-ext-artifacts
+```
+
+### Chrome
+
+```cmd
+npm ci
+npm run build:chrome
+npm run output:chrome
+cd dist/web-ext-artifacts
+```
+
 ## やりたいこと
 
 * ブラウザ拡張機能
@@ -29,10 +53,6 @@
 * 基本的に package.json データを元に manifest.json を組み立てる
   * 項目が重複するものは package.json を正として楽ちん管理したい
 * バージョンアップ時は `version` だけ変えて運用したい
-
-## Node
-
-* node: `18.4.0`
 
 ### .npmrc
 
