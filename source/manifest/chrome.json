@@ -23,6 +23,14 @@
 			]
 		}
 	],
+	"action": {
+		"default_icon": "extension-icon.svg",
+		"default_title": "ptd",
+		"default_popup": "popup-action.html"
+	},
+	"background": {
+		"service_worker": "background.js"
+	},
 	"options_ui": {
 		"open_in_tab": true,
 		"page": "application-options.html"
