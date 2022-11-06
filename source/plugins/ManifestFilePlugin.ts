@@ -28,7 +28,8 @@ export default class ManifestFilePlugin {
 		const packageJson = JSON.parse(fs.readFileSync(this._options.packageJson, 'utf8'));
 
 		const targetJson = JSON.parse(fs.readFileSync(this.getInputManifestFilePath(), 'utf8'));
-		targetJson['name'] = packageJson['name'];
+		targetJson['name'] = '__MSG_ext_name__';
+		targetJson['short_name'] = packageJson['name'];
 		targetJson['version'] = packageJson['version'];
 		targetJson['description'] = packageJson['description'];
 

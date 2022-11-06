@@ -22,7 +22,7 @@ export async function fetchAsync(url: string): Promise<setting.SiteSetting | nul
 		method: 'GET',
 		headers: {
 			'User-Agent': navigator.userAgent,
-			'X-WebExtensions': `${manifest.name} ${manifest.version}`,
+			'X-Extension': `${manifest.short_name} ${manifest.version}`,
 		},
 	});
 

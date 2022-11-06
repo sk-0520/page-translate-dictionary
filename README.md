@@ -17,6 +17,19 @@
 * 原文を自分で読んでも翻訳サイト使っても機微が分からん
   * 翻訳先言語の多数の目があれば、とは思いつつ誰が訳すねんっていうね
 
+## manifest.json/package.json の関係
+
+| manifest.json | package.json | その他 |
+|:---:|:---:|:---|
+| `name` | - | `locale: ext_name` |
+| `short_name` | `name` | ローカライズしない想定。 `HTTP-HEADER: X-Extension` としても使用される |
+| `version` | `version` |  |
+| `description` | `description` | `locale: ext_description` |
+
+* 基本的に package.json データを元に manifest.json を組み立てる
+  * 項目が重複するものは package.json を正として楽ちん管理したい
+* バージョンアップ時は `version` だけ変えて運用したい
+
 ## Node
 
 * node: `18.4.0`

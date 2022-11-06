@@ -20,8 +20,9 @@ export interface Message {
 
 export type MessageMap = { [name: string]: Message };
 
-export interface IMessages {
-	we_description: Message,
+export interface Messages {
+	ext_name: Message,
+	ext_description: Message,
 
 	popup_disabled_title: Message,
 	popup_disabled_description_extension: Message,
