@@ -30,6 +30,7 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 			"page-content": path.join(inputEntryDirectory, 'page-content.ts'),
 			"application-options": path.join(inputEntryDirectory, 'application-options.ts'),
 			"popup-action": path.join(inputEntryDirectory, 'popup-action.ts'),
+			"background": path.join(inputEntryDirectory, 'background-' + env['browser'] + '.ts'),
 		},
 
 		devtool: isProduction ? false : 'inline-source-map',

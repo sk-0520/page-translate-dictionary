@@ -1,17 +1,30 @@
 import Wildcard from "../core/wildcard";
 
-export function isHttpUrl(s: string): boolean {
-	const starts = [
-		'https://',
-		'http://',
-	];
-	for(const start of starts) {
-		if(s.startsWith(start) && start.length < s.length) {
+function isProtocolUrl(url: string, protocols: ReadonlyArray<string>): boolean {
+	const starts = protocols.map(i => i + '://');
+
+	for (const start of starts) {
+		if (url.startsWith(start) && start.length < url.length) {
 			return true;
 		}
 	}
 
 	return false;
+}
+
+export function isHttpUrl(s: string): boolean {
+	return isProtocolUrl(s, [
+		'https',
+		'http',
+	]);
+}
+
+export function isUserUrl(s: string): boolean {
+	return isProtocolUrl(s, [
+		'https',
+		'http',
+		'file',
+	]);
 }
 
 export function isEnabledHosts(hostName: string, hostPatterns: string[]): boolean {

@@ -2,7 +2,8 @@
 	"manifest_version": 3,
 	"permissions": [
 		"storage",
-		"unlimitedStorage"
+		"unlimitedStorage",
+		"tabs"
 	],
 	"icons": {
 		"16": "extension-icon@16.png",
