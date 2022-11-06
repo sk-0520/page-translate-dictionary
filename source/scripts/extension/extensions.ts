@@ -18,4 +18,7 @@ export class Extension {
 
 	//#region property
 	//#endregion
+
+	//#region function
+	//#endregion
 }

@@ -36,13 +36,6 @@ let pageCache: PageCache | null;
 // 	return progressElement;
 // }
 
-function notifyBrowserIfTranslated() {
-	const element = document.querySelector(`[${names.Attributes.translated}]`);
-	if (element) {
-	} else {
-	}
-}
-
 function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.TranslatedTarget>> {
 	let targets = new Array<translator.TranslatedTarget>();
 
@@ -70,8 +63,6 @@ function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.Transl
 			}
 		}
 	}
-
-	notifyBrowserIfTranslated();
 
 	return Promise.resolve(targets);
 }
@@ -234,7 +225,8 @@ async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: con
 	return headItems;
 }
 
-async function receiveMessageAsync(message: messages.PageMessage, sender: webextension.Runtime.MessageSender): Promise<messages.PageInformationReplay> {
+async function receiveMessageAsync(message: messages.Message, sender: webextension.Runtime.MessageSender): Promise<messages.Replay & messages.PageInformation> {
+	message.kind
 	if (!pageCache) {
 		return {
 			translatedElementCount: 0,
@@ -245,7 +237,7 @@ async function receiveMessageAsync(message: messages.PageMessage, sender: webext
 
 	const translatedElementList = document.querySelectorAll(`[${names.Attributes.translated}]`);
 
-	const result: messages.PageInformationReplay = {
+	const result: messages.Replay & messages.PageInformation = {
 		translatedElementCount: translatedElementList.length,
 		translatedTotalCount: 0, // TODO: 属性数から実際の件数を取得
 		settings: pageCache.sites,
@@ -305,7 +297,6 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 			//translatedTargets: new Map(),
 			watchers: new Map(),
 			observer: new MutationObserver((x, a) => {
-				alert();
 				onWatchMutationAsync(x, a);
 			}),
 		};

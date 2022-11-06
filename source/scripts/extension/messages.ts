@@ -1,27 +1,17 @@
 import * as config from './config';
 
-export const enum Sender {
-	Page,
-	Background,
+export const enum MessageKind {
+	Unknown,
+	GetPageInformation,
+	NotifyPageInformation,
 }
 
+/** 送信データ */
 export interface Message {
 	//#region property
 
-	sender: Sender;
+	kind?: MessageKind;
 
-	//#endregion
-}
-
-/** ページへの送信メッセージ */
-export interface PageMessage extends Message {
-	//#region property
-	//#endregion
-}
-
-/** バックグラウンドへの送信メッセージ */
-export interface BackgroundMessage extends Message {
-	//#region property
 	//#endregion
 }
 
@@ -31,8 +21,8 @@ export interface Replay {
 	//#endregion
 }
 
-/** ページからバックグラウンドへの応答メッセージ */
-export interface PageInformationReplay extends Replay {
+/** ページ情報 */
+export interface PageInformation {
 	//#region property
 
 	readonly translatedElementCount: number;
