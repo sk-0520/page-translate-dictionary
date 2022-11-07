@@ -2,12 +2,12 @@ import webextension from "webextension-polyfill";
 import * as JSONC from 'jsonc-parser';
 import * as setting from './setting';
 import * as config from './config';
-import * as type from '../core/type';
+import * as types from '../core/types';
 import * as storage from './storage';
 import * as string from "../core/string";
 
 function throwIfInvalidString(obj: any, property: string) {
-	if (!type.hasPrimaryProperty(obj, property, 'string')) {
+	if (!types.hasPrimaryProperty(obj, property, 'string')) {
 		throw new Error(property);
 	}
 	if (string.isNullOrWhiteSpace(obj[property])) {
@@ -40,7 +40,7 @@ export async function fetchAsync(url: string): Promise<setting.SiteSetting | nul
 
 	throwIfInvalidString(json, 'name');
 	throwIfInvalidString(json, 'version');
-	if (!type.hasArrayProperty(json, 'hosts')) {
+	if (!types.hasArrayProperty(json, 'hosts')) {
 		throw new Error('hosts');
 	}
 	for (let i = 0; i < json['hosts'].length; i++) {
@@ -59,9 +59,9 @@ export function createSiteInternalId(): config.SiteInternalId {
 
 export function convertInformation(information: setting.InformationSetting | null | undefined): config.InformationConfiguration {
 	const result: config.InformationConfiguration = {
-		websiteUrl: type.getPrimaryPropertyOr(information, 'website', 'string', ''),
-		repositoryUrl: type.getPrimaryPropertyOr(information, 'repository', 'string', ''),
-		documentUrl: type.getPrimaryPropertyOr(information, 'document', 'string', ''),
+		websiteUrl: types.getPrimaryPropertyOr(information, 'website', 'string', ''),
+		repositoryUrl: types.getPrimaryPropertyOr(information, 'repository', 'string', ''),
+		documentUrl: types.getPrimaryPropertyOr(information, 'document', 'string', ''),
 	};
 
 	return result;

@@ -1,35 +1,35 @@
-import * as type from '../../scripts/core/type';
+import * as types from '../../scripts/core/types';
 
-describe('type', () => {
+describe('types', () => {
 	test('hasPrimaryProperty', () => {
-		expect(type.hasPrimaryProperty({}, 'a', 'number')).toBeFalsy();
-		expect(type.hasPrimaryProperty({ a: undefined }, 'a', 'number')).toBeFalsy();
-		expect(type.hasPrimaryProperty({ a: null }, 'a', 'number')).toBeFalsy();
-		expect(type.hasPrimaryProperty({ a: 1 }, 'a', 'number')).toBeTruthy();
-		expect(type.hasPrimaryProperty({ A: 1 }, 'a', 'number')).toBeFalsy();
-		expect(type.hasPrimaryProperty({ a: '1' }, 'a', 'number')).toBeFalsy();
+		expect(types.hasPrimaryProperty({}, 'a', 'number')).toBeFalsy();
+		expect(types.hasPrimaryProperty({ a: undefined }, 'a', 'number')).toBeFalsy();
+		expect(types.hasPrimaryProperty({ a: null }, 'a', 'number')).toBeFalsy();
+		expect(types.hasPrimaryProperty({ a: 1 }, 'a', 'number')).toBeTruthy();
+		expect(types.hasPrimaryProperty({ A: 1 }, 'a', 'number')).toBeFalsy();
+		expect(types.hasPrimaryProperty({ a: '1' }, 'a', 'number')).toBeFalsy();
 	});
 
 	test('toBoolean', () => {
-		expect(type.toBoolean(null)).toBeFalsy();
-		expect(type.toBoolean(undefined)).toBeFalsy();
-		expect(type.toBoolean("")).toBeFalsy();
-		expect(type.toBoolean("t")).toBeFalsy();
-		expect(type.toBoolean("f")).toBeFalsy();
-		expect(type.toBoolean("false")).toBeFalsy();
-		expect(type.toBoolean("FALSE")).toBeFalsy();
-		expect(type.toBoolean("true")).toBeTruthy();
-		expect(type.toBoolean("TRUE")).toBeTruthy();
+		expect(types.toBoolean(null)).toBeFalsy();
+		expect(types.toBoolean(undefined)).toBeFalsy();
+		expect(types.toBoolean("")).toBeFalsy();
+		expect(types.toBoolean("t")).toBeFalsy();
+		expect(types.toBoolean("f")).toBeFalsy();
+		expect(types.toBoolean("false")).toBeFalsy();
+		expect(types.toBoolean("FALSE")).toBeFalsy();
+		expect(types.toBoolean("true")).toBeTruthy();
+		expect(types.toBoolean("TRUE")).toBeTruthy();
 	});
 
 	test('toString', () => {
-		expect(type.toString(null)).toBe('null');
+		expect(types.toString(null)).toBe('null');
 
-		expect(type.toString(undefined)).toBe('undefined');
+		expect(types.toString(undefined)).toBe('undefined');
 
-		expect(type.toString(false)).toBe('false');
-		expect(type.toString(true)).toBe('true');
+		expect(types.toString(false)).toBe('false');
+		expect(types.toString(true)).toBe('true');
 
-		expect(type.toString(1)).toBe('1');
+		expect(types.toString(1)).toBe('1');
 	});
 });

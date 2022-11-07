@@ -1,5 +1,5 @@
 type TypeOfPrimitive = 'string' | 'number' | 'bigint' | 'boolean';
-//type TypeOfBuildIn = 'string' | 'number' | 'bigint' | 'boolean' | 'symbol' | 'undefined' | 'object' | 'function';
+//type TypeOfBuildIn = TypeOfPrimitive | 'symbol' | 'undefined' | 'object' | 'function';
 
 export function hasProperty(obj: any, key: string): obj is Record<string, unknown> {
 	if (!obj) {

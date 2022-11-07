@@ -2,7 +2,7 @@
  * 内部使用する(ある程度データが確定している)設定
  */
 import * as setting from './setting';
-import * as type from '../core/type';
+import * as types from '../core/types';
 import * as string from '../core/string';
 
 
@@ -317,7 +317,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 
 		function toStringArray(raw: setting.WatchSetting, key: keyof setting.WatchSetting) {
 			const eventNames = new Array<string>();
-			if (type.hasArrayProperty(raw, key)) {
+			if (types.hasArrayProperty(raw, key)) {
 				const window = raw[key]!;
 				for (const name of window) {
 					if (!string.isNullOrWhiteSpace(name)) {
@@ -344,9 +344,9 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 				['common', SelectorMode.Common],
 			])),
 			value: raw.value!,
-			node: type.getPrimaryPropertyOr(raw, 'node', 'number', 0),
-			all: type.getPrimaryPropertyOr(raw, 'all', 'boolean', false),
-			watch: type.getPrimaryPropertyOr(raw, 'watch', 'boolean', false),
+			node: types.getPrimaryPropertyOr(raw, 'node', 'number', 0),
+			all: types.getPrimaryPropertyOr(raw, 'all', 'boolean', false),
+			watch: types.getPrimaryPropertyOr(raw, 'watch', 'boolean', false),
 		};
 
 		return result;
@@ -370,14 +370,14 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 				['join', WhiteSpace.Join],
 				['raw', WhiteSpace.Raw],
 			])),
-			trim: type.getPrimaryPropertyOr(raw, 'trim', 'boolean', true),
+			trim: types.getPrimaryPropertyOr(raw, 'trim', 'boolean', true),
 		};
 
 		return result;
 	}
 
 	private convertMatch(raw: setting.MatchSetting): MatchConfiguration | null {
-		if (!type.hasPrimaryProperty(raw, 'pattern', 'string')) {
+		if (!types.hasPrimaryProperty(raw, 'pattern', 'string')) {
 			return null;
 		}
 		if (string.isNullOrEmpty(raw.pattern)) {
@@ -390,7 +390,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		}
 
 		const result: MatchConfiguration = {
-			ignoreCase: type.getPrimaryPropertyOr(raw, 'ignoreCase', 'boolean', true),
+			ignoreCase: types.getPrimaryPropertyOr(raw, 'ignoreCase', 'boolean', true),
 			mode: this.convertEnum(raw, 'mode', MatchMode.Partial, new Map([
 				['partial', MatchMode.Partial],
 				['forward', MatchMode.Forward],
@@ -546,7 +546,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 			}
 
 			const importItems = new Array<string>();
-			if (type.hasArrayProperty(pathSetting, 'import')) {
+			if (types.hasArrayProperty(pathSetting, 'import')) {
 				for (const name of pathSetting.import!) { //TODO: !
 					if (typeof name !== 'string') {
 						continue;
@@ -557,7 +557,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 			}
 
 			const pathConfiguration: PathConfiguration = {
-				withSearch: type.getPrimaryPropertyOr(pathSetting, 'withSearch', 'boolean', false),
+				withSearch: types.getPrimaryPropertyOr(pathSetting, 'withSearch', 'boolean', false),
 				query: queryItems,
 				import: importItems,
 			};
