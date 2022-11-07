@@ -5,6 +5,7 @@ temp/
 /coverage/
 
 desktop.ini
+.npmrc
 *.zip
 *.7z
 *.lnk
