@@ -28,6 +28,7 @@
 		"cSpell.words": [
 			"endregion",
 			"pjax",
+			"postoutput",
 			"prebrowser",
 			"timespan",
 			"webextension"
@@ -38,7 +39,7 @@
 		],
 		"npm.scriptExplorerExclude": [
 			"test$",
-			"pre",
+			"^(pre|post)",
 			"^(?!.*-env$)browser:.*$",
 			"^(?!.*-env$)debug:.*$",
 			"output",

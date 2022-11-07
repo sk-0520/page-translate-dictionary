@@ -6,9 +6,9 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
 
-import ManifestFilePlugin from './source/plugins/ManifestFilePlugin';
-import LocaleFilesPlugin from './source/plugins/LocaleFilesPlugin';
-import SvgToPngPlugin from './source/plugins/SvgToPngPlugin';
+import ManifestFilePlugin from './source/build/ManifestFilePlugin';
+import LocaleFilesPlugin from './source/build/LocaleFilesPlugin';
+import SvgToPngPlugin from './source/build/SvgToPngPlugin';
 
 const inputRootDirectory = path.resolve(__dirname, 'source');
 const inputIconsDirectory = path.resolve(__dirname, 'icons');

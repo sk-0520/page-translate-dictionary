@@ -23,8 +23,10 @@
 		"debug:chrome-env": "npm run build:chrome && npm-run-all --parallel watch:chrome browser:chrome-env",
 		"lint:firefox": "web-ext lint --source-dir=./dist",
 		"lint:chrome": "echo 0",
-		"output:firefox": "cd dist && web-ext build",
-		"output:chrome": "cd dist && web-ext build",
+		"output:firefox": "cd dist && web-ext build --overwrite-dest",
+		"postoutput:firefox": "ts-node ./source/build/output-rename.ts firefox",
+		"output:chrome": "cd dist && web-ext build --overwrite-dest",
+		"postoutput:chrome": "ts-node ./source/build/output-rename.ts chrome",
 		"check": "ncu",
 		"update": "ncu -u && npm install"
 	},
