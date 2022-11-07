@@ -5,30 +5,6 @@ import * as setting from './setting';
 import * as type from '../core/type';
 import * as string from '../core/string';
 
-/**
- * 拡張機能内で識別するための設定ID。
- */
-export type SiteInternalId = string;
-
-/**
- * 各処理でどの設定を使用しているか表現するためのID。
- */
-export interface SiteId {
-	/** 設定データの一意キー(自動採番) */
-	readonly id: SiteInternalId;
-	/** 名前 */
-	readonly name: string;
-}
-
-export interface InformationConfiguration {
-	//#region property
-
-	readonly websiteUrl: string;
-	readonly repositoryUrl: string;
-	readonly documentUrl: string;
-
-	//#endregion
-}
 
 export const enum SelectorMode {
 	Normal,
@@ -56,6 +32,31 @@ export const enum MatchMode {
 export const enum ReplaceMode {
 	Normal,
 	Common,
+}
+
+/**
+ * 拡張機能内で識別するための設定ID。
+ */
+export type SiteInternalId = string;
+
+/**
+ * 各処理でどの設定を使用しているか表現するためのID。
+ */
+export interface SiteId {
+	/** 設定データの一意キー(自動採番) */
+	readonly id: SiteInternalId;
+	/** 名前 */
+	readonly name: string;
+}
+
+export interface InformationConfiguration {
+	//#region property
+
+	readonly websiteUrl: string;
+	readonly repositoryUrl: string;
+	readonly documentUrl: string;
+
+	//#endregion
 }
 
 export interface FilterConfiguration {
@@ -615,6 +616,10 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		};
 
 		return result;
+	}
+
+	public getHead(): Readonly<SiteHeadConfiguration> {
+		return this.head;
 	}
 
 	//#endregion

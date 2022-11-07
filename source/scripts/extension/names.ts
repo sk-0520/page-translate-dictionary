@@ -9,6 +9,5 @@ export const ClassNames = {
 export const Attributes = {
 	translated: baseAttr + 'translated',
 	textHead: baseAttr + 'translated-text-',
-	value: baseAttr + 'translated-value',
 	attributeHead: baseAttr + 'translated-attr-',
 }

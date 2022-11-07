@@ -227,6 +227,26 @@ async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: con
 	return headItems;
 }
 
+function getExtensionAttributes(element: Element): Map<string, Attr> {
+	const result = new Map<string, Attr>();
+
+	for (const attribute of element.attributes) {
+		const name = attribute.name;
+
+		if (name.startsWith(names.Attributes.textHead)) {
+			result.set(name, attribute);
+			continue;
+		}
+
+		if (name.startsWith(names.Attributes.attributeHead)) {
+			result.set(name, attribute);
+			continue;
+		}
+	}
+
+	return result;
+}
+
 function getPageInformation(): messages.PageInformation {
 	if (!pageCache) {
 		return {
@@ -238,9 +258,15 @@ function getPageInformation(): messages.PageInformation {
 
 	const translatedElementList = document.querySelectorAll(`[${names.Attributes.translated}]`);
 
+	const translatedTotalCount = [...translatedElementList]
+		.map(i => getExtensionAttributes(i))
+		.map(i => i.size)
+		.reduce((a, v) => a + v, 0)
+		;
+
 	const result: messages.PageInformation = {
 		translatedElementCount: translatedElementList.length,
-		translatedTotalCount: 0, // TODO: 属性数から実際の件数を取得
+		translatedTotalCount: translatedTotalCount,
 		settings: pageCache.sites.map(i => {
 			const head: config.SiteHeadConfiguration = {
 				updateUrl: i.updateUrl,
