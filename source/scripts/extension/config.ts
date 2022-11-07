@@ -318,9 +318,9 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		function toStringArray(raw: setting.WatchSetting, key: keyof setting.WatchSetting) {
 			const eventNames = new Array<string>();
 			if (types.hasArrayProperty(raw, key)) {
-				const window = raw[key]!;
+				const window = raw[key];
 				for (const name of window) {
-					if (typeof name === 'string' && !string.isNullOrWhiteSpace(name)) {
+					if (types.isString(name) && !string.isNullOrWhiteSpace(name)) {
 						eventNames.push(name);
 					}
 				}
