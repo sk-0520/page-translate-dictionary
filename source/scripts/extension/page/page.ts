@@ -46,13 +46,14 @@ function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.Transl
 		//alert('siteConfiguration.path-> ' + JSON.stringify(siteConfiguration.path))
 		for (const key in siteConfiguration.path) {
 			// alert('key:: ' + key)
+			// @ts-ignore in
 			const pathConfiguration = siteConfiguration.path[key];
 			let urlPath = location.pathname;
-			if (pathConfiguration.withSearch && !string.isNullOrEmpty(location.search)) {
+			if (pathConfiguration && pathConfiguration.withSearch && !string.isNullOrEmpty(location.search)) {
 				urlPath += '?' + location.search;
 			}
 
-			if (uri.isEnabledPath(urlPath, key)) {
+			if (pathConfiguration && uri.isEnabledPath(urlPath, key)) {
 				console.log('パス適合', key, urlPath);
 				try {
 					targets = translator.translate(pathConfiguration, siteConfiguration, pageCache.app.translate);

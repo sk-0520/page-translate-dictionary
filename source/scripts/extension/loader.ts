@@ -91,6 +91,7 @@ export async function hasSiteSettingAsync(url: string): Promise<config.SiteInter
 		return null;
 	}
 
+	// @ts-ignore !target.length
 	return target[0].id;
 }
 

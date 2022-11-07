@@ -42,10 +42,12 @@ export function translateElement(element: Element, queryConfiguration: config.Qu
 			if (queryConfiguration.selector.node < 0 && queryConfiguration.text.matches) {
 				// 全てのテキストノードを対象とする(条件設定は必須)
 				for (let i = 0; i < textNodes.length; i++) {
+					// @ts-ignore i < textNodes.length
 					nodes.set(i + 1, textNodes[i]);
 				}
 			} else if ((queryConfiguration.selector.node - 1) < textNodes.length) {
 				const node = textNodes[queryConfiguration.selector.node - 1];
+				// @ts-ignore if(...)
 				nodes.set(queryConfiguration.selector.node, node);
 			}
 		}

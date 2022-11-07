@@ -56,11 +56,11 @@ export function hasBooleanProperty<K extends string | symbol>(obj: unknown, key:
 	return hasProperty(obj, key) && isBoolean(obj[key]);
 }
 
-export function hasObjectProperty<K extends string | symbol>(obj: unknown, key: string): obj is Record<K, object> {
+export function hasObjectProperty<K extends string | symbol>(obj: unknown, key: K): obj is Record<K, object> {
 	return hasProperty(obj, key) && typeof obj[key] === 'object';
 }
 
-export function hasArrayProperty<T extends unknown, K extends string | symbol>(obj: unknown, key: string): obj is Record<K, Array<T>> {
+export function hasArrayProperty<T extends unknown, K extends string | symbol>(obj: unknown, key: K): obj is Record<K, Array<T>> {
 	return hasProperty(obj, key) && Array.isArray(obj[key]);
 }
 

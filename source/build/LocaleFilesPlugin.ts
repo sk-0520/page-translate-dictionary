@@ -27,10 +27,14 @@ export default class LocaleFilesPlugin {
 
 		const localeItems = new Map([
 			['ja', 'ja.ts'],
-		].map(i => [i[0], path.join(this._options.inputDirectory, i[1])]));
+		].map(i => [
+			i[0],
+			//@ts-ignore
+			path.join(this._options.inputDirectory, i[1])
+		]));
 
 		for (const [key, localePath] of localeItems) {
-			const outputDirectory = path.join(outputLocalesDirectory, key);
+			const outputDirectory = path.join(outputLocalesDirectory, key!);
 			fs.mkdirSync(outputDirectory);
 
 			const outputPath = path.join(outputDirectory, 'messages.json');
