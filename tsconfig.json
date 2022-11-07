@@ -14,6 +14,11 @@
 		"esModuleInterop": true, /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */
 		"noEmitOnError": true,
 		"removeComments": false,
+		"strictBindCallApply": true,
+		"forceConsistentCasingInFileNames": true,
+		"useUnknownInCatchVariables": true,
+		//"noUncheckedIndexedAccess": true,
+		"noImplicitOverride": true,
 		"sourceMap": true,
 		"target": "es2021",
 		"moduleResolution": "node",

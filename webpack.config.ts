@@ -19,7 +19,7 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 	/** 本番用か */
 	const isProduction = args.mode === 'production';
 
-	if (!env['browser'].length) {
+	if (!env['browser']) {
 		throw Error(env['browser']);
 	}
 
