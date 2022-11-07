@@ -33,6 +33,9 @@ export function hasProperty<K extends string | symbol>(obj: unknown, key: K): ob
 	return obj !== undefined && obj !== null && key in obj;
 }
 
+/**
+ * @deprecated 細かいの使え
+ */
 export function hasPrimaryProperty(obj: unknown, key: string, type: TypeOfPrimitive): boolean {
 	return hasProperty(obj, key) && typeof obj[key] === type;
 }
