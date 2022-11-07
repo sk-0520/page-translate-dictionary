@@ -1,26 +1,19 @@
 type TypeOfPrimitive = 'string' | 'number' | 'bigint' | 'boolean';
 //type TypeOfBuildIn = TypeOfPrimitive | 'symbol' | 'undefined' | 'object' | 'function';
 
-export function hasProperty(obj: any, key: string): obj is Record<string, unknown> {
-	if (!obj) {
-		return false;
-	}
-	if (!(key in obj)) {
-		return false;
-	}
-
-	return true;
+export function hasProperty<K extends string | number | symbol>(obj: unknown, key: K): obj is Record<K, unknown> {
+	return obj !== null && obj !== undefined && key in obj;
 }
 
-export function hasPrimaryProperty(obj: any, key: string, type: TypeOfPrimitive): boolean {
+export function hasPrimaryProperty(obj: unknown, key: string, type: TypeOfPrimitive): boolean {
 	return hasProperty(obj, key) && typeof obj[key] === type;
 }
 
-export function hasObjectProperty(obj: any, key: string): boolean {
+export function hasObjectProperty<K extends string | number | symbol>(obj: unknown, key: string): obj is Record<K, object> {
 	return hasProperty(obj, key) && typeof obj[key] === 'object';
 }
 
-export function hasArrayProperty(obj: any, key: string): boolean {
+export function hasArrayProperty<K extends string | number | symbol>(obj: unknown, key: string): obj is Record<K, Array<unknown>> {
 	return hasProperty(obj, key) && Array.isArray(obj[key]);
 }
 

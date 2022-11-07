@@ -50,7 +50,7 @@ export async function fetchAsync(url: string): Promise<setting.SiteSetting | nul
 		}
 	}
 
-	return json as setting.SiteSetting;
+	return json as any as setting.SiteSetting;
 }
 
 export function createSiteInternalId(): config.SiteInternalId {

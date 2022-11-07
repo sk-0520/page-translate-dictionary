@@ -320,7 +320,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 			if (types.hasArrayProperty(raw, key)) {
 				const window = raw[key]!;
 				for (const name of window) {
-					if (!string.isNullOrWhiteSpace(name)) {
+					if (typeof name === 'string' && !string.isNullOrWhiteSpace(name)) {
 						eventNames.push(name);
 					}
 				}
