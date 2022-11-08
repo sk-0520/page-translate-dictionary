@@ -1,6 +1,21 @@
+import * as types from './types';
 import * as regex from './regex';
 
-export function isNullOrWhiteSpace(s?: string | null): boolean {
+/**
+ * 空文字列か。
+ * @param s
+ * @returns
+ */
+export function isEmpty(s: string | null | undefined): s is string {
+	return !s && types.isString(s) && s.length === 0;
+}
+
+/**
+ * null かホワイトスペースで構成された文字列か。
+ * @param s
+ * @returns
+ */
+export function isNullOrWhiteSpace(s: string | null | undefined): boolean {
 	if (!s) {
 		return true;
 	}

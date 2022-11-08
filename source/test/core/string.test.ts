@@ -1,6 +1,16 @@
 import * as string from '../../scripts/core/string';
 
 describe('string', () => {
+	test.each([
+		[false, undefined],
+		[false, null],
+		[true, ''],
+		[false, ' '],
+		[false, 'a'],
+	])('isEmpty', (expected: boolean, input: string | null | undefined) => {
+		expect(string.isEmpty(input)).toBe(expected);
+	});
+
 	test('isNullOrWhiteSpace', () => {
 		expect(string.isNullOrWhiteSpace(undefined)).toBe(true);
 		expect(string.isNullOrWhiteSpace(null)).toBe(true);
