@@ -1,7 +1,7 @@
 type PropertyKey = string | symbol;
 
 export function isUndefined(arg: unknown): arg is undefined {
-	return arg === undefined;
+	return typeof arg === 'undefined';
 }
 
 export function isNull(arg: unknown): arg is null {
