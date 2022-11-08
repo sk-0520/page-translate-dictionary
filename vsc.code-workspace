@@ -25,6 +25,16 @@
 		},
 		"html.format.indentInnerHtml": true,
 		"html.format.wrapLineLength": 0,
+		"json.schemas": [
+			{
+				"fileMatch": [
+					"*.jsonc"
+				],
+				"schema": {
+					"allowTrailingCommas": true
+				}
+			}
+		],
 		"cSpell.words": [
 			"endregion",
 			"pjax",

@@ -2,6 +2,10 @@ import webpack from 'webpack';
 import path from 'path';
 import fs from 'fs';
 
+import * as JSONC from 'jsonc-parser';
+
+const ExtensionName = '__MSG_ext_name__';
+
 export interface ManifestFileOptions {
 	browser: string;
 	packageJson: string;
@@ -18,7 +22,7 @@ export default class ManifestFilePlugin {
 	}
 
 	private getInputManifestFilePath(): string {
-		const manifestFileName = `${this._options.browser}.json`;
+		const manifestFileName = `${this._options.browser}.jsonc`;
 		const manifestFilePath = path.join(this._options.inputDirectory, manifestFileName)
 
 		return manifestFilePath;
@@ -27,8 +31,8 @@ export default class ManifestFilePlugin {
 	private createManifestFile(): void {
 		const packageJson = JSON.parse(fs.readFileSync(this._options.packageJson, 'utf8'));
 
-		const targetJson = JSON.parse(fs.readFileSync(this.getInputManifestFilePath(), 'utf8'));
-		targetJson['name'] = '__MSG_ext_name__';
+		const targetJson = JSONC.parse(fs.readFileSync(this.getInputManifestFilePath(), 'utf8'));
+		targetJson['name'] = ExtensionName;
 		targetJson['short_name'] = packageJson['name'];
 		targetJson['version'] = packageJson['version'];
 		targetJson['description'] = packageJson['description'];

@@ -2,20 +2,19 @@
 	"manifest_version": 2,
 	"applications": {
 		"gecko": {
-			"id": "{0fffffff-ffff-ffff-ffff-fffffffffff0}",
 			"strict_min_version": "60.0"
 		}
 	},
 	"permissions": [
 		"storage",
 		"unlimitedStorage",
-		"<all_urls>"
+		"<all_urls>",
 	],
 	"icons": {
 		"16": "extension-icon.svg",
 		"32": "extension-icon.svg",
 		"48": "extension-icon.svg",
-		"96": "extension-icon.svg"
+		"96": "extension-icon.svg",
 	},
 	"default_locale": "ja",
 	"content_scripts": [
@@ -32,7 +31,7 @@
 	"browser_action": {
 		"default_icon": "extension-icon.svg",
 		"default_title": "ptd",
-		"default_popup": "popup-action.html"
+		"default_popup": "popup-action.html",
 	},
 	"background": {
 		"scripts": [
@@ -41,6 +40,6 @@
 	},
 	"options_ui": {
 		"open_in_tab": true,
-		"page": "application-options.html"
+		"page": "application-options.html",
 	}
 }
