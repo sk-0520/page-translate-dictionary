@@ -161,21 +161,6 @@ describe('types', () => {
 		expect(types.hasProperty(a1, 'c')).toBeFalsy();
 	});
 
-	test('hasPrimaryProperty', () => {
-		expect(types.hasPrimaryProperty({}, 'a', 'number')).toBeFalsy();
-		expect(types.hasPrimaryProperty({ a: undefined }, 'a', 'number')).toBeFalsy();
-		expect(types.hasPrimaryProperty({ a: null }, 'a', 'number')).toBeFalsy();
-		expect(types.hasPrimaryProperty({ a: 1 }, 'a', 'number')).toBeTruthy();
-		expect(types.hasPrimaryProperty({ A: 1 }, 'a', 'number')).toBeFalsy();
-		expect(types.hasPrimaryProperty({ a: '1' }, 'a', 'number')).toBeFalsy();
-
-		const a1: unknown = {
-			a: 1,
-			b: 'B',
-		};
-		expect(types.hasPrimaryProperty(a1, 'a', 'number')).toBeTruthy();
-	});
-
 	test.each([
 		[true, inputObject, 'undefined'],
 		[false, inputObject, 'null'],

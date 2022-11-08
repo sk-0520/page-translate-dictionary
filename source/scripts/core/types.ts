@@ -1,6 +1,3 @@
-type TypeOfPrimitive = 'string' | 'number' | 'bigint' | 'boolean';
-//type TypeOfBuildIn = TypeOfPrimitive | 'symbol' | 'undefined' | 'object' | 'function';
-
 type PropertyKey = string | symbol;
 
 export function isUndefined(arg: unknown): arg is undefined {
@@ -47,13 +44,6 @@ export function hasProperty(obj: unknown, key: PropertyKey): obj is Record<Prope
 	return obj !== undefined && obj !== null && key in obj;
 }
 
-/**
- * @deprecated 細かいの使え
- */
-export function hasPrimaryProperty(obj: unknown, key: string, type: TypeOfPrimitive): boolean {
-	return hasProperty(obj, key) && typeof obj[key] === type;
-}
-
 export function hasUndefined(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, undefined> {
 	return hasProperty(obj, key) && isUndefined(obj[key]);
 }
@@ -93,18 +83,6 @@ export function hasArray<T extends unknown>(obj: unknown, key: PropertyKey): obj
 export function hasFunction<T extends Function>(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, T> {
 	return hasProperty(obj, key) && isFunction<T>(obj[key]);
 }
-
-/**
- * @deprecated getPropertyOr 使え
- */
- export function getPrimaryPropertyOr<TResult>(obj: any, key: string, type: TypeOfPrimitive, fallbackValue: TResult): TResult {
-	if (hasPrimaryProperty(obj, key, type)) {
-		return obj[key] as TResult;
-	}
-
-	return fallbackValue;
-}
-
 
 export function getPropertyOr<TResult>(obj: unknown, key: string, fallbackValue: TResult): TResult {
 	if (hasProperty(obj, key)) {
