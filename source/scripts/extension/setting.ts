@@ -28,17 +28,17 @@ export interface FilterSetting {
 	 * * `join`: 半角スペース1つに置き換える
 	 * * `raw`: そのまま
 	 */
-	lineBreak?: 'join' | 'raw' | null;
+	line_break?: 'join' | 'raw' | null;
 	/**
 	 * ホワイトスペース(注意: 改行は含まない)の扱い。
 	 *
 	 * * `join`: 半角スペース1つに置き換える
 	 * * `raw`: そのまま
 	 */
-	 whiteSpace?: 'join' | 'raw' | null;
-	 /**
-	  * トリムを実施するか。
-	  */
+	white_space?: 'join' | 'raw' | null;
+	/**
+	 * トリムを実施するか。
+	 */
 	trim?: boolean;
 
 	//#endregion
@@ -63,7 +63,7 @@ export interface MatchSetting {
 	/**
 	 * 大文字小文字を無視するか。
 	 */
-	ignoreCase?: boolean | null;
+	ignore_case?: boolean | null;
 	/**
 	 * パターン。
 	 */
@@ -196,6 +196,11 @@ export interface QuerySetting {
  */
 export interface PathSetting {
 	//#region property
+
+	/**
+	 * パスにクエリ部分を含めるか
+	 */
+	with_search?: boolean | null;
 
 	/**
 	 * クエリ一覧。

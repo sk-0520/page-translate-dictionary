@@ -114,7 +114,7 @@ PTD_CHROME_PROFILE_DIRECTORY=X:\ch
     // 対象パス(正規表現)
     "/": {
       // パスにクエリ部分を含めるか
-      "withSearch": true,
+      "with_search": true,
       // セレクタに対する処理
       "query": [
         // ID 指定
@@ -140,11 +140,11 @@ PTD_CHROME_PROFILE_DIRECTORY=X:\ch
               // 改行をどう扱うか
               //  join: 半角スペース1つに置き換える
               //  raw: そのまま
-              "lineBreak": "join",
+              "line_break": "join",
               // 改行以外のホワイトスペースの扱い
               //  join: 半角スペース1つに置き換える
               //  raw: そのまま
-              "whiteSpace": "",
+              "white_space": "",
               // トリムを実施するか
               "trim": true,
             },
@@ -159,7 +159,7 @@ PTD_CHROME_PROFILE_DIRECTORY=X:\ch
                 //  regex: 正規表現 (?<NAME>) 使用可能
                 "mode": "partial",
                 // 大文字小文字を区別するか
-                "ignoreCase": true,
+                "ignore_case": true,
                 // パターン
                 "pattern": "pattern",
                 "replace": {

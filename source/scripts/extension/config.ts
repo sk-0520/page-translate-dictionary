@@ -362,11 +362,11 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		}
 
 		const result: FilterConfiguration = {
-			lineBreak: this.convertEnum(raw, 'lineBreak', LineBreak.Join, new Map([
+			lineBreak: this.convertEnum(raw, 'line_break', LineBreak.Join, new Map([
 				['join', LineBreak.Join],
 				['raw', LineBreak.Raw],
 			])),
-			whiteSpace: this.convertEnum(raw, 'whiteSpace', WhiteSpace.Join, new Map([
+			whiteSpace: this.convertEnum(raw, 'white_space', WhiteSpace.Join, new Map([
 				['join', WhiteSpace.Join],
 				['raw', WhiteSpace.Raw],
 			])),
@@ -390,7 +390,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		}
 
 		const result: MatchConfiguration = {
-			ignoreCase: types.getPropertyOr(raw, 'ignoreCase', true),
+			ignoreCase: types.getPropertyOr(raw, 'ignore_case', true),
 			mode: this.convertEnum(raw, 'mode', MatchMode.Partial, new Map([
 				['partial', MatchMode.Partial],
 				['forward', MatchMode.Forward],
@@ -557,7 +557,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 			}
 
 			const pathConfiguration: PathConfiguration = {
-				withSearch: types.getPropertyOr(pathSetting, 'withSearch', false),
+				withSearch: types.getPropertyOr(pathSetting, 'with_search', false),
 				query: queryItems,
 				import: importItems,
 			};
