@@ -1,89 +1,212 @@
 type PropertyKey = string | symbol;
 
+/**
+ * 型が `undefined` か。
+ * @param arg
+ * @returns
+ */
 export function isUndefined(arg: unknown): arg is undefined {
 	return typeof arg === 'undefined';
 }
 
+/**
+ * 型が `null` か。
+ * @param arg
+ * @returns
+ */
 export function isNull(arg: unknown): arg is null {
 	return arg === null;
 }
 
-export function isSymbol(arg: unknown): arg is string {
+/**
+ * 型が `Symbol` か。
+ * @param arg
+ * @returns
+ */
+export function isSymbol(arg: unknown): arg is Symbol {
 	return typeof arg === 'symbol';
 }
 
+/**
+ * 型が `string` か。
+ * @param arg
+ * @returns
+ */
 export function isString(arg: unknown): arg is string {
 	return typeof arg === 'string';
 }
 
+/**
+ * 型が `number` か。
+ * @param arg
+ * @returns
+ */
 export function isNumber(arg: unknown): arg is number {
 	return typeof arg === 'number';
 }
 
+/**
+ * 型が `bigint` か。
+ * @param arg
+ * @returns
+ */
 export function isBigInt(arg: unknown): arg is bigint {
 	return typeof arg === 'bigint';
 }
 
+/**
+ * 型が `boolean` か。
+ * @param arg
+ * @returns
+ */
 export function isBoolean(arg: unknown): arg is boolean {
 	return typeof arg === 'boolean';
 }
 
+/**
+ * 型が配列か。
+ * @param arg
+ * @returns
+ */
 export function isArray<T extends unknown>(arg: unknown): arg is Array<T> {
 	return Array.isArray(arg);
 }
 
+/**
+ * 型がオブジェクトか。
+ * @param arg
+ * @returns
+ */
 export function isObject<T extends unknown>(arg: unknown): arg is Array<T> {
 	return arg !== null && typeof arg === 'object' && !Array.isArray(arg);
 }
 
+/**
+ * 型が関数か。
+ * @param arg
+ * @returns
+ */
 export function isFunction<T extends Function>(arg: unknown): arg is T {
 	return typeof arg === 'function';
 }
 
+/**
+ * 指定したプロパティを持つか。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @returns
+ */
 export function hasProperty(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, unknown> {
 	return obj !== undefined && obj !== null && key in obj;
 }
 
+/**
+ * 指定したプロパティ(型: `undefined`)を持つか。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @returns
+ */
 export function hasUndefined(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, undefined> {
 	return hasProperty(obj, key) && isUndefined(obj[key]);
 }
 
-export function hasNull(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, null> {
+/**
+ * 指定したプロパティ(型: `null`)を持つか。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @returns
+ */
+ export function hasNull(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, null> {
 	return hasProperty(obj, key) && isNull(obj[key]);
 }
 
-export function hasSymbol(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, Symbol> {
+/**
+ * 指定したプロパティ(型: `Symbol`)を持つか。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @returns
+ */
+ export function hasSymbol(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, Symbol> {
 	return hasProperty(obj, key) && isSymbol(obj[key]);
 }
 
-export function hasString(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, string> {
+/**
+ * 指定したプロパティ(型: `string`)を持つか。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @returns
+ */
+ export function hasString(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, string> {
 	return hasProperty(obj, key) && isString(obj[key]);
 }
 
-export function hasNumber(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, number> {
+/**
+ * 指定したプロパティ(型: `number`)を持つか。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @returns
+ */
+ export function hasNumber(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, number> {
 	return hasProperty(obj, key) && isNumber(obj[key]);
 }
 
-export function hasBigInt(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, bigint> {
+/**
+ * 指定したプロパティ(型: `bigint`)を持つか。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @returns
+ */
+ export function hasBigInt(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, bigint> {
 	return hasProperty(obj, key) && isBigInt(obj[key]);
 }
 
-export function hasBoolean(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, boolean> {
+/**
+ * 指定したプロパティ(型: `boolean`)を持つか。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @returns
+ */
+ export function hasBoolean(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, boolean> {
 	return hasProperty(obj, key) && isBoolean(obj[key]);
 }
 
-export function hasObject(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, object> {
+/**
+ * 指定したプロパティ(型: `object`)を持つか。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @returns
+ */
+ export function hasObject(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, object> {
 	return hasProperty(obj, key) && isObject(obj[key]);
 }
 
-export function hasArray<T extends unknown>(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, Array<T>> {
+/**
+ * 指定したプロパティ(型: 配列)を持つか。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @returns
+ */
+ export function hasArray<T extends unknown>(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, Array<T>> {
 	return hasProperty(obj, key) && isArray<T>(obj[key]);
 }
 
-export function hasFunction<T extends Function>(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, T> {
+/**
+ * 指定したプロパティ(型: 関数)を持つか。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @returns
+ */
+ export function hasFunction<T extends Function>(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, T> {
 	return hasProperty(obj, key) && isFunction<T>(obj[key]);
 }
 
+/**
+ * 指定したプロパティから値を取得。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @param fallbackValue 失敗時の値。対象の値の型と合わない場合にも使用される。
+ * @returns
+ */
 export function getPropertyOr<TResult>(obj: unknown, key: string, fallbackValue: TResult): TResult {
 	if (hasProperty(obj, key)) {
 		if (typeof fallbackValue === typeof obj[key]) {
