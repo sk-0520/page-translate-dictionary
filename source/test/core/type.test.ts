@@ -1,9 +1,10 @@
 import * as types from '../../scripts/core/types';
 
-const inputObject: unknown = {
+const _symbol = Symbol();
+const _inputObject = {
 	undefined: undefined,
 	null: null,
-	symbol: Symbol(),
+	symbol: _symbol,
 	number: 1,
 	bigint: 9007199254740991n,
 	string: 'A',
@@ -11,7 +12,8 @@ const inputObject: unknown = {
 	array: ['A'],
 	object: { a: 'A' },
 	function: () => undefined,
-} as const;
+};
+const inputObject: unknown = _inputObject;
 
 describe('types', () => {
 	test.each([
@@ -323,6 +325,25 @@ describe('types', () => {
 	])('hasFunction', (expected: boolean, input: unknown, key: string) => {
 		expect(types.hasFunction(input, key)).toBe(expected);
 	});
+
+	test.each([
+		[undefined, inputObject, 'undefined', undefined],
+		[null, inputObject, 'null', null],
+		[_symbol, inputObject, 'symbol', _symbol],
+		[1, inputObject, 'number', 1],
+		[1, inputObject, 'number', 100],
+		[100, inputObject, 'number1', 100],
+		[9007199254740991n, inputObject, 'bigint', 9007199254740991n],
+		['a', inputObject, 'bigint', 'a'],
+		['A', inputObject, 'string', 'A'],
+		[true, inputObject, 'boolean', true],
+		[_inputObject.array, inputObject, 'array', ['A']],
+		[_inputObject.object, inputObject, 'object', { a: 'A' }],
+		[_inputObject.function, inputObject, 'function', () => undefined],
+	])('getPropertyOr', <T>(expected: T, input: unknown, key: string, value: T) => {
+		expect(types.getPropertyOr(input, key, value)).toBe(expected);
+	});
+
 
 	test('toBoolean', () => {
 		expect(types.toBoolean(null)).toBeFalsy();

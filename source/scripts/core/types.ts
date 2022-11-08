@@ -94,7 +94,10 @@ export function hasFunction<T extends Function>(obj: unknown, key: PropertyKey):
 	return hasProperty(obj, key) && isFunction<T>(obj[key]);
 }
 
-export function getPrimaryPropertyOr<TResult>(obj: any, key: string, type: TypeOfPrimitive, fallbackValue: TResult): TResult {
+/**
+ * @deprecated getPropertyOr 使え
+ */
+ export function getPrimaryPropertyOr<TResult>(obj: any, key: string, type: TypeOfPrimitive, fallbackValue: TResult): TResult {
 	if (hasPrimaryProperty(obj, key, type)) {
 		return obj[key] as TResult;
 	}
@@ -102,6 +105,16 @@ export function getPrimaryPropertyOr<TResult>(obj: any, key: string, type: TypeO
 	return fallbackValue;
 }
 
+
+export function getPropertyOr<TResult>(obj: unknown, key: string, fallbackValue: TResult): TResult {
+	if (hasProperty(obj, key)) {
+		if (typeof fallbackValue === typeof obj[key]) {
+			return obj[key] as TResult;
+		}
+	}
+
+	return fallbackValue;
+}
 
 export function toBoolean(s: string | null | undefined): boolean {
 	if (!s) {
