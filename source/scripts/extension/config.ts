@@ -27,6 +27,7 @@ export const enum MetaContentMode {
 	Backward,
 	Perfect,
 	Regex,
+	NotEmpty,
 	Ignore,
 }
 
@@ -364,6 +365,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 				['backward', MetaContentMode.Backward],
 				['perfect', MetaContentMode.Perfect],
 				['regex', MetaContentMode.Regex],
+				['not_empty', MetaContentMode.NotEmpty],
 				['ignore', MetaContentMode.Ignore],
 			])),
 			ignoreCase: types.getPropertyOr(raw, 'ignore_case', true),

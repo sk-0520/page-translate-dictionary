@@ -3,6 +3,7 @@ import * as config from '../config';
 import * as uri from '../uri';
 import * as translator from './translator';
 import * as throws from '../../core/throws';
+import * as string from '../../core/string';
 import * as loader from '../loader';
 import * as messages from '../messages';
 import * as names from '../names';
@@ -16,6 +17,8 @@ type PageCache = {
 	app: config.ApplicationConfiguration,
 	/** サイト設定 */
 	sites: ReadonlyArray<config.SiteConfiguration>,
+	/** キャッシュ構築時点での `<meta name=* content=*>` 一覧 */
+	meta: ReadonlyMap<string, string>;
 	// /** 翻訳済み要素とその設定 */
 	// translatedTargets: Map<config.QueryConfiguration, WeakSet<Element>>,
 	/** 監視対象要素 TODO: Query は複数に対応しないと設定と矛盾が出る */
@@ -309,6 +312,23 @@ async function receiveMessageAsync(message: messages.Message, sender: webextensi
 	}
 }
 
+function getMeta(): Map<string, string> {
+	const metaElementList = document.getElementsByName('meta');
+	const result = new Map<string, string>();
+
+	for (const element of metaElementList) {
+		const metaElement = element as HTMLMetaElement;
+		if (string.isNullOrWhiteSpace(metaElement.name)) {
+			continue;
+		}
+		const content = metaElement.content || '';
+
+		result.set(metaElement.name, content);
+	}
+
+	return result;
+}
+
 async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 	console.time('PAGE');
 	const applicationConfiguration = await storage.loadApplicationAsync();
@@ -359,6 +379,7 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 		pageCache = {
 			app: applicationConfiguration,
 			sites: siteItems,
+			meta: getMeta(),
 			//translatedTargets: new Map(),
 			watchers: new Map(),
 			observer: new MutationObserver((x, a) => {

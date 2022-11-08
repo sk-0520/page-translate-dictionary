@@ -128,7 +128,8 @@ PTD_CHROME_PROFILE_DIRECTORY=X:\ch
               //  backward: 後方一致
               //  perfect: 完全一致
               //  regex: 正規表現
-              //  ignore: パターンを無視
+              //  not_empty: `content` が空でない
+              //  ignore: パターンを無視(`content` を見ない)
               "mode": "partial",
               // 大文字小文字を区別するか
               "ignore_case": true,

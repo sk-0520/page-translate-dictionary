@@ -59,7 +59,7 @@ export interface MatchSetting {
 	 * * `perfect`: 完全一致
 	 * * `regex`: 正規表現
 	 */
-	mode?: 'partial' | 'forward' | 'backward' | 'perfect' | 'regex' | null;
+	mode?: 'partial' | 'forward' | 'backward' | 'perfect' | 'regex' | 'not_empty' | 'ignore' | null;
 	/**
 	 * 大文字小文字を無視するか。
 	 */
