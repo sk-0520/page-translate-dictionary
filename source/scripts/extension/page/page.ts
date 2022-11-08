@@ -18,7 +18,7 @@ type PageCache = {
 	/** サイト設定 */
 	sites: ReadonlyArray<config.SiteConfiguration>,
 	/** キャッシュ構築時点での `<meta name=* content=*>` 一覧 */
-	meta: ReadonlyMap<string, string>;
+	metaMap: ReadonlyMap<string, string>;
 	// /** 翻訳済み要素とその設定 */
 	// translatedTargets: Map<config.QueryConfiguration, WeakSet<Element>>,
 	/** 監視対象要素 TODO: Query は複数に対応しないと設定と矛盾が出る */
@@ -58,7 +58,7 @@ function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.Transl
 			if (pathConfiguration && uri.isEnabledPath(urlPath, key)) {
 				console.log('パス適合', key, urlPath);
 				try {
-					targets = translator.translate(pathConfiguration, siteConfiguration, pageCache.app.translate);
+					targets = translator.translate(pathConfiguration, siteConfiguration, pageCache.metaMap, pageCache.app.translate);
 				} catch (ex) {
 					console.error(ex);
 				}
@@ -379,7 +379,7 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 		pageCache = {
 			app: applicationConfiguration,
 			sites: siteItems,
-			meta: getMeta(),
+			metaMap: getMeta(),
 			//translatedTargets: new Map(),
 			watchers: new Map(),
 			observer: new MutationObserver((x, a) => {
