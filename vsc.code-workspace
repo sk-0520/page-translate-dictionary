@@ -49,8 +49,10 @@
 	},
 	"extensions": {
 		"recommendations": [
+			"santacodes.santacodes-region-viewer",
 			"awwsky.region-marker",
-			"SantaCodes.santacodes-region-viewer"
+			"editorconfig.editorconfig",
+			"streetsidesoftware.code-spell-checker"
 		]
 	}
 }
