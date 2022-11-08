@@ -2,7 +2,6 @@ import webextension from 'webextension-polyfill';
 import * as config from '../config';
 import * as uri from '../uri';
 import * as translator from './translator';
-import * as string from '../../core/string';
 import * as throws from '../../core/throws';
 import * as loader from '../loader';
 import * as messages from '../messages';
@@ -49,7 +48,7 @@ function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.Transl
 			// @ts-ignore in
 			const pathConfiguration = siteConfiguration.path[key];
 			let urlPath = location.pathname;
-			if (pathConfiguration && pathConfiguration.withSearch && !string.isNullOrEmpty(location.search)) {
+			if (pathConfiguration && pathConfiguration.withSearch && !location.search) {
 				urlPath += '?' + location.search;
 			}
 

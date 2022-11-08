@@ -380,9 +380,6 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		if (!types.hasString(raw, 'pattern')) {
 			return null;
 		}
-		if (string.isNullOrEmpty(raw.pattern)) {
-			return null;
-		}
 		if (!types.hasObject(raw, 'replace')) {
 			return null;
 		}
