@@ -21,6 +21,15 @@ export const enum LineBreak {
 	Raw,
 }
 
+export const enum MetaContentMode {
+	Partial,
+	Forward,
+	Backward,
+	Perfect,
+	Regex,
+	Ignore,
+}
+
 export const enum MatchMode {
 	Partial,
 	Forward,
@@ -100,9 +109,20 @@ export interface TargetConfiguration {
 	//#endregion
 }
 
+export interface MetaConfiguration {
+	//#region property
+
+	readonly mode: MetaContentMode;
+	readonly ignoreCase: boolean;
+	readonly pattern: string;
+
+	//#endregion
+}
+
 export interface SelectorConfiguration {
 	//#region property
 
+	readonly meta: ReadonlyMap<string, MetaConfiguration>;
 	readonly mode: SelectorMode;
 	readonly value: string;
 	readonly node: number;
@@ -336,9 +356,45 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		return result;
 	}
 
+	private convertMetaCore(raw: setting.MetaSetting): MetaConfiguration {
+		const result: MetaConfiguration = {
+			mode: this.convertEnum(raw, 'mode', MetaContentMode.Partial, new Map([
+				['partial', MetaContentMode.Partial],
+				['forward', MetaContentMode.Forward],
+				['backward', MetaContentMode.Backward],
+				['perfect', MetaContentMode.Perfect],
+				['regex', MetaContentMode.Regex],
+				['ignore', MetaContentMode.Ignore],
+			])),
+			ignoreCase: types.getPropertyOr(raw, 'ignore_case', true),
+			pattern: types.getPropertyOr(raw, 'pattern', ''),
+		};
+
+		return result;
+	}
+
+	private convertMeta(raw: { [name: string]: setting.MetaSetting | null }): Map<string, MetaConfiguration> {
+		const result = new Map<string, MetaConfiguration>();
+		if (raw) {
+			for (const [name, setting] of Object.entries(raw)) {
+				if (setting) {
+					const config = this.convertMetaCore(setting);
+					if (config) {
+						result.set(name, config);
+					}
+				}
+			}
+		}
+
+		return result;
+	}
 
 	private convertSelector(raw: setting.SelectorSetting): SelectorConfiguration {
 		const result: SelectorConfiguration = {
+			meta: types.hasObject(raw, 'meta')
+				? this.convertMeta(raw['meta']!)
+				: new Map()
+			,
 			mode: this.convertEnum(raw, 'mode', SelectorMode.Normal, new Map([
 				['normal', SelectorMode.Normal],
 				['common', SelectorMode.Common],
@@ -384,7 +440,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 			return null;
 		}
 
-		const replace = this.convertReplace(raw.replace);
+		const replace = this.convertReplace(raw.replace as Object);
 		if (!replace) {
 			return null;
 		}
