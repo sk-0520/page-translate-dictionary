@@ -317,7 +317,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 
 		function toStringArray(raw: setting.WatchSetting, key: keyof setting.WatchSetting) {
 			const eventNames = new Array<string>();
-			if (types.hasArrayProperty(raw, key)) {
+			if (types.hasArray(raw, key)) {
 				const window = raw[key];
 				for (const name of window) {
 					if (types.isString(name) && !string.isNullOrWhiteSpace(name)) {
@@ -546,7 +546,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 			}
 
 			const importItems = new Array<string>();
-			if (types.hasArrayProperty(pathSetting, 'import')) {
+			if (types.hasArray(pathSetting, 'import')) {
 				for (const name of pathSetting.import!) { //TODO: !
 					if (typeof name !== 'string') {
 						continue;

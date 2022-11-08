@@ -40,7 +40,7 @@ export async function fetchAsync(url: string): Promise<setting.SiteSetting | nul
 
 	throwIfInvalidString(json, 'name');
 	throwIfInvalidString(json, 'version');
-	if (!types.hasArrayProperty(json, 'hosts')) {
+	if (!types.hasArray(json, 'hosts')) {
 		throw new Error('hosts');
 	}
 	for (let i = 0; i < json['hosts'].length; i++) {
