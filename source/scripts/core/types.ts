@@ -87,7 +87,7 @@ export function hasObject(obj: unknown, key: PropertyKey): obj is Record<Propert
 }
 
 export function hasArray<T extends unknown>(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, Array<T>> {
-	return hasProperty(obj, key) && isArray(obj[key]);
+	return hasProperty(obj, key) && isArray<T>(obj[key]);
 }
 
 export function hasFunction<T extends Function>(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, T> {

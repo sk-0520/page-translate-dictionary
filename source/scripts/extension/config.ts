@@ -318,10 +318,10 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		function toStringArray(raw: setting.WatchSetting, key: keyof setting.WatchSetting) {
 			const eventNames = new Array<string>();
 			if (types.hasArray(raw, key)) {
-				const window = raw[key];
-				for (const name of window) {
-					if (types.isString(name) && !string.isNullOrWhiteSpace(name)) {
-						eventNames.push(name);
+				const eventNames = raw[key]!;
+				for (const eventName of eventNames) {
+					if (types.isString(eventName) && !string.isNullOrWhiteSpace(eventName)) {
+						eventNames.push(eventName);
 					}
 				}
 			}
@@ -377,10 +377,13 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 	}
 
 	private convertMatch(raw: setting.MatchSetting): MatchConfiguration | null {
-		if (!types.hasPrimaryProperty(raw, 'pattern', 'string')) {
+		if (!types.hasString(raw, 'pattern')) {
 			return null;
 		}
 		if (string.isNullOrEmpty(raw.pattern)) {
+			return null;
+		}
+		if (!types.hasObject(raw, 'replace')) {
 			return null;
 		}
 

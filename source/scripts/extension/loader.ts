@@ -7,7 +7,7 @@ import * as storage from './storage';
 import * as string from "../core/string";
 
 function throwIfInvalidString(obj: any, property: string) {
-	if (!types.hasPrimaryProperty(obj, property, 'string')) {
+	if (!types.hasString(obj, property)) {
 		throw new Error(property);
 	}
 	if (string.isNullOrWhiteSpace(obj[property])) {
@@ -40,12 +40,13 @@ export async function fetchAsync(url: string): Promise<setting.SiteSetting | nul
 
 	throwIfInvalidString(json, 'name');
 	throwIfInvalidString(json, 'version');
-	if (!types.hasArray(json, 'hosts')) {
+	if (!types.hasArray<string>(json, 'hosts')) {
 		throw new Error('hosts');
 	}
+
 	for (let i = 0; i < json['hosts'].length; i++) {
 		const item = json['hosts'][i];
-		if (typeof item !== 'string') {
+		if (types.isString(item)) {
 			throw new Error(`hosts[${i}]: ${item}`);
 		}
 	}
