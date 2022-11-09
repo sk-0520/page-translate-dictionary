@@ -51,7 +51,7 @@ export interface MatchSetting {
 	//#region property
 
 	/**
-	 * パターン。
+	 * パターンの扱い。
 	 *
 	 * * `partial`: 部分一致
 	 * * `forward`: 前方一致
@@ -59,7 +59,7 @@ export interface MatchSetting {
 	 * * `perfect`: 完全一致
 	 * * `regex`: 正規表現
 	 */
-	mode?: 'partial' | 'forward' | 'backward' | 'perfect' | 'regex' | null;
+	mode?: 'partial' | 'forward' | 'backward' | 'perfect' | 'regex' | 'not_empty' | 'ignore' | null;
 	/**
 	 * 大文字小文字を無視するか。
 	 */
@@ -128,10 +128,51 @@ export interface TargetSetting {
 }
 
 /**
+ * `<meta>` に対する条件設定。
+ */
+export interface MetaSetting {
+	//#region property
+
+	/**
+	 * パターンの扱い。
+	 *
+	 * * `partial`: 部分一致
+	 * * `forward`: 前方一致
+	 * * `backward`: 後方一致
+	 * * `perfect`: 完全一致
+	 * * `regex`: 正規表現
+	 * * 'ignore' パターンは無視する
+	 */
+	mode?: 'partial' | 'forward' | 'backward' | 'perfect' | 'regex' | 'ignore' | null;
+	/**
+	 * 大文字小文字を無視するか。
+	 */
+	ignore_case?: boolean | null;
+	/**
+	 * パターン。
+	 *
+	 * `mode` に対して `ignore` を指定した場合、 `SelectorSetting` の名前に合致しているため条件を真とし、本パターン自体は使用しない。
+	 */
+	pattern?: string | null;
+
+	//#endregion
+}
+
+/**
  * セレクタ設定。
  */
 export interface SelectorSetting {
 	//#region property
+
+	/**
+	 * 該当する meta データに合致する場合セレクタを有効にする。
+	 *
+	 * * プロパティ名が `meta[name]` に該当
+	 *
+	 * 正しいかはともかくログイン済みかどうかなどの情報が `meta` に含まれている気がするので(おれ調べ)。
+	 * AND 条件となるので程々の使用にとどめるべき。
+	 */
+	meta?: { [name: string]: MetaSetting | null } | null;
 
 	/**
 	 * セレクタ種別
@@ -146,6 +187,7 @@ export interface SelectorSetting {
 	 * * セレクタ種別が共通の場合、該当する共通セレクタを設定。
 	 */
 	value: string | null;
+
 	/**
 	 * テキストノード指定。
 	 *

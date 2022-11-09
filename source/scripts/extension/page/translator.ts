@@ -1,3 +1,6 @@
+import * as types from '../../core/types';
+import * as string from '../../core/string';
+import * as throws from '../../core/throws';
 import * as config from '../config';
 import * as names from '../names';
 import * as converter from './converter';
@@ -85,7 +88,46 @@ export function translateElement(element: Element, queryConfiguration: config.Qu
 	return translated;
 }
 
-function translateCore(queryConfiguration: config.QueryConfiguration, siteConfiguration: config.SiteConfiguration, translateConfiguration: Readonly<config.TranslateConfiguration>): TranslatedTarget | null {
+function convertModeMetaToMatch(meta: config.MetaContentMode): string.MatchMode {
+	switch (meta) {
+		case config.MetaContentMode.Partial:
+			return string.MatchMode.Partial;
+
+		case config.MetaContentMode.Forward:
+			return string.MatchMode.Forward;
+
+		case config.MetaContentMode.Backward:
+			return string.MatchMode.Backward;
+
+		case config.MetaContentMode.Perfect:
+			return string.MatchMode.Perfect;
+
+		case config.MetaContentMode.Regex:
+			return string.MatchMode.Regex;
+
+		default:
+			throw new throws.NotImplementedError();
+	}
+}
+
+function conditionMeta(content: string, metaConfiguration: config.MetaConfiguration): boolean {
+	switch (metaConfiguration.mode) {
+		case config.MetaContentMode.Ignore:
+			return true;
+
+		case config.MetaContentMode.NotEmpty:
+			return !string.isNullOrWhiteSpace(content);
+
+		default:
+			break;
+	}
+
+	const mode = convertModeMetaToMatch(metaConfiguration.mode);
+	const result = string.match(content, metaConfiguration.pattern, metaConfiguration.ignoreCase, mode);
+	return result.matched;
+}
+
+function translateCore(queryConfiguration: config.QueryConfiguration, siteConfiguration: config.SiteConfiguration, metaMap: ReadonlyMap<string, string>, translateConfiguration: Readonly<config.TranslateConfiguration>): TranslatedTarget | null {
 	console.debug('query:', queryConfiguration);
 
 	const currentSelectors = queryConfiguration.selector.mode === config.SelectorMode.Common
@@ -96,6 +138,20 @@ function translateCore(queryConfiguration: config.QueryConfiguration, siteConfig
 	if (!currentSelectors) {
 		console.debug('empty currentSelectors');
 		return null;
+	}
+
+	if (queryConfiguration.selector.meta.size) {
+		for (const [name, meta] of queryConfiguration.selector.meta) {
+			const content = metaMap.get(name);
+			if (types.isUndefined(content)) {
+				console.debug('meta not found', name);
+				return null;
+			}
+			if (!conditionMeta(content, meta)) {
+				console.debug('condition: false', name, content, meta);
+				return null;
+			}
+		}
 	}
 
 	const elements = new Array<Element>();
@@ -130,12 +186,12 @@ function translateCore(queryConfiguration: config.QueryConfiguration, siteConfig
 	return result;
 }
 
-export function translate(pathConfiguration: config.PathConfiguration, siteConfiguration: config.SiteConfiguration, translateConfiguration: Readonly<config.TranslateConfiguration>): Array<TranslatedTarget> {
+export function translate(pathConfiguration: config.PathConfiguration, siteConfiguration: config.SiteConfiguration, metaMap: ReadonlyMap<string, string>, translateConfiguration: Readonly<config.TranslateConfiguration>): Array<TranslatedTarget> {
 
 	const targets = new Array<TranslatedTarget>();
 
 	for (const queryConfiguration of pathConfiguration.query) {
-		const target = translateCore(queryConfiguration, siteConfiguration, translateConfiguration);
+		const target = translateCore(queryConfiguration, siteConfiguration, metaMap, translateConfiguration);
 		if (target) {
 			targets.push(target);
 		}
@@ -144,7 +200,7 @@ export function translate(pathConfiguration: config.PathConfiguration, siteConfi
 	for (const name of pathConfiguration.import) {
 		const queryConfiguration = siteConfiguration.common.query.get(name);
 		if (queryConfiguration) {
-			const target = translateCore(queryConfiguration, siteConfiguration, translateConfiguration);
+			const target = translateCore(queryConfiguration, siteConfiguration, metaMap, translateConfiguration);
 			if (target) {
 				targets.push(target);
 			}

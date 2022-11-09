@@ -21,12 +21,14 @@ export const enum LineBreak {
 	Raw,
 }
 
-export const enum MatchMode {
+export const enum MetaContentMode {
 	Partial,
 	Forward,
 	Backward,
 	Perfect,
 	Regex,
+	NotEmpty,
+	Ignore,
 }
 
 export const enum ReplaceMode {
@@ -72,7 +74,7 @@ export interface FilterConfiguration {
 export interface MatchConfiguration {
 	//#region property
 
-	readonly mode: MatchMode;
+	readonly mode: string.MatchMode;
 	readonly ignoreCase: boolean;
 	readonly pattern: string;
 	readonly replace: ReplaceConfiguration;
@@ -100,9 +102,20 @@ export interface TargetConfiguration {
 	//#endregion
 }
 
+export interface MetaConfiguration {
+	//#region property
+
+	readonly mode: MetaContentMode;
+	readonly ignoreCase: boolean;
+	readonly pattern: string;
+
+	//#endregion
+}
+
 export interface SelectorConfiguration {
 	//#region property
 
+	readonly meta: ReadonlyMap<string, MetaConfiguration>;
 	readonly mode: SelectorMode;
 	readonly value: string;
 	readonly node: number;
@@ -336,9 +349,46 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 		return result;
 	}
 
+	private convertMetaCore(raw: setting.MetaSetting): MetaConfiguration {
+		const result: MetaConfiguration = {
+			mode: this.convertEnum(raw, 'mode', MetaContentMode.Partial, new Map([
+				['partial', MetaContentMode.Partial],
+				['forward', MetaContentMode.Forward],
+				['backward', MetaContentMode.Backward],
+				['perfect', MetaContentMode.Perfect],
+				['regex', MetaContentMode.Regex],
+				['not_empty', MetaContentMode.NotEmpty],
+				['ignore', MetaContentMode.Ignore],
+			])),
+			ignoreCase: types.getPropertyOr(raw, 'ignore_case', true),
+			pattern: types.getPropertyOr(raw, 'pattern', ''),
+		};
+
+		return result;
+	}
+
+	private convertMeta(raw: { [name: string]: setting.MetaSetting | null }): Map<string, MetaConfiguration> {
+		const result = new Map<string, MetaConfiguration>();
+		if (raw) {
+			for (const [name, setting] of Object.entries(raw)) {
+				if (setting) {
+					const config = this.convertMetaCore(setting);
+					if (config) {
+						result.set(name, config);
+					}
+				}
+			}
+		}
+
+		return result;
+	}
 
 	private convertSelector(raw: setting.SelectorSetting): SelectorConfiguration {
 		const result: SelectorConfiguration = {
+			meta: types.hasObject(raw, 'meta')
+				? this.convertMeta(raw['meta']!)
+				: new Map()
+			,
 			mode: this.convertEnum(raw, 'mode', SelectorMode.Normal, new Map([
 				['normal', SelectorMode.Normal],
 				['common', SelectorMode.Common],
@@ -384,19 +434,19 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 			return null;
 		}
 
-		const replace = this.convertReplace(raw.replace);
+		const replace = this.convertReplace(raw.replace as Object);
 		if (!replace) {
 			return null;
 		}
 
 		const result: MatchConfiguration = {
 			ignoreCase: types.getPropertyOr(raw, 'ignore_case', true),
-			mode: this.convertEnum(raw, 'mode', MatchMode.Partial, new Map([
-				['partial', MatchMode.Partial],
-				['forward', MatchMode.Forward],
-				['backward', MatchMode.Backward],
-				['perfect', MatchMode.Perfect],
-				['regex', MatchMode.Regex],
+			mode: this.convertEnum(raw, 'mode', string.MatchMode.Partial, new Map([
+				['partial', string.MatchMode.Partial],
+				['forward', string.MatchMode.Forward],
+				['backward', string.MatchMode.Backward],
+				['perfect', string.MatchMode.Perfect],
+				['regex', string.MatchMode.Regex],
 			])),
 			pattern: raw.pattern!,
 			replace: replace,

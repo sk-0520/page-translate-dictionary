@@ -120,6 +120,22 @@ PTD_CHROME_PROFILE_DIRECTORY=X:\ch
         // ID 指定
         {
           "selector": {
+            // 該当する <meta name=* content=*> に全条件を満たす場合にセレクタが使用される。
+            "meta": {
+              // 判定方法
+              //  partial: 部分一致
+              //  forward: 前方一致
+              //  backward: 後方一致
+              //  perfect: 完全一致
+              //  regex: 正規表現
+              //  not_empty: `content` が空でない
+              //  ignore: パターンを無視(`content` を見ない)
+              "mode": "partial",
+              // 大文字小文字を区別するか
+              "ignore_case": true,
+              // パターン
+              "pattern": "pattern",
+            },
             // セレクタ種別
             //  normal: 通常
             //  common: 共通

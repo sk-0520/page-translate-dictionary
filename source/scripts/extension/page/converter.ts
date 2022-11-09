@@ -1,8 +1,10 @@
+import * as string from '../../core/string';
 import * as config from '../config';
 import * as filtering from './filtering';
-import * as matching from './matching';
 
-function convertRegex(inputText: string, match: config.MatchConfiguration, matchResult: matching.MatchResult, replaceConfiguration: config.ReplaceConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): string | null {
+const ConvertReplaceRegex = /\$<(.+?)>/g;
+
+function convertRegex(inputText: string, match: config.MatchConfiguration, matchResult: string.MatchResult, replaceConfiguration: config.ReplaceConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): string | null {
 	try {
 		console.debug('I: ', match.replace.value);
 
@@ -12,7 +14,7 @@ function convertRegex(inputText: string, match: config.MatchConfiguration, match
 			const regexGroups = regexArray.groups!;
 
 			return match.replace.value.replace(
-				/\$<(.+?)>/g,
+				ConvertReplaceRegex,
 				m => {
 					const name = m.substring(2, m.length - 1);
 					const nameValue = regexGroups[name];
@@ -74,7 +76,7 @@ export function convert(source: string, targetConfiguration: config.TargetConfig
 
 	for (const match of targetConfiguration.matches) {
 
-		const matchResult = matching.match(inputText, match, site);
+		const matchResult = string.match(inputText, match.pattern, match.ignoreCase, match.mode);
 		if (!matchResult.matched) {
 			continue;
 		}

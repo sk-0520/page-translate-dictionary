@@ -77,7 +77,7 @@ export function isArray<T extends unknown>(arg: unknown): arg is Array<T> {
  * @param arg
  * @returns
  */
-export function isObject<T extends unknown>(arg: unknown): arg is Array<T> {
+export function isObject(arg: unknown): arg is Object {
 	return arg !== null && typeof arg === 'object' && !Array.isArray(arg);
 }
 
@@ -176,7 +176,7 @@ export function hasUndefined(obj: unknown, key: PropertyKey): obj is Record<Prop
  * @param key プロパティ名。
  * @returns
  */
- export function hasObject(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, object> {
+ export function hasObject(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, Object> {
 	return hasProperty(obj, key) && isObject(obj[key]);
 }
 
