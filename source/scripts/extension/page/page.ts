@@ -4,6 +4,7 @@ import * as uri from '../uri';
 import * as translator from './translator';
 import * as throws from '../../core/throws';
 import * as string from '../../core/string';
+import * as logging from '../../core/logging';
 import * as loader from '../loader';
 import * as messages from '../messages';
 import * as names from '../names';
@@ -11,6 +12,8 @@ import * as storage from '../storage';
 import * as extensions from '../extensions';
 
 import '../../../styles/extension/page-content.scss';
+
+const logger = logging.create('page');
 
 type PageCache = {
 	/** アプリケーション設定 */
@@ -41,6 +44,8 @@ let pageCache: PageCache | null;
 
 function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.TranslatedTarget>> {
 	let targets = new Array<translator.TranslatedTarget>();
+
+	logger.log('executeCoreAsync');
 
 	for (const siteConfiguration of pageCache.sites) {
 		//alert(JSON.stringify(siteConfiguration.path))
