@@ -12,7 +12,7 @@ const messages: locale.Messages & locale.MessageMap = {
 		message: '非適用ページ',
 	},
 	popup_disabled_description_extension: {
-		message: 'http(s):// か file:// から始まる URL で本拡張機能は有効になります。',
+		message: 'http(s):// から始まる URL で本拡張機能は有効になります。',
 	},
 	popup_disabled_description_setting: {
 		message: '表示中ページに該当する設定が見つかりませんでした。',
