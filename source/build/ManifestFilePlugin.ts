@@ -8,6 +8,7 @@ const ExtensionName = '__MSG_ext_name__';
 
 export interface ManifestFileOptions {
 	browser: string;
+	// isProduction: boolean,
 	packageJson: string;
 	inputDirectory: string;
 	outputDirectory: string;
@@ -43,6 +44,9 @@ export default class ManifestFilePlugin {
 					'name': packageJson['author'],
 					'url': packageJson['homepage'],
 				};
+				// if (!this._options.isProduction) {
+				// 	targetJson['applications']['gecko']['id'] = '{ffffffff-ffff-ffff-ffff-ffffffffffff}';
+				// }
 				break;
 		}
 

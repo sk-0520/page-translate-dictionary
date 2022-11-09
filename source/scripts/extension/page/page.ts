@@ -45,8 +45,6 @@ let pageCache: PageCache | null;
 function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.TranslatedTarget>> {
 	let targets = new Array<translator.TranslatedTarget>();
 
-	logger.log('executeCoreAsync');
-
 	for (const siteConfiguration of pageCache.sites) {
 		//alert(JSON.stringify(siteConfiguration.path))
 		//for (const [pathPattern, pathConfiguration] of Object.entries(siteConfiguration.path)) {
@@ -340,14 +338,14 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 	const allSiteHeadConfigurations = await storage.loadSiteHeadsAsync();
 
 	if (!allSiteHeadConfigurations.length) {
-		console.trace('設定なし');
+		logger.trace('設定なし');
 		sendMessageAsync(messages.MessageKind.NotifyPageInformation);
 		return false;
 	}
 
 	const currentSiteHeadConfigurations = allSiteHeadConfigurations.filter(i => uri.isEnabledHosts(location.host, i.hosts));
 	if (!currentSiteHeadConfigurations.length) {
-		console.info(`ホストに該当する設定なし: ${location.host}`);
+		logger.info(`ホストに該当する設定なし: ${location.host}`);
 		sendMessageAsync(messages.MessageKind.NotifyPageInformation);
 		return false;
 	}
@@ -406,7 +404,7 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 
 		await executeAsync(pageCache);
 	} else {
-		console.trace('きてない・・・', location.pathname);
+		logger.trace('きてない・・・', location.pathname);
 	}
 
 	// 子孫が追加された場合の監視(追加の監視のみで、既にある要素は `watch` で対応すること)

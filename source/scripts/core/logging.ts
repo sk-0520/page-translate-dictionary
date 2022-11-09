@@ -1,5 +1,12 @@
+type LoggingMethod = (message?: any, ...optionalParams: any[]) => void;
+
 export interface Logger {
-	log: (arg: any) => void
+	trace: LoggingMethod;
+	log: LoggingMethod;
+	debug: LoggingMethod;
+	info: LoggingMethod;
+	warn: LoggingMethod;
+	error: LoggingMethod;
 }
 
 export function create(header: string): Logger {
@@ -7,13 +14,29 @@ export function create(header: string): Logger {
 }
 
 class LoggerImpl implements Logger {
-	public constructor(header: string) {
-		this.log = console.log.bind(console, header);
+	public constructor(private header: string) {
+		const logHeader = '[' + this.header + ']';
+
+		if(console.trace) {
+			this.trace = console.trace.bind(console, logHeader);
+		} else {
+			this.trace = (message?: any, ...optionalParams: any[]) => {};
+		}
+		this.log = console.log.bind(console, logHeader);
+		this.debug = console.debug.bind(console, logHeader);
+		this.info = console.info.bind(console, logHeader);
+		this.warn = console.warn.bind(console, logHeader);
+		this.error = console.error.bind(console, logHeader);
 	}
 
 	//#region Logger
 
-	log: (arg: any) => void;
+	trace: LoggingMethod;
+	log: LoggingMethod;
+	debug: LoggingMethod;
+	info: LoggingMethod;
+	warn: LoggingMethod;
+	error: LoggingMethod;
 
 	//#endregion
 }

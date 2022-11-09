@@ -115,8 +115,9 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 				},
 			}),
 			new ManifestFilePlugin({
-				packageJson: path.join(__dirname, 'package.json'),
 				browser: env['browser'],
+				// isProduction: isProduction,
+				packageJson: path.join(__dirname, 'package.json'),
 				inputDirectory: path.join(inputRootDirectory, 'manifest'),
 				outputDirectory: outputDirectory,
 			}),
@@ -159,6 +160,8 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 								'console.trace',
 								'console.debug',
 								'console.log',
+
+								'console.trace.bind',
 							]
 						}
 					}
