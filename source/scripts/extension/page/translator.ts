@@ -1,4 +1,6 @@
 import * as types from '../../core/types';
+import * as string from '../../core/string';
+import * as throws from '../../core/throws';
 import * as config from '../config';
 import * as names from '../names';
 import * as converter from './converter';
@@ -86,9 +88,43 @@ export function translateElement(element: Element, queryConfiguration: config.Qu
 	return translated;
 }
 
+function convertModeMetaToMatch(meta: config.MetaContentMode): string.MatchMode {
+	switch (meta) {
+		case config.MetaContentMode.Partial:
+			return string.MatchMode.Partial;
+
+		case config.MetaContentMode.Forward:
+			return string.MatchMode.Forward;
+
+		case config.MetaContentMode.Backward:
+			return string.MatchMode.Backward;
+
+		case config.MetaContentMode.Perfect:
+			return string.MatchMode.Perfect;
+
+		case config.MetaContentMode.Regex:
+			return string.MatchMode.Regex;
+
+		default:
+			throw new throws.NotImplementedError();
+	}
+}
+
 function conditionMeta(content: string, metaConfiguration: config.MetaConfiguration): boolean {
-	//TODO: matching.ts を公開しないと二度手間かなぁ
-	return true;
+	switch (metaConfiguration.mode) {
+		case config.MetaContentMode.Ignore:
+			return true;
+
+		case config.MetaContentMode.NotEmpty:
+			return !string.isNullOrWhiteSpace(content);
+
+		default:
+			break;
+	}
+
+	const mode = convertModeMetaToMatch(metaConfiguration.mode);
+	const result = string.match(content, metaConfiguration.pattern, metaConfiguration.ignoreCase, mode);
+	return result.matched;
 }
 
 function translateCore(queryConfiguration: config.QueryConfiguration, siteConfiguration: config.SiteConfiguration, metaMap: ReadonlyMap<string, string>, translateConfiguration: Readonly<config.TranslateConfiguration>): TranslatedTarget | null {
