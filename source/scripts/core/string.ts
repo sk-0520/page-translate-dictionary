@@ -76,7 +76,7 @@ class MatchResultImpl {
 		this._regex = regex;
 	}
 
-	//#region property
+	//#region MatchResult
 
 	public get matched(): boolean {
 		return this._matched;
@@ -166,10 +166,15 @@ export function match(input: string, pattern: string, ignoreCase: boolean, mode:
 
 		case MatchMode.Regex:
 			const flags = ignoreCase ? 'gi' : 'g';
-			const regex = new RegExp(pattern, flags);
-			if (regex.test(input)) {
-				return MatchResultImpl.matchedRegex(regex);
+			try {
+				const regex = new RegExp(pattern, flags);
+				if (regex.test(input)) {
+					return MatchResultImpl.matchedRegex(regex);
+				}
+			} catch (ex) {
+				console.warn('match:RegExp', ex);
 			}
+
 			return MatchResultImpl.none();
 
 		default:
