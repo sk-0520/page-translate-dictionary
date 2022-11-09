@@ -16,6 +16,8 @@ export function translateElement(element: Element, queryConfiguration: config.Qu
 
 	const sourceSave = !element.hasAttribute(names.Attributes.translated);
 
+	const workElement = element.shadowRoot ?? element;
+
 	for (const [attributeName, targetConfiguration] of queryConfiguration.attributes) {
 		const sourceValue = element.getAttribute(attributeName);
 		if (sourceValue) {
@@ -30,13 +32,13 @@ export function translateElement(element: Element, queryConfiguration: config.Qu
 		}
 	}
 
-	if (element.textContent && queryConfiguration.text) {
+	if (workElement.textContent && queryConfiguration.text) {
 
-		const nodes = new Map<number, Text | Element>();
+		const nodes = new Map<number, Text | Element | ShadowRoot>();
 
 		if (queryConfiguration.selector.node) {
 			const textNodes = new Array<Text>();
-			for (const node of element.childNodes) {
+			for (const node of workElement.childNodes) {
 				if (node instanceof Text) {
 					textNodes.push(node);
 				}
@@ -56,7 +58,7 @@ export function translateElement(element: Element, queryConfiguration: config.Qu
 		}
 
 		if (!nodes.size) {
-			nodes.set(0, element);
+			nodes.set(0, workElement);
 		}
 		for (const [number, node] of nodes) {
 			const sourceValue = node.textContent || '';
@@ -66,7 +68,7 @@ export function translateElement(element: Element, queryConfiguration: config.Qu
 				if (node instanceof Text) {
 					node.textContent = output;
 				} else {
-					element.textContent = output;
+					workElement.textContent = output;
 				}
 
 				if (sourceSave) {
@@ -82,7 +84,11 @@ export function translateElement(element: Element, queryConfiguration: config.Qu
 	}
 
 	if (translated) {
-		element.setAttribute(names.Attributes.translated, '');
+		if (workElement instanceof ShadowRoot) {
+			element.setAttribute(names.Attributes.translated, 'shadow');
+		} else {
+			element.setAttribute(names.Attributes.translated, 'light');
+		}
 	}
 
 	return translated;
