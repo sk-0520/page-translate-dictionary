@@ -59,7 +59,7 @@ export interface MatchSetting {
 	 * * `perfect`: 完全一致
 	 * * `regex`: 正規表現
 	 */
-	mode?: 'partial' | 'forward' | 'backward' | 'perfect' | 'regex' | 'not_empty' | 'ignore' | null;
+	mode?: 'partial' | 'forward' | 'backward' | 'perfect' | 'regex'| null;
 	/**
 	 * 大文字小文字を無視するか。
 	 */
@@ -141,9 +141,10 @@ export interface MetaSetting {
 	 * * `backward`: 後方一致
 	 * * `perfect`: 完全一致
 	 * * `regex`: 正規表現
-	 * * 'ignore' パターンは無視する
+	 * * `ignore` パターンは無視する
+	 * * `not_empty`: ホワイトスペース以外が含めれている
 	 */
-	mode?: 'partial' | 'forward' | 'backward' | 'perfect' | 'regex' | 'ignore' | null;
+	mode?: 'partial' | 'forward' | 'backward' | 'perfect' | 'regex' | 'ignore'  | 'not_empty' | 'ignore' | null;
 	/**
 	 * 大文字小文字を無視するか。
 	 */
