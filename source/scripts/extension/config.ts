@@ -31,14 +31,6 @@ export const enum MetaContentMode {
 	Ignore,
 }
 
-export const enum MatchMode {
-	Partial,
-	Forward,
-	Backward,
-	Perfect,
-	Regex,
-}
-
 export const enum ReplaceMode {
 	Normal,
 	Common,
@@ -82,7 +74,7 @@ export interface FilterConfiguration {
 export interface MatchConfiguration {
 	//#region property
 
-	readonly mode: MatchMode;
+	readonly mode: string.MatchMode;
 	readonly ignoreCase: boolean;
 	readonly pattern: string;
 	readonly replace: ReplaceConfiguration;
@@ -449,12 +441,12 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 
 		const result: MatchConfiguration = {
 			ignoreCase: types.getPropertyOr(raw, 'ignore_case', true),
-			mode: this.convertEnum(raw, 'mode', MatchMode.Partial, new Map([
-				['partial', MatchMode.Partial],
-				['forward', MatchMode.Forward],
-				['backward', MatchMode.Backward],
-				['perfect', MatchMode.Perfect],
-				['regex', MatchMode.Regex],
+			mode: this.convertEnum(raw, 'mode', string.MatchMode.Partial, new Map([
+				['partial', string.MatchMode.Partial],
+				['forward', string.MatchMode.Forward],
+				['backward', string.MatchMode.Backward],
+				['perfect', string.MatchMode.Perfect],
+				['regex', string.MatchMode.Regex],
 			])),
 			pattern: raw.pattern!,
 			replace: replace,

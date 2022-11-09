@@ -30,4 +30,11 @@ describe('string', () => {
 		expect(string.replaceAllImpl('abcabcABCABC', /a/g, '-')).toBe('-bc-bcABCABC');
 		expect(string.replaceAllImpl('abcabcABCABC', /a/gi, '-')).toBe('-bc-bc-BC-BC');
 	});
+
+	test('match', () => {
+		const result = string.match('a', 'a', false, string.MatchMode.Forward);
+		expect(result.isRegex).toBeFalsy();
+		expect(result.matched).toBeTruthy();
+	});
 });
+
