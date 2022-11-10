@@ -12,7 +12,7 @@
 
 ```cmd
 npm ci
-npm run build:firefox
+npm run build:production:firefox
 npm run output:firefox
 cd dist/web-ext-artifacts
 ```
@@ -21,7 +21,7 @@ cd dist/web-ext-artifacts
 
 ```cmd
 npm ci
-npm run build:chrome
+npm run build:production:chrome
 npm run output:chrome
 cd dist/web-ext-artifacts
 ```

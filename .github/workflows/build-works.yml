@@ -31,7 +31,7 @@ jobs:
         run: npm run test
 
       - name: <Build> Web-Extensions
-        run: npm run build:${{ matrix.BROWSER }}
+        run: npm run build:production:${{ matrix.BROWSER }}
 
       - name: <Lint> Web-Extensions
         run: npm run lint:${{ matrix.BROWSER }}

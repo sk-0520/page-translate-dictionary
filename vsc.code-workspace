@@ -50,6 +50,7 @@
 		"npm.scriptExplorerExclude": [
 			"test$",
 			"^(pre|post)",
+			"build:development",
 			"^(?!.*-env$)browser:.*$",
 			"^(?!.*-env$)debug:.*$",
 			"output",
