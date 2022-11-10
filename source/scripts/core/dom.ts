@@ -16,42 +16,49 @@ export function requireElementById<THtmlElement extends HTMLElement>(elementId: 
 /**
  * セレクタから要素取得を強制。
  *
- * @param selector
+ * @param selectors
  * @param element
  * @returns
  */
-export function requireSelector<TElement extends Element>(selector: string, element: Element | null = null): TElement {
-	const result = (element ?? document).querySelector(selector);
+
+export function requireSelector<K extends keyof HTMLElementTagNameMap>(selectors: K, element?: Element): HTMLElementTagNameMap[K];
+export function requireSelector<K extends keyof SVGElementTagNameMap>(selectors: K, element?: Element): SVGElementTagNameMap[K];
+export function requireSelector<TElement extends Element = Element>(selectors: string, element?: Element | null): TElement;
+export function requireSelector(selectors: string, element?: Element | null): Element {
+	const result = (element ?? document).querySelector(selectors);
 	if (!result) {
-		throw new Error(selector);
+		throw new Error(selectors);
 	}
 
-	return result as TElement;
+	return result;
 }
 
 /**
  * セレクタから先祖要素を取得。
  *
- * @param selector
+ * @param selectors
  * @param element
  * @returns
  */
-export function requireClosest<TElement extends Element>(selector: string, element: HTMLElement): TElement {
-	const result = element.closest(selector);
+export function requireClosest<K extends keyof HTMLElementTagNameMap>(selectors: K, element: Element): HTMLElementTagNameMap[K];
+export function requireClosest<K extends keyof SVGElementTagNameMap>(selectors: K, element: Element): SVGElementTagNameMap[K];
+export function requireClosest<E extends Element = Element>(selectors: string, element: Element): E;
+export function requireClosest(selectors: string, element: Element): Element {
+	const result = element.closest(selectors);
 	if (!result) {
-		throw new Error(selector);
+		throw new Error(selectors);
 	}
 
-	return result as TElement;
+	return result;
 }
 
 /**
- * 対象要素から所属する Form 要素を取得する。
- * @param element Formに所属する要素。
+ * 対象要素から所属する `Form` 要素を取得する。
+ * @param element `Form` に所属する要素。
  * @returns
  */
 export function getParentForm(element: Element): HTMLFormElement {
-	const formElement = element.closest<HTMLFormElement>('form');
+	const formElement = requireClosest('form', element);
 	if (formElement === null) {
 		throw new Error(element.outerHTML);
 	}
@@ -59,9 +66,13 @@ export function getParentForm(element: Element): HTMLFormElement {
 	return formElement;
 }
 
-export function cloneTemplate<TElement extends Element>(selectors: string): HTMLElement;
-export function cloneTemplate<TElement extends Element>(element: HTMLTemplateElement): HTMLElement;
-export function cloneTemplate<TElement extends Element>(input: string | HTMLTemplateElement): HTMLElement {
+/**
+ * テンプレートを実体化。
+ * @param selectors
+ */
+export function cloneTemplate<TElement extends Element>(selectors: string): TElement;
+export function cloneTemplate<TElement extends Element>(element: HTMLTemplateElement): TElement;
+export function cloneTemplate<TElement extends Element>(input: string | HTMLTemplateElement): TElement {
 	if (typeof input === 'string') {
 		const element = requireSelector<HTMLTemplateElement>(input);
 		if (element.tagName !== 'TEMPLATE') {
@@ -70,7 +81,7 @@ export function cloneTemplate<TElement extends Element>(input: string | HTMLTemp
 		input = element;
 	}
 
-	return input.content.cloneNode(true) as HTMLElement;
+	return input.content.cloneNode(true) as TElement;
 }
 
 /**
