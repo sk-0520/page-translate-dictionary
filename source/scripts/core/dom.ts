@@ -59,8 +59,18 @@ export function getParentForm(element: Element): HTMLFormElement {
 	return formElement;
 }
 
-export function cloneTemplate(element: HTMLTemplateElement): HTMLElement {
-	return element.content.cloneNode(true) as HTMLElement;
+export function cloneTemplate(selectors: string): HTMLElement;
+export function cloneTemplate(element: HTMLTemplateElement): HTMLElement;
+export function cloneTemplate(input: string | HTMLTemplateElement): HTMLElement {
+	if (typeof input === 'string') {
+		const element = requireSelector<HTMLTemplateElement>(input);
+		if (element.tagName !== 'TEMPLATE') {
+			throw new Error(input + ': ' + element.tagName);
+		}
+		input = element;
+	}
+
+	return input.content.cloneNode(true) as HTMLElement;
 }
 
 /**

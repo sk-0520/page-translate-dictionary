@@ -14,3 +14,10 @@ export class InvalidOperationError extends Error {
 	}
 }
 
+
+export class ArgumentError extends Error {
+	constructor(message?: string | undefined) {
+		super(message);
+		this.name = 'ArgumentError';
+	}
+}
