@@ -30,7 +30,34 @@ describe('dom', () => {
 		expect(() => dom.requireSelector('.x')).toThrowError(Error);
 	});
 
-	test('requireSelector', () => {
+	test('requireClosest', () => {
+		document.body.innerHTML = `
+			<div id="a">
+				<div id="b">
+					<div id="c">
+						<div id="d">
+						</div>
+					</div>
+				</div>
+			</div>
+		`;
+
+		const a = document.getElementById('a') as HTMLElement;
+		const b = document.getElementById('b') as HTMLElement;
+		const c = document.getElementById('c') as HTMLElement;
+		const d = document.getElementById('d') as HTMLElement;
+
+		expect(dom.requireClosest('*', a).id).toBe('a');
+		expect(dom.requireClosest('#a', b).id).toBe('a');
+		expect(dom.requireClosest('#b', c).id).toBe('b');
+		expect(dom.requireClosest('#b', d).id).toBe('b');
+		expect(dom.requireClosest('#a > div', d).id).toBe('b');
+		expect(dom.requireClosest('#a > div > div', d).id).toBe('c');
+
+		expect(() => dom.requireClosest('#a span', d)).toThrowError(Error);
+	});
+
+	test('getParentForm', () => {
 		document.body.innerHTML = `
 			<form data-key="a">
 				<div id="a"></div>
@@ -51,6 +78,24 @@ describe('dom', () => {
 		expect(dom.getParentForm(b).dataset['key']!).toBe('b');
 
 		expect(() => dom.getParentForm(c)).toThrowError(Error);
+	});
+
+	test('cloneTemplate', () => {
+		document.body.innerHTML = `
+			<template id="a">
+				<div name="a"></div>
+			</template>
+			<div id="error">xxx</div>
+		`;
+
+		const a1 = document.getElementById('a') as HTMLTemplateElement;
+		const a2 = dom.cloneTemplate<HTMLElement>(a1);
+		expect(a2.querySelector('[name]')?.getAttribute('name')).toBe('a');
+
+		const b2 = dom.cloneTemplate<HTMLElement>('#a');
+		expect(b2.querySelector('[name]')?.getAttribute('name')).toBe('a');
+
+		expect(() => dom.cloneTemplate('#error')).toThrowError(Error);
 	});
 
 	test('toCustomKey', () => {

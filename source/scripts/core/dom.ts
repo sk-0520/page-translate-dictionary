@@ -59,9 +59,9 @@ export function getParentForm(element: Element): HTMLFormElement {
 	return formElement;
 }
 
-export function cloneTemplate(selectors: string): HTMLElement;
-export function cloneTemplate(element: HTMLTemplateElement): HTMLElement;
-export function cloneTemplate(input: string | HTMLTemplateElement): HTMLElement {
+export function cloneTemplate<TElement extends Element>(selectors: string): HTMLElement;
+export function cloneTemplate<TElement extends Element>(element: HTMLTemplateElement): HTMLElement;
+export function cloneTemplate<TElement extends Element>(input: string | HTMLTemplateElement): HTMLElement {
 	if (typeof input === 'string') {
 		const element = requireSelector<HTMLTemplateElement>(input);
 		if (element.tagName !== 'TEMPLATE') {
