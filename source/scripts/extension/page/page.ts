@@ -124,8 +124,6 @@ function updatePageCache(pageCache: PageCache, targets: ReadonlyArray<translator
 		console.debug('監視対象', queryConfiguration, init);
 		pageCache.observer.observe(element, init);
 	}
-
-
 }
 
 async function executeAsync(pageCache: PageCache): Promise<void> {

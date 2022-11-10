@@ -181,6 +181,15 @@ function translateCore(queryConfiguration: config.QueryConfiguration, siteConfig
 			if (translateConfiguration.markReplacedElement) {
 				element.classList.add(names.ClassNames.mark);
 			}
+
+			let setting = new Array<string>();
+			const rawSettings = element.getAttribute(names.Attributes.translateSettings);
+			if (rawSettings) {
+				setting = rawSettings.split(',').map(i => i.trim());
+			}
+			setting.push(siteConfiguration.id);
+			const uniqSetting = new Set(setting);
+			element.setAttribute(names.Attributes.translateSettings, [...uniqSetting].join(','))
 		}
 	}
 

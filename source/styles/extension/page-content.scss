@@ -1,4 +1,3 @@
-
 .ptd-progress {
 	position: fixed;
 	right: 0;
@@ -6,6 +5,17 @@
 }
 
 
-.ptd-marked::before {
-	//nop
+// なんかこう、もっといい方法あるやろ・・・
+.ptd-marked {
+	&:hover {
+		position: relative;
+
+		&::after {
+			position: absolute;
+
+			background: #33330011;
+			content: '*';
+			font-size: 8pt;
+		}
+	}
 }
