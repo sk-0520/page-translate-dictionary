@@ -4,7 +4,6 @@ const baseAttr = 'data-' + baseName + '-';
 export const ClassNames = {
 	progress: baseName + '-progress',
 	mark: baseName + '-marked',
-	tooltip: baseName + '-tooltip',
 }
 
 export const Attributes = {
