@@ -99,83 +99,107 @@ class MatchResultImpl {
 
 	//#region function
 
-	public static none(): MatchResult {
+	public static none(): MatchResultImpl {
 		return new MatchResultImpl(false, null);
 	}
 
-	public static matchedPlain(): MatchResult {
+	public static matchedPlain(): MatchResultImpl {
 		return new MatchResultImpl(true, null);
 	}
 
-	public static matchedRegex(regex: RegExp): MatchResult {
+	public static matchedRegex(regex: RegExp): MatchResultImpl {
 		return new MatchResultImpl(true, regex);
 	}
 
 	//#endregion
 }
 
+function matchPartial(input: string, pattern: string, ignoreCase: boolean): MatchResultImpl {
+	let index = -1;
+	if (ignoreCase) {
+		index = input.toLowerCase().indexOf(pattern.toLowerCase());
+	} else {
+		index = input.indexOf(pattern);
+	}
+	if (index !== -1) {
+		return MatchResultImpl.matchedPlain();
+	}
+
+	return MatchResultImpl.none();
+}
+
+function matchForward(input: string, pattern: string, ignoreCase: boolean): MatchResultImpl {
+	if (ignoreCase) {
+		if (input.toLowerCase().startsWith(pattern.toLowerCase())) {
+			return MatchResultImpl.matchedPlain();
+		}
+	} else {
+		if (input.startsWith(pattern)) {
+			return MatchResultImpl.matchedPlain();
+		}
+	}
+
+	return MatchResultImpl.none();
+}
+
+function matchBackward(input: string, pattern: string, ignoreCase: boolean): MatchResultImpl {
+	if (ignoreCase) {
+		if (input.toLowerCase().endsWith(pattern.toLowerCase())) {
+			return MatchResultImpl.matchedPlain();
+		}
+	} else {
+		if (input.endsWith(pattern)) {
+			return MatchResultImpl.matchedPlain();
+		}
+	}
+
+	return MatchResultImpl.none();
+}
+
+function matchPerfect(input: string, pattern: string, ignoreCase: boolean): MatchResultImpl {
+	if (ignoreCase) {
+		if (input.toLowerCase() === pattern.toLowerCase()) {
+			return MatchResultImpl.matchedPlain();
+		}
+	} else {
+		if (input === pattern) {
+			return MatchResultImpl.matchedPlain();
+		}
+	}
+
+	return MatchResultImpl.none();
+}
+
+function matchRegex(input: string, pattern: string, ignoreCase: boolean): MatchResultImpl {
+	const flags = ignoreCase ? 'gi' : 'g';
+	try {
+		const regex = new RegExp(pattern, flags);
+		if (regex.test(input)) {
+			return MatchResultImpl.matchedRegex(regex);
+		}
+	} catch (ex) {
+		console.warn('matchRegex', ex);
+	}
+
+	return MatchResultImpl.none();
+}
+
 export function match(input: string, pattern: string, ignoreCase: boolean, mode: MatchMode): MatchResult {
 	switch (mode) {
 		case MatchMode.Partial:
-			let index = -1;
-			if (ignoreCase) {
-				index = input.toLowerCase().indexOf(pattern.toLowerCase());
-			} else {
-				index = input.indexOf(pattern);
-			}
-			if (index !== -1) {
-				return MatchResultImpl.matchedPlain();
-			}
-			return MatchResultImpl.none();
+			return matchPartial(input, pattern, ignoreCase);
 
 		case MatchMode.Forward:
-			if (ignoreCase) {
-				if (input.toLowerCase().startsWith(pattern.toLowerCase())) {
-					return MatchResultImpl.matchedPlain();
-				}
-			} else {
-				if (input.startsWith(pattern)) {
-					return MatchResultImpl.matchedPlain();
-				}
-			}
-			return MatchResultImpl.none();
+			return matchForward(input, pattern, ignoreCase);
 
 		case MatchMode.Backward:
-			if (ignoreCase) {
-				if (input.toLowerCase().endsWith(pattern.toLowerCase())) {
-					return MatchResultImpl.matchedPlain();
-				}
-			} else {
-				if (input.endsWith(pattern)) {
-					return MatchResultImpl.matchedPlain();
-				}
-			}
-			return MatchResultImpl.none();
+			return matchBackward(input, pattern, ignoreCase);
 
 		case MatchMode.Perfect:
-			if (ignoreCase) {
-				if (input.toLowerCase() === pattern.toLowerCase()) {
-					return MatchResultImpl.matchedPlain();
-				}
-			} else {
-				if (input === pattern) {
-					return MatchResultImpl.matchedPlain();
-				}
-			}
-			return MatchResultImpl.none();
+			return matchPerfect(input, pattern, ignoreCase);
 
 		case MatchMode.Regex:
-			const flags = ignoreCase ? 'gi' : 'g';
-			try {
-				const regex = new RegExp(pattern, flags);
-				if (regex.test(input)) {
-					return MatchResultImpl.matchedRegex(regex);
-				}
-			} catch (ex) {
-				console.warn('match:RegExp', ex);
-			}
-
-			return MatchResultImpl.none();
+			return matchRegex(input, pattern, ignoreCase);
 
 		default:
 			return MatchResultImpl.none();
