@@ -19,6 +19,15 @@ export function isNull(arg: unknown): arg is null {
 }
 
 /**
+ * 型が `undefined | null` か。
+ * @param arg
+ */
+export function isNullable(arg: unknown): arg is null | undefined {
+	return isUndefined(arg) || isNull(arg);
+}
+
+
+/**
  * 型が `Symbol` か。
  * @param arg
  * @returns
@@ -116,8 +125,18 @@ export function hasUndefined(obj: unknown, key: PropertyKey): obj is Record<Prop
  * @param key プロパティ名。
  * @returns
  */
- export function hasNull(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, null> {
+export function hasNull(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, null> {
 	return hasProperty(obj, key) && isNull(obj[key]);
+}
+
+/**
+ * 指定したプロパティ(型: `null | undefined`)を持つか。
+ * @param obj 対象オブジェクト。
+ * @param key プロパティ名。
+ * @returns
+ */
+export function hasNullable(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, null | undefined> {
+	return hasProperty(obj, key) && (isUndefined(obj[key]) || isNull(obj[key]));
 }
 
 /**
@@ -126,7 +145,7 @@ export function hasUndefined(obj: unknown, key: PropertyKey): obj is Record<Prop
  * @param key プロパティ名。
  * @returns
  */
- export function hasSymbol(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, Symbol> {
+export function hasSymbol(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, Symbol> {
 	return hasProperty(obj, key) && isSymbol(obj[key]);
 }
 
@@ -136,7 +155,7 @@ export function hasUndefined(obj: unknown, key: PropertyKey): obj is Record<Prop
  * @param key プロパティ名。
  * @returns
  */
- export function hasString(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, string> {
+export function hasString(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, string> {
 	return hasProperty(obj, key) && isString(obj[key]);
 }
 
@@ -146,7 +165,7 @@ export function hasUndefined(obj: unknown, key: PropertyKey): obj is Record<Prop
  * @param key プロパティ名。
  * @returns
  */
- export function hasNumber(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, number> {
+export function hasNumber(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, number> {
 	return hasProperty(obj, key) && isNumber(obj[key]);
 }
 
@@ -156,7 +175,7 @@ export function hasUndefined(obj: unknown, key: PropertyKey): obj is Record<Prop
  * @param key プロパティ名。
  * @returns
  */
- export function hasBigInt(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, bigint> {
+export function hasBigInt(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, bigint> {
 	return hasProperty(obj, key) && isBigInt(obj[key]);
 }
 
@@ -166,7 +185,7 @@ export function hasUndefined(obj: unknown, key: PropertyKey): obj is Record<Prop
  * @param key プロパティ名。
  * @returns
  */
- export function hasBoolean(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, boolean> {
+export function hasBoolean(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, boolean> {
 	return hasProperty(obj, key) && isBoolean(obj[key]);
 }
 
@@ -176,7 +195,7 @@ export function hasUndefined(obj: unknown, key: PropertyKey): obj is Record<Prop
  * @param key プロパティ名。
  * @returns
  */
- export function hasObject(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, Object> {
+export function hasObject(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, Object> {
 	return hasProperty(obj, key) && isObject(obj[key]);
 }
 
@@ -186,7 +205,7 @@ export function hasUndefined(obj: unknown, key: PropertyKey): obj is Record<Prop
  * @param key プロパティ名。
  * @returns
  */
- export function hasArray<T extends unknown>(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, Array<T>> {
+export function hasArray<T extends unknown>(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, Array<T>> {
 	return hasProperty(obj, key) && isArray<T>(obj[key]);
 }
 
@@ -196,7 +215,7 @@ export function hasUndefined(obj: unknown, key: PropertyKey): obj is Record<Prop
  * @param key プロパティ名。
  * @returns
  */
- export function hasFunction<T extends Function>(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, T> {
+export function hasFunction<T extends Function>(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, T> {
 	return hasProperty(obj, key) && isFunction<T>(obj[key]);
 }
 

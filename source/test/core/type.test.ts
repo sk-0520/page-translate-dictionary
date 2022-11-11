@@ -47,6 +47,36 @@ describe('types', () => {
 	});
 
 	test.each([
+		[true, undefined],
+		[false, null],
+		[false, Symbol()],
+		[false, 1],
+		[false, 9007199254740991n],
+		[false, 'A'],
+		[false, true],
+		[false, ['A']],
+		[false, { a: 'A' }],
+		[false, () => undefined],
+	])('isUndefined', (expected: boolean, input: unknown) => {
+		expect(types.isUndefined(input)).toBe(expected);
+	});
+
+	test.each([
+		[true, undefined],
+		[true, null],
+		[false, Symbol()],
+		[false, 1],
+		[false, 9007199254740991n],
+		[false, 'A'],
+		[false, true],
+		[false, ['A']],
+		[false, { a: 'A' }],
+		[false, () => undefined],
+	])('isNullable', (expected: boolean, input: unknown) => {
+		expect(types.isNullable(input)).toBe(expected);
+	});
+
+	test.each([
 		[false, undefined],
 		[false, null],
 		[true, Symbol()],
@@ -57,7 +87,7 @@ describe('types', () => {
 		[false, ['A']],
 		[false, { a: 'A' }],
 		[false, () => undefined],
-	])('isNull', (expected: boolean, input: unknown) => {
+	])('isSymbol', (expected: boolean, input: unknown) => {
 		expect(types.isSymbol(input)).toBe(expected);
 	});
 
@@ -102,7 +132,7 @@ describe('types', () => {
 		[false, ['A']],
 		[false, { a: 'A' }],
 		[false, () => undefined],
-	])('BigInt', (expected: boolean, input: unknown) => {
+	])('isBigInt', (expected: boolean, input: unknown) => {
 		expect(types.isBigInt(input)).toBe(expected);
 	});
 
@@ -189,6 +219,21 @@ describe('types', () => {
 		[false, inputObject, 'function'],
 	])('hasNull', (expected: boolean, input: unknown, key: string) => {
 		expect(types.hasNull(input, key)).toBe(expected);
+	});
+
+	test.each([
+		[true, inputObject, 'undefined'],
+		[true, inputObject, 'null'],
+		[false, inputObject, 'symbol'],
+		[false, inputObject, 'number'],
+		[false, inputObject, 'bigint'],
+		[false, inputObject, 'string'],
+		[false, inputObject, 'boolean'],
+		[false, inputObject, 'array'],
+		[false, inputObject, 'object'],
+		[false, inputObject, 'function'],
+	])('hasNull', (expected: boolean, input: unknown, key: string) => {
+		expect(types.hasNullable(input, key)).toBe(expected);
 	});
 
 	test.each([
