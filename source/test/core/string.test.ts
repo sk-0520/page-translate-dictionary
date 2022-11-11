@@ -11,6 +11,16 @@ describe('string', () => {
 		expect(string.isEmpty(input)).toBe(expected);
 	});
 
+	test.each([
+		[false, undefined],
+		[false, null],
+		[false, ''],
+		[false, ' '],
+		[true, 'a'],
+	])('isNotEmpty', (expected: boolean, input: string | null | undefined) => {
+		expect(string.isNotEmpty(input)).toBe(expected);
+	});
+
 	test('isNullOrWhiteSpace', () => {
 		expect(string.isNullOrWhiteSpace(undefined)).toBe(true);
 		expect(string.isNullOrWhiteSpace(null)).toBe(true);

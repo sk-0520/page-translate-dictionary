@@ -3,11 +3,21 @@ import * as regex from './regex';
 
 /**
  * 空文字列か。
+ * 純粋に長さ 0 かを調べる。
  * @param s
  * @returns
  */
 export function isEmpty(s: string | null | undefined): s is string {
-	return !s && types.isString(s) && s.length === 0;
+	return types.isString(s) && s.length === 0;
+}
+
+/**
+ * 非空文字列(ホワイトスペース構成は除く)か。
+ * @param s
+ * @returns
+ */
+export function isNotEmpty(s: string | null | undefined): s is string {
+	return types.isString(s) && s.trim().length !== 0;
 }
 
 /**
