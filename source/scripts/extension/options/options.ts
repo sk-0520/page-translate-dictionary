@@ -26,8 +26,7 @@ function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfigurati
 	const hostsElement = dom.requireSelector('[name="hosts"]', itemRootElement);
 	hostsElement.innerHTML = '';
 	for (const host of siteHeadConfiguration.hosts) {
-		const templateElement = dom.requireElementById<HTMLTemplateElement>('template-setting-item-host');
-		const hostRootElement = dom.cloneTemplate(templateElement);
+		const hostRootElement = dom.cloneTemplate('#template-setting-item-host');
 
 		const hostElement = dom.requireSelector('[name="host"]', hostRootElement);
 		hostElement.textContent = host;
@@ -54,8 +53,7 @@ function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfigurati
 }
 
 function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
-	const templateElement = dom.requireElementById<HTMLTemplateElement>('template-setting-item');
-	const itemRootElement = dom.cloneTemplate(templateElement);
+	const itemRootElement = dom.cloneTemplate('#template-setting-item');
 	for (const element of itemRootElement.querySelectorAll<HTMLElement>('*')) {
 		localize.applyElement(element);
 	}
