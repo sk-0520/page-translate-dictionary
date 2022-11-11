@@ -18,9 +18,10 @@ export default class ImportLogger {
 	}
 
 	public add(message: string) {
-		const li = document.createElement('li');
-		li.textContent = message;
-		this._logElement.appendChild(li);
+		const li = dom.createHtml('li');
+		li.element.textContent = message;
+
+		dom.append(this._logElement, li);
 	}
 
 	//#endregion

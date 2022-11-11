@@ -41,7 +41,8 @@
 			"postoutput",
 			"prebrowser",
 			"timespan",
-			"webextension"
+			"webextension",
+			"THTML",
 		],
 		"auto-close-tag.activationOnLanguage": [
 			"xml",
