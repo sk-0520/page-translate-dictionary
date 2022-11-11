@@ -86,6 +86,9 @@ export enum DayOfWeek {
 	Saturday,
 }
 
+/**
+ * UTC周り多分間違ってる。
+ */
 export class DateTime {
 
 	/**
