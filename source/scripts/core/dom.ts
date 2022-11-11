@@ -143,7 +143,6 @@ export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallbac
 	return value;
 }
 
-
 // /**
 //  * 指定要素を兄弟間で上下させる。
 //  * @param current 対象要素。
@@ -162,3 +161,69 @@ export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallbac
 // 	}
 // }
 
+export function createTag(tagName: string, options?: ElementCreationOptions): TagNode<HTMLElement> {
+	const element = document.createElement(tagName, options);
+	return new TagNode(element);
+}
+
+export function createHtml<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HtmlNode<HTMLElementTagNameMap[K]> {
+	const element = document.createElement(tagName, options);
+	return new HtmlNode(element);
+}
+
+export function wrap<THTMLElement extends HTMLElement>(element: THTMLElement): TagNode<THTMLElement> {
+	return new TagNode(element);
+}
+
+export function append(parent: Element, tree: TreeNode): Node {
+	return parent.appendChild(tree.element);
+}
+
+export interface TreeNode {
+	//#region property
+
+	readonly element: Node;
+
+	//#endregion
+}
+
+export class TextNode implements TreeNode {
+	constructor(public readonly element: Text) {
+	}
+}
+
+export class TagNode<TElement extends Element> implements TreeNode {
+	constructor(public readonly element: TElement) {
+	}
+
+	public createTag(tagName: string, options?: ElementCreationOptions): TagNode<HTMLElement> {
+		const createdElement = document.createElement(tagName, options);
+		this.element.appendChild(createdElement);
+
+		const node = new HtmlNode(createdElement);
+		return node;
+	}
+
+	public createHtml<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HtmlNode<HTMLElementTagNameMap[K]> {
+		const createdElement = document.createElement(tagName, options);
+		this.element.appendChild(createdElement);
+
+		const node = new HtmlNode(createdElement);
+		return node;
+	}
+
+	public createText(text: string): TextNode {
+		const createdNode = document.createTextNode(text);
+		this.element.appendChild(createdNode);
+
+		const node = new TextNode(createdNode);
+		return node;
+
+	}
+}
+
+export class HtmlNode<TElement extends Element> extends TagNode<TElement> {
+	constructor(element: TElement) {
+		super(element);
+	}
+}

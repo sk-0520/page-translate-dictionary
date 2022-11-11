@@ -111,5 +111,6 @@ describe('dom', () => {
 		expect(dom.toCustomKey('data-key-data')).toBe('keyData');
 		expect(dom.toCustomKey('data-key-data', true)).toBe('keyData');
 		expect(dom.toCustomKey('data-key-data', false)).toBe('dataKeyData');
-	})
+	});
+
 });
