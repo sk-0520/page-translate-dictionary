@@ -1,3 +1,4 @@
+import * as string from '../../core/string';
 import * as throws from '../../core/throws';
 import * as config from '../config';
 
@@ -37,7 +38,7 @@ function filterWhiteSpace(input: string, whiteSpace: config.WhiteSpace): string 
 
 function filterTrim(input: string, isTrim: boolean): string {
 	if (isTrim) {
-		return input.trim();
+		return string.trim(input);
 	}
 
 	return input;

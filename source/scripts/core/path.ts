@@ -13,7 +13,7 @@ export function join(base: string, path1: string, ...pathN: ReadonlyArray<string
 	function chomp(s: string): string {
 		return s
 			.split('/')
-			.filter(i => i.length)
+			.filter(i => i)
 			.join('/')
 			;
 	}

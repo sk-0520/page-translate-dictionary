@@ -6,6 +6,7 @@ describe('string', () => {
 		[false, null],
 		[true, ''],
 		[false, ' '],
+		[false, '　'],
 		[false, 'a'],
 	])('isEmpty', (expected: boolean, input: string | null | undefined) => {
 		expect(string.isEmpty(input)).toBe(expected);
@@ -16,6 +17,7 @@ describe('string', () => {
 		[false, null],
 		[false, ''],
 		[false, ' '],
+		[false, '　'],
 		[true, 'a'],
 	])('isNotEmpty', (expected: boolean, input: string | null | undefined) => {
 		expect(string.isNotEmpty(input)).toBe(expected);
@@ -31,6 +33,46 @@ describe('string', () => {
 		expect(string.isNullOrWhiteSpace("\n")).toBe(true);
 		expect(string.isNullOrWhiteSpace("\r\n")).toBe(true);
 		expect(string.isNullOrWhiteSpace(" \r\n \r\n ")).toBe(true);
+	});
+
+	test.each([
+		['', '', ['']],
+		['', ' ', [' ']],
+		['a ', ' a ', [' ']],
+		['a', '   a', [' ']],
+		['　  a', '  　  a', [' ']],
+		['a', '  　  a', [' ', '　']],
+	])('trimStart', (expected: string, input: string, characters:string[]) => {
+		expect(string.trimStart(input, new Set(characters))).toBe(expected);
+	});
+
+	test.each([
+		['', '', ['']],
+		['', ' ', [' ']],
+		[' a', ' a ', [' ']],
+		[' a 　', ' a 　 ', [' ']],
+		[' a', ' a  　  ', [' ', '　']],
+	])('trimEnd', (expected: string, input: string, characters:string[]) => {
+		expect(string.trimEnd(input, new Set(characters))).toBe(expected);
+	});
+
+	test.each([
+		['', '', ['']],
+		['a', ' a ', [' ']],
+		['　 a 　', ' 　 a 　 ', [' ']],
+		['a', ' 　 a 　 ', [' ', '　']],
+	])('trim', (expected: string, input: string, characters:string[]) => {
+		expect(string.trim(input, new Set(characters))).toBe(expected);
+	});
+
+	test.each([
+		['', ''],
+		['', ' '],
+		['a', ' a '],
+		['a', ' 　 a 　 '],
+		['a', ' 　 a 　 '],
+	])('trim:default', (expected: string, input: string) => {
+		expect(string.trim(input)).toBe(expected);
 	});
 
 	test('replaceAllImpl', () => {
