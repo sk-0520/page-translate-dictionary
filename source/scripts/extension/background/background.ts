@@ -1,7 +1,7 @@
 import webextension from 'webextension-polyfill';
+import * as url from "../../core/url";
 import * as extensions from '../extensions';
 import * as messages from "../messages";
-import * as uri from "../uri";
 
 async function applyEnablePageIconAsync(tabId: number | undefined, pageInformation: messages.PageInformation, extension: extensions.Extension): Promise<void> {
 	if (pageInformation.settings.length) {
@@ -41,7 +41,7 @@ async function applyDisablePageIconAsync(tabId: number | undefined, extension: e
 async function changedActiveTabAsync(tab: webextension.Tabs.Tab | undefined, extension: extensions.Extension): Promise<void> {
 	console.log('tab', tab);
 
-	if (tab && tab.id && tab.url && uri.isHttpUrl(tab.url)) {
+	if (tab && tab.id && tab.url && url.isHttpUrl(tab.url)) {
 		try {
 			const reply: messages.Replay & messages.PageInformation = await webextension.tabs.sendMessage(tab.id, {
 				kind: messages.MessageKind.GetPageInformation,

@@ -3,7 +3,7 @@ import * as dom from '../../core/dom';
 import * as localize from '../localize';
 import * as storage from '../storage';
 import * as config from '../config';
-import * as uri from '../uri';
+import * as url from '../../core/url';
 import * as loader from '../loader';
 import ImportLogger from './ImportLogger';
 import * as extensions from '../extensions';
@@ -44,7 +44,7 @@ function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfigurati
 	for (const detail of details) {
 		const detailElement = dom.requireSelector<HTMLAnchorElement>(`[name="${detail.name}"]`, itemRootElement);
 
-		if (uri.isHttpUrl(detail.url)) {
+		if (url.isHttpUrl(detail.url)) {
 			detailElement.href = detail.url;
 			detailElement.textContent = detail.url;
 		} else {
@@ -105,26 +105,26 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 
 }
 
-async function importSettingAsync(url: string): Promise<void> {
+async function importSettingAsync(settingUrl: string): Promise<void> {
 	const log = new ImportLogger();
 	log.clear();
 
 	try {
 		log.add(webextension.i18n.getMessage('options_import_log_start'));
 
-		if (!uri.isHttpUrl(url)) {
+		if (!url.isHttpUrl(settingUrl)) {
 			log.add(webextension.i18n.getMessage('options_import_log_invalid_url'));
 			return;
 		}
 
-		const existsId = await loader.hasSiteSettingAsync(url);
+		const existsId = await loader.hasSiteSettingAsync(settingUrl);
 		if (existsId !== null) {
 			log.add(webextension.i18n.getMessage('options_import_log_duplicated', existsId));
 			return;
 		}
 
-		log.add(webextension.i18n.getMessage('options_import_log_fetch_url', [url]));
-		const setting = await loader.fetchAsync(url);
+		log.add(webextension.i18n.getMessage('options_import_log_fetch_url', [settingUrl]));
+		const setting = await loader.fetchAsync(settingUrl);
 		if (!setting) {
 			log.add(webextension.i18n.getMessage('options_import_log_invalid_setting'));
 			return;
@@ -138,7 +138,7 @@ async function importSettingAsync(url: string): Promise<void> {
 		// 内部用データとして取り込み
 		log.add(webextension.i18n.getMessage('options_import_log_convert'));
 
-		const site = await loader.saveAsync(url, setting, null);
+		const site = await loader.saveAsync(settingUrl, setting, null);
 
 		log.add(webextension.i18n.getMessage('options_import_log_success'));
 

@@ -1,23 +1,5 @@
 import Wildcard from "../core/wildcard";
 
-function isProtocolUrl(url: string, protocols: ReadonlyArray<string>): boolean {
-	const starts = protocols.map(i => i + '://');
-
-	for (const start of starts) {
-		if (url.startsWith(start) && start.length < url.length) {
-			return true;
-		}
-	}
-
-	return false;
-}
-
-export function isHttpUrl(s: string): boolean {
-	return isProtocolUrl(s, [
-		'https',
-		'http',
-	]);
-}
 
 // export function isUserUrl(s: string): boolean {
 // 	return isProtocolUrl(s, [
