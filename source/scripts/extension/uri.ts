@@ -10,8 +10,3 @@ export function isEnabledHosts(hostName: string, hostPatterns: string[]): boolea
 	return false;
 }
 
-export function isEnabledPath(path: string, pathPattern: string): boolean {
-	const regex = new RegExp(pathPattern);
-	const result = regex.test(path);
-	return result;
-}

@@ -46,24 +46,23 @@ function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.Transl
 		//alert(JSON.stringify(siteConfiguration.path))
 		//for (const [pathPattern, pathConfiguration] of Object.entries(siteConfiguration.path)) {
 		//alert('siteConfiguration.path-> ' + JSON.stringify(siteConfiguration.path))
-		for (const key in siteConfiguration.path) {
+		for (const [keyRegex, pathConfiguration] of siteConfiguration.path) {
 			// alert('key:: ' + key)
 			// @ts-ignore in
-			const pathConfiguration = siteConfiguration.path[key];
 			let urlPath = location.pathname;
 			if (pathConfiguration && pathConfiguration.withSearch && !location.search) {
 				urlPath += '?' + location.search;
 			}
 
-			if (pathConfiguration && uri.isEnabledPath(urlPath, key)) {
-				console.log('パス適合', key, urlPath);
+			if (pathConfiguration && keyRegex.test(urlPath)) {
+				console.log('パス適合', keyRegex, urlPath);
 				try {
 					targets = translator.translate(pathConfiguration, siteConfiguration, pageCache.metaMap, pageCache.app.translate);
 				} catch (ex) {
 					console.error(ex);
 				}
 			} else {
-				console.log('パス非適合', key, urlPath);
+				console.log('パス非適合', keyRegex, urlPath);
 			}
 		}
 	}
@@ -365,7 +364,7 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 	for (const siteHeadConfiguration of sortedCurrentSiteHeadConfigurations) {
 		const rawBody = await storage.loadSiteBodyAsync(siteHeadConfiguration.id);
 		if (rawBody) {
-			const siteConfiguration = new config.SiteConfigurationImpl(siteHeadConfiguration, rawBody);
+			const siteConfiguration = config.createSiteConfiguration(siteHeadConfiguration, rawBody);
 			siteItems.push(siteConfiguration);
 		}
 	}

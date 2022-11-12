@@ -267,7 +267,8 @@ export interface SiteBodyConfiguration {
 	//#endregion
 }
 
-export type PathMap = { [path: string]: PathConfiguration };
+//export type PathMap = { [path: string]: PathConfiguration };
+export type PathMap = ReadonlyMap<RegExp, PathConfiguration>;
 
 export interface SiteConfiguration extends SiteHeadConfiguration {
 	//#region property
@@ -286,7 +287,12 @@ export type SiteData = {
 	readonly body: SiteBodyConfiguration,
 }
 
-export class SiteConfigurationImpl implements SiteConfiguration {
+export function createSiteConfiguration(head: SiteHeadConfiguration, body: SiteBodyConfiguration): SiteConfiguration
+{
+	return new SiteConfigurationImpl(head, body);
+}
+
+class SiteConfigurationImpl implements SiteConfiguration {
 
 	public readonly watch: WatchConfiguration;
 	public readonly path: PathMap;
@@ -557,18 +563,26 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 
 	public convertPath(raw?: setting.PathMap | null): PathMap {
 		if (!raw) {
-			return {};
+			return new Map();
 		}
-
-		const result: PathMap = {};
 
 		if (typeof raw !== 'object') {
-			return {};
+			return new Map();
 		}
+
+		const result = new Map<RegExp, PathConfiguration>();
 
 		//alert(JSON.stringify(raw));
 
 		for (const key in raw) {
+			let regKey: RegExp;
+			try {
+				regKey = new RegExp(key);
+			} catch(ex) {
+				console.error('path', key, ex);
+				continue;
+			}
+
 			const pathSetting = raw[key];
 
 			if (string.isNullOrWhiteSpace(key)) {
@@ -612,7 +626,7 @@ export class SiteConfigurationImpl implements SiteConfiguration {
 				import: importItems,
 			};
 
-			result[key] = pathConfiguration;
+			result.set(regKey, pathConfiguration);
 		}
 
 		//alert('result -> ' + JSON.stringify(result))

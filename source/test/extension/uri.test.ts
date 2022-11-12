@@ -17,17 +17,4 @@ describe('uri', () => {
 	])('isEnabledHosts', (expected: boolean, hostName: string, hostPatterns: string[]) => {
 		expect(uri.isEnabledHosts(hostName, hostPatterns)).toBe(expected);
 	});
-
-	test.each([
-		[true, '', ''],
-		[true, 'a', ''],
-		[true, 'a', 'a'],
-		[false, 'a', 'b'],
-		[true, 'abc', 'a'],
-		[true, 'abc', 'b'],
-		[true, 'abc', 'c'],
-		[false, 'abc', 'd'],
-	])('isEnabledPath', (expected: boolean, path: string, pathPattern: string) => {
-		expect(uri.isEnabledPath(path, pathPattern)).toBe(expected);
-	});
 });
