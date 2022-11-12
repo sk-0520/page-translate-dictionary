@@ -1,0 +1,18 @@
+details {
+	&[open] {
+		summary {
+			&::before {
+				content: '▼';
+			}
+		}
+	}
+
+	summary {
+		cursor: pointer;
+		display: inline-block;
+
+		&::before {
+			content: '▶';
+		}
+	}
+}

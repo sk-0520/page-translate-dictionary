@@ -31,6 +31,9 @@ const messages: locale.Messages & locale.MessageMap = {
 		message: '適用設定ファイル一覧',
 	},
 
+	options_title: {
+		message: '設定 - 定型翻訳',
+	},
 	options_tab_header_generic: {
 		message: '基本設定',
 	},

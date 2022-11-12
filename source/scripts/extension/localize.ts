@@ -16,6 +16,10 @@ const LocalizeAttribute = {
  * @param element
  */
 export function applyElement(element: Element): void {
+	if (!element.attributes) {
+		return;
+	}
+
 	for (const attribute of element.attributes) {
 		if (!attribute.name.startsWith(LocalizeAttribute.start)) {
 			continue;
@@ -33,6 +37,20 @@ export function applyElement(element: Element): void {
 				element.setAttribute(attrName, message);
 			}
 		}
+	}
+}
+
+
+/**
+ * 指定要素と子孫に対してローカライズを実施。
+ *
+ * 拡張機能内の動的生成要素に対して使用する想定。
+ */
+export function applyNestElements(element: Element): void {
+	applyElement(element);
+	const elementList = element.querySelectorAll('*')
+	for (const element of elementList) {
+		applyElement(element);
 	}
 }
 

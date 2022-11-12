@@ -33,6 +33,7 @@ export interface Messages {
 	popup_enabled_total_count: Message;
 	popup_enabled_settings: Message;
 
+	options_title: Message,
 	options_tab_header_generic: Message,
 
 	options_tab_content_generic_translate: Message,

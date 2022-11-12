@@ -54,9 +54,8 @@ function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfigurati
 
 function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 	const itemRootElement = dom.cloneTemplate('#template-setting-item');
-	for (const element of itemRootElement.querySelectorAll<HTMLElement>('*')) {
-		localize.applyElement(element);
-	}
+	localize.applyNestElements(itemRootElement);
+
 	dom.requireSelector<HTMLElement>('.setting-item', itemRootElement).dataset['head'] = JSON.stringify(siteHeadConfiguration);
 
 	dom.requireSelector('[name="action"]', itemRootElement).addEventListener('click', async ev => {

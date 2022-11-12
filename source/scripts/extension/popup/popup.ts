@@ -29,14 +29,12 @@ function applyEnablePopupAsync(tab: webextension.Tabs.Tab, pageInformation: mess
 	const templateElement = dom.requireElementById<HTMLTemplateElement>('template-setting-item');
 	const settingElement = dom.requireElementById('settings');
 	settingElement.innerHTML = '';
-	for(const setting of pageInformation.settings) {
+	for (const setting of pageInformation.settings) {
 		const itemElement = dom.cloneTemplate(templateElement);
 
 		dom.requireSelector('[name="settings_item_name"]', itemElement).textContent = setting.name;
 
-		for (const element of itemElement.querySelectorAll<HTMLElement>('*')) {
-			localize.applyElement(element);
-		}
+		localize.applyNestElements(itemElement);
 
 		settingElement.appendChild(itemElement);
 	}

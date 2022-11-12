@@ -1,4 +1,5 @@
 @forward '../../../node_modules/normalize-sass/normalize.sass';
+@forward "./details";
 
 @use "../core/tab";
 @use "../core/responsive" as responsive;
@@ -25,8 +26,4 @@ h2 {
 	}
 }
 
-details {
-	summary {
-		cursor: pointer;
-	}
-}
+
