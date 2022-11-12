@@ -1,14 +1,5 @@
 import Wildcard from "../core/wildcard";
 
-
-// export function isUserUrl(s: string): boolean {
-// 	return isProtocolUrl(s, [
-// 		'https',
-// 		'http',
-// 		'file',
-// 	]);
-// }
-
 export function isEnabledHosts(hostName: string, hostPatterns: string[]): boolean {
 	for (const hostPattern of hostPatterns) {
 		if (Wildcard.test(hostName, hostPattern)) {

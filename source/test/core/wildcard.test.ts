@@ -1,10 +1,12 @@
 import Wildcard from '../../scripts/core/wildcard';
 
 describe('Wildcard', () => {
-	test('test', () =>{
-		expect(Wildcard.test('', '')).toBe(true);
-		expect(Wildcard.test('', '*')).toBe(true);
-		expect(Wildcard.test('', '?')).toBe(false);
-		expect(Wildcard.test('abcde', '*bcd*')).toBe(true);
+	test.each([
+		[true, '', ''],
+		[true, '', '*'],
+		[false, '', '?'],
+		[true, 'abcde', '*bcd*'],
+	])('test', (expected: boolean, input: string, pattern: string) => {
+		expect(Wildcard.test(input, pattern)).toBe(expected);
 	});
 });

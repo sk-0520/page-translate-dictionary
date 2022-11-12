@@ -1,5 +1,5 @@
 import webextension from "webextension-polyfill";
-import * as types from "./type-guard";
+import * as types from "./guard";
 import * as config from "./config";
 
 const Keys = {

@@ -200,24 +200,24 @@ export class TagFactory<TElement extends Element> implements NodeFactory {
 		const createdElement = document.createElement(tagName, options);
 		this.element.appendChild(createdElement);
 
-		const node = new HtmlFactory(createdElement);
-		return node;
+		const nodeFactory = new HtmlFactory(createdElement);
+		return nodeFactory;
 	}
 
 	public createHtml<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HtmlFactory<HTMLElementTagNameMap[K]> {
 		const createdElement = document.createElement(tagName, options);
 		this.element.appendChild(createdElement);
 
-		const node = new HtmlFactory(createdElement);
-		return node;
+		const nodeFactory = new HtmlFactory(createdElement);
+		return nodeFactory;
 	}
 
 	public createText(text: string): TextFactory {
 		const createdNode = document.createTextNode(text);
 		this.element.appendChild(createdNode);
 
-		const node = new TextFactory(createdNode);
-		return node;
+		const nodeFactory = new TextFactory(createdNode);
+		return nodeFactory;
 
 	}
 }
