@@ -7,19 +7,24 @@ MANUAL_FILE="${BASE_DIR}/throws-manual.ts"
 
 AUTO_ERROR_LIST='
 NotImplementedError,未実装
+NotSupportedError,実装が存在しない
 InvalidOperationError,不正処理
 ArgumentError,引数異常
 '
 AUTO_ERRORS=(`echo $AUTO_ERROR_LIST`)
 
+TIMESTMAP=`date --iso-8601="seconds"`
 cat <<EOS > ${OUTPUT_FILE}
 // エラー系
+// GEN: ${TIMESTMAP}
+
+// 手動 ---------------------
 
 EOS
 
 cat ${MANUAL_FILE} >> ${OUTPUT_FILE}
 echo "" >> ${OUTPUT_FILE}
-echo "//----------------" >> ${OUTPUT_FILE}
+echo "// 自動 ---------------------" >> ${OUTPUT_FILE}
 echo "" >> ${OUTPUT_FILE}
 
 for (( i = 0; i < ${#AUTO_ERRORS[@]}; ++i )); do
