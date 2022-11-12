@@ -390,6 +390,12 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 				console.info('event:window', siteItem.name, eventName);
 				window.addEventListener(eventName, ev => updatedPageAsync(ev));
 			}
+			if (extension.kind === extensions.BrowserKind.Firefox) {
+				window.addEventListener('popstate', ev => {
+					console.error('popstate');
+					updatedPageAsync(ev);
+				});
+			}
 			for (const eventName of siteItem.watch.document) {
 				console.info('event:document', siteItem.name, eventName);
 				document.addEventListener(eventName, ev => updatedPageAsync(ev));
