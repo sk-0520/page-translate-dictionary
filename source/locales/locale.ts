@@ -29,6 +29,7 @@ export interface Messages {
 	popup_disabled_description_setting: Message,
 
 	popup_enabled_title: Message;
+	popup_enabled_warning: Message;
 	popup_enabled_element_count: Message;
 	popup_enabled_total_count: Message;
 	popup_enabled_settings: Message;

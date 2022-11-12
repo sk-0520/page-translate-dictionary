@@ -28,3 +28,13 @@ body {
 h1 {
 	text-align: center;
 }
+
+p {
+	white-space: pre;
+
+	&.warning {
+		&::before {
+			content: '⚠';
+		}
+	}
+}

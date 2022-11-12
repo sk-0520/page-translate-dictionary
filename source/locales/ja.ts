@@ -34,6 +34,9 @@ const messages: locale.Messages & locale.MessageMap = {
 	options_title: {
 		message: '設定 - 定型翻訳',
 	},
+	popup_enabled_warning: {
+		message: "翻訳処理が適用されています。\r\n翻訳された文言は原文と意味・解釈が異なるため\r\n正となる情報は原文を確認してください"
+	},
 	options_tab_header_generic: {
 		message: '基本設定',
 	},
