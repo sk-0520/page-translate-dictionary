@@ -72,8 +72,8 @@ describe('types', () => {
 		[false, ['A']],
 		[false, { a: 'A' }],
 		[false, () => undefined],
-	])('isNullable', (expected: boolean, input: unknown) => {
-		expect(types.isNullable(input)).toBe(expected);
+	])('isNullish', (expected: boolean, input: unknown) => {
+		expect(types.isNullish(input)).toBe(expected);
 	});
 
 	test.each([
@@ -232,8 +232,8 @@ describe('types', () => {
 		[false, inputObject, 'array'],
 		[false, inputObject, 'object'],
 		[false, inputObject, 'function'],
-	])('hasNull', (expected: boolean, input: unknown, key: string) => {
-		expect(types.hasNullable(input, key)).toBe(expected);
+	])('hasNullish', (expected: boolean, input: unknown, key: string) => {
+		expect(types.hasNullish(input, key)).toBe(expected);
 	});
 
 	test.each([

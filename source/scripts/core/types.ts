@@ -22,7 +22,7 @@ export function isNull(arg: unknown): arg is null {
  * 型が `undefined | null` か。
  * @param arg
  */
-export function isNullable(arg: unknown): arg is null | undefined {
+export function isNullish(arg: unknown): arg is null | undefined {
 	return isUndefined(arg) || isNull(arg);
 }
 
@@ -135,7 +135,7 @@ export function hasNull(obj: unknown, key: PropertyKey): obj is Record<PropertyK
  * @param key プロパティ名。
  * @returns
  */
-export function hasNullable(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, null | undefined> {
+export function hasNullish(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, null | undefined> {
 	return hasProperty(obj, key) && (isUndefined(obj[key]) || isNull(obj[key]));
 }
 
