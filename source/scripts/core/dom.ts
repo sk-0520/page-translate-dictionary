@@ -161,25 +161,25 @@ export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallbac
 // 	}
 // }
 
-export function createTag(tagName: string, options?: ElementCreationOptions): TagNode<HTMLElement> {
+export function createTag(tagName: string, options?: ElementCreationOptions): TagFactory<HTMLElement> {
 	const element = document.createElement(tagName, options);
-	return new TagNode(element);
+	return new TagFactory(element);
 }
 
-export function createHtml<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HtmlNode<HTMLElementTagNameMap[K]> {
+export function createHtml<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HtmlFactory<HTMLElementTagNameMap[K]> {
 	const element = document.createElement(tagName, options);
-	return new HtmlNode(element);
+	return new HtmlFactory(element);
 }
 
-export function wrap<THTMLElement extends HTMLElement>(element: THTMLElement): TagNode<THTMLElement> {
-	return new TagNode(element);
+export function wrap<THTMLElement extends HTMLElement>(element: THTMLElement): TagFactory<THTMLElement> {
+	return new TagFactory(element);
 }
 
-export function append(parent: Element, tree: TreeNode): Node {
+export function append(parent: Element, tree: NodeFactory): Node {
 	return parent.appendChild(tree.element);
 }
 
-export interface TreeNode {
+export interface NodeFactory {
 	//#region property
 
 	readonly element: Node;
@@ -187,42 +187,42 @@ export interface TreeNode {
 	//#endregion
 }
 
-export class TextNode implements TreeNode {
+export class TextFactory implements NodeFactory {
 	constructor(public readonly element: Text) {
 	}
 }
 
-export class TagNode<TElement extends Element> implements TreeNode {
+export class TagFactory<TElement extends Element> implements NodeFactory {
 	constructor(public readonly element: TElement) {
 	}
 
-	public createTag(tagName: string, options?: ElementCreationOptions): TagNode<HTMLElement> {
+	public createTag(tagName: string, options?: ElementCreationOptions): TagFactory<HTMLElement> {
 		const createdElement = document.createElement(tagName, options);
 		this.element.appendChild(createdElement);
 
-		const node = new HtmlNode(createdElement);
+		const node = new HtmlFactory(createdElement);
 		return node;
 	}
 
-	public createHtml<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HtmlNode<HTMLElementTagNameMap[K]> {
+	public createHtml<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HtmlFactory<HTMLElementTagNameMap[K]> {
 		const createdElement = document.createElement(tagName, options);
 		this.element.appendChild(createdElement);
 
-		const node = new HtmlNode(createdElement);
+		const node = new HtmlFactory(createdElement);
 		return node;
 	}
 
-	public createText(text: string): TextNode {
+	public createText(text: string): TextFactory {
 		const createdNode = document.createTextNode(text);
 		this.element.appendChild(createdNode);
 
-		const node = new TextNode(createdNode);
+		const node = new TextFactory(createdNode);
 		return node;
 
 	}
 }
 
-export class HtmlNode<TElement extends Element> extends TagNode<TElement> {
+export class HtmlFactory<TElement extends Element> extends TagFactory<TElement> {
 	constructor(element: TElement) {
 		super(element);
 	}
