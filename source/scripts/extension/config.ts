@@ -287,8 +287,7 @@ export type SiteData = {
 	readonly body: SiteBodyConfiguration,
 }
 
-export function createSiteConfiguration(head: SiteHeadConfiguration, body: SiteBodyConfiguration): SiteConfiguration
-{
+export function createSiteConfiguration(head: SiteHeadConfiguration, body: SiteBodyConfiguration): SiteConfiguration {
 	return new SiteConfigurationImpl(head, body);
 }
 
@@ -578,7 +577,7 @@ class SiteConfigurationImpl implements SiteConfiguration {
 			let regKey: RegExp;
 			try {
 				regKey = new RegExp(key);
-			} catch(ex) {
+			} catch (ex) {
 				console.error('path', key, ex);
 				continue;
 			}
@@ -611,8 +610,8 @@ class SiteConfigurationImpl implements SiteConfiguration {
 
 			const importItems = new Array<string>();
 			if (types.hasArray(pathSetting, 'import')) {
-				for (const name of pathSetting.import!) { //TODO: !
-					if (typeof name !== 'string') {
+				for (const name of pathSetting.import) {
+					if (!types.isString(name)) {
 						continue;
 					}
 
