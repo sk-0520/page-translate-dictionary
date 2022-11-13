@@ -18,12 +18,76 @@
 	}
 }
 
-h2 {
-	background: red;
+.tab {
+	.tab_header {
+		$padding: 0.5em;
+		width: calc(100% / 2 - (#{$padding} * 2));
+		text-align: center;
 
-	@include responsive.media(responsive.$s) {
-		background: lime;
+		// 既存の上書き
+		margin: 0;
+		padding: $padding;
+		border: none;
+		border-bottom: 2px solid transparent;
+	}
+
+	&>input.tab_check {
+		&:checked+.tab_header {
+			font-weight: bold;
+			border-bottom-color: rgb(159, 236, 255);
+
+			&+.tab_content {
+				border: none;
+				padding: 0.5ex 1em 1em 1em;
+
+				@include responsive.media(responsive.$s) {
+					padding: 0.25ex 0.5em 1em 0.5em;
+				}
+			}
+		}
 	}
 }
 
+h2 {
+	font-size: 1.2em;
+	font-weight: bold;
+	border-top: 3px double #888;
+	border-bottom: 3px double #888;
+}
 
+ul.ui-menu {
+	padding-left: 0.5ex;
+
+	&>li {
+		list-style-type: none;
+
+		&+li {
+			margin-top: 0.5ex;
+		}
+	}
+}
+
+#setting_periodDays {
+	width: 6ch;
+}
+
+input[type="number"] {
+	text-align: right;
+}
+
+button:not([type="button"]) {
+	padding: 0.5em 1em;
+	min-width: 10ch;
+
+	@include responsive.media(responsive.$s) {
+		width: 100%;
+	}
+}
+
+button {
+	padding: 0.5ex 1ex;
+
+	&[name="delete"] {
+		margin-left: 1.5em;
+	}
+}

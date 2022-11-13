@@ -45,6 +45,7 @@ function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfigurati
 
 		if (url.isHttpUrl(detail.url)) {
 			detailElement.href = detail.url;
+			detailElement.target = `${detail.name}_${siteHeadConfiguration.id}`
 			detailElement.textContent = detail.url;
 		} else {
 			dom.requireClosest('tr', detailElement).remove();
