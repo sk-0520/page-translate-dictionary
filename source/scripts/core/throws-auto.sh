@@ -10,6 +10,7 @@ NotImplementedError,未実装
 NotSupportedError,実装が存在しない
 InvalidOperationError,不正処理
 ArgumentError,引数異常
+ElementTypeError,指定要素の型が合わない
 NotFoundDomSelectorError,セレクタで要素が見つからない
 '
 AUTO_ERRORS=(`echo $AUTO_ERROR_LIST`)

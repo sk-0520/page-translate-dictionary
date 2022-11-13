@@ -1,5 +1,5 @@
 // エラー系
-// GEN: 2022-11-14T04:44:00+09:00
+// GEN: 2022-11-14T05:19:08+09:00
 
 // 手動 ---------------------
 
@@ -44,6 +44,16 @@ export class ArgumentError extends Error {
 	constructor(message?: string | undefined) {
 		super(message);
 		this.name = 'ArgumentError';
+	}
+}
+
+/**
+* 指定要素の型が合わない
+ */
+export class ElementTypeError extends Error {
+	constructor(message?: string | undefined) {
+		super(message);
+		this.name = 'ElementTypeError';
 	}
 }
 

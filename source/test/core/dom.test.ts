@@ -13,8 +13,10 @@ describe('dom', () => {
 
 		expect(dom.requireElementById('id1').textContent!).toBe('id1:1');
 		expect(dom.requireElementById('id2').textContent!).toBe('id2:1');
+		expect(dom.requireElementById('id2', HTMLSpanElement).textContent!).toBe('id2:1');
 
 		expect(() => dom.requireElementById('id3')).toThrowError(throws.NotFoundDomSelectorError);
+		expect(() => dom.requireElementById('id2', HTMLDivElement)).toThrowError(throws.ElementTypeError);
 	});
 
 	test('requireSelector', () => {
