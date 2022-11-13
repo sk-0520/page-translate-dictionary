@@ -236,6 +236,58 @@ export function getPropertyOr<TResult>(obj: unknown, key: string, fallbackValue:
 	return fallbackValue;
 }
 
+export function isTArray<T>(arg: unknown, guard: (item: unknown) => item is T): arg is Array<T> {
+	if (!isArray(arg)) {
+		return false;
+	}
+
+	//TODO: 空の扱いが微妙過ぎる
+	if (!arg.length) {
+		return true;
+	}
+
+	return arg.every(i => guard(i));
+}
+
+export function isStringArray(arg: unknown): arg is Array<string> {
+	return isTArray(arg, isString);
+}
+
+export function isNumberArray(arg: unknown): arg is Array<string> {
+	return isTArray(arg, isNumber);
+}
+
+export function isBooleanArray(arg: unknown): arg is Array<string> {
+	return isTArray(arg, isBoolean);
+}
+
+export function filterTArray<T>(arg: unknown, guard: (item: unknown) => item is T): Array<T> {
+	if (!isArray(arg)) {
+		return [];
+	}
+
+	const result = new Array<T>();
+	for (const item of arg) {
+		if (guard(item)) {
+			result.push(item);
+		}
+	}
+
+	return result;
+}
+
+export function filterStringArray<T>(arg: unknown): Array<string> {
+	return filterTArray(arg, isString);
+}
+
+export function filterNumberArray<T>(arg: unknown): Array<number> {
+	return filterTArray(arg, isNumber);
+}
+
+export function filterBooleanArray<T>(arg: unknown): Array<boolean> {
+	return filterTArray(arg, isBoolean);
+}
+
 export function toBoolean(s: string | null | undefined): boolean {
 	if (!s) {
 		return false;

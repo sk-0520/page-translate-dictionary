@@ -608,15 +608,9 @@ class SiteConfigurationImpl implements SiteConfiguration {
 				queryItems.push(query);
 			}
 
-			const importItems = new Array<string>();
+			let importItems = new Array<string>();
 			if (types.hasArray(pathSetting, 'import')) {
-				for (const name of pathSetting.import) {
-					if (!types.isString(name)) {
-						continue;
-					}
-
-					importItems.push(name);
-				}
+				importItems = types.filterStringArray(pathSetting.import);
 			}
 
 			const pathConfiguration: PathConfiguration = {

@@ -374,6 +374,98 @@ describe('types', () => {
 		expect(types.getPropertyOr(input, key, value)).toBe(expected);
 	});
 
+	test.each([
+		[false, undefined],
+		[false, null],
+		[false, 'a'],
+		[false, 1],
+		[true, []],
+		[false, [null]],
+		[false, [1]],
+		[true, ['1']],
+		[false, [true]],
+		[false, [{}]],
+	])('isStringArray', (expected: boolean, array: unknown) => {
+		expect(types.isStringArray(array)).toBe(expected);
+	});
+
+	test.each([
+		[false, undefined],
+		[false, null],
+		[false, 'a'],
+		[false, 1],
+		[true, []],
+		[false, [null]],
+		[true, [1]],
+		[false, ['1']],
+		[false, [true]],
+		[false, [{}]],
+	])('isNumberArray', (expected: boolean, array: unknown) => {
+		expect(types.isNumberArray(array)).toBe(expected);
+	});
+
+	test.each([
+		[false, undefined],
+		[false, null],
+		[false, 'a'],
+		[false, 1],
+		[true, []],
+		[false, [null]],
+		[false, [1]],
+		[false, ['1']],
+		[true, [true]],
+		[false, [{}]],
+	])('isBooleanArray', (expected: boolean, array: unknown) => {
+		expect(types.isBooleanArray(array)).toBe(expected);
+	});
+
+	test.each([
+		[[], undefined],
+		[[], null],
+		[[], 'a'],
+		[[], 1],
+		[[], []],
+		[[], [null]],
+		[[], [1]],
+		[['1'], ['1']],
+		[[], [true]],
+		[[], [{}]],
+		[['1', '2', '3'], ['1', 1, '2', false, '3']],
+	])('filterStringArray', <T>(expected: Array<T>, array: unknown) => {
+		expect(types.filterStringArray(array)).toEqual(expected);
+	});
+
+	test.each([
+		[[], undefined],
+		[[], null],
+		[[], 'a'],
+		[[], 1],
+		[[], []],
+		[[], [null]],
+		[[1], [1]],
+		[[], ['1']],
+		[[], [true]],
+		[[], [{}]],
+		[[1], ['1', 1, '2', false, '3']],
+	])('filterNumberArray', <T>(expected: Array<T>, array: unknown) => {
+		expect(types.filterNumberArray(array)).toEqual(expected);
+	});
+
+	test.each([
+		[[], undefined],
+		[[], null],
+		[[], 'a'],
+		[[], 1],
+		[[], []],
+		[[], [null]],
+		[[], [1]],
+		[[], ['1']],
+		[[true], [true]],
+		[[], [{}]],
+		[[false], ['1', 1, '2', false, '3']],
+	])('filterBooleanArray', <T>(expected: Array<T>, array: unknown) => {
+		expect(types.filterBooleanArray(array)).toEqual(expected);
+	});
 
 	test('toBoolean', () => {
 		expect(types.toBoolean(null)).toBeFalsy();
