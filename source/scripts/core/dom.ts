@@ -161,14 +161,13 @@ export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallbac
 // 	}
 // }
 
-export function createTag(tagName: string, options?: ElementCreationOptions): TagFactory<HTMLElement> {
+/** @deprecated */
+export function createFactory<K extends keyof HTMLElementDeprecatedTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
+export function createFactory<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementTagNameMap[K]>;
+export function createFactory<THTMLElement extends HTMLElement>(tagName: string, options?: ElementCreationOptions): TagFactory<THTMLElement>;
+export function createFactory(tagName: string, options?: ElementCreationOptions): TagFactory<HTMLElement> {
 	const element = document.createElement(tagName, options);
 	return new TagFactory(element);
-}
-
-export function createHtml<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HtmlFactory<HTMLElementTagNameMap[K]> {
-	const element = document.createElement(tagName, options);
-	return new HtmlFactory(element);
 }
 
 export function wrap<THTMLElement extends HTMLElement>(element: THTMLElement): TagFactory<THTMLElement> {
@@ -196,19 +195,15 @@ export class TagFactory<TElement extends Element> implements NodeFactory {
 	constructor(public readonly element: TElement) {
 	}
 
+	/** @deprecated */
+	public createTag<K extends keyof HTMLElementDeprecatedTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
+	public createTag<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementTagNameMap[K]>;
+	public createTag<THTMLElement extends HTMLElement>(tagName: string, options?: ElementCreationOptions): TagFactory<THTMLElement>;
 	public createTag(tagName: string, options?: ElementCreationOptions): TagFactory<HTMLElement> {
 		const createdElement = document.createElement(tagName, options);
 		this.element.appendChild(createdElement);
 
-		const nodeFactory = new HtmlFactory(createdElement);
-		return nodeFactory;
-	}
-
-	public createHtml<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): HtmlFactory<HTMLElementTagNameMap[K]> {
-		const createdElement = document.createElement(tagName, options);
-		this.element.appendChild(createdElement);
-
-		const nodeFactory = new HtmlFactory(createdElement);
+		const nodeFactory = new TagFactory(createdElement);
 		return nodeFactory;
 	}
 
@@ -222,8 +217,3 @@ export class TagFactory<TElement extends Element> implements NodeFactory {
 	}
 }
 
-export class HtmlFactory<TElement extends Element> extends TagFactory<TElement> {
-	constructor(element: TElement) {
-		super(element);
-	}
-}
