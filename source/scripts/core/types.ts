@@ -1,4 +1,8 @@
-type PropertyKey = string | symbol;
+export type PropertyKey = string | symbol;
+
+export type Prototype<T extends Object = Object> = {
+	prototype: T,
+};
 
 /**
  * 型が `undefined` か。
@@ -294,6 +298,12 @@ export function toBoolean(s: string | null | undefined): boolean {
 	}
 
 	return s.toLowerCase() === 'true';
+}
+
+export function isPrototype<T extends Object>(arg: unknown, type: Prototype<T>): arg is T {
+	return hasProperty(arg, 'constructor')
+		&& arg.constructor.name === type.prototype.constructor.name
+		;
 }
 
 export function toString(input: any): string {

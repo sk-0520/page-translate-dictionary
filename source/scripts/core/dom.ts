@@ -7,15 +7,15 @@ import * as throws from './throws';
  * @param elementId
  * @returns
  */
-export function requireElementById<THtmlElement extends HTMLElement>(elementId: string, instance?: { prototype: THtmlElement }): THtmlElement {
+export function requireElementById<THtmlElement extends HTMLElement>(elementId: string, elementType?: types.Prototype<THtmlElement>): THtmlElement {
 	const result = document.getElementById(elementId);
 	if (!result) {
 		throw new throws.NotFoundDomSelectorError(elementId);
 	}
 
-	if (instance) {
-		if (result.constructor.name !== instance.prototype.constructor.name) {
-			throw new throws.ElementTypeError(`${result.constructor.name} != ${instance.prototype.constructor.name}`);
+	if (elementType) {
+		if (!types.isPrototype(result, elementType)) {
+			throw new throws.ElementTypeError(`${result.constructor.name} != ${elementType.prototype.constructor.name}`);
 		}
 	}
 
