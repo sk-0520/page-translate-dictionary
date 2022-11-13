@@ -32,7 +32,7 @@ function applyEnablePopupAsync(tab: webextension.Tabs.Tab, pageInformation: mess
 	for (const setting of pageInformation.settings) {
 		const itemElement = dom.cloneTemplate(templateElement);
 
-		dom.requireSelector('[name="settings_item_name"]', itemElement).textContent = setting.name;
+		dom.requireSelector(itemElement, '[name="settings_item_name"]').textContent = setting.name;
 
 		localize.applyNestElements(itemElement);
 

@@ -18,17 +18,17 @@ function setApplication(applicationConfiguration: config.ApplicationConfiguratio
 }
 
 function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfiguration, itemRootElement: Element) {
-	dom.requireSelector('[name="name"]', itemRootElement).textContent = siteHeadConfiguration.name;
-	dom.requireSelector('[name="version"]', itemRootElement).textContent = siteHeadConfiguration.version;
-	const updatedTimestampElement = dom.requireSelector<HTMLTimeElement>('[name="updated-timestamp"]', itemRootElement);
+	dom.requireSelector(itemRootElement, '[name="name"]').textContent = siteHeadConfiguration.name;
+	dom.requireSelector(itemRootElement, '[name="version"]').textContent = siteHeadConfiguration.version;
+	const updatedTimestampElement = dom.requireSelector<HTMLTimeElement>(itemRootElement, '[name="updated-timestamp"]');
 	updatedTimestampElement.textContent = siteHeadConfiguration.updatedTimestamp;
 	updatedTimestampElement.dateTime = siteHeadConfiguration.updatedTimestamp;
-	const hostsElement = dom.requireSelector('[name="hosts"]', itemRootElement);
+	const hostsElement = dom.requireSelector(itemRootElement, '[name="hosts"]');
 	hostsElement.innerHTML = '';
 	for (const host of siteHeadConfiguration.hosts) {
 		const hostRootElement = dom.cloneTemplate('#template-setting-item-host');
 
-		const hostElement = dom.requireSelector('[name="host"]', hostRootElement);
+		const hostElement = dom.requireSelector(hostRootElement, '[name="host"]');
 		hostElement.textContent = host;
 
 		hostsElement.appendChild(hostRootElement);
@@ -41,14 +41,14 @@ function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfigurati
 		{ name: 'document-url', url: siteHeadConfiguration.information.documentUrl },
 	];
 	for (const detail of details) {
-		const detailElement = dom.requireSelector<HTMLAnchorElement>(`[name="${detail.name}"]`, itemRootElement);
+		const detailElement = dom.requireSelector<HTMLAnchorElement>(itemRootElement, `[name="${detail.name}"]`);
 
 		if (url.isHttpUrl(detail.url)) {
 			detailElement.href = detail.url;
 			detailElement.target = `${detail.name}_${siteHeadConfiguration.id}`
 			detailElement.textContent = detail.url;
 		} else {
-			dom.requireClosest('tr', detailElement).remove();
+			dom.requireClosest(detailElement, 'tr').remove();
 		}
 	}
 }
@@ -57,12 +57,12 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 	const itemRootElement = dom.cloneTemplate('#template-setting-item');
 	localize.applyNestElements(itemRootElement);
 
-	dom.requireSelector<HTMLElement>('.setting-item', itemRootElement).dataset['head'] = JSON.stringify(siteHeadConfiguration);
+	dom.requireSelector<HTMLElement>(itemRootElement, '.setting-item').dataset['head'] = JSON.stringify(siteHeadConfiguration);
 
-	dom.requireSelector('[name="action"]', itemRootElement).addEventListener('click', async ev => {
+	dom.requireSelector(itemRootElement, '[name="action"]').addEventListener('click', async ev => {
 		ev.preventDefault();
 		const element = ev.currentTarget as HTMLButtonElement;
-		const itemElement = dom.requireClosest<HTMLElement>('.setting-item', element);
+		const itemElement = dom.requireClosest<HTMLElement>(element, '.setting-item');
 		const currentSiteHeadConfiguration = JSON.parse(itemElement.dataset['head']!);
 		element.disabled = true;
 		const prev = element.textContent;
@@ -82,10 +82,10 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 			element.textContent = prev;
 		}
 	}, false);
-	dom.requireSelector('[name="id"]', itemRootElement).textContent = siteHeadConfiguration.id;
-	dom.requireSelector('[name="delete"]', itemRootElement).addEventListener('click', async ev => {
+	dom.requireSelector(itemRootElement, '[name="id"]').textContent = siteHeadConfiguration.id;
+	dom.requireSelector(itemRootElement, '[name="delete"]').addEventListener('click', async ev => {
 		const element = ev.currentTarget as HTMLButtonElement;
-		const itemElement = dom.requireClosest('.setting-item', element);
+		const itemElement = dom.requireClosest(element, '.setting-item');
 		itemElement.remove();
 
 		const heads = await storage.loadSiteHeadsAsync();

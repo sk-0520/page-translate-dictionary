@@ -2,6 +2,7 @@
  * @jest-environment jsdom
  */
 import * as dom from '../../scripts/core/dom';
+import * as throws from '../../scripts/core/throws';
 
 describe('dom', () => {
 	test('requireElementById', () => {
@@ -13,7 +14,7 @@ describe('dom', () => {
 		expect(dom.requireElementById('id1').textContent!).toBe('id1:1');
 		expect(dom.requireElementById('id2').textContent!).toBe('id2:1');
 
-		expect(() => dom.requireElementById('id3')).toThrowError(Error);
+		expect(() => dom.requireElementById('id3')).toThrowError(throws.NotFoundDomSelectorError);
 	});
 
 	test('requireSelector', () => {
@@ -27,7 +28,7 @@ describe('dom', () => {
 		expect(dom.requireSelector('[data-name="x"]').textContent!).toBe('X1');
 		expect(dom.requireSelector('[name="x"]').textContent!).toBe('X2');
 
-		expect(() => dom.requireSelector('.x')).toThrowError(Error);
+		expect(() => dom.requireSelector('.x')).toThrowError(throws.NotFoundDomSelectorError);
 	});
 
 	test('requireClosest', () => {
@@ -47,14 +48,14 @@ describe('dom', () => {
 		const c = document.getElementById('c') as HTMLElement;
 		const d = document.getElementById('d') as HTMLElement;
 
-		expect(dom.requireClosest('*', a).id).toBe('a');
-		expect(dom.requireClosest('#a', b).id).toBe('a');
-		expect(dom.requireClosest('#b', c).id).toBe('b');
-		expect(dom.requireClosest('#b', d).id).toBe('b');
-		expect(dom.requireClosest('#a > div', d).id).toBe('b');
-		expect(dom.requireClosest('#a > div > div', d).id).toBe('c');
+		expect(dom.requireClosest(a, '*').id).toBe('a');
+		expect(dom.requireClosest(b, '#a').id).toBe('a');
+		expect(dom.requireClosest(c, '#b').id).toBe('b');
+		expect(dom.requireClosest(d, '#b').id).toBe('b');
+		expect(dom.requireClosest(d, '#a > div').id).toBe('b');
+		expect(dom.requireClosest(d, '#a > div > div').id).toBe('c');
 
-		expect(() => dom.requireClosest('#a span', d)).toThrowError(Error);
+		expect(() => dom.requireClosest(d, '#a span')).toThrowError(throws.NotFoundDomSelectorError);
 	});
 
 	test('getParentForm', () => {
@@ -95,7 +96,7 @@ describe('dom', () => {
 		const b2 = dom.cloneTemplate<HTMLElement>('#a');
 		expect(b2.querySelector('[name]')?.getAttribute('name')).toBe('a');
 
-		expect(() => dom.cloneTemplate('#error')).toThrowError(Error);
+		expect(() => dom.cloneTemplate('#error')).toThrowError(throws.NotFoundDomSelectorError);
 	});
 
 	test('toCustomKey', () => {

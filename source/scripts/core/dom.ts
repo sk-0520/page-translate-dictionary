@@ -10,7 +10,7 @@ import * as throws from './throws';
 export function requireElementById<THtmlElement extends HTMLElement>(elementId: string): THtmlElement {
 	const result = document.getElementById(elementId);
 	if (!result) {
-		throw new Error(elementId);
+		throw new throws.NotFoundDomSelectorError(elementId);
 	}
 
 	return result as THtmlElement;
@@ -19,18 +19,32 @@ export function requireElementById<THtmlElement extends HTMLElement>(elementId: 
 /**
  * セレクタから要素取得を強制。
  *
- * @param selectors
  * @param element
+ * @param selectors
  * @returns
  */
+export function requireSelector<K extends keyof HTMLElementTagNameMap>(element: Element, selectors: K): HTMLElementTagNameMap[K];
+export function requireSelector<K extends keyof HTMLElementTagNameMap>(selectors: K): HTMLElementTagNameMap[K];
+export function requireSelector<K extends keyof SVGElementTagNameMap>(element: Element, selectors: K): SVGElementTagNameMap[K];
+export function requireSelector<K extends keyof SVGElementTagNameMap>(selectors: K): SVGElementTagNameMap[K];
+export function requireSelector<TElement extends Element = Element>(selectors: string): TElement;
+export function requireSelector<TElement extends Element = Element>(element: Element, selectors: string): TElement;
+export function requireSelector(element: Element | string | null, selectors?: string): Element {
+	if (types.isString(element)) {
+		if (selectors) {
+			throw new throws.ArgumentError('selectors');
+		}
+		selectors = element;
+		element = null;
+	} else {
+		if (types.isUndefined(selectors)) {
+			throw new throws.ArgumentError('selectors');
+		}
+	}
 
-export function requireSelector<K extends keyof HTMLElementTagNameMap>(selectors: K, element?: Element): HTMLElementTagNameMap[K];
-export function requireSelector<K extends keyof SVGElementTagNameMap>(selectors: K, element?: Element): SVGElementTagNameMap[K];
-export function requireSelector<TElement extends Element = Element>(selectors: string, element?: Element | null): TElement;
-export function requireSelector(selectors: string, element?: Element | null): Element {
 	const result = (element ?? document).querySelector(selectors);
 	if (!result) {
-		throw new Error(selectors);
+		throw new throws.NotFoundDomSelectorError(selectors);
 	}
 
 	return result;
@@ -43,13 +57,13 @@ export function requireSelector(selectors: string, element?: Element | null): El
  * @param element
  * @returns
  */
-export function requireClosest<K extends keyof HTMLElementTagNameMap>(selectors: K, element: Element): HTMLElementTagNameMap[K];
-export function requireClosest<K extends keyof SVGElementTagNameMap>(selectors: K, element: Element): SVGElementTagNameMap[K];
-export function requireClosest<E extends Element = Element>(selectors: string, element: Element): E;
-export function requireClosest(selectors: string, element: Element): Element {
+export function requireClosest<K extends keyof HTMLElementTagNameMap>(element: Element, selectors: K): HTMLElementTagNameMap[K];
+export function requireClosest<K extends keyof SVGElementTagNameMap>(element: Element, selectors: K): SVGElementTagNameMap[K];
+export function requireClosest<E extends Element = Element>(element: Element, selectors: string): E;
+export function requireClosest(element: Element, selectors: string): Element {
 	const result = element.closest(selectors);
 	if (!result) {
-		throw new Error(selectors);
+		throw new throws.NotFoundDomSelectorError(selectors);
 	}
 
 	return result;
@@ -61,9 +75,9 @@ export function requireClosest(selectors: string, element: Element): Element {
  * @returns
  */
 export function getParentForm(element: Element): HTMLFormElement {
-	const formElement = requireClosest('form', element);
+	const formElement = requireClosest(element, 'form');
 	if (formElement === null) {
-		throw new Error(element.outerHTML);
+		throw new throws.NotFoundDomSelectorError(element.outerHTML);
 	}
 
 	return formElement;
@@ -79,7 +93,7 @@ export function cloneTemplate<TElement extends Element>(input: string | HTMLTemp
 	if (typeof input === 'string') {
 		const element = requireSelector<HTMLTemplateElement>(input);
 		if (element.tagName !== 'TEMPLATE') {
-			throw new Error(input + ': ' + element.tagName);
+			throw new throws.NotFoundDomSelectorError(input + ': ' + element.tagName);
 		}
 		input = element;
 	}
@@ -120,7 +134,7 @@ export function toCustomKey(kebab: string, removeDataAttributeBegin: boolean = t
 export function getDataset(element: HTMLOrSVGElement, dataKey: string, removeDataAttributeBegin: boolean = true): string {
 	const key = toCustomKey(dataKey, removeDataAttributeBegin);
 	const value = element.dataset[key];
-	if (value == undefined) {
+	if (types.isUndefined(value)) {
 		throw new Error(`${element}.${key}`);
 	}
 
@@ -139,7 +153,7 @@ export function getDataset(element: HTMLOrSVGElement, dataKey: string, removeDat
 export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallback: string, removeDataAttributeBegin: boolean = true): string {
 	const key = toCustomKey(dataKey, removeDataAttributeBegin);
 	const value = element.dataset[key];
-	if (value == undefined) {
+	if (types.isUndefined(value)) {
 		return fallback;
 	}
 
