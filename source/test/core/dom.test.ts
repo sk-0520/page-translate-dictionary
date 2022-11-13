@@ -113,4 +113,108 @@ describe('dom', () => {
 		expect(dom.toCustomKey('data-key-data', false)).toBe('dataKeyData');
 	});
 
+	test('attach:Last', () => {
+		document.body.innerHTML = `
+			<div id="root">
+				<div id="A">A</div>
+				<div id="B">B</div>
+				<div id="C">C</div>
+			</div>
+		`;
+		const root = document.getElementById('root')!;
+
+		const div = document.createElement('div');
+		div.textContent = '*';
+
+		dom.attach(root, dom.DomPosition.Last, div);
+		expect(root.children[0].textContent).toBe('A');
+		expect(root.children[1].textContent).toBe('B');
+		expect(root.children[2].textContent).toBe('C');
+		expect(root.children[3].textContent).toBe('*');
+	});
+
+	test('attach:First', () => {
+		document.body.innerHTML = `
+			<div id="root">
+				<div id="A">A</div>
+				<div id="B">B</div>
+				<div id="C">C</div>
+			</div>
+		`;
+		const root = document.getElementById('root')!;
+
+		const div = document.createElement('div');
+		div.textContent = '*';
+
+		dom.attach(root, dom.DomPosition.First, div);
+		expect(root.children[0].textContent).toBe('*');
+		expect(root.children[1].textContent).toBe('A');
+		expect(root.children[2].textContent).toBe('B');
+		expect(root.children[3].textContent).toBe('C');
+	});
+
+	test('attach:Previous', () => {
+		document.body.innerHTML = `
+			<div id="root">
+				<div id="A">A</div>
+				<div id="B">B</div>
+				<div id="C">C</div>
+			</div>
+		`;
+		const root = document.getElementById('root')!;
+		const center = document.getElementById('B')!;
+
+		const div = document.createElement('div');
+		div.textContent = '*';
+
+		dom.attach(center, dom.DomPosition.Previous, div);
+		expect(root.children[0].textContent).toBe('A');
+		expect(root.children[1].textContent).toBe('*');
+		expect(root.children[2].textContent).toBe('B');
+		expect(root.children[3].textContent).toBe('C');
+	});
+
+
+	test('attach:Next', () => {
+		document.body.innerHTML = `
+			<div id="root">
+				<div id="A">A</div>
+				<div id="B">B</div>
+				<div id="C">C</div>
+			</div>
+		`;
+		const root = document.getElementById('root')!;
+		const center = document.getElementById('B')!;
+
+		const div = document.createElement('div');
+		div.textContent = '*';
+
+		dom.attach(center, dom.DomPosition.Next, div);
+		expect(root.children[0].textContent).toBe('A');
+		expect(root.children[1].textContent).toBe('B');
+		expect(root.children[2].textContent).toBe('*');
+		expect(root.children[3].textContent).toBe('C');
+	});
+
+	test('createFactory', () => {
+		document.body.innerHTML = `
+			<div id="root"></div>
+		`;
+		const root = document.getElementById('root')!;
+
+		const p = dom.createFactory('p');
+		p.createText('HEAD');
+		const span = p.createTag('span');
+		span.element.textContent = 'CENTER';
+		p.createText('TAIL');
+
+		const pe = dom.attach(root, dom.DomPosition.Last, p);
+
+		expect(pe).toBe(p.element);
+		expect(pe.childNodes[0].textContent).toBe('HEAD');
+		expect(pe.childNodes[1].textContent).toBe('CENTER');
+		expect(pe.childNodes[1].nodeName).toBe('SPAN');
+		expect(pe.childNodes[2].textContent).toBe('TAIL');
+
+	});
 });

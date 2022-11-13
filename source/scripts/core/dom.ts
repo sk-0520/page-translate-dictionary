@@ -1,3 +1,6 @@
+import * as types from './types';
+import * as throws from './throws';
+
 /**
  * ID から要素取得を強制。
  *
@@ -143,23 +146,6 @@ export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallbac
 	return value;
 }
 
-// /**
-//  * 指定要素を兄弟間で上下させる。
-//  * @param current 対象要素。
-//  * @param isUp 上に移動させるか(偽の場合下に移動)。
-//  */
-// export function moveElement(current: HTMLElement, isUp: boolean): void {
-// 	const refElement = isUp
-// 		? current.previousElementSibling
-// 		: current.nextElementSibling
-// 		;
-
-// 	if (refElement) {
-// 		const newItem = isUp ? current : refElement;
-// 		const oldItem = isUp ? refElement : current;
-// 		current.parentElement!.insertBefore(newItem, oldItem);
-// 	}
-// }
 
 /** @deprecated */
 export function createFactory<K extends keyof HTMLElementDeprecatedTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
@@ -174,8 +160,60 @@ export function wrap<THTMLElement extends HTMLElement>(element: THTMLElement): T
 	return new TagFactory(element);
 }
 
-export function append(parent: Element, tree: NodeFactory): Node {
-	return parent.appendChild(tree.element);
+/**
+ * 要素の追加位置。
+ */
+export const enum DomPosition {
+	/** 最後。 */
+	Last,
+	/** 最初。 */
+	First,
+	/** 直前。 */
+	Previous,
+	/** 直後。 */
+	Next,
+}
+
+/**
+ * 指定した要素から見た特定の位置に要素をくっつける
+ * @param parent 指定要素。
+ * @param position 位置。
+ * @param factory 追加する要素。
+ */
+export function attach(parent: Element, position: DomPosition, factory: NodeFactory): Node;
+export function attach<TElement extends Element = Element>(parent: Element, position: DomPosition, factory: TagFactory<TElement>): TElement;
+export function attach(parent: Element, position: DomPosition, node: Node): Node;
+export function attach(parent: Element, position: DomPosition, node: Node | NodeFactory): Node {
+	if (isNodeFactory(node)) {
+		node = node.element;
+	}
+
+	switch (position) {
+		case DomPosition.Last:
+			return parent.appendChild(node);
+
+		case DomPosition.First:
+			return parent.insertBefore(node, parent.firstChild);
+
+		case DomPosition.Previous:
+			if (!parent.parentNode) {
+				throw new TypeError('parent.parentNode');
+			}
+			return parent.parentNode.insertBefore(node, parent);
+
+		case DomPosition.Next:
+			if (!parent.parentNode) {
+				throw new TypeError('parent.parentNode');
+			}
+			return parent.parentNode.insertBefore(node, parent.nextSibling);
+
+		default:
+			throw new throws.NotImplementedError();
+	}
+}
+
+function isNodeFactory(arg: unknown): arg is NodeFactory {
+	return types.hasObject(arg, 'element');
 }
 
 export interface NodeFactory {
