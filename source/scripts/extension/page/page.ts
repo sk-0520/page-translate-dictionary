@@ -4,6 +4,7 @@ import * as uri from '../uri';
 import * as translator from './translator';
 import * as throws from '../../core/throws';
 import * as string from '../../core/string';
+import * as types from '../../core/types';
 import * as loader from '../loader';
 import * as messages from '../messages';
 import * as names from '../names';
@@ -267,21 +268,7 @@ function getPageInformation(): messages.PageInformation {
 	const result: messages.PageInformation = {
 		translatedElementCount: translatedElementList.length,
 		translatedTotalCount: translatedTotalCount,
-		settings: pageCache.sites.map(i => {
-			const head: config.SiteHeadConfiguration = {
-				updateUrl: i.updateUrl,
-				updatedTimestamp: i.updatedTimestamp,
-				lastCheckedTimestamp: i.lastCheckedTimestamp,
-				version: i.version,
-				hosts: i.hosts,
-				information: i.information,
-				priority: i.priority,
-				language: i.language,
-				id: i.id,
-				name: i.name,
-			};
-			return head;
-		}),
+		settings: pageCache.sites.map(i => types.flatClone(i)),
 	};
 
 	return result;

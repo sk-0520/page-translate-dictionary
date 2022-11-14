@@ -321,7 +321,7 @@ export function getProperties<T>(obj: T): Set<keyof T> {
 
 	let current = obj;
 
-	while (current) {
+	while (true) {
 		const prototype = Object.getPrototypeOf(current);
 		if (prototype === null) {
 			break;
@@ -330,7 +330,7 @@ export function getProperties<T>(obj: T): Set<keyof T> {
 		const currentPropertyNames = Object.getOwnPropertyNames(prototype) as Array<keyof T>;
 		const targets = currentPropertyNames.filter(i => {
 			const descriptor = Object.getOwnPropertyDescriptor(prototype, i);;
-			return i !== '__proto__' && descriptor?.get instanceof Function && descriptor;
+			return i !== '__proto__' && descriptor?.get instanceof Function;
 		});
 
 		for (const target of targets) {
