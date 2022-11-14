@@ -1,5 +1,6 @@
 import webextension from "webextension-polyfill";
 import * as string from "../core/string";
+import * as dom from "../core/dom";
 
 const base = 'data-ext';
 const LocalizeAttribute = {
@@ -46,11 +47,11 @@ export function applyElement(element: Element): void {
  *
  * 拡張機能内の動的生成要素に対して使用する想定。
  */
-export function applyNestElements(element: Element | DocumentFragment): void {
-	if(element instanceof Element) {
-		applyElement(element);
+export function applyNestElements(parentElement: Element | DocumentFragment): void {
+	if(parentElement instanceof Element) {
+		applyElement(parentElement);
 	}
-	const elementList = element.querySelectorAll('*')
+	const elementList = dom.requireSelectorAll(parentElement, '*')
 	for (const element of elementList) {
 		applyElement(element);
 	}
@@ -60,7 +61,7 @@ export function applyNestElements(element: Element | DocumentFragment): void {
  * 拡張機能のビューに対してローカライズを実施。
  */
 export function applyView(): void {
-	const elementList = document.querySelectorAll('*');
+	const elementList = dom.requireSelectorAll('*');
 	for (const element of elementList) {
 		applyElement(element);
 	}

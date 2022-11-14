@@ -5,7 +5,10 @@ import * as throws from './throws';
  * ID から要素取得を強制。
  *
  * @param elementId
+ * @param elementType
  * @returns
+ * @throws {throws.NotFoundDomSelectorError} セレクタから要素が見つからない
+ * @throws {throws.ElementTypeError} 要素に指定された型が合わない
  */
 export function requireElementById<THtmlElement extends HTMLElement>(elementId: string, elementType?: types.Constructor<THtmlElement>): THtmlElement {
 	const result = document.getElementById(elementId);
@@ -66,6 +69,47 @@ export function requireSelector<TElement extends Element = Element>(element: Par
 	}
 
 	return result as TElement;
+}
+
+export function requireSelectorAll<K extends keyof HTMLElementTagNameMap>(element: ParentNode, selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
+export function requireSelectorAll<K extends keyof HTMLElementTagNameMap>(selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
+export function requireSelectorAll<K extends keyof SVGElementTagNameMap>(element: ParentNode, selectors: K): NodeListOf<SVGElementTagNameMap[K]>;
+export function requireSelectorAll<K extends keyof SVGElementTagNameMap>(selectors: K): NodeListOf<SVGElementTagNameMap[K]>;
+export function requireSelectorAll<TElement extends Element = Element>(selectors: string, elementType?: types.Constructor<TElement>): NodeListOf<TElement>;
+export function requireSelectorAll<TElement extends Element = Element>(element: ParentNode, selectors: string, elementType?: types.Constructor<TElement>): NodeListOf<TElement>;
+export function requireSelectorAll<TElement extends Element = Element>(element: ParentNode | string | null, selectors?: string | types.Constructor<TElement>, elementType?: types.Constructor<TElement>): NodeListOf<TElement> {
+	if (types.isString(element)) {
+		if (selectors) {
+			if (types.isString(selectors)) {
+				throw new throws.ArgumentError('selectors');
+			} else {
+				elementType = selectors;
+			}
+		}
+		selectors = element;
+		element = null;
+	} else {
+		if (types.isUndefined(selectors)) {
+			throw new throws.ArgumentError('selectors');
+		} else if (!types.isString(selectors)) {
+			throw new throws.ArgumentError('selectors');
+		}
+	}
+
+	const result = (element ?? document).querySelectorAll<TElement>(selectors);
+	if (!result) {
+		throw new throws.NotFoundDomSelectorError(selectors);
+	}
+
+	if (elementType) {
+		for (const elm of result) {
+			if (!types.instanceOf(elm, elementType)) {
+				throw new throws.ElementTypeError(`elm ${elm} != ${elementType.prototype.constructor.name}`);
+			}
+		}
+	}
+
+	return result;
 }
 
 /**

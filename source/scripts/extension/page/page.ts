@@ -4,6 +4,7 @@ import * as uri from '../uri';
 import * as translator from './translator';
 import * as throws from '../../core/throws';
 import * as string from '../../core/string';
+import * as dom from '../../core/dom';
 import * as types from '../../core/types';
 import * as loader from '../loader';
 import * as messages from '../messages';
@@ -257,7 +258,7 @@ function getPageInformation(): messages.PageInformation {
 		};
 	}
 
-	const translatedElementList = document.querySelectorAll(`[${names.Attributes.translated}]`);
+	const translatedElementList = dom.requireSelectorAll(`[${names.Attributes.translated}]`);
 
 	const translatedTotalCount = [...translatedElementList]
 		.map(i => getExtensionAttributes(i))
