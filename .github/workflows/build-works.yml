@@ -79,23 +79,30 @@ jobs:
       - name: 💩
         run: echo ${{ steps.version.outputs.version }}
 
-      # - name: <Create> Release
-      #   uses: actions/github-script@v6
-      #   with:
-      #     script: |
-      #       const releaseId = await github.rest.git.createRef({
-      #         owner: context.repo.owner,
-      #         repo: context.repo.repo,
-      #         ref: "refs/tags/${{ steps.version.outputs.version }}",
-      #         sha: context.sha
-      #       })
+      - name: <Create> Release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const releaseId = await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ steps.version.outputs.version }}",
+              sha: context.sha
+            })
 
-      # - name: <Upload> Applications
-      #   uses: svenstaro/upload-release-action@v2
-      #   with:
-      #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: */web-ext-artifacts/*.zip
-      #     file_glob: true
-      #     tag: ${{ steps.version.outputs.version }}
+      - name: <Upload> Applications [Firefox]
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist-firefox/web-ext-artifacts/*.zip
+          file_glob: true
+          tag: ${{ steps.version.outputs.version }}
 
+      - name: <Upload> Applications [Chrome]
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist-chrome/web-ext-artifacts/*.zip
+          file_glob: true
+          tag: ${{ steps.version.outputs.version }}
 
