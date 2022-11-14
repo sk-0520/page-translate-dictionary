@@ -15,6 +15,12 @@ const _inputObject = {
 };
 const inputObject: unknown = _inputObject;
 
+class TestSuper { }
+class TestSub1 extends TestSuper { }
+class TestSub1Sub extends TestSub1 { }
+class TestSub1SubSub extends TestSub1Sub { }
+class TestSub2 extends TestSuper { }
+
 describe('types', () => {
 	test.each([
 		[true, undefined],
@@ -466,6 +472,31 @@ describe('types', () => {
 	])('filterBooleanArray', <T>(expected: Array<T>, array: unknown) => {
 		expect(types.filterBooleanArray(array)).toEqual(expected);
 	});
+
+	test.each([
+		[true, new TestSuper(), TestSuper],
+		[true, new TestSub1(), TestSub1],
+		[true, new TestSub1Sub(), TestSub1Sub],
+		[true, new TestSub1SubSub(), TestSub1SubSub],
+		[true, new TestSub2(), TestSub2],
+
+		[true, new TestSub1(), TestSuper],
+		[true, new TestSub1Sub(), TestSub1],
+		[true, new TestSub1Sub(), TestSuper],
+		[true, new TestSub1SubSub(), TestSub1Sub],
+		[true, new TestSub1SubSub(), TestSub1],
+		[true, new TestSub1SubSub(), TestSuper],
+		[true, new TestSub2(), TestSuper],
+
+		[false, new TestSub1SubSub(), TestSub2],
+
+		[false, undefined, TestSuper],
+		[false, null, TestSuper],
+		[false, {}, TestSuper],
+		[false, 0, TestSuper],
+	])('instanceOf', <T1, T2 extends object>(expected: boolean, obj: T1, type: types.Constructor<T2>) => {
+		expect(types.instanceOf(obj, type)).toEqual(expected);
+	})
 
 	test('toBoolean', () => {
 		expect(types.toBoolean(null)).toBeFalsy();

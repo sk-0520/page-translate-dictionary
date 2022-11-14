@@ -7,14 +7,14 @@ import * as throws from './throws';
  * @param elementId
  * @returns
  */
-export function requireElementById<THtmlElement extends HTMLElement>(elementId: string, elementType?: types.Prototype<THtmlElement>): THtmlElement {
+export function requireElementById<THtmlElement extends HTMLElement>(elementId: string, elementType?: types.Constructor<THtmlElement>): THtmlElement {
 	const result = document.getElementById(elementId);
 	if (!result) {
 		throw new throws.NotFoundDomSelectorError(elementId);
 	}
 
 	if (elementType) {
-		if (!types.isPrototype(result, elementType)) {
+		if (!types.instanceOf(result, elementType)) {
 			throw new throws.ElementTypeError(`${result.constructor.name} != ${elementType.prototype.constructor.name}`);
 		}
 	}
@@ -33,9 +33,9 @@ export function requireSelector<K extends keyof HTMLElementTagNameMap>(element: 
 export function requireSelector<K extends keyof HTMLElementTagNameMap>(selectors: K): HTMLElementTagNameMap[K];
 export function requireSelector<K extends keyof SVGElementTagNameMap>(element: Element, selectors: K): SVGElementTagNameMap[K];
 export function requireSelector<K extends keyof SVGElementTagNameMap>(selectors: K): SVGElementTagNameMap[K];
-export function requireSelector<TElement extends Element = Element>(selectors: string, elementType?: types.Prototype<TElement>): TElement;
-export function requireSelector<TElement extends Element = Element>(element: Element, selectors: string, elementType?: types.Prototype<TElement>): TElement;
-export function requireSelector<TElement extends Element = Element>(element: Element | string | null, selectors?: string | types.Prototype<TElement>, elementType?: types.Prototype<TElement>): TElement {
+export function requireSelector<TElement extends Element = Element>(selectors: string, elementType?: types.Constructor<TElement>): TElement;
+export function requireSelector<TElement extends Element = Element>(element: Element, selectors: string, elementType?: types.Constructor<TElement>): TElement;
+export function requireSelector<TElement extends Element = Element>(element: Element | string | null, selectors?: string | types.Constructor<TElement>, elementType?: types.Constructor<TElement>): TElement {
 	if (types.isString(element)) {
 		if (selectors) {
 			if (types.isString(selectors)) {
@@ -60,7 +60,7 @@ export function requireSelector<TElement extends Element = Element>(element: Ele
 	}
 
 	if (elementType) {
-		if (!types.isPrototype(result, elementType)) {
+		if (!types.instanceOf(result, elementType)) {
 			throw new throws.ElementTypeError(`${result.constructor.name} != ${elementType.prototype.constructor.name}`);
 		}
 	}
@@ -77,15 +77,15 @@ export function requireSelector<TElement extends Element = Element>(element: Ele
  */
 export function requireClosest<K extends keyof HTMLElementTagNameMap>(element: Element, selectors: K): HTMLElementTagNameMap[K];
 export function requireClosest<K extends keyof SVGElementTagNameMap>(element: Element, selectors: K): SVGElementTagNameMap[K];
-export function requireClosest<E extends Element = Element>(element: Element, selectors: string, elementType?: types.Prototype<E>): E;
-export function requireClosest<TElement extends Element = Element>(element: Element, selectors: string, elementType?: types.Prototype<TElement>): Element {
+export function requireClosest<E extends Element = Element>(element: Element, selectors: string, elementType?: types.Constructor<E>): E;
+export function requireClosest<TElement extends Element = Element>(element: Element, selectors: string, elementType?: types.Constructor<TElement>): Element {
 	const result = element.closest(selectors);
 	if (!result) {
 		throw new throws.NotFoundDomSelectorError(selectors);
 	}
 
 	if (elementType) {
-		if (!types.isPrototype(result, elementType)) {
+		if (!types.instanceOf(result, elementType)) {
 			throw new throws.ElementTypeError(`${result.constructor.name} != ${elementType.prototype.constructor.name}`);
 		}
 	}
@@ -111,9 +111,9 @@ export function getParentForm(element: Element): HTMLFormElement {
  * テンプレートを実体化。
  * @param selectors
  */
-export function cloneTemplate<TElement extends Element>(selectors: string, elementType?: types.Prototype<TElement>): TElement;
-export function cloneTemplate<TElement extends Element>(element: HTMLTemplateElement, elementType?: types.Prototype<TElement>): TElement;
-export function cloneTemplate<TElement extends Element>(input: string | HTMLTemplateElement, elementType?: types.Prototype<TElement>): TElement {
+export function cloneTemplate<TElement extends Element>(selectors: string, elementType?: types.Constructor<TElement>): TElement;
+export function cloneTemplate<TElement extends Element>(element: HTMLTemplateElement, elementType?: types.Constructor<TElement>): TElement;
+export function cloneTemplate<TElement extends Element>(input: string | HTMLTemplateElement, elementType?: types.Constructor<TElement>): TElement {
 	if (typeof input === 'string') {
 		const element = requireSelector<HTMLTemplateElement>(input);
 		if (element.tagName !== 'TEMPLATE') {
@@ -125,7 +125,7 @@ export function cloneTemplate<TElement extends Element>(input: string | HTMLTemp
 	const result = input.content.cloneNode(true);
 
 	if (elementType) {
-		if (!types.isPrototype(result, elementType)) {
+		if (!types.instanceOf(result, elementType)) {
 			throw new throws.ElementTypeError(`${result.constructor.name} != ${elementType.prototype.constructor.name}`);
 		}
 	}

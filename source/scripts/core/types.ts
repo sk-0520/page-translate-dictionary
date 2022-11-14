@@ -1,6 +1,6 @@
 export type PropertyKey = string | symbol;
 
-export type Prototype<T extends Object = Object> = {
+export type Constructor<T extends object> = {
 	prototype: T,
 };
 
@@ -105,12 +105,12 @@ export function isFunction<T extends Function>(arg: unknown): arg is T {
 
 /**
  * 指定したプロパティを持つか。
- * @param obj 対象オブジェクト。
+ * @param arg 対象オブジェクト。
  * @param key プロパティ名。
  * @returns
  */
-export function hasProperty(obj: unknown, key: PropertyKey): obj is Record<PropertyKey, unknown> {
-	return obj !== undefined && obj !== null && key in obj;
+export function hasProperty(arg: unknown, key: PropertyKey): arg is Record<PropertyKey, unknown> {
+	return arg !== undefined && arg !== null && typeof arg === 'object' && key in arg;
 }
 
 /**
@@ -300,10 +300,24 @@ export function toBoolean(s: string | null | undefined): boolean {
 	return s.toLowerCase() === 'true';
 }
 
-export function isPrototype<T extends Object>(arg: unknown, type: Prototype<T>): arg is T {
-	return hasProperty(arg, 'constructor')
-		&& arg.constructor.name === type.prototype.constructor.name
-		;
+/**
+ * 指定したオブジェクトが指定したクラス(コンストラクタ)を継承しているか
+ * @param arg
+ * @param type
+ * @returns
+ */
+export function instanceOf<T extends object>(arg: unknown, type: Constructor<T>): arg is T {
+	if (!hasProperty(arg, 'constructor')) {
+		return false;
+	}
+
+	if (arg.constructor.prototype === type.prototype) {
+		return true;
+	}
+
+	const chain = Object.getPrototypeOf(arg.constructor.prototype);
+
+	return instanceOf(chain, type);
 }
 
 export function toString(input: any): string {
