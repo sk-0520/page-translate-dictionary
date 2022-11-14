@@ -1,14 +1,5 @@
 import * as config from './config';
 
-/**
- * 要素は `HTMLInputElement` か。
- * @param element
- * @returns
- */
-export function isInputElement(element: Element): element is HTMLInputElement {
-	return element.tagName === 'INPUT';
-}
-
 export function isTranslateConfiguration(obj: any): obj is config.TranslateConfiguration {
 	return obj
 		&& 'markReplacedElement' in obj && typeof obj.markReplacedElement === 'boolean'
