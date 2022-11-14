@@ -22,7 +22,7 @@ function filterWhiteSpace(input: string, whiteSpace: config.WhiteSpace): string 
 
 	switch (whiteSpace) {
 		case config.WhiteSpace.Join: {
-			return input.replace(/[ \t]+/g, ' ');
+			return input.replace(/[ \t　]+/g, ' ');
 		}
 
 		case config.WhiteSpace.Raw: {
