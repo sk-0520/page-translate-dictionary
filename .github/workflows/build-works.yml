@@ -54,6 +54,9 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v3
+
       - name: <Download> Application
         uses: actions/download-artifact@v3
         with:
@@ -69,9 +72,12 @@ jobs:
       - name: <Show> 🌳🌲🌳🌲
         run: find
 
-      - name: Get current date
-        id: date
-        run: echo "date=$(date -u +'%Y-%m-%d_%H%M%SZ')" >> $GITHUB_OUTPUT
+      - name: Get Version
+        id: version
+        run: echo "version=$(cat package.json | jq '.version')" >> $GITHUB_OUTPUT
+
+      - name: 💩
+        run: echo ${{ steps.version.outputs.version }}
 
       # - name: <Create> Release
       #   uses: actions/github-script@v6
@@ -80,7 +86,7 @@ jobs:
       #       const releaseId = await github.rest.git.createRef({
       #         owner: context.repo.owner,
       #         repo: context.repo.repo,
-      #         ref: "refs/tags/${{ steps.date.outputs.date }}",
+      #         ref: "refs/tags/${{ steps.version.outputs.version }}",
       #         sha: context.sha
       #       })
 
@@ -88,8 +94,8 @@ jobs:
       #   uses: svenstaro/upload-release-action@v2
       #   with:
       #     repo_token: ${{ secrets.GITHUB_TOKEN }}
-      #     file: dist/*.json
+      #     file: */web-ext-artifacts/*.zip
       #     file_glob: true
-      #     tag: ${{ steps.date.outputs.date }}
+      #     tag: ${{ steps.version.outputs.version }}
 
 
