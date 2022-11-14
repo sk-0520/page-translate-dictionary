@@ -10,17 +10,17 @@ import * as extensions from '../extensions';
 import '../../../styles/extension/application-options.scss';
 
 function setApplication(applicationConfiguration: config.ApplicationConfiguration) {
-	dom.requireElementById<HTMLInputElement>('translate_markReplacedElement').checked = applicationConfiguration.translate.markReplacedElement;
+	dom.requireElementById('translate_markReplacedElement', HTMLInputElement).checked = applicationConfiguration.translate.markReplacedElement;
 
-	dom.requireElementById<HTMLInputElement>('setting_autoUpdate').checked = applicationConfiguration.setting.autoUpdate;
-	dom.requireElementById<HTMLInputElement>('setting_updatedBeforeTranslation').checked = applicationConfiguration.setting.updatedBeforeTranslation;
-	dom.requireElementById<HTMLInputElement>('setting_periodDays').value = applicationConfiguration.setting.periodDays.toString();
+	dom.requireElementById('setting_autoUpdate', HTMLInputElement).checked = applicationConfiguration.setting.autoUpdate;
+	dom.requireElementById('setting_updatedBeforeTranslation', HTMLInputElement).checked = applicationConfiguration.setting.updatedBeforeTranslation;
+	dom.requireElementById('setting_periodDays', HTMLInputElement).value = applicationConfiguration.setting.periodDays.toString();
 }
 
 function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfiguration, itemRootElement: Element | DocumentFragment) {
 	dom.requireSelector(itemRootElement, '[name="name"]').textContent = siteHeadConfiguration.name;
 	dom.requireSelector(itemRootElement, '[name="version"]').textContent = siteHeadConfiguration.version;
-	const updatedTimestampElement = dom.requireSelector<HTMLTimeElement>(itemRootElement, '[name="updated-timestamp"]');
+	const updatedTimestampElement = dom.requireSelector(itemRootElement, '[name="updated-timestamp"]', HTMLTimeElement);
 	updatedTimestampElement.textContent = siteHeadConfiguration.updatedTimestamp;
 	updatedTimestampElement.dateTime = siteHeadConfiguration.updatedTimestamp;
 	const hostsElement = dom.requireSelector(itemRootElement, '[name="hosts"]');
@@ -57,12 +57,12 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 	const itemRootElement = dom.cloneTemplate('#template-setting-item');
 	localize.applyNestElements(itemRootElement);
 
-	dom.requireSelector<HTMLElement>(itemRootElement, '.setting-item').dataset['head'] = JSON.stringify(siteHeadConfiguration);
+	dom.requireSelector(itemRootElement, '.setting-item', HTMLElement).dataset['head'] = JSON.stringify(siteHeadConfiguration);
 
 	dom.requireSelector(itemRootElement, '[name="action"]').addEventListener('click', async ev => {
 		ev.preventDefault();
 		const element = ev.currentTarget as HTMLButtonElement;
-		const itemElement = dom.requireClosest<HTMLElement>(element, '.setting-item');
+		const itemElement = dom.requireClosest(element, '.setting-item', HTMLElement);
 		const currentSiteHeadConfiguration = JSON.parse(itemElement.dataset['head']!);
 		element.disabled = true;
 		const prev = element.textContent;
@@ -98,7 +98,7 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 	});
 	updateItemInformation(siteHeadConfiguration, itemRootElement);
 
-	const settingsElement = dom.requireElementById<HTMLOListElement>('settings');
+	const settingsElement = dom.requireElementById('settings');
 	settingsElement.appendChild(itemRootElement);
 
 }
@@ -170,12 +170,12 @@ function setSettings(siteHeadConfigurations: ReadonlyArray<config.SiteHeadConfig
 async function saveGenericAsync(): Promise<void> {
 	const applicationConfiguration = await storage.loadApplicationAsync();
 
-	applicationConfiguration.translate.markReplacedElement = dom.requireElementById<HTMLInputElement>('translate_markReplacedElement').checked;
+	applicationConfiguration.translate.markReplacedElement = dom.requireElementById('translate_markReplacedElement', HTMLInputElement).checked;
 
-	applicationConfiguration.setting.autoUpdate = dom.requireElementById<HTMLInputElement>('setting_autoUpdate').checked;
-	applicationConfiguration.setting.updatedBeforeTranslation = dom.requireElementById<HTMLInputElement>('setting_updatedBeforeTranslation').checked;
+	applicationConfiguration.setting.autoUpdate = dom.requireElementById('setting_autoUpdate', HTMLInputElement).checked;
+	applicationConfiguration.setting.updatedBeforeTranslation = dom.requireElementById('setting_updatedBeforeTranslation', HTMLInputElement).checked;
 
-	const rawPeriodDays = dom.requireElementById<HTMLInputElement>('setting_periodDays').value;
+	const rawPeriodDays = dom.requireElementById('setting_periodDays', HTMLInputElement).value;
 	const periodDays = parseInt(rawPeriodDays);
 	if (!isNaN(periodDays)) {
 		applicationConfiguration.setting.periodDays = periodDays;

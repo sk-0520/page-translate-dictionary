@@ -8,7 +8,7 @@ export default class ImportLogger {
 	//#endregion
 
 	constructor() {
-		this._logElement = dom.requireElementById<HTMLOListElement>('import-log');
+		this._logElement = dom.requireElementById('import-log', HTMLOListElement);
 	}
 
 	//#region function
