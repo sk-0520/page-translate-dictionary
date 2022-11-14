@@ -307,17 +307,7 @@ export function toBoolean(s: string | null | undefined): boolean {
  * @returns
  */
 export function instanceOf<T extends object>(arg: unknown, type: Constructor<T>): arg is T {
-	if (!hasProperty(arg, 'constructor')) {
-		return false;
-	}
-
-	if (arg.constructor.prototype === type.prototype) {
-		return true;
-	}
-
-	const chain = Object.getPrototypeOf(arg.constructor.prototype);
-
-	return instanceOf(chain, type);
+	return arg instanceof type.prototype.constructor;
 }
 
 export function toString(input: any): string {
