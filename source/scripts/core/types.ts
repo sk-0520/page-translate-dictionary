@@ -347,11 +347,13 @@ export function getProperties<T>(obj: T): Set<keyof T> {
 	return result;
 }
 
-// export function flatClone<TResult extends { [K in keyof TResult]: TResult[K] }, TSource extends TResult = TResult>(source: TSource): TResult {
-// 	Object.entries(source) as TResult;
+export function flatClone<TResult extends { [K in keyof TResult]: TResult[K] }, TSource extends TResult = TResult>(source: TSource): TResult {
+	const properties = getProperties(source);
 
-// 	throw new Error();
-// }
+	const result = Object.fromEntries([...properties].map(i => [i, source[i]]));
+
+	return result as any as TResult;
+}
 
 export function toBoolean(s: string | null | undefined): boolean {
 	if (!s) {

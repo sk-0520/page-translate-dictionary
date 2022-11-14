@@ -561,13 +561,12 @@ describe('types', () => {
 		expect(actual1.has('a')).toBeTruthy();
 		expect(actual1.has('b')).toBeTruthy();
 		expect(actual1.has('c')).toBeTruthy();
-	})
+	});
 
-	/*
 	test('flatClone', () => {
 		const input = new TestDeep(10, { b: 'str', node: { c: true } });
 		const result = types.flatClone<TestFlat>(input);
-		const output1 = JSON.parse(JSON.stringify(input)) as TestFlat;
+		const output1 = JSON.parse(JSON.stringify(input)) as TestDeep;
 		const output2 = JSON.parse(JSON.stringify(result)) as TestFlat;
 
 		expect(input.a).toBe(result.a);
@@ -575,14 +574,13 @@ describe('types', () => {
 		expect(input.c).toBe(result.c);
 
 		expect(input.a).toBe(output1.a);
-		expect(input.b).toBe(output1.b);
-		expect(input.c).toBe(output1.c);
+		expect('b' in output1).toBeFalsy();
+		expect('c' in output1).toBeFalsy();
 
 		expect(input.a).toBe(output2.a);
 		expect(input.b).toBe(output2.b);
 		expect(input.c).toBe(output2.c);
-	})
-	*/
+	});
 
 	test('toBoolean', () => {
 		expect(types.toBoolean(null)).toBeFalsy();
