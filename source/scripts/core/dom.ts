@@ -143,12 +143,7 @@ export function requireClosest<TElement extends Element = Element>(element: Elem
  * @returns
  */
 export function getParentForm(element: Element): HTMLFormElement {
-	const formElement = requireClosest(element, 'form');
-	if (formElement === null) {
-		throw new throws.NotFoundDomSelectorError(element.outerHTML);
-	}
-
-	return formElement;
+	return requireClosest(element, 'form');
 }
 
 /**
