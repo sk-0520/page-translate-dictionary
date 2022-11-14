@@ -495,7 +495,32 @@ describe('types', () => {
 		[false, {}, TestSuper],
 		[false, 0, TestSuper],
 	])('instanceOf', <T1, T2 extends object>(expected: boolean, obj: T1, type: types.Constructor<T2>) => {
-		expect(types.instanceOf(obj, type)).toEqual(expected);
+		expect(types.instanceOf(obj, type)).toBe(expected);
+	});
+
+	test.each([
+		[true, new TestSuper(), TestSuper],
+		[true, new TestSub1(), TestSub1],
+		[true, new TestSub1Sub(), TestSub1Sub],
+		[true, new TestSub1SubSub(), TestSub1SubSub],
+		[true, new TestSub2(), TestSub2],
+
+		[false, new TestSub1(), TestSuper],
+		[false, new TestSub1Sub(), TestSub1],
+		[false, new TestSub1Sub(), TestSuper],
+		[false, new TestSub1SubSub(), TestSub1Sub],
+		[false, new TestSub1SubSub(), TestSub1],
+		[false, new TestSub1SubSub(), TestSuper],
+		[false, new TestSub2(), TestSuper],
+
+		[false, new TestSub1SubSub(), TestSub2],
+
+		[false, undefined, TestSuper],
+		[false, null, TestSuper],
+		[false, {}, TestSuper],
+		[false, 0, TestSuper],
+	])('isEqual', <T1, T2 extends object>(expected: boolean, obj: T1, type: types.Constructor<T2>) => {
+		expect(types.isEqual(obj, type)).toBe(expected);
 	})
 
 	test('toBoolean', () => {

@@ -26,7 +26,7 @@ function applyEnablePopupAsync(tab: webextension.Tabs.Tab, pageInformation: mess
 	const totalCountElement = dom.requireElementById('total_count');
 	totalCountElement.textContent = pageInformation.translatedTotalCount.toString();
 
-	const templateElement = dom.requireElementById<HTMLTemplateElement>('template-setting-item');
+	const templateElement = dom.requireElementById('template-setting-item', HTMLTemplateElement);
 	const settingElement = dom.requireElementById('settings');
 	settingElement.innerHTML = '';
 	for (const setting of pageInformation.settings) {

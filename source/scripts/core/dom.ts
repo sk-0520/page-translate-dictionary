@@ -29,13 +29,13 @@ export function requireElementById<THtmlElement extends HTMLElement>(elementId: 
  * @param selectors
  * @returns
  */
-export function requireSelector<K extends keyof HTMLElementTagNameMap>(element: Element, selectors: K): HTMLElementTagNameMap[K];
+export function requireSelector<K extends keyof HTMLElementTagNameMap>(element: ParentNode, selectors: K): HTMLElementTagNameMap[K];
 export function requireSelector<K extends keyof HTMLElementTagNameMap>(selectors: K): HTMLElementTagNameMap[K];
-export function requireSelector<K extends keyof SVGElementTagNameMap>(element: Element, selectors: K): SVGElementTagNameMap[K];
+export function requireSelector<K extends keyof SVGElementTagNameMap>(element: ParentNode, selectors: K): SVGElementTagNameMap[K];
 export function requireSelector<K extends keyof SVGElementTagNameMap>(selectors: K): SVGElementTagNameMap[K];
 export function requireSelector<TElement extends Element = Element>(selectors: string, elementType?: types.Constructor<TElement>): TElement;
-export function requireSelector<TElement extends Element = Element>(element: Element, selectors: string, elementType?: types.Constructor<TElement>): TElement;
-export function requireSelector<TElement extends Element = Element>(element: Element | string | null, selectors?: string | types.Constructor<TElement>, elementType?: types.Constructor<TElement>): TElement {
+export function requireSelector<TElement extends Element = Element>(element: ParentNode, selectors: string, elementType?: types.Constructor<TElement>): TElement;
+export function requireSelector<TElement extends Element = Element>(element: ParentNode | string | null, selectors?: string | types.Constructor<TElement>, elementType?: types.Constructor<TElement>): TElement {
 	if (types.isString(element)) {
 		if (selectors) {
 			if (types.isString(selectors)) {
@@ -111,26 +111,17 @@ export function getParentForm(element: Element): HTMLFormElement {
  * テンプレートを実体化。
  * @param selectors
  */
-export function cloneTemplate<TElement extends Element>(selectors: string, elementType?: types.Constructor<TElement>): TElement;
-export function cloneTemplate<TElement extends Element>(element: HTMLTemplateElement, elementType?: types.Constructor<TElement>): TElement;
-export function cloneTemplate<TElement extends Element>(input: string | HTMLTemplateElement, elementType?: types.Constructor<TElement>): TElement {
+export function cloneTemplate(selectors: string): DocumentFragment;
+export function cloneTemplate(element: HTMLTemplateElement): DocumentFragment;
+export function cloneTemplate(input: string | HTMLTemplateElement): DocumentFragment {
 	if (typeof input === 'string') {
-		const element = requireSelector<HTMLTemplateElement>(input);
-		if (element.tagName !== 'TEMPLATE') {
-			throw new throws.NotFoundDomSelectorError(input + ': ' + element.tagName);
-		}
+		const element = requireSelector(input, HTMLTemplateElement);
 		input = element;
 	}
 
 	const result = input.content.cloneNode(true);
 
-	if (elementType) {
-		if (!types.instanceOf(result, elementType)) {
-			throw new throws.ElementTypeError(`${result.constructor.name} != ${elementType.prototype.constructor.name}`);
-		}
-	}
-
-	return result as TElement;
+	return result as DocumentFragment;
 }
 
 /**

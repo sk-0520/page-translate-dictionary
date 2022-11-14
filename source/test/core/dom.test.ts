@@ -92,13 +92,13 @@ describe('dom', () => {
 		`;
 
 		const a1 = document.getElementById('a') as HTMLTemplateElement;
-		const a2 = dom.cloneTemplate<HTMLElement>(a1);
+		const a2 = dom.cloneTemplate(a1);
 		expect(a2.querySelector('[name]')?.getAttribute('name')).toBe('a');
 
-		const b2 = dom.cloneTemplate<HTMLElement>('#a');
+		const b2 = dom.cloneTemplate('#a');
 		expect(b2.querySelector('[name]')?.getAttribute('name')).toBe('a');
 
-		expect(() => dom.cloneTemplate('#error')).toThrowError(throws.NotFoundDomSelectorError);
+		expect(() => dom.cloneTemplate('#error')).toThrowError(throws.ElementTypeError);
 	});
 
 	test('toCustomKey', () => {

@@ -46,8 +46,10 @@ export function applyElement(element: Element): void {
  *
  * 拡張機能内の動的生成要素に対して使用する想定。
  */
-export function applyNestElements(element: Element): void {
-	applyElement(element);
+export function applyNestElements(element: Element | DocumentFragment): void {
+	if(element instanceof Element) {
+		applyElement(element);
+	}
 	const elementList = element.querySelectorAll('*')
 	for (const element of elementList) {
 		applyElement(element);

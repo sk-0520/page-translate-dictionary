@@ -17,7 +17,7 @@ function setApplication(applicationConfiguration: config.ApplicationConfiguratio
 	dom.requireElementById<HTMLInputElement>('setting_periodDays').value = applicationConfiguration.setting.periodDays.toString();
 }
 
-function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfiguration, itemRootElement: Element) {
+function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfiguration, itemRootElement: Element | DocumentFragment) {
 	dom.requireSelector(itemRootElement, '[name="name"]').textContent = siteHeadConfiguration.name;
 	dom.requireSelector(itemRootElement, '[name="version"]').textContent = siteHeadConfiguration.version;
 	const updatedTimestampElement = dom.requireSelector<HTMLTimeElement>(itemRootElement, '[name="updated-timestamp"]');

@@ -301,13 +301,27 @@ export function toBoolean(s: string | null | undefined): boolean {
 }
 
 /**
- * 指定したオブジェクトが指定したクラス(コンストラクタ)を継承しているか
+ * 指定したオブジェクトが指定したクラス(コンストラクタ)の継承関係しているか
  * @param arg
  * @param type
  * @returns
  */
 export function instanceOf<T extends object>(arg: unknown, type: Constructor<T>): arg is T {
 	return arg instanceof type.prototype.constructor;
+}
+
+/**
+ * 指定したオブジェクトが指定したクラス(コンストラクタ)と同じか
+ * @param arg
+ * @param type
+ * @returns
+ */
+export function isEqual<T extends object>(arg: unknown, type: Constructor<T>): arg is T {
+	if (!hasProperty(arg, 'constructor')) {
+		return false;
+	}
+
+	return arg.constructor.prototype === type.prototype;
 }
 
 export function toString(input: any): string {
