@@ -292,14 +292,6 @@ export function filterBooleanArray<T>(arg: unknown): Array<boolean> {
 	return filterTArray(arg, isBoolean);
 }
 
-export function toBoolean(s: string | null | undefined): boolean {
-	if (!s) {
-		return false;
-	}
-
-	return s.toLowerCase() === 'true';
-}
-
 /**
  * 指定したオブジェクトが指定したクラス(コンストラクタ)の継承関係しているか
  * @param arg
@@ -322,6 +314,51 @@ export function isEqual<T extends object>(arg: unknown, type: Constructor<T>): a
 	}
 
 	return arg.constructor.prototype === type.prototype;
+}
+
+export function getProperties<T>(obj: T): Set<keyof T> {
+	const result = new Set<keyof T>();
+
+	let current = obj;
+
+	while (current) {
+		const prototype = Object.getPrototypeOf(current);
+		if (prototype === null) {
+			break;
+		}
+
+		const currentPropertyNames = Object.getOwnPropertyNames(prototype) as Array<keyof T>;
+		const targets = currentPropertyNames.filter(i => {
+			const descriptor = Object.getOwnPropertyDescriptor(prototype, i);;
+			return i !== '__proto__' && descriptor?.get instanceof Function && descriptor;
+		});
+
+		for (const target of targets) {
+			result.add(target)
+		}
+
+		current = prototype;
+	}
+
+	for (const target in obj) {
+		result.add(target)
+	}
+
+	return result;
+}
+
+// export function flatClone<TResult extends { [K in keyof TResult]: TResult[K] }, TSource extends TResult = TResult>(source: TSource): TResult {
+// 	Object.entries(source) as TResult;
+
+// 	throw new Error();
+// }
+
+export function toBoolean(s: string | null | undefined): boolean {
+	if (!s) {
+		return false;
+	}
+
+	return s.toLowerCase() === 'true';
 }
 
 export function toString(input: any): string {

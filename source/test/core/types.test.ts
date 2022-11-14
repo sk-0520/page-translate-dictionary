@@ -21,6 +21,32 @@ class TestSub1Sub extends TestSub1 { }
 class TestSub1SubSub extends TestSub1Sub { }
 class TestSub2 extends TestSuper { }
 
+interface TestFlat {
+	a: number;
+	b: string;
+	c: boolean;
+}
+class TestDeepSuper {
+	public A = 10;
+	public get Z(): string {
+		return 'Z';
+	}
+}
+
+class TestDeep extends TestDeepSuper implements TestFlat {
+	public constructor(public a: number, private nest: { b: string, node: { c: boolean } }) {
+		super();
+	}
+
+	public get b(): string {
+		return this.nest.b;
+	}
+
+	public get c(): boolean {
+		return this.nest.node.c;
+	}
+}
+
 describe('types', () => {
 	test.each([
 		[true, undefined],
@@ -521,7 +547,42 @@ describe('types', () => {
 		[false, 0, TestSuper],
 	])('isEqual', <T1, T2 extends object>(expected: boolean, obj: T1, type: types.Constructor<T2>) => {
 		expect(types.isEqual(obj, type)).toBe(expected);
+	});
+
+	test('getProperties', () => {
+		const input = new TestDeep(-1, { b: 'A', node: { c: true } });
+
+		const actual1 = types.getProperties(input);
+		expect(actual1.size).toBeGreaterThanOrEqual(5);
+
+		expect(actual1.has('A')).toBeTruthy();
+		expect(actual1.has('Z')).toBeTruthy();
+
+		expect(actual1.has('a')).toBeTruthy();
+		expect(actual1.has('b')).toBeTruthy();
+		expect(actual1.has('c')).toBeTruthy();
 	})
+
+	/*
+	test('flatClone', () => {
+		const input = new TestDeep(10, { b: 'str', node: { c: true } });
+		const result = types.flatClone<TestFlat>(input);
+		const output1 = JSON.parse(JSON.stringify(input)) as TestFlat;
+		const output2 = JSON.parse(JSON.stringify(result)) as TestFlat;
+
+		expect(input.a).toBe(result.a);
+		expect(input.b).toBe(result.b);
+		expect(input.c).toBe(result.c);
+
+		expect(input.a).toBe(output1.a);
+		expect(input.b).toBe(output1.b);
+		expect(input.c).toBe(output1.c);
+
+		expect(input.a).toBe(output2.a);
+		expect(input.b).toBe(output2.b);
+		expect(input.c).toBe(output2.c);
+	})
+	*/
 
 	test('toBoolean', () => {
 		expect(types.toBoolean(null)).toBeFalsy();
