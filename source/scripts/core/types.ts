@@ -240,6 +240,12 @@ export function getPropertyOr<TResult>(obj: unknown, key: string, fallbackValue:
 	return fallbackValue;
 }
 
+/**
+ * 指定された型ガードを満たす配列か。
+ * @param arg
+ * @param guard 型ガード。
+ * @returns
+ */
 export function isTArray<T>(arg: unknown, guard: (item: unknown) => item is T): arg is Array<T> {
 	if (!isArray(arg)) {
 		return false;
@@ -253,18 +259,39 @@ export function isTArray<T>(arg: unknown, guard: (item: unknown) => item is T): 
 	return arg.every(i => guard(i));
 }
 
+/**
+ * 文字列配列か。
+ * @param arg
+ * @returns
+ */
 export function isStringArray(arg: unknown): arg is Array<string> {
 	return isTArray(arg, isString);
 }
 
+/**
+ * 数値配列か。
+ * @param arg
+ * @returns
+ */
 export function isNumberArray(arg: unknown): arg is Array<string> {
 	return isTArray(arg, isNumber);
 }
 
+/**
+ * 真偽値配列か。
+ * @param arg
+ * @returns
+ */
 export function isBooleanArray(arg: unknown): arg is Array<string> {
 	return isTArray(arg, isBoolean);
 }
 
+/**
+ * 指定された型ガードを満たす要素のみの配列を返却。
+ * @param arg
+ * @param guard
+ * @returns
+ */
 export function filterTArray<T>(arg: unknown, guard: (item: unknown) => item is T): Array<T> {
 	if (!isArray(arg)) {
 		return [];
@@ -280,14 +307,29 @@ export function filterTArray<T>(arg: unknown, guard: (item: unknown) => item is 
 	return result;
 }
 
+/**
+ * 要素が文字列の配列を返却。
+ * @param arg
+ * @returns
+ */
 export function filterStringArray<T>(arg: unknown): Array<string> {
 	return filterTArray(arg, isString);
 }
 
+/**
+ * 要素が数値の配列を返却。
+ * @param arg
+ * @returns
+ */
 export function filterNumberArray<T>(arg: unknown): Array<number> {
 	return filterTArray(arg, isNumber);
 }
 
+/**
+ * 要素が真偽値の配列を返却。
+ * @param arg
+ * @returns
+ */
 export function filterBooleanArray<T>(arg: unknown): Array<boolean> {
 	return filterTArray(arg, isBoolean);
 }
@@ -316,6 +358,11 @@ export function isEqual<T extends object>(arg: unknown, type: Constructor<T>): a
 	return arg.constructor.prototype === type.prototype;
 }
 
+/**
+ * オブジェクトから変数とプロパティ(ゲッター)の名前を取得。
+ * @param obj
+ * @returns
+ */
 export function getProperties<T>(obj: T): Set<keyof T> {
 	const result = new Set<keyof T>();
 
@@ -347,6 +394,11 @@ export function getProperties<T>(obj: T): Set<keyof T> {
 	return result;
 }
 
+/**
+ * `TResult` のプロパティ名を満たす平坦なオブジェクトとして複製。
+ * @param source
+ * @returns
+ */
 export function flatClone<TResult extends { [K in keyof TResult]: TResult[K] }, TSource extends TResult = TResult>(source: TSource): TResult {
 	const properties = getProperties(source);
 
