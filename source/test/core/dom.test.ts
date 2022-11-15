@@ -168,7 +168,7 @@ describe('dom', () => {
 		const div = document.createElement('div');
 		div.textContent = '*';
 
-		dom.attach(root, dom.DomPosition.Last, div);
+		dom.attach(root, dom.AttachPosition.Last, div);
 		expect(root.children[0].textContent).toBe('A');
 		expect(root.children[1].textContent).toBe('B');
 		expect(root.children[2].textContent).toBe('C');
@@ -188,7 +188,7 @@ describe('dom', () => {
 		const div = document.createElement('div');
 		div.textContent = '*';
 
-		dom.attach(root, dom.DomPosition.First, div);
+		dom.attach(root, dom.AttachPosition.First, div);
 		expect(root.children[0].textContent).toBe('*');
 		expect(root.children[1].textContent).toBe('A');
 		expect(root.children[2].textContent).toBe('B');
@@ -209,7 +209,7 @@ describe('dom', () => {
 		const div = document.createElement('div');
 		div.textContent = '*';
 
-		dom.attach(center, dom.DomPosition.Previous, div);
+		dom.attach(center, dom.AttachPosition.Previous, div);
 		expect(root.children[0].textContent).toBe('A');
 		expect(root.children[1].textContent).toBe('*');
 		expect(root.children[2].textContent).toBe('B');
@@ -230,7 +230,7 @@ describe('dom', () => {
 		const div = document.createElement('div');
 		div.textContent = '*';
 
-		dom.attach(center, dom.DomPosition.Next, div);
+		dom.attach(center, dom.AttachPosition.Next, div);
 		expect(root.children[0].textContent).toBe('A');
 		expect(root.children[1].textContent).toBe('B');
 		expect(root.children[2].textContent).toBe('*');
@@ -249,7 +249,7 @@ describe('dom', () => {
 		span.element.textContent = 'CENTER';
 		p.createText('TAIL');
 
-		const pe = dom.attach(root, dom.DomPosition.Last, p);
+		const pe = dom.attach(root, dom.AttachPosition.Last, p);
 
 		expect(pe).toBe(p.element);
 		expect(pe.childNodes[0].textContent).toBe('HEAD');

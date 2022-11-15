@@ -21,7 +21,7 @@ export default class ImportLogger {
 		const li = dom.createFactory('li');
 		li.element.textContent = message;
 
-		dom.attach(this._logElement, dom.DomPosition.Last, li);
+		dom.attach(this._logElement, dom.AttachPosition.Last, li);
 	}
 
 	//#endregion

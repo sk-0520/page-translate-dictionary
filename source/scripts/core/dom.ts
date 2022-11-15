@@ -175,7 +175,7 @@ export function createFactory(tagName: string, options?: ElementCreationOptions)
 /**
  * 要素の追加位置。
  */
-export const enum DomPosition {
+export const enum AttachPosition {
 	/** 最後。 */
 	Last,
 	/** 最初。 */
@@ -192,28 +192,28 @@ export const enum DomPosition {
  * @param position 位置。
  * @param factory 追加する要素。
  */
-export function attach(parent: Element, position: DomPosition, factory: NodeFactory): Node;
-export function attach<TElement extends Element = Element>(parent: Element, position: DomPosition, factory: TagFactory<TElement>): TElement;
-export function attach(parent: Element, position: DomPosition, node: Node): Node;
-export function attach(parent: Element, position: DomPosition, node: Node | NodeFactory): Node {
+export function attach(parent: Element, position: AttachPosition, factory: NodeFactory): Node;
+export function attach<TElement extends Element = Element>(parent: Element, position: AttachPosition, factory: TagFactory<TElement>): TElement;
+export function attach(parent: Element, position: AttachPosition, node: Node): Node;
+export function attach(parent: Element, position: AttachPosition, node: Node | NodeFactory): Node {
 	if (isNodeFactory(node)) {
 		node = node.element;
 	}
 
 	switch (position) {
-		case DomPosition.Last:
+		case AttachPosition.Last:
 			return parent.appendChild(node);
 
-		case DomPosition.First:
+		case AttachPosition.First:
 			return parent.insertBefore(node, parent.firstChild);
 
-		case DomPosition.Previous:
+		case AttachPosition.Previous:
 			if (!parent.parentNode) {
 				throw new TypeError('parent.parentNode');
 			}
 			return parent.parentNode.insertBefore(node, parent);
 
-		case DomPosition.Next:
+		case AttachPosition.Next:
 			if (!parent.parentNode) {
 				throw new TypeError('parent.parentNode');
 			}
