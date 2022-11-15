@@ -366,7 +366,7 @@ export function isEqual<T extends object>(arg: unknown, type: Constructor<T>): a
  * @param obj
  * @returns
  */
-export function getProperties<T>(obj: T): Set<keyof T> {
+export function getProperties<T extends object>(obj: T): Set<keyof T> {
 	const result = new Set<keyof T>();
 
 	let current = obj;
