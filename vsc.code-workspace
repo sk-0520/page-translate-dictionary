@@ -25,6 +25,7 @@
 		},
 		"html.format.indentInnerHtml": true,
 		"html.format.wrapLineLength": 0,
+		"typescript.tsserver.experimental.enableProjectDiagnostics": true,
 		"json.schemas": [
 			{
 				"fileMatch": [
