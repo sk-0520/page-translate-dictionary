@@ -152,7 +152,7 @@ function updatedPageAsync(event: Event): Promise<void> {
 	return Promise.resolve();
 }
 
-function modifyPageAsync(mutations: MutationRecord[]): Promise<void> {
+function modifyPageAsync(mutations: ReadonlyArray<MutationRecord>): Promise<void> {
 	console.log('modifyPage', mutations);
 	if (pageCache) {
 		return executeAsync(pageCache);
@@ -161,7 +161,7 @@ function modifyPageAsync(mutations: MutationRecord[]): Promise<void> {
 	return Promise.resolve();
 }
 
-async function onWatchMutationAsync(mutations: MutationRecord[], observer: MutationObserver): Promise<void> {
+async function onWatchMutationAsync(mutations: ReadonlyArray<MutationRecord>, observer: MutationObserver): Promise<void> {
 	console.trace('なんかきた: 現状未検証処理', mutations);
 	return Promise.resolve();
 }
@@ -190,7 +190,7 @@ async function updateSiteConfigurationAsync(siteHeadConfiguration: config.SiteHe
 	return null;
 }
 
-async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: config.SettingConfiguration, allSiteHeadConfigurations: ReadonlyArray<config.SiteHeadConfiguration>, currentSiteHeadConfigurations: ReadonlyArray<config.SiteHeadConfiguration>): Promise<config.SiteHeadConfiguration[]> {
+async function updateSiteConfigurationsAsync(currentDateTime: Date, setting: config.SettingConfiguration, allSiteHeadConfigurations: ReadonlyArray<config.SiteHeadConfiguration>, currentSiteHeadConfigurations: ReadonlyArray<config.SiteHeadConfiguration>): Promise<Array<config.SiteHeadConfiguration>> {
 	const headItems = new Array<config.SiteHeadConfiguration>();
 
 	for (const currentSiteHeadConfiguration of currentSiteHeadConfigurations) {

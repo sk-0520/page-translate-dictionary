@@ -244,7 +244,7 @@ export interface SiteHeadConfiguration extends SiteId {
 	/** バージョン */
 	version: string;
 	/** 対象ホスト */
-	hosts: string[];
+	hosts: Array<string>;
 	/** 設定情報 */
 	information: InformationConfiguration;
 	/** 優先度 */
@@ -468,7 +468,7 @@ class SiteConfigurationImpl implements SiteConfiguration {
 		return result;
 	}
 
-	private convertMatches(raw?: ReadonlyArray<setting.MatchSetting> | null): MatchConfiguration[] {
+	private convertMatches(raw?: ReadonlyArray<setting.MatchSetting> | null): Array<MatchConfiguration> {
 		if (!raw) {
 			return [];
 		}
@@ -719,7 +719,7 @@ class SiteConfigurationImpl implements SiteConfiguration {
 		return this.head.information;
 	}
 
-	public get hosts(): string[] {
+	public get hosts(): Array<string> {
 		return this.head.hosts;
 	}
 

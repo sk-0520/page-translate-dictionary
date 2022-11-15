@@ -248,12 +248,12 @@ export interface PathSetting {
 	/**
 	 * クエリ一覧。
 	 */
-	query?: QuerySetting[] | null;
+	query?: Array<QuerySetting> | null;
 
 	/**
 	 * 取り込み共通セレクタ。
 	 */
-	import?: string[] | null;
+	import?: Array<string> | null;
 
 	//#endregion
 }
@@ -301,7 +301,7 @@ export interface SiteSetting {
 	/** バージョン */
 	version: string;
 	/** 対象ホスト */
-	hosts: string[];
+	hosts: Array<string>;
 	/** 設定情報 */
 	information?: InformationSetting | null;
 	/**
