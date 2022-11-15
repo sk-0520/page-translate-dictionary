@@ -1,24 +1,26 @@
 import * as url from '../../scripts/core/url';
 
 describe('url', () => {
-	test('isHttpUrl', () => {
-		expect(url.isHttpUrl('')).toBeFalsy();
-		expect(url.isHttpUrl(' http:// ')).toBeFalsy();
+	test.each([
+		[false, ''],
+		[false, ' http:// '],
 
-		expect(url.isHttpUrl('http')).toBeFalsy();
-		expect(url.isHttpUrl('http:')).toBeFalsy();
-		expect(url.isHttpUrl('http:/')).toBeFalsy();
-		expect(url.isHttpUrl('http://')).toBeFalsy();
-		expect(url.isHttpUrl('http://x')).toBeTruthy();
+		[false, 'http'],
+		[false, 'http:'],
+		[false, 'http:/'],
+		[false, 'http://'],
+		[true, 'http://x'],
 
-		expect(url.isHttpUrl('https')).toBeFalsy();
-		expect(url.isHttpUrl('https:')).toBeFalsy();
-		expect(url.isHttpUrl('https:/')).toBeFalsy();
-		expect(url.isHttpUrl('https://')).toBeFalsy();
-		expect(url.isHttpUrl('https://x')).toBeTruthy();
+		[false, 'https'],
+		[false, 'https:'],
+		[false, 'https:/'],
+		[false, 'https://'],
+		[true, 'https://x'],
+	])('isHttpUrl', (expected: boolean, input: string) => {
+		expect(url.isHttpUrl(input)).toBe(expected);
 	});
 
-	test('joinPath', () =>{
+	test('joinPath', () => {
 		expect(url.joinPath('a', 'b')).toBe('a/b');
 		expect(url.joinPath('a/', 'b')).toBe('a/b');
 		expect(url.joinPath('a', '/b')).toBe('a/b');
