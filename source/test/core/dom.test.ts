@@ -295,4 +295,23 @@ describe('dom', () => {
 		expect(dom.getDatasetOr(element, 'b', 'X')).toBe('X');
 	});
 
+	test('equalTagName', () => {
+		document.body.innerHTML = `
+			<div id="id"></div>
+		`;
+
+		const element = document.getElementById('id')!;
+
+		expect(dom.equalTagName(element, 'div')).toBeTruthy();
+		expect(dom.equalTagName(element, 'DIV')).toBeTruthy();
+		expect(dom.equalTagName(element, 'span')).toBeFalsy();
+		expect(dom.equalTagName(element, 'pppp')).toBeFalsy();
+
+		expect(dom.equalTagName(element, document.createElement('div'))).toBeTruthy();
+		expect(dom.equalTagName(element, document.createElement('Div'))).toBeTruthy();
+		expect(dom.equalTagName(element, document.createElement('DIV'))).toBeTruthy();
+
+		expect(dom.equalTagName(element, document.createElement('span'))).toBeFalsy();
+	});
+
 });

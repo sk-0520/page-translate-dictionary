@@ -273,7 +273,7 @@ export class TagFactory<TElement extends Element> implements NodeFactory {
  * @param kebab データ属性名。
  * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
  */
- export function toCustomKey(kebab: string, removeDataAttributeBegin: boolean = true): string {
+export function toCustomKey(kebab: string, removeDataAttributeBegin: boolean = true): string {
 
 	const dataHead = 'data-';
 	if (removeDataAttributeBegin && kebab.startsWith(dataHead)) {
@@ -325,4 +325,27 @@ export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallbac
 	}
 
 	return value;
+}
+
+type HtmlTagName = Uppercase<keyof HTMLElementTagNameMap | keyof HTMLElementDeprecatedTagNameMap | keyof SVGElementTagNameMap> | Lowercase<keyof HTMLElementTagNameMap | keyof HTMLElementDeprecatedTagNameMap | keyof SVGElementTagNameMap>;
+/**
+ * 要素のタグ名の一致判定。
+ *
+ * @param element 対象要素
+ * @param value タグ名
+ * @returns
+ */
+export function equalTagName(element: Element, value: HtmlTagName): boolean;
+export function equalTagName(element: Element, value: string): boolean;
+export function equalTagName(element: Element, value: Element): boolean
+export function equalTagName(element: Element, value: string | Element): boolean {
+	if (!types.isString(value)) {
+		value = value.tagName;
+	}
+
+	if (element.tagName === value) {
+		return true;
+	}
+
+	return element.tagName.toUpperCase() === value.toUpperCase();
 }
