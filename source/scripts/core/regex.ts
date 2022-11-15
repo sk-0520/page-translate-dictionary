@@ -1,3 +1,5 @@
+const escapeRegex = /[.*+?^${}()|[\]\\]/g
+
 /**
  * 正規表現エスケープ。
  *
@@ -5,5 +7,5 @@
  * @returns
  */
 export function escape(source: string) {
-	return source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	return source.replace(escapeRegex, '\\$&');
 }
