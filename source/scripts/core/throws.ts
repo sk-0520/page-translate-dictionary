@@ -1,5 +1,5 @@
 // エラー系
-// GEN: 2022-11-14T05:19:08+09:00
+// GEN: 2022-11-15T18:50:29+09:00
 
 // 手動 ---------------------
 
@@ -38,7 +38,17 @@ export class InvalidOperationError extends Error {
 }
 
 /**
-* 引数異常
+* 引数指定が異常
+ */
+export class MismatchArgumentError extends Error {
+	constructor(message?: string | undefined) {
+		super(message);
+		this.name = 'MismatchArgumentError';
+	}
+}
+
+/**
+* 引数が無効
  */
 export class ArgumentError extends Error {
 	constructor(message?: string | undefined) {
@@ -48,9 +58,19 @@ export class ArgumentError extends Error {
 }
 
 /**
+* DOM処理云々がダメ
+ */
+export class DomError extends Error {
+	constructor(message?: string | undefined) {
+		super(message);
+		this.name = 'DomError';
+	}
+}
+
+/**
 * 指定要素の型が合わない
  */
-export class ElementTypeError extends Error {
+export class ElementTypeError extends DomError {
 	constructor(message?: string | undefined) {
 		super(message);
 		this.name = 'ElementTypeError';
@@ -60,7 +80,7 @@ export class ElementTypeError extends Error {
 /**
 * セレクタで要素が見つからない
  */
-export class NotFoundDomSelectorError extends Error {
+export class NotFoundDomSelectorError extends DomError {
 	constructor(message?: string | undefined) {
 		super(message);
 		this.name = 'NotFoundDomSelectorError';
