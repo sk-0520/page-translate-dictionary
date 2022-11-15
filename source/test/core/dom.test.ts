@@ -31,6 +31,42 @@ describe('dom', () => {
 		expect(dom.requireSelector('[name="x"]').textContent!).toBe('X2');
 
 		expect(() => dom.requireSelector('.x')).toThrowError(throws.NotFoundDomSelectorError);
+		expect(() => dom.requireSelector('[data-name="x"]', HTMLSpanElement)).toThrowError(throws.ElementTypeError);
+
+		const rootDiv = dom.requireSelector('div');
+		expect(dom.requireSelector(rootDiv, 'div').textContent!).toBe('X1');
+		expect(() => dom.requireSelector(rootDiv, 'div', HTMLSpanElement)).toThrowError(throws.ElementTypeError);
+	});
+
+	test('requireSelectorAll', () => {
+		document.body.innerHTML = `
+			<div>
+				<div data-name="x">X1</div>
+				<div name="x">X2</div>
+				<span>X3</span>
+			</div>
+			<ul>
+				<li>A</li>
+				<li>B</li>
+				<li>C</li>
+			</ul>
+		`;
+
+		expect(dom.requireSelectorAll('*').length).toBe(8 /* html + head + body = 3 */ + 3);
+		expect(dom.requireSelectorAll(document.body, '*').length).toBe(8);
+
+		expect(dom.requireSelectorAll('div').length).toBe(3);
+
+		expect(dom.requireSelectorAll('div *').length).toBe(3);
+		expect(dom.requireSelectorAll('div div').length).toBe(2);
+
+		expect(() => dom.requireSelectorAll('div *', HTMLDivElement)).toThrowError(throws.ElementTypeError);
+		expect(dom.requireSelectorAll('div *', HTMLElement).length).toBe(3);
+		expect(dom.requireSelectorAll('div div', HTMLDivElement).length).toBe(2);
+
+		expect(dom.requireSelectorAll('ul *').length).toBe(3);
+		expect(dom.requireSelectorAll('ul li').length).toBe(3);
+
 	});
 
 	test('requireClosest', () => {
@@ -58,6 +94,9 @@ describe('dom', () => {
 		expect(dom.requireClosest(d, '#a > div > div').id).toBe('c');
 
 		expect(() => dom.requireClosest(d, '#a span')).toThrowError(throws.NotFoundDomSelectorError);
+
+		expect(dom.requireClosest(a, '*', HTMLDivElement).id).toBe('a');
+		expect(() => dom.requireClosest(a, '*', HTMLSpanElement)).toThrowError(throws.ElementTypeError);
 	});
 
 	test('getParentForm', () => {
@@ -114,6 +153,42 @@ describe('dom', () => {
 		expect(dom.toCustomKey('data-key-data')).toBe('keyData');
 		expect(dom.toCustomKey('data-key-data', true)).toBe('keyData');
 		expect(dom.toCustomKey('data-key-data', false)).toBe('dataKeyData');
+	});
+
+	test('getDataset', () => {
+		document.body.innerHTML = `
+			<div id="id" data-a="A" data-a-sub="SUB" data-empty=""></div>
+		`;
+
+		const element = document.getElementById('id')!;
+
+		expect(dom.getDataset(element, 'a')).toBe('A');
+		expect(dom.getDataset(element, 'a-sub')).toBe('SUB');
+
+		expect(dom.getDataset(element, 'data-a')).toBe('A');
+		expect(dom.getDataset(element, 'data-a-sub')).toBe('SUB');
+
+		expect(dom.getDataset(element, 'empty')).toBe('');
+		expect(() => dom.getDataset(element, 'data-a', false)).toThrowError(Error);
+		expect(() => dom.getDataset(element, 'b')).toThrowError(Error);
+	});
+
+	test('getDatasetOr', () => {
+		document.body.innerHTML = `
+			<div id="id" data-a="A" data-a-sub="SUB" data-empty=""></div>
+		`;
+
+		const element = document.getElementById('id')!;
+
+		expect(dom.getDatasetOr(element, 'a', 'X')).toBe('A');
+		expect(dom.getDatasetOr(element, 'a-sub', 'X')).toBe('SUB');
+
+		expect(dom.getDatasetOr(element, 'data-a', 'X')).toBe('A');
+		expect(dom.getDatasetOr(element, 'data-a-sub', 'X')).toBe('SUB');
+
+		expect(dom.getDatasetOr(element, 'empty', 'X')).toBe('');
+		expect(dom.getDatasetOr(element, 'data-a', 'X', false)).toBe('X');
+		expect(dom.getDatasetOr(element, 'b', 'X')).toBe('X');
 	});
 
 	test('attach:Last', () => {

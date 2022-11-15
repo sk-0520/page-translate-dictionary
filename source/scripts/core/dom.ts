@@ -232,10 +232,6 @@ export function createFactory(tagName: string, options?: ElementCreationOptions)
 	return new TagFactory(element);
 }
 
-export function wrap<THTMLElement extends HTMLElement>(element: THTMLElement): TagFactory<THTMLElement> {
-	return new TagFactory(element);
-}
-
 /**
  * 要素の追加位置。
  */
