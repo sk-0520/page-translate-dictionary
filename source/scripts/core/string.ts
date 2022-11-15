@@ -3,35 +3,22 @@ import * as regex from './regex';
 
 /**
  * 空文字列か。
- * 純粋に長さ 0 かを調べる。
- * @deprecated
+ *
  * @param s
  * @returns
  */
-export function isEmpty(s: string | null | undefined): s is string {
+export function isEmpty(s: string | null | undefined): boolean {
 	return types.isString(s) && s.length === 0;
 }
 
 /**
  * 非空文字列(ホワイトスペース構成は除く)か。
- * @deprecated
+ *
  * @param s
  * @returns
  */
-export function isNotEmpty(s: string | null | undefined): s is string {
+export function isNotWhiteSpace(s: string | null | undefined): s is string {
 	return types.isString(s) && trim(s).length !== 0;
-}
-
-/**
- * null かホワイトスペースで構成された文字列か。
- * @param s
- * @returns
- */
-export function isNullOrWhiteSpace(s: string | null | undefined): boolean {
-	if (!s) {
-		return true;
-	}
-	return trim(s).length === 0;
 }
 
 /**

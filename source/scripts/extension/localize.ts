@@ -28,13 +28,13 @@ export function applyElement(element: Element): void {
 
 		if (attribute.name === LocalizeAttribute.text) {
 			const message = webextension.i18n.getMessage(attribute.value);
-			if (!string.isNullOrWhiteSpace(message)) {
+			if (string.isNotWhiteSpace(message)) {
 				element.textContent = message;
 			}
 		} else {
 			const attrName = attribute.name.substring(LocalizeAttribute.start.length);
 			const message = webextension.i18n.getMessage(attribute.value);
-			if (!string.isNullOrWhiteSpace(message)) {
+			if (string.isNotWhiteSpace(message)) {
 				element.setAttribute(attrName, message);
 			}
 		}

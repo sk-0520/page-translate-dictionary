@@ -346,7 +346,7 @@ class SiteConfigurationImpl implements SiteConfiguration {
 			if (types.hasArray(raw, key)) {
 				const eventNames = raw[key]!;
 				for (const eventName of eventNames) {
-					if (types.isString(eventName) && !string.isNullOrWhiteSpace(eventName)) {
+					if (types.isString(eventName) && string.isNotWhiteSpace(eventName)) {
 						result.push(eventName);
 					}
 				}
@@ -542,14 +542,14 @@ class SiteConfigurationImpl implements SiteConfiguration {
 			return null;
 		}
 
-		if (!raw.selector || string.isNullOrWhiteSpace(raw.selector.value)) {
+		if (!raw.selector || !string.isNotWhiteSpace(raw.selector.value)) {
 			return null;
 		}
 
 		const attributeMap = new Map<string, TargetConfiguration>();
 		if (raw.attributes && typeof raw.attributes === 'object') {
 			for (const [name, target] of Object.entries(raw.attributes)) {
-				if (string.isNullOrWhiteSpace(name)) {
+				if (!string.isNotWhiteSpace(name)) {
 					continue;
 				}
 				const attr = this.convertTarget(target);
@@ -592,7 +592,7 @@ class SiteConfigurationImpl implements SiteConfiguration {
 
 			const pathSetting = raw[key];
 
-			if (string.isNullOrWhiteSpace(key)) {
+			if (!string.isNotWhiteSpace(key)) {
 				// alert('0:::::' + key)
 				continue;
 			}
@@ -647,7 +647,7 @@ class SiteConfigurationImpl implements SiteConfiguration {
 		const selectorMap = new Map<string, string>();
 		if ('selector' in raw && raw.selector && typeof raw.selector === 'object') {
 			for (const [key, selector] of Object.entries(raw.selector)) {
-				if (!string.isNullOrWhiteSpace(selector)) {
+				if (string.isNotWhiteSpace(selector)) {
 					selectorMap.set(key, selector!);
 				}
 			}
@@ -656,7 +656,7 @@ class SiteConfigurationImpl implements SiteConfiguration {
 		const textMap = new Map<string, string>();
 		if ('text' in raw && raw.text && typeof raw.text === 'object') {
 			for (const [key, text] of Object.entries(raw.text)) {
-				if (!string.isNullOrWhiteSpace(text)) {
+				if (string.isNotWhiteSpace(text)) {
 					textMap.set(key, text!);
 				}
 			}
@@ -665,7 +665,7 @@ class SiteConfigurationImpl implements SiteConfiguration {
 		const queryMap = new Map<string, QueryConfiguration>();
 		if ('query' in raw && raw.query && typeof raw.query === 'object') {
 			for (const [key, querySetting] of Object.entries(raw.query)) {
-				if (!string.isNullOrWhiteSpace(key)) {
+				if (string.isNotWhiteSpace(key)) {
 					const query = this.convertQuery(querySetting);
 					if (query) {
 						queryMap.set(key, query);

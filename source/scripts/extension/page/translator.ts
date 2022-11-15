@@ -122,7 +122,7 @@ function conditionMeta(content: string, metaConfiguration: config.MetaConfigurat
 			return true;
 
 		case config.MetaContentMode.NotEmpty:
-			return !string.isNullOrWhiteSpace(content);
+			return string.isNotWhiteSpace(content);
 
 		default:
 			break;

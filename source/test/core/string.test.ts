@@ -19,20 +19,11 @@ describe('string', () => {
 		[false, ' '],
 		[false, '　'],
 		[true, 'a'],
-	])('isNotEmpty', (expected: boolean, input: string | null | undefined) => {
-		expect(string.isNotEmpty(input)).toBe(expected);
-	});
-
-	test('isNullOrWhiteSpace', () => {
-		expect(string.isNullOrWhiteSpace(undefined)).toBe(true);
-		expect(string.isNullOrWhiteSpace(null)).toBe(true);
-		expect(string.isNullOrWhiteSpace('')).toBe(true);
-		expect(string.isNullOrWhiteSpace(' ')).toBe(true);
-		expect(string.isNullOrWhiteSpace('a')).toBe(false);
-		expect(string.isNullOrWhiteSpace("\r")).toBe(true);
-		expect(string.isNullOrWhiteSpace("\n")).toBe(true);
-		expect(string.isNullOrWhiteSpace("\r\n")).toBe(true);
-		expect(string.isNullOrWhiteSpace(" \r\n \r\n ")).toBe(true);
+		[false, "\r"],
+		[false, "\r\n"],
+		[false, " \r\n \r\n "],
+	])('isNotWhiteSpace', (expected: boolean, input: string | null | undefined) => {
+		expect(string.isNotWhiteSpace(input)).toBe(expected);
 	});
 
 	test.each([

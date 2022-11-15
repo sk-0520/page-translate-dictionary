@@ -303,7 +303,7 @@ function getMeta(): Map<string, string> {
 
 	for (const element of metaElementList) {
 		const metaElement = element as HTMLMetaElement;
-		if (string.isNullOrWhiteSpace(metaElement.name)) {
+		if (!string.isNotWhiteSpace(metaElement.name)) {
 			continue;
 		}
 		const content = metaElement.content || '';

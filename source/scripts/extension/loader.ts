@@ -10,7 +10,7 @@ function throwIfInvalidString(obj: any, property: string) {
 	if (!types.hasString(obj, property)) {
 		throw new Error(property);
 	}
-	if (string.isNullOrWhiteSpace(obj[property])) {
+	if (!string.isNotWhiteSpace(obj[property])) {
 		throw new Error(property);
 	}
 }
@@ -99,7 +99,7 @@ export async function hasSiteSettingAsync(url: string): Promise<config.SiteInter
 
 export async function saveAsync(updateUrl: string, setting: setting.SiteSetting, siteId: config.SiteInternalId | null): Promise<config.SiteData> {
 	const timestamp = (new Date()).toISOString();
-	const isCreateMode = string.isNullOrWhiteSpace(siteId);
+	const isCreateMode = !string.isNotWhiteSpace(siteId);
 
 	const head: config.SiteHeadConfiguration = {
 		id: isCreateMode ? createSiteInternalId() : siteId!,
