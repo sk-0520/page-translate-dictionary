@@ -293,6 +293,5 @@ describe('dom', () => {
 		expect(pe.childNodes[1].textContent).toBe('CENTER');
 		expect(pe.childNodes[1].nodeName).toBe('SPAN');
 		expect(pe.childNodes[2].textContent).toBe('TAIL');
-
 	});
 });
