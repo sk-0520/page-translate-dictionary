@@ -29,7 +29,6 @@ export default class LocaleFilesPlugin {
 			['ja', 'ja.ts'],
 		].map(i => [
 			i[0],
-			//@ts-ignore
 			path.join(this._options.inputDirectory, i[1])
 		]));
 

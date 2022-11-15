@@ -74,7 +74,6 @@ async function bootAsync(extension: extensions.Extension): Promise<void> {
 	}
 
 	const tab = tabs[0];
-	// @ts-ignore tabs.length !== 1
 	await applyTabAsync(tab, extension);
 	localize.applyView();
 }

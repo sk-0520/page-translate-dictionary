@@ -50,7 +50,6 @@ function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.Transl
 		//alert('siteConfiguration.path-> ' + JSON.stringify(siteConfiguration.path))
 		for (const [keyRegex, pathConfiguration] of siteConfiguration.path) {
 			// alert('key:: ' + key)
-			// @ts-ignore in
 			let urlPath = location.pathname;
 			if (pathConfiguration && pathConfiguration.withSearch && !location.search) {
 				urlPath += '?' + location.search;
