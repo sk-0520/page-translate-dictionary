@@ -158,9 +158,9 @@ export interface PathConfiguration {
 export interface WatchConfiguration {
 	//#region property
 
-	window: Array<string>;
+	readonly window: ReadonlyArray<string>;
 
-	document: Array<string>;
+	readonly document: ReadonlyArray<string>;
 
 	//#endregion
 }
