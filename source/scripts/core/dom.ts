@@ -223,9 +223,9 @@ export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallbac
 }
 
 
+export function createFactory<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementTagNameMap[K]>;
 /** @deprecated */
 export function createFactory<K extends keyof HTMLElementDeprecatedTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
-export function createFactory<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementTagNameMap[K]>;
 export function createFactory<THTMLElement extends HTMLElement>(tagName: string, options?: ElementCreationOptions): TagFactory<THTMLElement>;
 export function createFactory(tagName: string, options?: ElementCreationOptions): TagFactory<HTMLElement> {
 	const element = document.createElement(tagName, options);
@@ -305,9 +305,9 @@ export class TagFactory<TElement extends Element> implements NodeFactory {
 	constructor(public readonly element: TElement) {
 	}
 
+	public createTag<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementTagNameMap[K]>;
 	/** @deprecated */
 	public createTag<K extends keyof HTMLElementDeprecatedTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
-	public createTag<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementTagNameMap[K]>;
 	public createTag<THTMLElement extends HTMLElement>(tagName: string, options?: ElementCreationOptions): TagFactory<THTMLElement>;
 	public createTag(tagName: string, options?: ElementCreationOptions): TagFactory<HTMLElement> {
 		const createdElement = document.createElement(tagName, options);

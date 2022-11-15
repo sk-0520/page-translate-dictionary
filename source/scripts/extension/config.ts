@@ -39,7 +39,15 @@ export const enum ReplaceMode {
 /**
  * 拡張機能内で識別するための設定ID。
  */
-export type SiteInternalId = string;
+export type SiteInternalId = types.StrongType<'SiteInternalId'>;
+
+export function toInternalId(s: string): SiteInternalId {
+	if(!s) {
+		throw new Error();
+	}
+
+	return s as SiteInternalId;
+}
 
 /**
  * 各処理でどの設定を使用しているか表現するためのID。
@@ -681,9 +689,9 @@ class SiteConfigurationImpl implements SiteConfiguration {
 
 	//#endregion
 
-	//#region ISiteConfiguration
+	//#region SiteConfiguration
 
-	public get id(): string {
+	public get id(): SiteInternalId {
 		return this.head.id;
 	}
 

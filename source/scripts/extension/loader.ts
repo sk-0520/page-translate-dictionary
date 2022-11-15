@@ -55,7 +55,8 @@ export async function fetchAsync(url: string): Promise<setting.SiteSetting | nul
 }
 
 export function createSiteInternalId(): config.SiteInternalId {
-	return crypto.randomUUID();
+	const id = crypto.randomUUID();
+	return config.toInternalId(id);
 }
 
 export function convertInformation(information: setting.InformationSetting | null | undefined): config.InformationConfiguration {

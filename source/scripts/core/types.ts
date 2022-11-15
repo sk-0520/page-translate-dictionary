@@ -4,6 +4,9 @@ export type Constructor<T extends object> = {
 	prototype: T,
 };
 
+declare const _StrongType: unique symbol;
+export type StrongType<T, U = string> = T & { readonly [_StrongType]: U };
+
 /**
  * 型が `undefined` か。
  * @param arg
