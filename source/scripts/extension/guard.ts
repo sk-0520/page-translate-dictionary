@@ -1,8 +1,9 @@
+import * as types from '../core/types';
 import * as config from './config';
 
-export function isTranslateConfiguration(obj: any): obj is config.TranslateConfiguration {
-	return obj
-		&& 'markReplacedElement' in obj && typeof obj.markReplacedElement === 'boolean'
+export function isTranslateConfiguration(obj: unknown): obj is config.TranslateConfiguration {
+	return types.isObject(obj)
+		&& types.hasBoolean(obj, 'markReplacedElement')
 		;
 }
 
