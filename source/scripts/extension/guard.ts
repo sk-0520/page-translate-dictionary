@@ -7,9 +7,10 @@ export function isTranslateConfiguration(obj: unknown): obj is config.TranslateC
 		;
 }
 
-export function isApplicationConfiguration(obj: any): obj is config.ApplicationConfiguration {
-	return obj
-		&& 'translate' in obj && isTranslateConfiguration(obj.translate)
+export function isApplicationConfiguration(obj: unknown): obj is config.ApplicationConfiguration {
+	return types.isObject(obj)
+		&& types.hasObject(obj, 'translate')
+		&& isTranslateConfiguration(obj.translate)
 		;
 }
 
