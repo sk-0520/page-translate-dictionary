@@ -1,5 +1,5 @@
 import webextension from "webextension-polyfill";
-import * as types from "./guard";
+import * as guard from "./guard";
 import * as config from "./config";
 
 const Keys = {
@@ -28,7 +28,7 @@ export async function loadApplicationAsync(): Promise<config.ApplicationConfigur
 	const record = await webextension.storage.local.get(Keys.application);
 	if (record && Keys.application in record) {
 		const obj = { ...defaultConfiguration, ...record[Keys.application] };
-		if (types.isApplicationConfiguration(obj)) {
+		if (guard.isApplicationConfiguration(obj)) {
 			return obj;
 		}
 	}
@@ -49,7 +49,7 @@ export async function loadSiteHeadsAsync(): Promise<Array<config.SiteHeadConfigu
 		const result = new Array<config.SiteHeadConfiguration>();
 		const obj = record[Keys.siteHeads];
 		for (const item of obj) {
-			if (types.isSiteHeadConfiguration(item)) {
+			if (guard.isSiteHeadConfiguration(item)) {
 				result.push(item);
 			} else {
 				console.warn('type error', item);
