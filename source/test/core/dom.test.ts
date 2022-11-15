@@ -155,42 +155,6 @@ describe('dom', () => {
 		expect(dom.toCustomKey('data-key-data', false)).toBe('dataKeyData');
 	});
 
-	test('getDataset', () => {
-		document.body.innerHTML = `
-			<div id="id" data-a="A" data-a-sub="SUB" data-empty=""></div>
-		`;
-
-		const element = document.getElementById('id')!;
-
-		expect(dom.getDataset(element, 'a')).toBe('A');
-		expect(dom.getDataset(element, 'a-sub')).toBe('SUB');
-
-		expect(dom.getDataset(element, 'data-a')).toBe('A');
-		expect(dom.getDataset(element, 'data-a-sub')).toBe('SUB');
-
-		expect(dom.getDataset(element, 'empty')).toBe('');
-		expect(() => dom.getDataset(element, 'data-a', false)).toThrowError(Error);
-		expect(() => dom.getDataset(element, 'b')).toThrowError(Error);
-	});
-
-	test('getDatasetOr', () => {
-		document.body.innerHTML = `
-			<div id="id" data-a="A" data-a-sub="SUB" data-empty=""></div>
-		`;
-
-		const element = document.getElementById('id')!;
-
-		expect(dom.getDatasetOr(element, 'a', 'X')).toBe('A');
-		expect(dom.getDatasetOr(element, 'a-sub', 'X')).toBe('SUB');
-
-		expect(dom.getDatasetOr(element, 'data-a', 'X')).toBe('A');
-		expect(dom.getDatasetOr(element, 'data-a-sub', 'X')).toBe('SUB');
-
-		expect(dom.getDatasetOr(element, 'empty', 'X')).toBe('');
-		expect(dom.getDatasetOr(element, 'data-a', 'X', false)).toBe('X');
-		expect(dom.getDatasetOr(element, 'b', 'X')).toBe('X');
-	});
-
 	test('attach:Last', () => {
 		document.body.innerHTML = `
 			<div id="root">
@@ -252,7 +216,6 @@ describe('dom', () => {
 		expect(root.children[3].textContent).toBe('C');
 	});
 
-
 	test('attach:Next', () => {
 		document.body.innerHTML = `
 			<div id="root">
@@ -294,4 +257,42 @@ describe('dom', () => {
 		expect(pe.childNodes[1].nodeName).toBe('SPAN');
 		expect(pe.childNodes[2].textContent).toBe('TAIL');
 	});
+
+
+	test('getDataset', () => {
+		document.body.innerHTML = `
+			<div id="id" data-a="A" data-a-sub="SUB" data-empty=""></div>
+		`;
+
+		const element = document.getElementById('id')!;
+
+		expect(dom.getDataset(element, 'a')).toBe('A');
+		expect(dom.getDataset(element, 'a-sub')).toBe('SUB');
+
+		expect(dom.getDataset(element, 'data-a')).toBe('A');
+		expect(dom.getDataset(element, 'data-a-sub')).toBe('SUB');
+
+		expect(dom.getDataset(element, 'empty')).toBe('');
+		expect(() => dom.getDataset(element, 'data-a', false)).toThrowError(Error);
+		expect(() => dom.getDataset(element, 'b')).toThrowError(Error);
+	});
+
+	test('getDatasetOr', () => {
+		document.body.innerHTML = `
+			<div id="id" data-a="A" data-a-sub="SUB" data-empty=""></div>
+		`;
+
+		const element = document.getElementById('id')!;
+
+		expect(dom.getDatasetOr(element, 'a', 'X')).toBe('A');
+		expect(dom.getDatasetOr(element, 'a-sub', 'X')).toBe('SUB');
+
+		expect(dom.getDatasetOr(element, 'data-a', 'X')).toBe('A');
+		expect(dom.getDatasetOr(element, 'data-a-sub', 'X')).toBe('SUB');
+
+		expect(dom.getDatasetOr(element, 'empty', 'X')).toBe('');
+		expect(dom.getDatasetOr(element, 'data-a', 'X', false)).toBe('X');
+		expect(dom.getDatasetOr(element, 'b', 'X')).toBe('X');
+	});
+
 });

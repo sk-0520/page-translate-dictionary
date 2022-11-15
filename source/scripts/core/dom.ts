@@ -163,66 +163,6 @@ export function cloneTemplate(input: string | HTMLTemplateElement): DocumentFrag
 	return result as DocumentFragment;
 }
 
-/**
- * カスタムデータ属性のケバブ名を dataset アクセス可能な名前に変更
- * @param kebab データ属性名。
- * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
- */
-export function toCustomKey(kebab: string, removeDataAttributeBegin: boolean = true): string {
-
-	const dataHead = 'data-';
-	if (removeDataAttributeBegin && kebab.startsWith(dataHead)) {
-		kebab = kebab.substring(dataHead.length);
-	}
-
-	return kebab
-		.split('-')
-		.map((item, index) => index
-			? item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
-			: item.toLowerCase()
-		)
-		.join('')
-		;
-}
-
-/**
- * データ属性から値を取得。
- *
- * @param element 要素。
- * @param dataKey データ属性名。
- * @param removeDataAttributeBegin 先頭の `data-` を破棄するか。
- * @returns
- */
-export function getDataset(element: HTMLOrSVGElement, dataKey: string, removeDataAttributeBegin: boolean = true): string {
-	const key = toCustomKey(dataKey, removeDataAttributeBegin);
-	const value = element.dataset[key];
-	if (types.isUndefined(value)) {
-		throw new Error(`${element}.${key}`);
-	}
-
-	return value;
-}
-
-/**
- * データ属性から値を取得。
- *
- * @param element 要素。
- * @param dataKey データ属性名。
- * @param fallback 取得失敗時の返却値。
- * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
- * @returns
- */
-export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallback: string, removeDataAttributeBegin: boolean = true): string {
-	const key = toCustomKey(dataKey, removeDataAttributeBegin);
-	const value = element.dataset[key];
-	if (types.isUndefined(value)) {
-		return fallback;
-	}
-
-	return value;
-}
-
-
 export function createFactory<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementTagNameMap[K]>;
 /** @deprecated */
 export function createFactory<K extends keyof HTMLElementDeprecatedTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
@@ -327,3 +267,62 @@ export class TagFactory<TElement extends Element> implements NodeFactory {
 	}
 }
 
+
+/**
+ * カスタムデータ属性のケバブ名を dataset アクセス可能な名前に変更
+ * @param kebab データ属性名。
+ * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
+ */
+ export function toCustomKey(kebab: string, removeDataAttributeBegin: boolean = true): string {
+
+	const dataHead = 'data-';
+	if (removeDataAttributeBegin && kebab.startsWith(dataHead)) {
+		kebab = kebab.substring(dataHead.length);
+	}
+
+	return kebab
+		.split('-')
+		.map((item, index) => index
+			? item.charAt(0).toUpperCase() + item.slice(1).toLowerCase()
+			: item.toLowerCase()
+		)
+		.join('')
+		;
+}
+
+/**
+ * データ属性から値を取得。
+ *
+ * @param element 要素。
+ * @param dataKey データ属性名。
+ * @param removeDataAttributeBegin 先頭の `data-` を破棄するか。
+ * @returns
+ */
+export function getDataset(element: HTMLOrSVGElement, dataKey: string, removeDataAttributeBegin: boolean = true): string {
+	const key = toCustomKey(dataKey, removeDataAttributeBegin);
+	const value = element.dataset[key];
+	if (types.isUndefined(value)) {
+		throw new Error(`${element}.${key}`);
+	}
+
+	return value;
+}
+
+/**
+ * データ属性から値を取得。
+ *
+ * @param element 要素。
+ * @param dataKey データ属性名。
+ * @param fallback 取得失敗時の返却値。
+ * @param removeDataAttributeBegin 先頭の `data-`* を破棄するか。
+ * @returns
+ */
+export function getDatasetOr(element: HTMLOrSVGElement, dataKey: string, fallback: string, removeDataAttributeBegin: boolean = true): string {
+	const key = toCustomKey(dataKey, removeDataAttributeBegin);
+	const value = element.dataset[key];
+	if (types.isUndefined(value)) {
+		return fallback;
+	}
+
+	return value;
+}
