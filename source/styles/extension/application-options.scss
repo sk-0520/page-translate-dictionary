@@ -3,13 +3,12 @@
 
 @use "../core/tab";
 @use "../core/responsive" as responsive;
+@use "./setting";
+@use "./font" as font;
 
-#processing {
-	margin: 0 auto;
-
-	&.processed {
-		display: none;
-	}
+html,
+body {
+	@include font.extension-font;
 }
 
 #options {
@@ -71,22 +70,7 @@ ul.ui-menu {
 	width: 6ch;
 }
 
-input[type="number"] {
-	text-align: right;
-}
-
-button:not([type="button"]) {
-	padding: 0.5em 1em;
-	min-width: 10ch;
-
-	@include responsive.media(responsive.$s) {
-		width: 100%;
-	}
-}
-
 button {
-	padding: 0.5ex 1ex;
-
 	&[name="delete"] {
 		margin-left: 1.5em;
 	}

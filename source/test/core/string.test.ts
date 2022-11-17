@@ -33,7 +33,7 @@ describe('string', () => {
 		['a', '   a', [' ']],
 		['　  a', '  　  a', [' ']],
 		['a', '  　  a', [' ', '　']],
-	])('trimStart', (expected: string, input: string, characters:string[]) => {
+	])('trimStart', (expected: string, input: string, characters: string[]) => {
 		expect(string.trimStart(input, new Set(characters))).toBe(expected);
 	});
 
@@ -43,7 +43,7 @@ describe('string', () => {
 		[' a', ' a ', [' ']],
 		[' a 　', ' a 　 ', [' ']],
 		[' a', ' a  　  ', [' ', '　']],
-	])('trimEnd', (expected: string, input: string, characters:string[]) => {
+	])('trimEnd', (expected: string, input: string, characters: string[]) => {
 		expect(string.trimEnd(input, new Set(characters))).toBe(expected);
 	});
 
@@ -52,7 +52,7 @@ describe('string', () => {
 		['a', ' a ', [' ']],
 		['　 a 　', ' 　 a 　 ', [' ']],
 		['a', ' 　 a 　 ', [' ', '　']],
-	])('trim', (expected: string, input: string, characters:string[]) => {
+	])('trim', (expected: string, input: string, characters: string[]) => {
 		expect(string.trim(input, new Set(characters))).toBe(expected);
 	});
 
@@ -73,6 +73,23 @@ describe('string', () => {
 		expect(string.replaceAllImpl('abcabcABCABC', /a/g, '-')).toBe('-bc-bcABCABC');
 		expect(string.replaceAllImpl('abcabcABCABC', /a/gi, '-')).toBe('-bc-bc-BC-BC');
 	});
+
+	test.each([
+		[[], null],
+		[[], undefined],
+		[[], ''],
+		[['a'], 'a'],
+		[['a', 'b'], "a\r\nb"],
+		[['a', 'b'], "a\rb"],
+		[['a', 'b'], "a\nb"],
+		[['', ''], "\r\n"],
+		[['', ''], "\n"],
+		[['', ''], "\r"],
+		[['a', 'b', 'c'], "a\rb\nc"],
+	])('splitLines', (expected: Array<string>, input: string | null | undefined) => {
+		const actual = string.splitLines(input);
+		expect(actual).toEqual(expected);
+	})
 
 	test.each([
 		[true, 'abc', 'a', false],

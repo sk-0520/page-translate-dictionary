@@ -29,6 +29,7 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 		entry: {
 			"page-content": path.join(inputEntryDirectory, `page-content@${env['browser']}.ts`),
 			"application-options": path.join(inputEntryDirectory, `application-options@${env['browser']}.ts`),
+			'setting-editor': path.join(inputEntryDirectory, `setting-editor@${env['browser']}.ts`),
 			"popup-action": path.join(inputEntryDirectory, `popup-action@${env['browser']}.ts`),
 			"background": path.join(inputEntryDirectory, `background@${env['browser']}.ts`),
 		},
@@ -81,6 +82,11 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 			new HtmlWebpackPlugin({
 				template: path.join(inputRootDirectory, 'views', 'application-options.html'),
 				filename: 'application-options.html',
+				inject: false,
+			}),
+			new HtmlWebpackPlugin({
+				template: path.join(inputRootDirectory, 'views', 'setting-editor.html'),
+				filename: 'setting-editor.html',
 				inject: false,
 			}),
 			new HtmlWebpackPlugin({

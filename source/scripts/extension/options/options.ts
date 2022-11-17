@@ -59,7 +59,16 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 
 	dom.requireSelector(itemRootElement, '.setting-item', HTMLElement).dataset['head'] = JSON.stringify(siteHeadConfiguration);
 
-	dom.requireSelector(itemRootElement, '[name="action"]').addEventListener('click', async ev => {
+	dom.requireSelector(itemRootElement, '[name="editor"]').addEventListener('click', async ev => {
+		ev.preventDefault();
+
+		const editorUri = webextension.runtime.getURL('setting-editor.html');
+		webextension.tabs.create({
+			url: editorUri + '?setting=' + siteHeadConfiguration.id,
+		})
+	});
+
+	dom.requireSelector(itemRootElement, '[name="update"]').addEventListener('click', async ev => {
 		ev.preventDefault();
 		const element = ev.currentTarget as HTMLButtonElement;
 		const itemElement = dom.requireClosest(element, '.setting-item', HTMLElement);
@@ -205,6 +214,15 @@ async function bootAsync(extension: extensions.Extension): Promise<void> {
 	});
 
 	setSettings(siteHeads);
+
+	dom.requireElementById('create-setting').addEventListener('click', ev => {
+		ev.preventDefault();
+
+		const editorUri = webextension.runtime.getURL('setting-editor.html');
+		webextension.tabs.create({
+			url: editorUri,
+		})
+	});
 
 	dom.requireElementById('generic').addEventListener('submit', async ev => {
 		ev.preventDefault();

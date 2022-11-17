@@ -133,6 +133,19 @@ export function replaceAll(source: string, searchValue: string | RegExp, replace
 	return source.replaceAll(searchValue, replaceValue);
 }
 
+/**
+ * 改行分割。
+ * @param source
+ * @returns
+ */
+export function splitLines(source: string | null | undefined): Array<string> {
+	if (!source) {
+		return [];
+	}
+
+	return source.split(/\r\n|\n|\r/);
+}
+
 export const enum MatchMode {
 	Partial,
 	Forward,

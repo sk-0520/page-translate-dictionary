@@ -112,6 +112,9 @@ const messages: locale.Messages & locale.MessageMap = {
 	options_tab_content_settings_item_details_actions: {
 		message: '処理',
 	},
+	options_tab_content_settings_item_details_actions_editor: {
+		message: '編集',
+	},
 	options_tab_content_settings_item_details_actions_delete: {
 		message: '削除',
 	},
@@ -120,6 +123,10 @@ const messages: locale.Messages & locale.MessageMap = {
 	},
 	options_tab_content_settings_item_details_actions_updating: {
 		message: '更新中',
+	},
+
+	options_tab_content_setting_create: {
+		message: '新規作成',
 	},
 
 	options_tab_content_settings_import: {
@@ -182,8 +189,66 @@ const messages: locale.Messages & locale.MessageMap = {
 	},
 	options_import_log_convert: {
 		message: '変換処理開始',
-	}
+	},
 
+	editor_tab_header_head: {
+		message: '基本',
+	},
+	editor_tab_content_head_id: {
+		message: '内部ID',
+	},
+	editor_tab_content_head_update_url: {
+		message: 'アップデートURL',
+	},
+	editor_tab_content_head_name: {
+		message: '設定名',
+	},
+	editor_tab_content_head_version: {
+		message: 'バージョン',
+	},
+	editor_tab_content_head_hosts: {
+		message: '対象ホスト',
+	},
+	editor_tab_content_head_information: {
+		message: '情報',
+	},
+	editor_tab_content_head_information_website: {
+		message: 'Webサイト',
+	},
+	editor_tab_content_head_information_repository: {
+		message: 'リポジトリ',
+	},
+	editor_tab_content_head_information_document: {
+		message: 'ドキュメント',
+	},
+	editor_tab_content_head_priority: {
+		message: '優先度',
+	},
+	editor_tab_content_head_language: {
+		message: '翻訳先言語',
+	},
+	editor_tab_header_path: {
+		message: 'パス',
+	},
+	editor_tab_header_common: {
+		message: '共通',
+	},
+	editor_tab_header_watch: {
+		message: '監視',
+	},
+	editor_tab_content_watch_window: {
+		message: 'window',
+	},
+	editor_tab_content_watch_document: {
+		message: 'window.document',
+	},
+	editor_save: {
+		message: '保存',
+	},
+
+	validation_invalid: {
+		message: '入力が正しくありません',
+	}
 };
 
 export default messages;

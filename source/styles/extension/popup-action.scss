@@ -1,7 +1,14 @@
 @forward "./details";
 
+@use "./font" as font;
+
 body {
 	min-width: 400px;
+}
+
+html,
+body {
+	@include font.extension-font;
 }
 
 #disabled {

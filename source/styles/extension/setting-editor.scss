@@ -1,0 +1,96 @@
+@forward '../../../node_modules/normalize-sass/normalize.sass';
+@forward "./details";
+
+@use "../core/tab";
+@use "../core/responsive" as responsive;
+@use "./font" as font;
+@use "./setting";
+
+html,
+body {
+	height: 100%;
+	padding: 0;
+	margin: 0;
+
+	@include font.extension-font;
+}
+
+.tab {
+	.tab_header {
+		$padding: 0.5em;
+		width: calc(100% / 4 - (#{$padding} * 2));
+		text-align: center;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
+
+		// 既存の上書き
+		margin: 0;
+		padding: $padding;
+		border: none;
+		border-bottom: 2px solid transparent;
+	}
+
+	&>input.tab_check {
+		&:checked+.tab_header {
+			font-weight: bold;
+			border-bottom-color: rgb(159, 236, 255);
+
+			&+.tab_content {
+				border: none;
+				padding: 0.5ex 1em 1em 1em;
+
+				@include responsive.media(responsive.$s) {
+					padding: 0.25ex 0.5em 1em 0.5em;
+				}
+			}
+		}
+	}
+}
+
+#editor {
+	padding: 0;
+	margin: 0;
+	height: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+
+	&.loading {
+		display: none;
+	}
+
+	main {
+		width: 100%;
+		height: 100%;
+		align-content: start;
+		flex: content;
+		overflow: auto;
+
+		.tab_content {
+			height: calc(100% - 4em);
+		}
+	}
+
+	footer {
+		width: calc(100% - 1ex * 2);
+		padding: 1ex;
+	}
+}
+
+input {
+	width: 80%;
+}
+
+textarea {
+	font-family: monospace;
+	height: 8em;
+	width: 80%;
+
+	&#path_json,
+	&#common_json {
+		height: 100%;
+		width: 99%;
+	}
+}
