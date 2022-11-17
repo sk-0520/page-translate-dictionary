@@ -38,12 +38,12 @@ export interface Messages {
 	options_tab_header_generic: Message,
 
 	options_tab_content_generic_translate: Message,
-	options_tab_content_generic_translate_markReplacedElement: Message,
+	options_tab_content_generic_translate_mark_replaced_element: Message,
 
 	options_tab_content_generic_setting: Message,
-	options_tab_content_generic_setting_autoUpdate: Message,
-	options_tab_content_generic_setting_updatedBeforeTranslation: Message,
-	options_tab_content_generic_setting_periodDays: Message,
+	options_tab_content_generic_setting_auto_update: Message,
+	options_tab_content_generic_setting_updated_before_translation: Message,
+	options_tab_content_generic_setting_period_days: Message,
 
 	options_tab_content_generic_save: Message,
 
@@ -53,7 +53,7 @@ export interface Messages {
 
 	options_tab_content_settings_item_name: Message,
 	options_tab_content_settings_item_version: Message,
-	options_tab_content_settings_item_updatedTimestamp: Message,
+	options_tab_content_settings_item_updated_timestamp: Message,
 	options_tab_content_settings_item_website: Message,
 	options_tab_content_settings_item_repository: Message,
 	options_tab_content_settings_item_document: Message,

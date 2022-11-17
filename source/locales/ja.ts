@@ -43,20 +43,20 @@ const messages: locale.Messages & locale.MessageMap = {
 	options_tab_content_generic_translate: {
 		message: '翻訳設定',
 	},
-	options_tab_content_generic_translate_markReplacedElement: {
+	options_tab_content_generic_translate_mark_replaced_element: {
 		message: '置き換え部分をマークする',
 	},
 
 	options_tab_content_generic_setting: {
 		message: '設定ファイル',
 	},
-	options_tab_content_generic_setting_autoUpdate: {
+	options_tab_content_generic_setting_auto_update: {
 		message: '自動更新を行う',
 	},
-	options_tab_content_generic_setting_updatedBeforeTranslation: {
+	options_tab_content_generic_setting_updated_before_translation: {
 		message: '翻訳開始前に設定更新処理を行う',
 	},
-	options_tab_content_generic_setting_periodDays: {
+	options_tab_content_generic_setting_period_days: {
 		message: '自動更新期間(日)',
 	},
 
@@ -76,7 +76,7 @@ const messages: locale.Messages & locale.MessageMap = {
 	options_tab_content_settings_item_version: {
 		message: '設定バージョン',
 	},
-	options_tab_content_settings_item_updatedTimestamp: {
+	options_tab_content_settings_item_updated_timestamp: {
 		message: '最終更新日時(UTC)',
 	},
 	options_tab_content_settings_item_website: {
