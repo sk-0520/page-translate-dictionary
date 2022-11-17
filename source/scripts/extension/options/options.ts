@@ -68,29 +68,35 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 		})
 	});
 
-	dom.requireSelector(itemRootElement, '[name="update"]').addEventListener('click', async ev => {
-		ev.preventDefault();
-		const element = ev.currentTarget as HTMLButtonElement;
-		const itemElement = dom.requireClosest(element, '.setting-item', HTMLElement);
-		const currentSiteHeadConfiguration = JSON.parse(itemElement.dataset['head']!);
-		element.disabled = true;
-		const prev = element.textContent;
-		try {
-			element.textContent = element.dataset['updating']!;
+	const updateElement = dom.requireSelector(itemRootElement, '[name="update"]', HTMLButtonElement);
+	if (siteHeadConfiguration.updateUrl) {
+		updateElement.addEventListener('click', async ev => {
+			ev.preventDefault();
+			const element = ev.currentTarget as HTMLButtonElement;
+			const itemElement = dom.requireClosest(element, '.setting-item', HTMLElement);
+			const currentSiteHeadConfiguration = JSON.parse(itemElement.dataset['head']!);
+			element.disabled = true;
+			const prev = element.textContent;
+			try {
+				element.textContent = element.dataset['updating']!;
 
-			const setting = await loader.fetchAsync(currentSiteHeadConfiguration.updateUrl);
-			if (!setting) {
-				return;
+				const setting = await loader.fetchAsync(currentSiteHeadConfiguration.updateUrl);
+				if (!setting) {
+					return;
+				}
+
+				const site = await loader.saveAsync(currentSiteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id);
+				itemElement.dataset['head'] = JSON.stringify(site.head);
+				updateItemInformation(site.head, itemElement);
+			} finally {
+				element.disabled = false;
+				element.textContent = prev;
 			}
+		}, false);
+	} else {
+		updateElement.disabled = true;
+	}
 
-			const site = await loader.saveAsync(currentSiteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id);
-			itemElement.dataset['head'] = JSON.stringify(site.head);
-			updateItemInformation(site.head, itemElement);
-		} finally {
-			element.disabled = false;
-			element.textContent = prev;
-		}
-	}, false);
 	dom.requireSelector(itemRootElement, '[name="id"]').textContent = siteHeadConfiguration.id;
 	dom.requireSelector(itemRootElement, '[name="delete"]').addEventListener('click', async ev => {
 		const element = ev.currentTarget as HTMLButtonElement;
