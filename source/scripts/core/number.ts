@@ -3,6 +3,8 @@
 /**
  * 数値埋め処理。
  *
+ * なぜこれを作ったのか、謎い。
+ *
  * @param input 数値。
  * @param width 幅数。
  * @param c 埋め文字。

@@ -1,10 +1,19 @@
+/**
+ * プロパティ名として使用可能なキー。
+ *
+ * `number` いる？
+ */
 export type PropertyKey = string | symbol;
 
+/** クラス的な。 */
 export type Constructor<T extends object> = {
 	prototype: T,
 };
 
 declare const _StrongType: unique symbol;
+/**
+ * 強い型。
+ */
 export type StrongType<T, U = string> = T & { readonly [_StrongType]: U };
 
 /**
@@ -315,7 +324,7 @@ export function filterTArray<T>(arg: unknown, guard: (item: unknown) => item is 
  * @param arg
  * @returns
  */
-export function filterStringArray<T>(arg: unknown): Array<string> {
+export function filterStringArray(arg: unknown): Array<string> {
 	return filterTArray(arg, isString);
 }
 
@@ -324,7 +333,7 @@ export function filterStringArray<T>(arg: unknown): Array<string> {
  * @param arg
  * @returns
  */
-export function filterNumberArray<T>(arg: unknown): Array<number> {
+export function filterNumberArray(arg: unknown): Array<number> {
 	return filterTArray(arg, isNumber);
 }
 
@@ -333,7 +342,7 @@ export function filterNumberArray<T>(arg: unknown): Array<number> {
  * @param arg
  * @returns
  */
-export function filterBooleanArray<T>(arg: unknown): Array<boolean> {
+export function filterBooleanArray(arg: unknown): Array<boolean> {
 	return filterTArray(arg, isBoolean);
 }
 
