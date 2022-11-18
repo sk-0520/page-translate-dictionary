@@ -110,9 +110,9 @@ function setValues(head: config.SiteHeadConfiguration, body: config.SiteBodyConf
 
 	elements.priority.value = head.priority.toString();
 	elements.language.value = head.language;
-	if(types.hasArray(navigator, types.nameof<Navigator>('languages'))) {
+	if (types.hasArray(navigator, types.nameof<Navigator>('languages'))) {
 		const languageListElement = dom.requireElementById('language-list', HTMLDataListElement);
-		for(const language of navigator.languages) {
+		for (const language of navigator.languages) {
 			const optionElement = document.createElement('option');
 			optionElement.value = language;
 
@@ -254,6 +254,15 @@ async function bootAsync(id: config.SiteInternalId | null, extension: extensions
 	}
 
 	setValues(head, body);
+
+	const title = webextension.i18n.getMessage('ext_name');
+	if (CreateMode) {
+		const titleHead = webextension.i18n.getMessage('editor_new');
+		document.title = `${titleHead} - ${title}`;
+	} else {
+		const titleHead = webextension.i18n.getMessage('editor_edit');
+		document.title = `${titleHead} ${head.name} - ${title}`;
+	}
 
 	dom.requireElementById('editor').addEventListener('submit', async ev => {
 		ev.preventDefault();

@@ -206,6 +206,7 @@ async function bootAsync(extension: extensions.Extension): Promise<void> {
 	const siteHeadsTask = storage.loadSiteHeadsAsync();
 
 	localize.applyView();
+	document.title = webextension.i18n.getMessage('options_title', webextension.i18n.getMessage('ext_name'));
 
 	const application = await applicationTask;
 	setApplication(application);

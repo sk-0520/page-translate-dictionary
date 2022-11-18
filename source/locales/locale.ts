@@ -86,6 +86,8 @@ export interface Messages {
 	options_import_log_host: Message,
 	options_import_log_convert: Message,
 
+	editor_new: Message;
+	editor_edit: Message;
 	editor_tab_header_head: Message,
 	editor_tab_content_head_id: Message,
 	editor_tab_content_head_update_url: Message,
