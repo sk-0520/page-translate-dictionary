@@ -38,6 +38,8 @@ cd dist/web-ext-artifacts
 ## なぜ作るか
 
 * 公式で日本語訳ページを作る企業あんまないでしょ
+  * 英語至上主義感がつらい
+  * いろんな言語も対応できたら誰かが幸せになる(設定ファイルがあればね！)
 * 原文を自分で読んでも翻訳サイト使っても機微が分からん
   * 翻訳先言語の多数の目があれば、とは思いつつ誰が訳すねんっていうね
 
@@ -64,7 +66,6 @@ cd dist/web-ext-artifacts
 ```properties
 # npm scripts: *-env 系の環境を設定
 # 変数名の先頭に PTD_ を付与すること
-# 環境変数自体は
 
 # Firefox 設定
 # プロファイルディレクトリ
@@ -100,7 +101,7 @@ PTD_CHROME_PROFILE_DIRECTORY=X:\ch
   "priority": 0,
   // 変換先言語
   "language": "ja-JP",
-  "event": {
+  "watch": {
     "window": [
       // window 監視対象イベント
     ],
