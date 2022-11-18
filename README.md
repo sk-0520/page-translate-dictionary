@@ -100,7 +100,7 @@ PTD_CHROME_PROFILE_DIRECTORY=X:\ch
   // 優先度 0: 通常, 低 < 0 < 高
   "priority": 0,
   // 変換先言語
-  "language": "ja-JP",
+  "language": "ja",
   "watch": {
     "window": [
       // window 監視対象イベント
