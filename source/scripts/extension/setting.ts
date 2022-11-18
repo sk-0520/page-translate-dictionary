@@ -204,10 +204,10 @@ export interface SelectorSetting {
 	 * セレクタを全要素に適用するか
 	 */
 	all?: boolean | null;
-	/**
-	 * 対象用を監視対象とするか
-	 */
-	watch?: boolean | null;
+	//[watch:omit] /**
+	//[watch:omit]  * 対象用を監視対象とするか
+	//[watch:omit]  */
+	//[watch:omit] watch?: boolean | null;
 
 	//#endregion
 }

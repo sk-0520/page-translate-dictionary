@@ -21,12 +21,12 @@ type PageCache = {
 	sites: ReadonlyArray<config.SiteConfiguration>,
 	/** キャッシュ構築時点での `<meta name=* content=*>` 一覧 */
 	metaMap: ReadonlyMap<string, string>;
-	// /** 翻訳済み要素とその設定 */
-	// translatedTargets: Map<config.QueryConfiguration, WeakSet<Element>>,
-	/** 監視対象要素 TODO: Query は複数に対応しないと設定と矛盾が出る */
-	watchers: Map<Element, config.QueryConfiguration>,
-	/** 監視対象要素 */
-	observer: MutationObserver;
+	//[watch:omit] // /** 翻訳済み要素とその設定 */
+	//[watch:omit] // translatedTargets: Map<config.QueryConfiguration, WeakSet<Element>>,
+	//[watch:omit] /** 監視対象要素 TODO: Query は複数に対応しないと設定と矛盾が出る */
+	//[watch:omit] watchers: Map<Element, config.QueryConfiguration>,
+	//[watch:omit] /** 監視対象要素 */
+	//[watch:omit] observer: MutationObserver;
 };
 let pageCache: PageCache | null;
 
@@ -71,75 +71,76 @@ function executeCoreAsync(pageCache: PageCache): Promise<Array<translator.Transl
 	return Promise.resolve(targets);
 }
 
-function toMutationObserverInit(queryConfiguration: config.QueryConfiguration): MutationObserverInit {
-	const options: MutationObserverInit = {
-		childList: false,
-		subtree: false,
-	};
+//[watch:omit] function toMutationObserverInit(queryConfiguration: config.QueryConfiguration): MutationObserverInit {
+//[watch:omit] 	const options: MutationObserverInit = {
+//[watch:omit] 		childList: false,
+//[watch:omit] 		subtree: false,
+//[watch:omit] 	};
+//[watch:omit]
+//[watch:omit] 	if (queryConfiguration.text) {
+//[watch:omit] 		options.characterData = true;
+//[watch:omit] 	}
+//[watch:omit] 	if (queryConfiguration.attributes.size) {
+//[watch:omit] 		options.attributes = true;
+//[watch:omit] 		options.attributeFilter = [...queryConfiguration.attributes.keys()];
+//[watch:omit] 	}
+//[watch:omit]
+//[watch:omit] 	return options;
+//[watch:omit] }
 
-	if (queryConfiguration.text) {
-		options.characterData = true;
-	}
-	if (queryConfiguration.attributes.size) {
-		options.attributes = true;
-		options.attributeFilter = [...queryConfiguration.attributes.keys()];
-	}
-
-	return options;
-}
-
-/**
- * 翻訳済み要素のキャッシュ・監視追加
- * @param pageCache 更新対象（直接操作される点に注意）
- * @param targets 翻訳済みデータ
- */
-function updatePageCache(pageCache: PageCache, targets: ReadonlyArray<translator.TranslatedTarget>) {
-	//
-	pageCache.observer.disconnect();
-
-	for (const target of targets) {
-		// let translatedTarget = pageCache.translatedTargets.get(target.queryConfiguration);
-		// if (translatedTarget) {
-		// 	for (const element of target.elements) {
-		// 		translatedTarget.add(element);
-		// 	}
-		// } else {
-		// 	translatedTarget = new WeakSet(target.elements);
-		// 	pageCache.translatedTargets.set(target.queryConfiguration, translatedTarget);
-		// }
-
-		// 監視登録
-		if (target.queryConfiguration.selector.watch) {
-			for (const element of target.elements) {
-				if (!pageCache.watchers.has(element)) {
-					console.debug('監視追加', element.textContent, target.queryConfiguration);
-					pageCache.watchers.set(element, target.queryConfiguration);
-				}
-			}
-		}
-	}
-
-	for (const [element, queryConfiguration] of pageCache.watchers) {
-		const init = toMutationObserverInit(queryConfiguration);
-		console.debug('監視対象', queryConfiguration, init);
-		pageCache.observer.observe(element, init);
-	}
-}
+//[watch:omit] /**
+//[watch:omit]  * 翻訳済み要素のキャッシュ・監視追加
+//[watch:omit]  * @param pageCache 更新対象（直接操作される点に注意）
+//[watch:omit]  * @param targets 翻訳済みデータ
+//[watch:omit]  */
+//[watch:omit] function updatePageCache(pageCache: PageCache, targets: ReadonlyArray<translator.TranslatedTarget>) {
+//[watch:omit] 	//
+//[watch:omit] 	pageCache.observer.disconnect();
+//[watch:omit]
+//[watch:omit] 	for (const target of targets) {
+//[watch:omit] 		// let translatedTarget = pageCache.translatedTargets.get(target.queryConfiguration);
+//[watch:omit] 		// if (translatedTarget) {
+//[watch:omit] 		// 	for (const element of target.elements) {
+//[watch:omit] 		// 		translatedTarget.add(element);
+//[watch:omit] 		// 	}
+//[watch:omit] 		// } else {
+//[watch:omit] 		// 	translatedTarget = new WeakSet(target.elements);
+//[watch:omit] 		// 	pageCache.translatedTargets.set(target.queryConfiguration, translatedTarget);
+//[watch:omit] 		// }
+//[watch:omit]
+//[watch:omit] 		// 監視登録
+//[watch:omit] 		if (target.queryConfiguration.selector.watch) {
+//[watch:omit] 			for (const element of target.elements) {
+//[watch:omit] 				if (!pageCache.watchers.has(element)) {
+//[watch:omit] 					console.debug('監視追加', element.textContent, target.queryConfiguration);
+//[watch:omit] 					pageCache.watchers.set(element, target.queryConfiguration);
+//[watch:omit] 				}
+//[watch:omit] 			}
+//[watch:omit] 		}
+//[watch:omit] 	}
+//[watch:omit]
+//[watch:omit] 	for (const [element, queryConfiguration] of pageCache.watchers) {
+//[watch:omit] 		const init = toMutationObserverInit(queryConfiguration);
+//[watch:omit] 		console.debug('監視対象', queryConfiguration, init);
+//[watch:omit] 		pageCache.observer.observe(element, init);
+//[watch:omit] 	}
+//[watch:omit] }
 
 async function executeAsync(pageCache: PageCache): Promise<void> {
 	// const progressElement = createProgressElement();
 	// document.body.appendChild(progressElement);
-	let targets: Array<translator.TranslatedTarget>;
+	//[watch:omit] let targets: Array<translator.TranslatedTarget>;
 	try {
 		console.time('TRANSLATE');
-		targets = await executeCoreAsync(pageCache);
+		//[watch:omit] targets = await executeCoreAsync(pageCache);
+		await executeCoreAsync(pageCache);
 		await sendMessageAsync(messages.MessageKind.NotifyPageInformation);
 	} finally {
 		// document.body.removeChild(progressElement);
 		console.timeEnd('TRANSLATE');
 	}
 
-	updatePageCache(pageCache, targets);
+	//[watch:omit] updatePageCache(pageCache, targets);
 }
 
 function updatedPageAsync(event: Event): Promise<void> {
@@ -160,10 +161,10 @@ function modifyPageAsync(mutations: ReadonlyArray<MutationRecord>): Promise<void
 	return Promise.resolve();
 }
 
-async function onWatchMutationAsync(mutations: ReadonlyArray<MutationRecord>, observer: MutationObserver): Promise<void> {
-	console.trace('なんかきた: 現状未検証処理', mutations);
-	return Promise.resolve();
-}
+//[watch:omit] async function onWatchMutationAsync(mutations: ReadonlyArray<MutationRecord>, observer: MutationObserver): Promise<void> {
+//[watch:omit] 	console.trace('なんかきた: 現状未検証処理', mutations);
+//[watch:omit] 	return Promise.resolve();
+//[watch:omit] }
 
 async function updateSiteConfigurationAsync(siteHeadConfiguration: config.SiteHeadConfiguration, force: boolean): Promise<config.SiteHeadConfiguration | null> {
 	try {
@@ -365,10 +366,10 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 			sites: siteItems,
 			metaMap: getMeta(),
 			//translatedTargets: new Map(),
-			watchers: new Map(),
-			observer: new MutationObserver((x, a) => {
-				onWatchMutationAsync(x, a);
-			}),
+			//[watch:omit] watchers: new Map(),
+			//[watch:omit] observer: new MutationObserver((x, a) => {
+			//[watch:omit] 	onWatchMutationAsync(x, a);
+			//[watch:omit] }),
 		};
 
 		// イベント監視設定追加
