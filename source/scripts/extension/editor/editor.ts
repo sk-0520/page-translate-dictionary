@@ -2,6 +2,7 @@ import * as webextension from 'webextension-polyfill';
 //import * as JSONC from 'jsonc-parser'; パースエラー時にごっそり無くなる可能性があって危ない
 
 import * as dom from '../../core/dom';
+import * as types from '../../core/types';
 import * as string from '../../core/string';
 import * as extensions from '../extensions';
 import * as config from '../config';
@@ -109,6 +110,15 @@ function setValues(head: config.SiteHeadConfiguration, body: config.SiteBodyConf
 
 	elements.priority.value = head.priority.toString();
 	elements.language.value = head.language;
+	if(types.hasArray(navigator, types.nameof<Navigator>('languages'))) {
+		const languageListElement = dom.requireElementById('language-list', HTMLDataListElement);
+		for(const language of navigator.languages) {
+			const optionElement = document.createElement('option');
+			optionElement.value = language;
+
+			languageListElement.appendChild(optionElement);
+		}
+	}
 
 	// パス
 	elements.jsonPath.value = toJsonText(body.path);
