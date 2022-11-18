@@ -92,6 +92,20 @@ describe('string', () => {
 	})
 
 	test.each([
+		[false, null],
+		[false, undefined],
+		[false, ''],
+		[false, 't'],
+		[false, 'on'],
+		[false, 'yes'],
+		[true, 'true'],
+		[true, 'True'],
+		[true, 'TRUE'],
+	])('toBoolean', (expected: boolean, input: string | null | undefined) => {
+		expect(string.toBoolean(input)).toBe(expected);
+	});
+
+	test.each([
 		[true, 'abc', 'a', false],
 		[true, 'abc', 'b', false],
 		[true, 'abc', 'c', false],

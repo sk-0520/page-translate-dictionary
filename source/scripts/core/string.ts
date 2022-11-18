@@ -146,6 +146,14 @@ export function splitLines(source: string | null | undefined): Array<string> {
 	return source.split(/\r\n|\n|\r/);
 }
 
+export function toBoolean(s: string | null | undefined): boolean {
+	if (!s) {
+		return false;
+	}
+
+	return s.toLowerCase() === 'true';
+}
+
 export const enum MatchMode {
 	Partial,
 	Forward,

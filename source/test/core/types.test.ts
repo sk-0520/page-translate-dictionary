@@ -582,16 +582,9 @@ describe('types', () => {
 		expect(input.c).toBe(output2.c);
 	});
 
-	test('toBoolean', () => {
-		expect(types.toBoolean(null)).toBeFalsy();
-		expect(types.toBoolean(undefined)).toBeFalsy();
-		expect(types.toBoolean("")).toBeFalsy();
-		expect(types.toBoolean("t")).toBeFalsy();
-		expect(types.toBoolean("f")).toBeFalsy();
-		expect(types.toBoolean("false")).toBeFalsy();
-		expect(types.toBoolean("FALSE")).toBeFalsy();
-		expect(types.toBoolean("true")).toBeTruthy();
-		expect(types.toBoolean("TRUE")).toBeTruthy();
+	test('nameof', () => {
+		expect(types.nameof<TestFlat>('a')).toBe('a');
+		expect(types.nameof<TestDeepSuper>('A')).toBe('A');
 	});
 
 	test('toString', () => {

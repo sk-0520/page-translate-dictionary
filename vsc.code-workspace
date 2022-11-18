@@ -43,6 +43,7 @@
 			"timespan",
 			"webextension",
 			"THTML",
+			"nameof",
 		],
 		"auto-close-tag.activationOnLanguage": [
 			"xml",

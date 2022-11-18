@@ -419,12 +419,8 @@ export function flatClone<TResult extends { [K in keyof TResult]: TResult[K] }, 
 	return result as any as TResult;
 }
 
-export function toBoolean(s: string | null | undefined): boolean {
-	if (!s) {
-		return false;
-	}
-
-	return s.toLowerCase() === 'true';
+export function nameof<T>(name: Extract<keyof T, string>): string {
+	return name;
 }
 
 export function toString(input: any): string {
