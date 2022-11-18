@@ -147,8 +147,6 @@ PTD_CHROME_PROFILE_DIRECTORY=X:\ch
             "node": 3,
             // セレクタを全要素に適用するか
             "all": false,
-            // 対象用を監視対象とするか
-            "watch": false,
           },
           // 対象要素の (Element/Text).textContent
           "text": {
