@@ -24,12 +24,6 @@
     "licenses": "MIT",
     "repository": "https://github.com/webpack-contrib/copy-webpack-plugin"
   },
-  "cp-cli": {
-    "module": "cp-cli@2.0.0",
-    "version": "2.0.0",
-    "licenses": "MIT",
-    "repository": "https://github.com/screendriver/cp-cli"
-  },
   "css-loader": {
     "module": "css-loader@6.7.1",
     "version": "6.7.1",
@@ -90,13 +84,6 @@
     "licenses": "MIT",
     "repository": "https://github.com/ajkochanowicz/normalize.css"
   },
-  "normalize-scss": {
-    "module": "normalize-scss@7.0.1",
-    "version": "7.0.1",
-    "publisher": "John Albin Wilkins",
-    "licenses": "(MIT OR GPL-2.0)",
-    "repository": "https://github.com/JohnAlbin/normalize-scss"
-  },
   "npm-check-updates": {
     "module": "npm-check-updates@16.3.16",
     "version": "16.3.16",
@@ -110,13 +97,6 @@
     "publisher": "Toru Nagashima",
     "licenses": "MIT",
     "repository": "https://github.com/mysticatea/npm-run-all"
-  },
-  "rimraf": {
-    "module": "rimraf@3.0.2",
-    "version": "3.0.2",
-    "publisher": "Isaac Z. Schlueter",
-    "licenses": "ISC",
-    "repository": "https://github.com/isaacs/rimraf"
   },
   "sass-loader": {
     "module": "sass-loader@13.1.0",
