@@ -696,7 +696,7 @@ class SiteConfigurationImpl implements SiteConfiguration {
 	}
 
 	public get updateUrl(): string {
-		return this.head.id;
+		return this.head.updateUrl;
 	}
 
 	public get updatedTimestamp(): string {
@@ -734,10 +734,10 @@ class SiteConfigurationImpl implements SiteConfiguration {
 	//#endregion
 }
 
-export interface BackgroundPageItem {
-	tabId: number;
-}
+// export interface BackgroundPageItem {
+// 	tabId: number;
+// }
 
-export interface BackgroundData {
-	items: Array<BackgroundPageItem>;
-}
+// export interface BackgroundData {
+// 	items: Array<BackgroundPageItem>;
+// }
