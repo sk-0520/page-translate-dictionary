@@ -128,7 +128,7 @@ export interface SelectorConfiguration {
 	readonly value: string;
 	readonly node: number;
 	readonly all: boolean;
-	readonly watch: boolean;
+	//[watch:omit] readonly watch: boolean;
 
 	//#endregion
 }
@@ -409,7 +409,7 @@ class SiteConfigurationImpl implements SiteConfiguration {
 			value: raw.value!,
 			node: types.getPropertyOr(raw, 'node', 0),
 			all: types.getPropertyOr(raw, 'all', false),
-			watch: types.getPropertyOr(raw, 'watch', false),
+			//[watch:omit] watch: types.getPropertyOr(raw, 'watch', false),
 		};
 
 		return result;

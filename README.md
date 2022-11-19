@@ -113,7 +113,7 @@ PTD_CHROME_PROFILE_DIRECTORY=X:\ch
   // パス
   "path": {
     // 対象パス(正規表現)
-    "/": {
+    "^/$": {
       // パスにクエリ部分を含めるか
       "with_search": true,
       // セレクタに対する処理
