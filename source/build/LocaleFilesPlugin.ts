@@ -23,7 +23,10 @@ export default class LocaleFilesPlugin {
 		if (fs.existsSync(outputLocalesDirectory)) {
 			fs.rmSync(outputLocalesDirectory, { recursive: true });
 		}
-		fs.mkdirSync(outputLocalesDirectory);
+		// デバッグあれこれしてるとたまに掴まれるのでその対応。CIではそもそもディレクトリないので問題なし
+		if (!fs.existsSync(outputLocalesDirectory)) {
+			fs.mkdirSync(outputLocalesDirectory);
+		}
 
 		const localeItems = new Map([
 			['ja', 'ja.ts'],

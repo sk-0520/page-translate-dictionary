@@ -20,7 +20,7 @@ body {
 .tab {
 	.tab_header {
 		$padding: 0.5em;
-		width: calc(100% / 2 - (#{$padding} * 2));
+		width: calc(100% / 3 - (#{$padding} * 2));
 		text-align: center;
 
 		// 既存の上書き

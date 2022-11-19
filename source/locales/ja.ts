@@ -196,6 +196,27 @@ const messages: locale.Messages & locale.MessageMap = {
 		message: '変換処理開始',
 	},
 
+	options_tab_header_about: {
+		message: '$NAME$について',
+		placeholders: {
+			'NAME': {
+				content: '$1',
+			}
+		}
+	},
+	options_tab_content_about_library: {
+		message: '使用ライブラリ',
+	},
+	options_tab_content_about_library_item_library: {
+		message: 'ライブラリ',
+	},
+	options_tab_content_about_library_item_license: {
+		message: 'ライセンス',
+	},
+	options_tab_content_about_library_item_publisher: {
+		message: '発行者',
+	},
+
 	editor_new: {
 		message: '新規作成',
 	},

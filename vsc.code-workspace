@@ -57,6 +57,7 @@
 			"^(?!.*-env$)debug:.*$",
 			"output",
 			"lint",
+			"license",
 			"^(check|update)$"
 		]
 	},

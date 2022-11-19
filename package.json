@@ -28,6 +28,7 @@
 		"postoutput:firefox": "ts-node ./source/build/output-rename.ts firefox",
 		"output:chrome": "cd dist && web-ext build --overwrite-dest",
 		"postoutput:chrome": "ts-node ./source/build/output-rename.ts chrome",
+		"license": "ts-node ./source/generator/license-generator.ts",
 		"check": "ncu",
 		"update": "ncu -u && npm install"
 	},
@@ -70,6 +71,7 @@
 		"jest": "^29.2.2",
 		"jest-environment-jsdom": "^29.2.2",
 		"jsonc-parser": "^3.2.0",
+		"license-checker": "^25.0.1",
 		"mkdirp": "^1.0.4",
 		"normalize-sass": "^1.0.0",
 		"normalize-scss": "^7.0.1",

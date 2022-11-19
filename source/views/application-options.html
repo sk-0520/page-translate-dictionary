@@ -15,7 +15,9 @@
 				<time name="updated-timestamp" data-ext-title="options_tab_content_settings_item_updated_timestamp"></time>
 				<details>
 					<summary data-ext-text="options_tab_content_settings_item_hosts"></summary>
-					<ul name="hosts" class="hosts"><!-- template-setting-item-host --></ul>
+					<ul name="hosts" class="hosts">
+						<!-- template-setting-item-host -->
+					</ul>
 				</details>
 				<details>
 					<summary data-ext-text="options_tab_content_settings_item_details"></summary>
@@ -59,6 +61,15 @@
 		</template>
 		<template id="template-setting-item-host">
 			<li><code name="host"></code></a></li>
+		</template>
+		<template id="template-library-item">
+			<tr>
+				<td>
+					<a name="library" target="_blank"></a>
+				</td>
+				<td name="license"></td>
+				<td name="publisher"></td>
+			</tr>
 		</template>
 
 		<div id="processing">
@@ -123,6 +134,26 @@
 					<h2 data-ext-text="options_tab_content_settings_import">options_tab_content_settings_import</h2>
 					<button id="import" data-ext-text="options_tab_content_settings_import_submit">import</button>
 					<ol id="import-log"></ol>
+				</section>
+			</div>
+
+			<input name="tab" class="tab_check" type="radio" id="options_tab_header_about" />
+			<label for="options_tab_header_about" class="tab_header">options_tab_header_about</label>
+			<div class="tab_content">
+				<section>
+					<h2 data-ext-text="options_tab_content_about_library"></h2>
+					<table>
+						<thead>
+							<tr>
+								<th data-ext-text="options_tab_content_about_library_item_library"></th>
+								<th data-ext-text="options_tab_content_about_library_item_license"></th>
+								<th data-ext-text="options_tab_content_about_library_item_publisher"></th>
+							</tr>
+						</thead>
+						<tbody id="library-items">
+							<!-- #template-library-item -->
+						</tbody>
+					</table>
 				</section>
 			</div>
 

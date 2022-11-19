@@ -19,6 +19,7 @@
 		"useUnknownInCatchVariables": true,
 		// "noUncheckedIndexedAccess": true, むりだぁ
 		"noImplicitOverride": true,
+		"resolveJsonModule": true,
 		"sourceMap": true,
 		"target": "es2021",
 		"moduleResolution": "node",

@@ -86,6 +86,12 @@ export interface Messages {
 	options_import_log_host: Message,
 	options_import_log_convert: Message,
 
+	options_tab_header_about: Message,
+	options_tab_content_about_library: Message,
+	options_tab_content_about_library_item_library: Message,
+	options_tab_content_about_library_item_license: Message,
+	options_tab_content_about_library_item_publisher: Message,
+
 	editor_new: Message;
 	editor_edit: Message;
 	editor_tab_header_head: Message,

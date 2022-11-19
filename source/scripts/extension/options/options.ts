@@ -1,12 +1,16 @@
 import webextension from "webextension-polyfill";
+
 import * as dom from '../../core/dom';
+import * as types from '../../core/types';
 import * as localize from '../localize';
 import * as storage from '../storage';
 import * as config from '../config';
 import * as url from '../../core/url';
 import * as loader from '../loader';
 import ImportLogger from './ImportLogger';
+import license from './license.json';
 import * as extensions from '../extensions';
+
 import '../../../styles/extension/application-options.scss';
 
 function setApplication(applicationConfiguration: config.ApplicationConfiguration) {
@@ -181,6 +185,32 @@ function setSettings(siteHeadConfigurations: ReadonlyArray<config.SiteHeadConfig
 	})
 }
 
+function setLibraries() {
+	const libraryItemsElement = dom.requireElementById('library-items', HTMLTableSectionElement);
+	const itemTemplateElement = dom.requireElementById('template-library-item', HTMLTemplateElement);
+
+	const getKeys = <T extends object>(json: T): Array<keyof T> => Object.keys(json).sort() as Array<keyof T>;
+	//const names = Object.keys(license).sort() as Array<keyof license>;
+	const names = getKeys(license);
+	for (const name of names) {
+		const itemsElement = dom.cloneTemplate(itemTemplateElement);
+
+		const value = license[name];
+
+		const libraryElement = dom.requireSelector(itemsElement, '[name="library"]', HTMLAnchorElement);
+		libraryElement.textContent = value.module;
+		libraryElement.href = value.repository;
+
+		const licenseElement = dom.requireSelector(itemsElement, '[name="license"]');
+		licenseElement.textContent = value.licenses;
+
+		const publisherElement = dom.requireSelector(itemsElement, '[name="publisher"]');
+		publisherElement.textContent = types.getPropertyOr(value, 'publisher', '');
+
+		libraryItemsElement.appendChild(itemsElement);
+	}
+
+}
 
 async function saveGenericAsync(): Promise<void> {
 	const applicationConfiguration = await storage.loadApplicationAsync();
@@ -207,6 +237,7 @@ async function bootAsync(extension: extensions.Extension): Promise<void> {
 
 	localize.applyView();
 	document.title = webextension.i18n.getMessage('options_title', webextension.i18n.getMessage('ext_name'));
+	dom.requireSelector('label[for="options_tab_header_about"]').textContent = webextension.i18n.getMessage('options_tab_header_about', webextension.i18n.getMessage('ext_name'));
 
 	const application = await applicationTask;
 	setApplication(application);
@@ -221,6 +252,8 @@ async function bootAsync(extension: extensions.Extension): Promise<void> {
 	});
 
 	setSettings(siteHeads);
+
+	setLibraries();
 
 	dom.requireElementById('create-setting').addEventListener('click', ev => {
 		ev.preventDefault();
