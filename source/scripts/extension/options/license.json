@@ -1,0 +1,191 @@
+{
+  "@types/jest": {
+    "module": "@types/jest@29.2.2",
+    "version": "29.2.2",
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped"
+  },
+  "@types/webextension-polyfill": {
+    "module": "@types/webextension-polyfill@0.9.1",
+    "version": "0.9.1",
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped"
+  },
+  "@types/webpack": {
+    "module": "@types/webpack@5.28.0",
+    "version": "5.28.0",
+    "licenses": "MIT",
+    "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped"
+  },
+  "copy-webpack-plugin": {
+    "module": "copy-webpack-plugin@11.0.0",
+    "version": "11.0.0",
+    "publisher": "Len Boyette",
+    "licenses": "MIT",
+    "repository": "https://github.com/webpack-contrib/copy-webpack-plugin"
+  },
+  "css-loader": {
+    "module": "css-loader@6.7.1",
+    "version": "6.7.1",
+    "publisher": "Tobias Koppers @sokra",
+    "licenses": "MIT",
+    "repository": "https://github.com/webpack-contrib/css-loader"
+  },
+  "html-webpack-plugin": {
+    "module": "html-webpack-plugin@5.5.0",
+    "version": "5.5.0",
+    "publisher": "Jan Nicklas",
+    "licenses": "MIT",
+    "repository": "https://github.com/jantimon/html-webpack-plugin"
+  },
+  "image-minimizer-webpack-plugin": {
+    "module": "image-minimizer-webpack-plugin@3.8.0",
+    "version": "3.8.0",
+    "publisher": "Alexander Krasnoyarov",
+    "licenses": "MIT",
+    "repository": "https://github.com/webpack-contrib/image-minimizer-webpack-plugin"
+  },
+  "jest-environment-jsdom": {
+    "module": "jest-environment-jsdom@29.2.2",
+    "version": "29.2.2",
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/jest"
+  },
+  "jest": {
+    "module": "jest@29.2.2",
+    "version": "29.2.2",
+    "licenses": "MIT",
+    "repository": "https://github.com/facebook/jest"
+  },
+  "jsonc-parser": {
+    "module": "jsonc-parser@3.2.0",
+    "version": "3.2.0",
+    "publisher": "Microsoft Corporation",
+    "licenses": "MIT",
+    "repository": "https://github.com/microsoft/node-jsonc-parser"
+  },
+  "license-checker": {
+    "module": "license-checker@25.0.1",
+    "version": "25.0.1",
+    "publisher": "Dav Glass",
+    "licenses": "BSD-3-Clause",
+    "repository": "https://github.com/davglass/license-checker"
+  },
+  "mkdirp": {
+    "module": "mkdirp@1.0.4",
+    "version": "1.0.4",
+    "licenses": "MIT",
+    "repository": "https://github.com/isaacs/node-mkdirp"
+  },
+  "normalize-sass": {
+    "module": "normalize-sass@1.0.0",
+    "version": "1.0.0",
+    "publisher": "Adam Kochanowicz",
+    "licenses": "MIT",
+    "repository": "https://github.com/ajkochanowicz/normalize.css"
+  },
+  "npm-check-updates": {
+    "module": "npm-check-updates@16.3.16",
+    "version": "16.3.16",
+    "publisher": "Tomas Junnonen",
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/raineorshine/npm-check-updates"
+  },
+  "npm-run-all": {
+    "module": "npm-run-all@4.1.5",
+    "version": "4.1.5",
+    "publisher": "Toru Nagashima",
+    "licenses": "MIT",
+    "repository": "https://github.com/mysticatea/npm-run-all"
+  },
+  "sass-loader": {
+    "module": "sass-loader@13.1.0",
+    "version": "13.1.0",
+    "publisher": "J. Tangelder",
+    "licenses": "MIT",
+    "repository": "https://github.com/webpack-contrib/sass-loader"
+  },
+  "sass": {
+    "module": "sass@1.56.0",
+    "version": "1.56.0",
+    "publisher": "Natalie Weizenbaum",
+    "licenses": "MIT",
+    "repository": "https://github.com/sass/dart-sass"
+  },
+  "sharp": {
+    "module": "sharp@0.31.2",
+    "version": "0.31.2",
+    "publisher": "Lovell Fuller",
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/lovell/sharp"
+  },
+  "style-loader": {
+    "module": "style-loader@3.3.1",
+    "version": "3.3.1",
+    "publisher": "Tobias Koppers @sokra",
+    "licenses": "MIT",
+    "repository": "https://github.com/webpack-contrib/style-loader"
+  },
+  "svgo": {
+    "module": "svgo@3.0.0",
+    "version": "3.0.0",
+    "publisher": "Kir Belevich",
+    "licenses": "MIT",
+    "repository": "https://github.com/svg/svgo"
+  },
+  "ts-jest": {
+    "module": "ts-jest@29.0.3",
+    "version": "29.0.3",
+    "publisher": "Kulshekhar Kabra",
+    "licenses": "MIT",
+    "repository": "https://github.com/kulshekhar/ts-jest"
+  },
+  "ts-loader": {
+    "module": "ts-loader@9.4.1",
+    "version": "9.4.1",
+    "publisher": "John Reilly",
+    "licenses": "MIT",
+    "repository": "https://github.com/TypeStrong/ts-loader"
+  },
+  "ts-node": {
+    "module": "ts-node@10.9.1",
+    "version": "10.9.1",
+    "publisher": "Blake Embrey",
+    "licenses": "MIT",
+    "repository": "https://github.com/TypeStrong/ts-node"
+  },
+  "web-ext-types": {
+    "module": "web-ext-types@3.2.1",
+    "version": "3.2.1",
+    "publisher": "Kelsey Zapata",
+    "licenses": "MPL-2.0",
+    "repository": "https://github.com/kelseasy/web-ext-types"
+  },
+  "web-ext": {
+    "module": "web-ext@7.3.1",
+    "version": "7.3.1",
+    "publisher": "Kumar McMillan",
+    "licenses": "MPL-2.0",
+    "repository": "https://github.com/mozilla/web-ext"
+  },
+  "webextension-polyfill": {
+    "module": "webextension-polyfill@0.10.0",
+    "version": "0.10.0",
+    "publisher": "Mozilla",
+    "licenses": "MPL-2.0",
+    "repository": "https://github.com/mozilla/webextension-polyfill"
+  },
+  "webpack-cli": {
+    "module": "webpack-cli@4.10.0",
+    "version": "4.10.0",
+    "licenses": "MIT",
+    "repository": "https://github.com/webpack/webpack-cli"
+  },
+  "webpack": {
+    "module": "webpack@5.74.0",
+    "version": "5.74.0",
+    "publisher": "Tobias Koppers @sokra",
+    "licenses": "MIT",
+    "repository": "https://github.com/webpack/webpack"
+  }
+}

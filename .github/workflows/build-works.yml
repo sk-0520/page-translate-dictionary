@@ -1,0 +1,105 @@
+name: Build Works
+
+on: push
+
+jobs:
+  build:
+
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        BROWSER: [
+          "firefox",
+          "chrome"
+        ]
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v3
+
+      - name: <Add> Node/NPM
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.4.0
+          cache: npm
+
+      - name: <Install> NPM
+        run: npm ci
+
+      - name: <Test> Script
+        run: npm run test
+
+      - name: <Build> Web-Extensions
+        run: npm run build:production:${{ matrix.BROWSER }}
+
+      - name: <Lint> Web-Extensions
+        run: npm run lint:${{ matrix.BROWSER }}
+
+      - name: <Output> Web-Extensions
+        run: npm run output:${{ matrix.BROWSER }}
+
+      - name: <Artifact> Web-Extensions
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-${{ matrix.BROWSER }}
+          path: dist
+
+
+  deploy:
+    needs: build
+
+    if: github.ref == 'refs/heads/master'
+
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: <Checkout> Repository
+        uses: actions/checkout@v3
+
+      - name: <Download> Application
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-firefox
+          path: dist-firefox
+
+      - name: <Download> Application
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-chrome
+          path: dist-chrome
+
+      - name: <Show> 🌳🌲🌳🌲
+        run: find
+
+      - name: Get Version
+        id: version
+        run: echo "version=$(cat package.json | jq --raw-output '.version')" >> $GITHUB_OUTPUT
+
+      - name: <Create> Release
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const releaseId = await github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/${{ steps.version.outputs.version }}",
+              sha: context.sha
+            })
+
+      - name: <Upload> Applications [Firefox]
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist-firefox/web-ext-artifacts/page-translation-dictionary-${{ steps.version.outputs.version }}.zip
+          asset_name: firefox-page-translation-dictionary-${{ steps.version.outputs.version }}.zip
+          tag: ${{ steps.version.outputs.version }}
+
+      - name: <Upload> Applications [Chrome]
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist-chrome/web-ext-artifacts/page-translation-dictionary-${{ steps.version.outputs.version }}.zip
+          asset_name: chrome-page-translation-dictionary-${{ steps.version.outputs.version }}.zip
+          tag: ${{ steps.version.outputs.version }}
+

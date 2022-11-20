@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+
+	<body>
+		<div id="processing">
+			<progress></progress>
+		</div>
+
+		<form id="editor" class="loading">
+			<main class="tab">
+
+				<input name="tab" class="tab_check" type="radio" id="editor_tab_header_head" checked />
+				<label for="editor_tab_header_head" class="tab_header" data-ext-text="editor_tab_header_head" data-ext-title="editor_tab_header_head">editor_tab_header_head</label>
+				<div class="tab_content">
+					<dl>
+						<dt data-ext-text="editor_tab_content_head_id">editor_tab_content_head_id</dt>
+						<dd>
+							<input id="id" type="text" readonly />
+						</dd>
+
+						<dt data-ext-text="editor_tab_content_head_state_header">editor_tab_content_head_state_header</dt>
+						<dd>
+							<label>
+								<input id="enabled" type="checkbox" />
+								<span data-ext-text="editor_tab_content_head_state_is_enabled"></span>
+							</label>
+						</dd>
+
+						<dt data-ext-text="editor_tab_content_head_update_url">editor_tab_content_head_update_url</dt>
+						<dd>
+							<input id="update_url" type="url" />
+						</dd>
+
+						<dt data-ext-text="editor_tab_content_head_name">editor_tab_content_head_name</dt>
+						<dd>
+							<input id="name" type="text" required />
+						</dd>
+
+						<dt data-ext-text="editor_tab_content_head_version">editor_tab_content_head_version</dt>
+						<dd>
+							<input id="version" type="text" required />
+						</dd>
+
+						<dt data-ext-text="editor_tab_content_head_hosts">editor_tab_content_head_hosts</dt>
+						<dd>
+							<textarea id="hosts" required></textarea>
+						</dd>
+
+						<dt data-ext-text="editor_tab_content_head_information">editor_tab_content_head_information</dt>
+						<dd>
+							<dl>
+								<dt data-ext-text="editor_tab_content_head_information_website">editor_tab_content_head_information_website</dt>
+								<dd>
+									<input id="information_website" type="url" />
+								</dd>
+
+								<dt data-ext-text="editor_tab_content_head_information_repository">editor_tab_content_head_information_repository</dt>
+								<dd>
+									<input id="information_repository" type="url" />
+								</dd>
+
+								<dt data-ext-text="editor_tab_content_head_information_document">editor_tab_content_head_information_document</dt>
+								<dd>
+									<input id="information_document" type="url" />
+								</dd>
+							</dl>
+						</dd>
+
+						<dt data-ext-text="editor_tab_content_head_priority">editor_tab_content_head_priority</dt>
+						<dd>
+							<input id="priority" type="number" required />
+						</dd>
+
+						<dt data-ext-text="editor_tab_content_head_language">editor_tab_content_head_language</dt>
+						<dd>
+							<input id="language" type="text" list="language-list" />
+							<datalist id="language-list"></datalist>
+						</dd>
+					</dl>
+				</div>
+
+				<input name="tab" class="tab_check" type="radio" id="editor_tab_header_path" />
+				<label for="editor_tab_header_path" class="tab_header" data-ext-text="editor_tab_header_path" data-ext-title="editor_tab_header_path">editor_tab_header_path</label>
+				<div class="tab_content">
+					<textarea id="path_json" class="json-editor" required></textarea>
+				</div>
+
+				<input name="tab" class="tab_check" type="radio" id="editor_tab_header_common" />
+				<label for="editor_tab_header_common" class="tab_header" data-ext-text="editor_tab_header_common" data-ext-title="editor_tab_header_common">editor_tab_header_common</label>
+				<div class="tab_content">
+					<textarea id="common_json" class="json-editor" required></textarea>
+				</div>
+
+				<input name="tab" class="tab_check" type="radio" id="editor_tab_header_watch" />
+				<label for="editor_tab_header_watch" class="tab_header" data-ext-text="editor_tab_header_watch" data-ext-title="editor_tab_header_watch">editor_tab_header_watch</label>
+				<div class="tab_content">
+					<dd>
+						<dl>
+							<dt data-ext-text="editor_tab_content_watch_window">editor_tab_content_watch_window</dt>
+							<dd>
+								<textarea id="watch_window"></textarea>
+							</dd>
+
+							<dt data-ext-text="editor_tab_content_watch_document">editor_tab_content_watch_document</dt>
+							<dd>
+								<textarea id="watch_document"></textarea>
+							</dd>
+						</dl>
+					</dd>
+				</div>
+			</main>
+
+			<footer>
+				<button id="save" type="submit" data-ext-text="editor_save">editor_save</button>
+			</footer>
+			</div>
+
+
+
+			<!-- webpack -->
+			<script src="setting-editor.js"></script>
+	</body>
+
+</html>

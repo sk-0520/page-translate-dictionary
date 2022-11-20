@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+	</head>
+
+	<body>
+		<template id="template-setting-item">
+			<li class="setting-item">
+				<span name="settings_item_name"></span>
+			</li>
+		</template>
+
+		<main>
+			<section id="disabled">
+				<h1 data-ext-text="popup_disabled_title">popup_disabled_title</h1>
+				<img class="logo" src="extension-icon.svg" />
+				<p data-ext-text="popup_disabled_description_extension">popup_disabled_description_extension</p>
+				<p data-ext-text="popup_disabled_description_setting">popup_disabled_description_setting</p>
+			</section>
+
+			<section id="enabled">
+				<h1 data-ext-text="popup_enabled_title">popup_enabled_title</h1>
+				<p class="warning" data-ext-text="popup_enabled_warning">popup_enabled_warning</p>
+				<dl>
+					<dt data-ext-text="popup_enabled_element_count">popup_enabled_element_count</dt>
+					<dd id="element_count"></dd>
+
+					<dt data-ext-text="popup_enabled_total_count">popup_enabled_total_count</dt>
+					<dd id="total_count"></dd>
+
+					<dt data-ext-text="popup_enabled_settings">popup_enabled_settings</dt>
+					<ul id="settings">
+						<!-- #template-setting-item -->
+					</dd>
+				</dl>
+			</section>
+		</main>
+
+		<!-- webpack -->
+		<script src="popup-action.js"></script>
+	</body>
+
+</html>

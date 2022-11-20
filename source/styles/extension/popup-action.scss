@@ -1,0 +1,50 @@
+@forward '../../../node_modules/normalize-sass/normalize.sass';
+
+@forward "./details";
+
+@use "./font" as font;
+
+body {
+	min-width: 400px;
+}
+
+html,
+body {
+	@include font.extension-font;
+	padding: 1ex;
+}
+
+#disabled {
+	display: block;
+
+	&.inactive {
+		display: none;
+	}
+
+	.logo {
+		display: block;
+		margin: 0 auto;
+	}
+}
+
+#enabled {
+	display: none;
+
+	&.active {
+		display: block;
+	}
+}
+
+h1 {
+	text-align: center;
+}
+
+p {
+	white-space: pre;
+
+	&.warning {
+		&::before {
+			content: '⚠';
+		}
+	}
+}

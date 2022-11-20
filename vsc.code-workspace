@@ -4,5 +4,70 @@
 			"path": "."
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.exclude": {
+			"**/bin": true,
+			"**/obj": true,
+			"**/node_modules": true,
+			".vs": true,
+			"*.lnk": true
+		},
+		"files.watcherExclude": {
+			"**/.git/objects/**": true,
+			"**/.git/subtree-cache/**": true,
+			"**/node_modules/*/**": true,
+			".vs": true,
+			".vscode": true,
+			"**/dist/**": true,
+			"**/bin/**": true,
+			"**/obj/**": true,
+			"*.lnk": true,
+		},
+		"html.format.indentInnerHtml": true,
+		"html.format.wrapLineLength": 0,
+		"json.schemas": [
+			{
+				"fileMatch": [
+					"*.jsonc"
+				],
+				"schema": {
+					"allowTrailingCommas": true
+				}
+			}
+		],
+		"cSpell.words": [
+			"endregion",
+			"pjax",
+			"postoutput",
+			"prebrowser",
+			"timespan",
+			"webextension",
+			"THTML",
+			"nameof",
+		],
+		"auto-close-tag.activationOnLanguage": [
+			"xml",
+			"html"
+		],
+		"npm.scriptExplorerExclude": [
+			"test$",
+			"^(pre|post)",
+			"build:development",
+			"^(?!.*-env$)browser:.*$",
+			"^(?!.*-env$)debug:.*$",
+			"output",
+			"lint",
+			"license",
+			"^(check|update)$"
+		]
+	},
+	"extensions": {
+		"recommendations": [
+			"santacodes.santacodes-region-viewer",
+			"editorconfig.editorconfig",
+			"streetsidesoftware.code-spell-checker",
+			"orta.vscode-jest",
+			"awwsky.regionmarker"
+		]
+	}
 }

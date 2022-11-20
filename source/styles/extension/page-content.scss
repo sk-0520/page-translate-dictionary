@@ -1,0 +1,21 @@
+.ptd-progress {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+}
+
+
+// なんかこう、もっといい方法あるやろ・・・
+.ptd-marked {
+	&:hover {
+		position: relative;
+
+		&::after {
+			position: absolute;
+
+			background: #33330011;
+			content: '*';
+			font-size: 8pt;
+		}
+	}
+}

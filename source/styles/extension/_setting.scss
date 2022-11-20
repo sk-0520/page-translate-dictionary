@@ -1,0 +1,27 @@
+@use "../core/responsive" as responsive;
+
+#processing {
+	margin: 0 auto;
+
+	&.processed {
+		display: none;
+	}
+}
+
+input[type="number"] {
+	text-align: right;
+}
+
+button {
+	padding: 0.5ex 1ex;
+
+	&:not([type="button"]) {
+		padding: 0.5em 1em;
+		min-width: 10ch;
+
+		@include responsive.media(responsive.$s) {
+			width: 100%;
+		}
+	}
+}
+
