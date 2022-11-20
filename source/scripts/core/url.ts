@@ -1,5 +1,5 @@
 
-function isProtocolUrl(url: string, protocols: ReadonlyArray<string>): boolean {
+function isSchemeUrl(url: string, protocols: ReadonlyArray<string>): boolean {
 	const starts = protocols.map(i => i + '://');
 
 	for (const start of starts) {
@@ -12,14 +12,14 @@ function isProtocolUrl(url: string, protocols: ReadonlyArray<string>): boolean {
 }
 
 export function isHttpUrl(s: string): boolean {
-	return isProtocolUrl(s, [
+	return isSchemeUrl(s, [
 		'https',
 		'http',
 	]);
 }
 
 /**
- * (URL)パス文字列の結合。
+ * パス文字列の結合。
  *
  * @param base 基点となるパス
  * @param path1 結合するパス
