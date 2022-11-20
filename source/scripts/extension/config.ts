@@ -42,7 +42,7 @@ export const enum ReplaceMode {
 export type SiteInternalId = types.StrongType<'SiteInternalId'>;
 
 export function toInternalId(s: string): SiteInternalId {
-	if(!s) {
+	if (!s) {
 		throw new Error();
 	}
 
@@ -240,6 +240,8 @@ export interface SiteHeadConfiguration extends SiteId {
 	updatedTimestamp: string,
 	/** 設定ファイルの最終更新確認日 */
 	lastCheckedTimestamp: string,
+	/** 設定ファイルの有効無効状態 */
+	isEnabled: boolean,
 
 	/** バージョン */
 	version: string;
@@ -705,6 +707,10 @@ class SiteConfigurationImpl implements SiteConfiguration {
 
 	public get lastCheckedTimestamp(): string {
 		return this.head.lastCheckedTimestamp;
+	}
+
+	public get isEnabled(): boolean {
+		return this.head.isEnabled;
 	}
 
 	public get name(): string {

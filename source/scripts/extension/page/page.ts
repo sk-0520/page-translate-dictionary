@@ -180,7 +180,7 @@ async function updateSiteConfigurationAsync(siteHeadConfiguration: config.SiteHe
 			console.info('設定のデータバージョン同じ');
 			return null;
 		}
-		const site = await loader.saveAsync(siteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id);
+		const site = await loader.saveAsync(siteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id, true);
 
 		return site.head;
 	} catch (ex) {
@@ -325,7 +325,10 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 		return false;
 	}
 
-	const currentSiteHeadConfigurations = allSiteHeadConfigurations.filter(i => uri.isEnabledHosts(location.host, i.hosts));
+	const currentSiteHeadConfigurations = allSiteHeadConfigurations
+		.filter(i => i.isEnabled)
+		.filter(i => uri.isEnabledHosts(location.host, i.hosts))
+		;
 	if (!currentSiteHeadConfigurations.length) {
 		console.info(`ホストに該当する設定なし: ${location.host}`);
 		sendMessageAsync(messages.MessageKind.NotifyPageInformation);

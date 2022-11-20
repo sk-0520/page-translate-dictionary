@@ -9,6 +9,7 @@ describe('config', () => {
 	test('createSiteConfiguration', () => {
 		const head: config.SiteHeadConfiguration = {
 			id: config.toInternalId('id'),
+			isEnabled: true,
 			updatedTimestamp: 'updatedTimestamp',
 			lastCheckedTimestamp: 'lastCheckedTimestamp',
 			name: 'name',

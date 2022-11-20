@@ -65,10 +65,12 @@ export interface Messages {
 	options_tab_content_settings_item_details_document: Message,
 	options_tab_content_settings_item_details_id: Message,
 	options_tab_content_settings_item_details_actions: Message,
+	options_tab_content_settings_item_details_actions_state_enabled: Message,
+	options_tab_content_settings_item_details_actions_state_disabled: Message,
 	options_tab_content_settings_item_details_actions_editor: Message,
-	options_tab_content_settings_item_details_actions_delete: Message,
 	options_tab_content_settings_item_details_actions_update: Message,
 	options_tab_content_settings_item_details_actions_updating: Message,
+	options_tab_content_settings_item_details_actions_delete: Message,
 
 	options_tab_content_setting_create: Message,
 
@@ -96,6 +98,8 @@ export interface Messages {
 	editor_edit: Message;
 	editor_tab_header_head: Message,
 	editor_tab_content_head_id: Message,
+	editor_tab_content_head_state_header: Message,
+	editor_tab_content_head_state_is_enabled: Message,
 	editor_tab_content_head_update_url: Message,
 	editor_tab_content_head_name: Message,
 	editor_tab_content_head_version: Message,

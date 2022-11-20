@@ -24,6 +24,10 @@ function setApplication(applicationConfiguration: config.ApplicationConfiguratio
 function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfiguration, itemRootElement: Element | DocumentFragment) {
 	dom.requireSelector(itemRootElement, '[name="name"]').textContent = siteHeadConfiguration.name;
 	dom.requireSelector(itemRootElement, '[name="version"]').textContent = siteHeadConfiguration.version;
+
+	const currentStateElement = dom.requireSelector(itemRootElement, '[name="state_current"]', HTMLElement);
+	setState(currentStateElement, siteHeadConfiguration.isEnabled);
+
 	const updatedTimestampElement = dom.requireSelector(itemRootElement, '[name="updated-timestamp"]', HTMLTimeElement);
 	updatedTimestampElement.textContent = siteHeadConfiguration.updatedTimestamp;
 	updatedTimestampElement.dateTime = siteHeadConfiguration.updatedTimestamp;
@@ -57,6 +61,15 @@ function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfigurati
 	}
 }
 
+function setState(currentStateElement: HTMLElement, isEnabled: boolean): void {
+	const messageName = isEnabled
+		? dom.getDataset(currentStateElement, 'enabled')
+		: dom.getDataset(currentStateElement, 'disabled')
+		;
+	const message = webextension.i18n.getMessage(messageName);
+	currentStateElement.textContent = message;
+}
+
 function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 	const itemRootElement = dom.cloneTemplate('#template-setting-item');
 	localize.applyNestElements(itemRootElement);
@@ -70,6 +83,29 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 		webextension.tabs.create({
 			url: editorUri + '?setting=' + siteHeadConfiguration.id,
 		})
+	});
+
+	const stateElement = dom.requireSelector(itemRootElement, '[name="state"]', HTMLButtonElement);
+	stateElement.addEventListener('click', async ev => {
+		ev.preventDefault();
+
+		const element = ev.currentTarget as HTMLButtonElement;
+		const itemElement = dom.requireClosest(element, '.setting-item', HTMLElement);
+
+		const currentSiteHeadConfiguration = JSON.parse(itemElement.dataset['head']!) as config.SiteHeadConfiguration;
+
+		const heads = await storage.loadSiteHeadsAsync();
+		const index = heads.findIndex(i => i.id === currentSiteHeadConfiguration.id);
+		if (index < 0) {
+			throw new Error(currentSiteHeadConfiguration.id);
+		}
+		const head = heads[index];
+		head.isEnabled = !head.isEnabled;
+
+		await storage.saveSiteHeadsAsync(heads);
+
+		itemElement.dataset['head'] = JSON.stringify(head);
+		updateItemInformation(head, itemElement);
 	});
 
 	const updateElement = dom.requireSelector(itemRootElement, '[name="update"]', HTMLButtonElement);
@@ -89,7 +125,7 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 					return;
 				}
 
-				const site = await loader.saveAsync(currentSiteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id);
+				const site = await loader.saveAsync(currentSiteHeadConfiguration.updateUrl, setting, siteHeadConfiguration.id, siteHeadConfiguration.isEnabled);
 				itemElement.dataset['head'] = JSON.stringify(site.head);
 				updateItemInformation(site.head, itemElement);
 			} finally {
@@ -155,7 +191,7 @@ async function importSettingAsync(settingUrl: string): Promise<void> {
 		// 内部用データとして取り込み
 		log.add(webextension.i18n.getMessage('options_import_log_convert'));
 
-		const site = await loader.saveAsync(settingUrl, setting, null);
+		const site = await loader.saveAsync(settingUrl, setting, null, true);
 
 		log.add(webextension.i18n.getMessage('options_import_log_success'));
 

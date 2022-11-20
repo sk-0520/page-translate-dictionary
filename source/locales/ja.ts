@@ -117,17 +117,23 @@ const messages: locale.Messages & locale.MessageMap = {
 	options_tab_content_settings_item_details_actions: {
 		message: '処理',
 	},
+	options_tab_content_settings_item_details_actions_state_enabled: {
+		message: '有効',
+	},
+	options_tab_content_settings_item_details_actions_state_disabled: {
+		message: '無効',
+	},
 	options_tab_content_settings_item_details_actions_editor: {
 		message: '編集',
-	},
-	options_tab_content_settings_item_details_actions_delete: {
-		message: '削除',
 	},
 	options_tab_content_settings_item_details_actions_update: {
 		message: '更新',
 	},
 	options_tab_content_settings_item_details_actions_updating: {
 		message: '更新中',
+	},
+	options_tab_content_settings_item_details_actions_delete: {
+		message: '削除',
 	},
 
 	options_tab_content_setting_create: {
@@ -228,6 +234,12 @@ const messages: locale.Messages & locale.MessageMap = {
 	},
 	editor_tab_content_head_id: {
 		message: '内部ID',
+	},
+	editor_tab_content_head_state_header: {
+		message: '有効状態',
+	},
+	editor_tab_content_head_state_is_enabled: {
+		message: '有効にする',
 	},
 	editor_tab_content_head_update_url: {
 		message: 'アップデートURL',

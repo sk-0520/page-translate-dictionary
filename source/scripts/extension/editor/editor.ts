@@ -36,6 +36,7 @@ function toJsonText(obj: object | null | undefined): string {
 
 function createEmptyHead(): config.SiteHeadConfiguration {
 	const result: config.SiteHeadConfiguration = {
+		isEnabled: true,
 		updateUrl: '',
 		updatedTimestamp: '',
 		lastCheckedTimestamp: '',
@@ -70,6 +71,7 @@ function createEmptyBody(): config.SiteBodyConfiguration {
 function getSettingElements() {
 	return {
 		id: dom.requireElementById('id', HTMLInputElement),
+		enabled: dom.requireElementById('enabled', HTMLInputElement),
 		name: dom.requireElementById('name', HTMLInputElement),
 		updateUrl: dom.requireElementById('update_url', HTMLInputElement),
 		version: dom.requireElementById('version', HTMLInputElement),
@@ -99,6 +101,7 @@ function setValues(head: config.SiteHeadConfiguration, body: config.SiteBodyConf
 
 	//ヘッダ
 	elements.id.value = head.id;
+	elements.enabled.checked = head.isEnabled;
 	elements.updateUrl.value = head.updateUrl;
 	elements.name.value = head.name;
 	elements.version.value = head.version;
@@ -190,6 +193,7 @@ async function saveAsync(id: config.SiteInternalId): Promise<boolean> {
 	const timestamp = (new Date()).toISOString();
 	const head: config.SiteHeadConfiguration = {
 		id: id,
+		isEnabled: elements.enabled.checked,
 		name: string.trim(elements.name.value),
 		updateUrl: elements.updateUrl.value.trim(),
 		updatedTimestamp: timestamp,

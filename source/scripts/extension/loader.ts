@@ -96,12 +96,13 @@ export async function hasSiteSettingAsync(url: string): Promise<config.SiteInter
 	return target[0].id;
 }
 
-export async function saveAsync(updateUrl: string, setting: setting.SiteSetting, siteId: config.SiteInternalId | null): Promise<config.SiteData> {
+export async function saveAsync(updateUrl: string, setting: setting.SiteSetting, siteId: config.SiteInternalId | null, isEnabled: boolean): Promise<config.SiteData> {
 	const timestamp = (new Date()).toISOString();
 	const isCreateMode = !string.isNotWhiteSpace(siteId);
 
 	const head: config.SiteHeadConfiguration = {
 		id: isCreateMode ? createSiteInternalId() : siteId!,
+		isEnabled: isEnabled,
 		updateUrl: updateUrl,
 		updatedTimestamp: timestamp,
 		lastCheckedTimestamp: timestamp,
