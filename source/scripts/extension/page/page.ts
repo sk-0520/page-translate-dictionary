@@ -131,13 +131,13 @@ async function executeAsync(pageCache: PageCache): Promise<void> {
 	// document.body.appendChild(progressElement);
 	//[watch:omit] let targets: Array<translator.TranslatedTarget>;
 	try {
-		console.time('TRANSLATE');
+		console.time('翻訳処理');
 		//[watch:omit] targets = await executeCoreAsync(pageCache);
 		await executeCoreAsync(pageCache);
 		await sendMessageAsync(messages.MessageKind.NotifyPageInformation);
 	} finally {
 		// document.body.removeChild(progressElement);
-		console.timeEnd('TRANSLATE');
+		console.timeEnd('翻訳処理');
 	}
 
 	//[watch:omit] updatePageCache(pageCache, targets);
@@ -315,7 +315,7 @@ function getMeta(): Map<string, string> {
 }
 
 async function bootAsync(extension: extensions.Extension): Promise<boolean> {
-	console.time('PAGE');
+	console.time('ページ判定');
 	const applicationConfiguration = await storage.loadApplicationAsync();
 	const allSiteHeadConfigurations = await storage.loadSiteHeadsAsync();
 
@@ -357,7 +357,7 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 		}
 	}
 
-	console.timeEnd('PAGE');
+	console.timeEnd('ページ判定');
 	if (siteItems.length) {
 		console.debug('きてます！');
 		// 設定データ確定
