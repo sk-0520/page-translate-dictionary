@@ -11,6 +11,101 @@ export interface TranslatedTarget {
 	queryConfiguration: config.QueryConfiguration;
 }
 
+const EventHandlerProperties: ReadonlySet<string> = new Set([
+	'abort',
+	'animationcancel',
+	'animationend',
+	'animationiteration',
+	'animationstart',
+	'auxclick',
+	'blur',
+	'cancel',
+	'canplay',
+	'canplaythrough',
+	'change',
+	'click',
+	'close',
+	'contextmenu',
+	'cuechange',
+	'dblclick',
+	'drag',
+	'dragend',
+	'dragenter',
+	'dragexit',
+	'dragleave',
+	'dragover',
+	'dragstart',
+	'drop',
+	'durationchange',
+	'emptied',
+	'ended',
+	'error',
+	'focus',
+	'focusin',
+	'focusout',
+	'gotpointercapture',
+	'input',
+	'invalid',
+	'keydown',
+	'keypress',
+	'keyup',
+	'load',
+	'loadeddata',
+	'loadedmetadata',
+	'loadend',
+	'loadstart',
+	'lostpointercapture',
+	'mousedown',
+	'mouseenter',
+	'mouseleave',
+	'mousemove',
+	'mouseout',
+	'mouseover',
+	'mouseup',
+	'pause',
+	'play',
+	'playing',
+	'pointercancel',
+	'pointerdown',
+	'pointerenter',
+	'pointerleave',
+	'pointermove',
+	'pointerout',
+	'pointerover',
+	'pointerup',
+	'progress',
+	'ratechange',
+	'reset',
+	'resize',
+	'scroll',
+	'securitypolicyviolation',
+	'seeked',
+	'seeking',
+	'select',
+	'selectionchange',
+	'selectstart',
+	'stalled',
+	'submit',
+	'suspend',
+	'timeupdate',
+	'toggle',
+	'touchcancel',
+	'touchend',
+	'touchmove',
+	'touchstart',
+	'transitioncancel',
+	'transitionend',
+	'transitionrun',
+	'transitionstart',
+	'volumechange',
+	'waiting',
+	'wheel',
+].map(i => 'on' + i));
+
+export function isEventHandlerProperty(name: string): boolean {
+	return EventHandlerProperties.has(name.toLowerCase());
+}
+
 export function translateElement(element: Element, queryConfiguration: config.QueryConfiguration, commonConfiguration: config.CommonConfiguration, site: config.SiteId): boolean {
 	let translated = false;
 
@@ -19,6 +114,11 @@ export function translateElement(element: Element, queryConfiguration: config.Qu
 	const workElement = element.shadowRoot ?? element;
 
 	for (const [attributeName, targetConfiguration] of queryConfiguration.attributes) {
+		if (isEventHandlerProperty(attributeName)) {
+			console.warn('ignore attribute', attributeName);
+			continue;
+		}
+
 		const sourceValue = element.getAttribute(attributeName);
 		if (sourceValue) {
 			const output = converter.convert(sourceValue, targetConfiguration, commonConfiguration, site);

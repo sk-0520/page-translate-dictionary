@@ -17,6 +17,7 @@ export function isApplicationConfiguration(obj: unknown): obj is config.Applicat
 export function isSiteHeadConfiguration(obj: any): obj is config.SiteHeadConfiguration {
 	return obj
 		&& 'id' in obj && typeof obj.id === 'string'
+		&& types.hasBoolean(obj, 'isEnabled')
 		&& 'updateUrl' in obj && typeof obj.updateUrl === 'string'
 		&& 'updatedTimestamp' in obj && typeof obj.updatedTimestamp === 'string'
 		&& 'name' in obj && typeof obj.name === 'string'

@@ -123,8 +123,8 @@ export async function saveAsync(updateUrl: string, setting: setting.SiteSetting,
 	if (isCreateMode) {
 		await storage.addSiteHeadsAsync(head);
 	} else {
-		const currentHeaders = await storage.loadSiteHeadsAsync();
-		const newHeaders = currentHeaders.filter(i => i.id !== siteId);
+		const currentHeads = await storage.loadSiteHeadsAsync();
+		const newHeaders = currentHeads.filter(i => i.id !== siteId);
 		newHeaders.push(head);
 		await storage.saveSiteHeadsAsync(newHeaders);
 	}

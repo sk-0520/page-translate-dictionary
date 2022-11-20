@@ -7,6 +7,15 @@ import * as config from '../../../scripts/extension/config';
 //, siteConfiguration: config.SiteConfiguration, metaMap: ReadonlyMap<string, string>, translateConfiguration: Readonly<config.TranslateConfiguration>
 
 describe('translator', () => {
+	test.each([
+		[false, 'title'],
+		[true, 'onclick'],
+		[true, 'onClick'],
+		[false, 'onclick2'],
+	])('isEventHandlerProperty', (expected: boolean, name: string) => {
+		expect(translator.isEventHandlerProperty(name)).toBe(expected);
+	});
+
 	test('translateElement', () => {
 		document.body.innerHTML = `
 			<p id="id">a</p>
