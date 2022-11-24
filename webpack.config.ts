@@ -15,7 +15,7 @@ const inputIconsDirectory = path.resolve(__dirname, 'icons');
 const inputEntryDirectory = path.resolve(inputRootDirectory, 'entry');
 const outputDirectory = path.resolve(__dirname, 'dist');
 
-const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Configuration => {
+export default function (env: { [key: string]: string }, args: any): webpack.Configuration {
 	if (!env['browser']) {
 		throw Error(env['browser']);
 	}
@@ -41,11 +41,11 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 		'popup-action.html',
 	] as const;
 
-	const conf: webpack.Configuration = {
+	const webpackConfig: webpack.Configuration = {
 		mode: environment.mode,
 
 		entry: Object.fromEntries(
-			entries.map(i => [i, path.join(inputEntryDirectory, `page-content@${environment.browser}.ts`)])
+			entries.map(i => [i, path.join(inputEntryDirectory, `${i}@${environment.browser}.ts`)])
 		),
 
 		devtool: environment.isProduction ? false : 'inline-source-map',
@@ -60,7 +60,11 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 				// スクリプト
 				{
 					test: /\.ts$/,
-					use: 'ts-loader',
+					use: [
+						{
+							loader: 'ts-loader',
+						},
+					],
 					exclude: /node_modules/,
 				},
 				// スタイルシート
@@ -144,7 +148,7 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 	};
 
 	if (environment.isProduction) {
-		conf.optimization = {
+		webpackConfig.optimization = {
 			minimize: true,
 			minimizer: [
 				new TerserPlugin({
@@ -177,8 +181,5 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 		}
 	}
 
-	return conf;
+	return webpackConfig;
 }
-
-export default webpackConfig;
-
