@@ -419,7 +419,13 @@ export function flatClone<TResult extends { [K in keyof TResult]: TResult[K] }, 
 	return result as any as TResult;
 }
 
-export function nameof<T>(name: Extract<keyof T, string>): string {
+export function nameof(name: Function): string;
+export function nameof<T extends object>(name: Extract<keyof T, string>): string;
+export function nameof<T>(name: Extract<keyof T, string> | Function): string {
+	if (typeof name === 'function') {
+		return name.name;
+	}
+
 	return name;
 }
 
