@@ -380,17 +380,17 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 		// イベント監視設定追加
 		for (const siteItem of siteItems) {
 			for (const eventName of siteItem.watch.window) {
-				console.info('event:window', siteItem.name, eventName);
+				console.log('event:window', siteItem.name, eventName);
 				window.addEventListener(eventName, ev => updatedPageAsync(ev));
 			}
 			if (extension.kind === extensions.BrowserKind.Firefox) {
 				window.addEventListener('popstate', ev => {
-					console.error('popstate');
+					console.log('PTD firefox popstate');
 					updatedPageAsync(ev);
 				});
 			}
 			for (const eventName of siteItem.watch.document) {
-				console.info('event:document', siteItem.name, eventName);
+				console.log('event:document', siteItem.name, eventName);
 				document.addEventListener(eventName, ev => updatedPageAsync(ev));
 			}
 		}
