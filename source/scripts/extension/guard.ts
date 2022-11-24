@@ -14,16 +14,16 @@ export function isApplicationConfiguration(obj: unknown): obj is config.Applicat
 		;
 }
 
-export function isSiteHeadConfiguration(obj: any): obj is config.SiteHeadConfiguration {
-	return obj
-		&& 'id' in obj && typeof obj.id === 'string'
+export function isSiteHeadConfiguration(obj: unknown): obj is config.SiteHeadConfiguration {
+	return types.isObject(obj)
+		&& types.hasString(obj, 'id')
 		&& types.hasBoolean(obj, 'isEnabled')
-		&& 'updateUrl' in obj && typeof obj.updateUrl === 'string'
-		&& 'updatedTimestamp' in obj && typeof obj.updatedTimestamp === 'string'
-		&& 'name' in obj && typeof obj.name === 'string'
-		&& 'version' in obj && typeof obj.version === 'string'
-		&& 'hosts' in obj && Array.isArray(obj.hosts)
-		&& 'priority' in obj && typeof obj.priority === 'number'
-		&& 'language' in obj && typeof obj.language === 'string'
+		&& types.hasString(obj, 'updateUrl')
+		&& types.hasString(obj, 'updatedTimestamp')
+		&& types.hasString(obj, 'name')
+		&& types.hasString(obj, 'version')
+		&& types.hasArray(obj, 'hosts') && types.isStringArray(obj.hosts)
+		&& types.hasNumber(obj, 'priority')
+		&& types.hasString(obj, 'language')
 		;
 }
