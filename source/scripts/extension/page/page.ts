@@ -1,4 +1,5 @@
 import webextension from 'webextension-polyfill';
+
 import * as config from '../config';
 import * as uri from '../uri';
 import * as translator from './translator';
@@ -6,6 +7,7 @@ import * as throws from '../../core/throws';
 import * as string from '../../core/string';
 import * as dom from '../../core/dom';
 import * as types from '../../core/types';
+//import * as logging from '../../core/logging';
 import * as loader from '../loader';
 import * as messages from '../messages';
 import * as names from '../names';
