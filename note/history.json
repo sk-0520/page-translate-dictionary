@@ -1,0 +1,30 @@
+[
+	{
+		"version": "0.0.2",
+		"contents": [
+			{
+				"type": "developer",
+				"logs": [
+					{
+						"revision": "05fc4e3c4b2d64567a0be9764fae9913b26e2005",
+						"subject": "update npm"
+					}
+				]
+			}
+		]
+	},
+	{
+		"version": "0.0.1",
+		"contents": [
+			{
+				"type": "note",
+				"logs": [
+					{
+						"revision": "1b812754cfefc46015019afbeff0f1825fa3224a",
+						"subject": "公開"
+					}
+				]
+			}
+		]
+	}
+]
