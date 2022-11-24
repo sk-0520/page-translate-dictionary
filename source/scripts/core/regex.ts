@@ -1,4 +1,4 @@
-const escapeRegex = /[.*+?^${}()|[\]\\]/g
+const escapeRegex = /[.*+?^${}()|[\]\\]/g;
 
 /**
  * 正規表現エスケープ。
@@ -6,6 +6,6 @@ const escapeRegex = /[.*+?^${}()|[\]\\]/g
  * @param source
  * @returns
  */
-export function escape(source: string) {
+export function escape(source: string): string {
 	return source.replace(escapeRegex, '\\$&');
 }

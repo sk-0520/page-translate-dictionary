@@ -23,16 +23,21 @@ export default class Wildcard {
 		// 	.replaceAll("\\?", '.')
 		// 	.replaceAll("\\*", '.*')
 		// 	;
-		const regexPattern = string.replaceAll(
-			string.replaceAll(
-				regex.escape(pattern),
-				"\\?",
-				'.'
-			),
-			"\\*", '.*'
+		const a = regex.escape(pattern);
+
+		const b = string.replaceAll(
+			a,
+			"\\?",
+			'.'
 		);
 
-		this._regex = new RegExp('^' + regexPattern + '$');
+		const c = string.replaceAll(
+			b,
+			"\\*",
+			'.*'
+		);
+
+		this._regex = new RegExp('^' + c + '$');
 	}
 
 	//#region function
