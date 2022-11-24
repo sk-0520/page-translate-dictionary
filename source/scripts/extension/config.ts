@@ -39,7 +39,7 @@ export const enum ReplaceMode {
 /**
  * 拡張機能内で識別するための設定ID。
  */
-export type SiteInternalId = types.StrongType<'SiteInternalId'>;
+export type SiteInternalId = types.Strong<'SiteInternalId'>;
 
 export function toInternalId(s: string): SiteInternalId {
 	if (!s) {

@@ -10,11 +10,11 @@ export type Constructor<T extends object> = {
 	prototype: T,
 };
 
-declare const _StrongType: unique symbol;
+declare const _Strong: unique symbol;
 /**
  * 強い型。
  */
-export type StrongType<T, U = string> = T & { readonly [_StrongType]: U };
+export type Strong<T, U = string> = T & { readonly [_Strong]: U };
 
 /**
  * 型が `undefined` か。
