@@ -32,7 +32,7 @@ function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfigurati
 	updatedTimestampElement.textContent = siteHeadConfiguration.updatedTimestamp;
 	updatedTimestampElement.dateTime = siteHeadConfiguration.updatedTimestamp;
 	const hostsElement = dom.requireSelector(itemRootElement, '[name="hosts"]');
-	hostsElement.innerHTML = '';
+	dom.clearContent(hostsElement);
 	for (const host of siteHeadConfiguration.hosts) {
 		const hostRootElement = dom.cloneTemplate('#template-setting-item-host');
 

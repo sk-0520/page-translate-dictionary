@@ -286,6 +286,15 @@ export class TagFactory<TElement extends Element> implements NodeFactory {
 	}
 }
 
+/**
+ * 中身を破棄。
+ *
+ * @param element
+ */
+export function clearContent(element: InnerHTML): void {
+	element.innerHTML = '';
+}
+
 
 /**
  * カスタムデータ属性のケバブ名を dataset アクセス可能な名前に変更
