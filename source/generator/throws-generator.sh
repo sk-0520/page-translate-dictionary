@@ -11,6 +11,7 @@ NotSupportedError,Error,実装が存在しない
 InvalidOperationError,Error,不正処理
 MismatchArgumentError,Error,引数指定が異常
 ArgumentError,Error,引数が無効
+ParseError,Error,パース系処理失敗
 DomError,Error,DOM処理云々がダメ
 ElementTypeError,DomError,指定要素の型が合わない
 NotFoundDomSelectorError,DomError,セレクタで要素が見つからない

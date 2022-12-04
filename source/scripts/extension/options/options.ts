@@ -2,6 +2,7 @@ import webextension from "webextension-polyfill";
 
 import * as dom from '../../core/dom';
 import * as types from '../../core/types';
+import * as number from '../../core/number';
 import * as localize from '../localize';
 import * as storage from '../storage';
 import * as config from '../config';
@@ -257,10 +258,7 @@ async function saveGenericAsync(): Promise<void> {
 	applicationConfiguration.setting.updatedBeforeTranslation = dom.requireElementById('setting_updatedBeforeTranslation', HTMLInputElement).checked;
 
 	const rawPeriodDays = dom.requireElementById('setting_periodDays', HTMLInputElement).value;
-	const periodDays = parseInt(rawPeriodDays);
-	if (!isNaN(periodDays)) {
-		applicationConfiguration.setting.periodDays = periodDays;
-	}
+	applicationConfiguration.setting.periodDays = number.parseIntOr(rawPeriodDays, Math.trunc(applicationConfiguration.setting.periodDays));
 
 	console.log(applicationConfiguration);
 
