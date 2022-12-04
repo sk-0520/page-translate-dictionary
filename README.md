@@ -78,6 +78,10 @@ PTD_CHROME_APPLICATION=C:\Program Files\Google\Chrome\Application\chrome.exe
 PTD_CHROME_PROFILE_DIRECTORY=X:\ch
 ```
 
+## 設定
+
+[設定の参考実装](https://github.com/sk-0520/page-translation-dictionary-reference/blob/main/README.md)
+
 ## 設定項目
 
 ```jsonc
