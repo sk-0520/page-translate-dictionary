@@ -45,7 +45,7 @@ export default function (env: { [key: string]: string }, args: any): webpack.Con
 		mode: environment.mode,
 
 		entry: Object.fromEntries(
-			entries.map(i => [i, path.join(inputEntryDirectory, `${i}@${environment.browser}.ts`)])
+			entries.map(i => [i, path.join(inputEntryDirectory, `${i}@${environment.browser}_${environment.mode}.ts`)])
 		),
 
 		devtool: environment.isProduction ? false : 'inline-source-map',
