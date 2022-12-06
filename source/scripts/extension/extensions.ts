@@ -15,7 +15,7 @@ export class Extension {
 
 	//#endregion
 
-	public constructor(public readonly kind: BrowserKind) {
+	public constructor(public readonly kind: BrowserKind, public readonly isProduct: boolean) {
 		this.manifest = webextension.runtime.getManifest();
 		this.action = new ActionWrapper(this);
 	}

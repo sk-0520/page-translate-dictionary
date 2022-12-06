@@ -33,10 +33,11 @@ for (( i = 0; i < ${#ENTRIES[@]}; ++i )); do
 
 			SCRIPT_FILE_NAME="${ENTRY_FILE_NAME}@${BROWSER_KIND}_${MODE}.ts"
 			SCRIPT_FILE_PATH="${OUTPUT_DIR}/${SCRIPT_FILE_NAME}"
-			echo $SCRIPT_FILE_PATH
 
 			cat <<EOS > $SCRIPT_FILE_PATH
 // GEN: ${TIMESTMAP}
+// Mode: ${MODE}
+// Browser: ${BROWSER_KIND}
 import * as ${ENTRY_BASE_NAME} from '../scripts/extension/${ENTRY_BASE_NAME}/${ENTRY_BASE_NAME}';
 import * as extensions from '../scripts/extension/extensions';
 
