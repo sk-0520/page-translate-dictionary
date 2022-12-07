@@ -2,6 +2,10 @@
 
 夢語るだけのREADME。
 
+* 拡張機能公開ページ
+  * [Firefox](https://addons.mozilla.org/ja/firefox/addon/%E5%AE%9A%E5%9E%8B%E7%BF%BB%E8%A8%B3/)
+  * [Chrome](https://chrome.google.com/webstore/detail/ccfdbiagojajdmnnbngkoiobdkcbpgbd)
+
 ## Build
 
 ### Node
