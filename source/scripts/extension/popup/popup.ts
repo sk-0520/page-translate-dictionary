@@ -28,7 +28,7 @@ function applyEnablePopupAsync(tab: webextension.Tabs.Tab, pageInformation: mess
 
 	const templateElement = dom.requireElementById('template-setting-item', HTMLTemplateElement);
 	const settingElement = dom.requireElementById('settings');
-	settingElement.innerHTML = '';
+	dom.clearContent(settingElement);
 	for (const setting of pageInformation.settings) {
 		const itemElement = dom.cloneTemplate(templateElement);
 
@@ -63,6 +63,13 @@ async function applyTabAsync(tab: webextension.Tabs.Tab, extension: extensions.E
 }
 
 async function bootAsync(extension: extensions.Extension): Promise<void> {
+	const extensionOptionElement = dom.requireElementById('popup_extension_option');
+	extensionOptionElement.addEventListener('click', ev => {
+		ev.preventDefault();
+		webextension.runtime.openOptionsPage();
+		window.close();
+	});
+
 	const tabs = await webextension.tabs.query({
 		active: true,
 		currentWindow: true

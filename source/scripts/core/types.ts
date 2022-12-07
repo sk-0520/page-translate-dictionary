@@ -10,11 +10,11 @@ export type Constructor<T extends object> = {
 	prototype: T,
 };
 
-declare const _StrongType: unique symbol;
+declare const _Strong: unique symbol;
 /**
  * 強い型。
  */
-export type StrongType<T, U = string> = T & { readonly [_StrongType]: U };
+export type Strong<T, U = string> = T & { readonly [_Strong]: U };
 
 /**
  * 型が `undefined` か。
@@ -419,7 +419,13 @@ export function flatClone<TResult extends { [K in keyof TResult]: TResult[K] }, 
 	return result as any as TResult;
 }
 
-export function nameof<T>(name: Extract<keyof T, string>): string {
+export function nameof(name: Function): string;
+export function nameof<T extends object>(name: Extract<keyof T, string>): string;
+export function nameof<T>(name: Extract<keyof T, string> | Function): string {
+	if (typeof name === 'function') {
+		return name.name;
+	}
+
 	return name;
 }
 

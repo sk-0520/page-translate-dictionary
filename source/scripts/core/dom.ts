@@ -71,6 +71,11 @@ export function requireSelector<TElement extends Element = Element>(element: Par
 	return result as TElement;
 }
 
+/**
+ * セレクタに一致する要素リストの取得を強制。
+ * @param element
+ * @param selectors
+ */
 export function requireSelectorAll<K extends keyof HTMLElementTagNameMap>(element: ParentNode, selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
 export function requireSelectorAll<K extends keyof HTMLElementTagNameMap>(selectors: K): NodeListOf<HTMLElementTagNameMap[K]>;
 export function requireSelectorAll<K extends keyof SVGElementTagNameMap>(element: ParentNode, selectors: K): NodeListOf<SVGElementTagNameMap[K]>;
@@ -163,6 +168,12 @@ export function cloneTemplate(input: string | HTMLTemplateElement): DocumentFrag
 	return result as DocumentFragment;
 }
 
+/**
+ * 要素生成処理の構築。
+ *
+ * @param tagName
+ * @param options
+ */
 export function createFactory<K extends keyof HTMLElementTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementTagNameMap[K]>;
 /** @deprecated */
 export function createFactory<K extends keyof HTMLElementDeprecatedTagNameMap>(tagName: K, options?: ElementCreationOptions): TagFactory<HTMLElementDeprecatedTagNameMap[K]>;
@@ -228,6 +239,9 @@ function isNodeFactory(arg: unknown): arg is NodeFactory {
 	return types.hasObject(arg, 'element');
 }
 
+/**
+ * ノード生成処理。
+ */
 export interface NodeFactory {
 	//#region property
 
@@ -236,11 +250,17 @@ export interface NodeFactory {
 	//#endregion
 }
 
+/**
+ * テキストノード生成処理。
+ */
 export class TextFactory implements NodeFactory {
 	constructor(public readonly element: Text) {
 	}
 }
 
+/**
+ * 要素生成処理。
+ */
 export class TagFactory<TElement extends Element> implements NodeFactory {
 	constructor(public readonly element: TElement) {
 	}
@@ -263,8 +283,16 @@ export class TagFactory<TElement extends Element> implements NodeFactory {
 
 		const nodeFactory = new TextFactory(createdNode);
 		return nodeFactory;
-
 	}
+}
+
+/**
+ * 中身を破棄。
+ *
+ * @param element
+ */
+export function clearContent(element: InnerHTML): void {
+	element.innerHTML = '';
 }
 
 

@@ -15,26 +15,40 @@ const inputIconsDirectory = path.resolve(__dirname, 'icons');
 const inputEntryDirectory = path.resolve(inputRootDirectory, 'entry');
 const outputDirectory = path.resolve(__dirname, 'dist');
 
-const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Configuration => {
-	/** 本番用か */
-	const isProduction = args.mode === 'production';
-
+export default function (env: { [key: string]: string }, args: any): webpack.Configuration {
 	if (!env['browser']) {
 		throw Error(env['browser']);
 	}
 
-	const conf: webpack.Configuration = {
+	const environment = {
+		browser: env['browser'],
 		mode: args.mode,
+		/** 本番用か */
+		isProduction: args.mode === 'production',
+	} as const;
 
-		entry: {
-			"page-content": path.join(inputEntryDirectory, `page-content@${env['browser']}.ts`),
-			"application-options": path.join(inputEntryDirectory, `application-options@${env['browser']}.ts`),
-			'setting-editor': path.join(inputEntryDirectory, `setting-editor@${env['browser']}.ts`),
-			"popup-action": path.join(inputEntryDirectory, `popup-action@${env['browser']}.ts`),
-			"background": path.join(inputEntryDirectory, `background@${env['browser']}.ts`),
-		},
+	const entries = [
+		'page-content',
+		'application-options',
+		'setting-editor',
+		'popup-action',
+		'background',
+	] as const;
 
-		devtool: isProduction ? false : 'inline-source-map',
+	const views = [
+		'application-options.html',
+		'setting-editor.html',
+		'popup-action.html',
+	] as const;
+
+	const webpackConfig: webpack.Configuration = {
+		mode: environment.mode,
+
+		entry: Object.fromEntries(
+			entries.map(i => [i, path.join(inputEntryDirectory, `${i}@${environment.browser}_${environment.mode}.ts`)])
+		),
+
+		devtool: environment.isProduction ? false : 'inline-source-map',
 
 		output: {
 			filename: '[name].js',
@@ -46,7 +60,11 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 				// スクリプト
 				{
 					test: /\.ts$/,
-					use: 'ts-loader',
+					use: [
+						{
+							loader: 'ts-loader',
+						},
+					],
 					exclude: /node_modules/,
 				},
 				// スタイルシート
@@ -59,13 +77,13 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 						{
 							loader: "css-loader",
 							options: {
-								sourceMap: !isProduction,
+								sourceMap: !environment.isProduction,
 							}
 						},
 						{
 							loader: "sass-loader",
 							options: {
-								sourceMap: !isProduction,
+								sourceMap: !environment.isProduction,
 							}
 						}
 					],
@@ -79,21 +97,11 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 			],
 		},
 		plugins: [
-			new HtmlWebpackPlugin({
-				template: path.join(inputRootDirectory, 'views', 'application-options.html'),
-				filename: 'application-options.html',
+			...views.map(i => new HtmlWebpackPlugin({
+				template: path.join(inputRootDirectory, 'views', i),
+				filename: i,
 				inject: false,
-			}),
-			new HtmlWebpackPlugin({
-				template: path.join(inputRootDirectory, 'views', 'setting-editor.html'),
-				filename: 'setting-editor.html',
-				inject: false,
-			}),
-			new HtmlWebpackPlugin({
-				template: path.join(inputRootDirectory, 'views', 'popup-action.html'),
-				filename: 'popup-action.html',
-				inject: false,
-			}),
+			})),
 			new CopyWebpackPlugin({
 				patterns: [
 					{
@@ -122,25 +130,25 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 			}),
 			new ManifestFilePlugin({
 				packageJson: path.join(__dirname, 'package.json'),
-				browser: env['browser'],
+				browser: environment.browser,
 				inputDirectory: path.join(inputRootDirectory, 'manifest'),
 				outputDirectory: outputDirectory,
 			}),
 			new LocaleFilesPlugin({
-				browser: env['browser'],
+				browser: environment.browser,
 				inputDirectory: path.join(inputRootDirectory, 'locales'),
 				outputDirectory: outputDirectory,
 			}),
 			new SvgToPngPlugin({
-				browser: env['browser'],
+				browser: environment.browser,
 				inputDirectory: inputIconsDirectory,
 				outputDirectory: outputDirectory,
 			}),
 		],
 	};
 
-	if (isProduction) {
-		conf.optimization = {
+	if (environment.isProduction) {
+		webpackConfig.optimization = {
 			minimize: true,
 			minimizer: [
 				new TerserPlugin({
@@ -173,8 +181,5 @@ const webpackConfig = (env: { [key: string]: string }, args: any): webpack.Confi
 		}
 	}
 
-	return conf;
+	return webpackConfig;
 }
-
-export default webpackConfig;
-

@@ -1,13 +1,13 @@
 {
   "@types/jest": {
-    "module": "@types/jest@29.2.2",
-    "version": "29.2.2",
+    "module": "@types/jest@29.2.4",
+    "version": "29.2.4",
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped"
   },
   "@types/webextension-polyfill": {
-    "module": "@types/webextension-polyfill@0.9.1",
-    "version": "0.9.1",
+    "module": "@types/webextension-polyfill@0.9.2",
+    "version": "0.9.2",
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped"
   },
@@ -25,8 +25,8 @@
     "repository": "https://github.com/webpack-contrib/copy-webpack-plugin"
   },
   "css-loader": {
-    "module": "css-loader@6.7.1",
-    "version": "6.7.1",
+    "module": "css-loader@6.7.2",
+    "version": "6.7.2",
     "publisher": "Tobias Koppers @sokra",
     "licenses": "MIT",
     "repository": "https://github.com/webpack-contrib/css-loader"
@@ -39,21 +39,21 @@
     "repository": "https://github.com/jantimon/html-webpack-plugin"
   },
   "image-minimizer-webpack-plugin": {
-    "module": "image-minimizer-webpack-plugin@3.8.0",
-    "version": "3.8.0",
+    "module": "image-minimizer-webpack-plugin@3.8.1",
+    "version": "3.8.1",
     "publisher": "Alexander Krasnoyarov",
     "licenses": "MIT",
     "repository": "https://github.com/webpack-contrib/image-minimizer-webpack-plugin"
   },
   "jest-environment-jsdom": {
-    "module": "jest-environment-jsdom@29.2.2",
-    "version": "29.2.2",
+    "module": "jest-environment-jsdom@29.3.1",
+    "version": "29.3.1",
     "licenses": "MIT",
     "repository": "https://github.com/facebook/jest"
   },
   "jest": {
-    "module": "jest@29.2.2",
-    "version": "29.2.2",
+    "module": "jest@29.3.1",
+    "version": "29.3.1",
     "licenses": "MIT",
     "repository": "https://github.com/facebook/jest"
   },
@@ -85,8 +85,8 @@
     "repository": "https://github.com/ajkochanowicz/normalize.css"
   },
   "npm-check-updates": {
-    "module": "npm-check-updates@16.3.16",
-    "version": "16.3.16",
+    "module": "npm-check-updates@16.5.0",
+    "version": "16.5.0",
     "publisher": "Tomas Junnonen",
     "licenses": "Apache-2.0",
     "repository": "https://github.com/raineorshine/npm-check-updates"
@@ -99,15 +99,15 @@
     "repository": "https://github.com/mysticatea/npm-run-all"
   },
   "sass-loader": {
-    "module": "sass-loader@13.1.0",
-    "version": "13.1.0",
+    "module": "sass-loader@13.2.0",
+    "version": "13.2.0",
     "publisher": "J. Tangelder",
     "licenses": "MIT",
     "repository": "https://github.com/webpack-contrib/sass-loader"
   },
   "sass": {
-    "module": "sass@1.56.0",
-    "version": "1.56.0",
+    "module": "sass@1.56.1",
+    "version": "1.56.1",
     "publisher": "Natalie Weizenbaum",
     "licenses": "MIT",
     "repository": "https://github.com/sass/dart-sass"
@@ -127,8 +127,8 @@
     "repository": "https://github.com/webpack-contrib/style-loader"
   },
   "svgo": {
-    "module": "svgo@3.0.0",
-    "version": "3.0.0",
+    "module": "svgo@3.0.2",
+    "version": "3.0.2",
     "publisher": "Kir Belevich",
     "licenses": "MIT",
     "repository": "https://github.com/svg/svgo"
@@ -141,8 +141,8 @@
     "repository": "https://github.com/kulshekhar/ts-jest"
   },
   "ts-loader": {
-    "module": "ts-loader@9.4.1",
-    "version": "9.4.1",
+    "module": "ts-loader@9.4.2",
+    "version": "9.4.2",
     "publisher": "John Reilly",
     "licenses": "MIT",
     "repository": "https://github.com/TypeStrong/ts-loader"
@@ -162,8 +162,8 @@
     "repository": "https://github.com/kelseasy/web-ext-types"
   },
   "web-ext": {
-    "module": "web-ext@7.3.1",
-    "version": "7.3.1",
+    "module": "web-ext@7.4.0",
+    "version": "7.4.0",
     "publisher": "Kumar McMillan",
     "licenses": "MPL-2.0",
     "repository": "https://github.com/mozilla/web-ext"
@@ -176,14 +176,14 @@
     "repository": "https://github.com/mozilla/webextension-polyfill"
   },
   "webpack-cli": {
-    "module": "webpack-cli@4.10.0",
-    "version": "4.10.0",
+    "module": "webpack-cli@5.0.1",
+    "version": "5.0.1",
     "licenses": "MIT",
     "repository": "https://github.com/webpack/webpack-cli"
   },
   "webpack": {
-    "module": "webpack@5.74.0",
-    "version": "5.74.0",
+    "module": "webpack@5.75.0",
+    "version": "5.75.0",
     "publisher": "Tobias Koppers @sokra",
     "licenses": "MIT",
     "repository": "https://github.com/webpack/webpack"

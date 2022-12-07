@@ -585,6 +585,8 @@ describe('types', () => {
 	test('nameof', () => {
 		expect(types.nameof<TestFlat>('a')).toBe('a');
 		expect(types.nameof<TestDeepSuper>('A')).toBe('A');
+
+		expect(types.nameof(console.log)).toBe('log');
 	});
 
 	test('toString', () => {

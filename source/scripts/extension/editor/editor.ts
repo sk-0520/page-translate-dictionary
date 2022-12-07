@@ -4,6 +4,7 @@ import * as webextension from 'webextension-polyfill';
 import * as dom from '../../core/dom';
 import * as types from '../../core/types';
 import * as string from '../../core/string';
+import * as number from '../../core/number';
 import * as extensions from '../extensions';
 import * as config from '../config';
 import * as storage from '../storage';
@@ -206,7 +207,7 @@ async function saveAsync(id: config.SiteInternalId): Promise<boolean> {
 			documentUrl: elements.informationDocument.value.trim(),
 		},
 		language: string.trim(elements.language.value),
-		priority: parseInt(elements.priority.value),
+		priority: number.parseIntOr(elements.priority.value, 0),
 	};
 
 	const body: config.SiteBodyConfiguration = {

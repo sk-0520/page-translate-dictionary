@@ -14,7 +14,7 @@ export default class ImportLogger {
 	//#region function
 
 	public clear() {
-		this._logElement.innerHTML = '';
+		dom.clearContent(this._logElement);
 	}
 
 	public add(message: string) {

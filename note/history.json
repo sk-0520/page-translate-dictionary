@@ -1,0 +1,106 @@
+[
+	{
+		"version": "0.0.2",
+		"contents": [
+			{
+				"type": "note",
+				"logs": [
+					{
+						"revision": "",
+						"class": "",
+						"subject": ""
+					},
+					{
+						"revision": "",
+						"subject": ""
+					},
+					{
+						"revision": "",
+						"subject": ""
+					},
+					{
+						"revision": "",
+						"subject": ""
+					}
+				]
+			},
+			{
+				"type": "features",
+				"logs": [
+					{
+						"revision": "",
+						"subject": "#3: ポップアップから拡張機能の設定を開けるようにする"
+					},
+					{
+						"revision": "",
+						"subject": ""
+					},
+					{
+						"revision": "",
+						"subject": ""
+					},
+					{
+						"revision": "",
+						"subject": ""
+					}
+				]
+			},
+			{
+				"type": "fixes",
+				"logs": [
+					{
+						"revision": "",
+						"subject": "#2: アイコンのツールチップにアプリ名を割り振る"
+					},
+					{
+						"revision": "",
+						"subject": ""
+					},
+					{
+						"revision": "",
+						"subject": ""
+					},
+					{
+						"revision": "",
+						"subject": ""
+					}
+				]
+			},
+			{
+				"type": "developer",
+				"logs": [
+					{
+						"revision": "05fc4e3c4b2d64567a0be9764fae9913b26e2005",
+						"subject": "update npm 1"
+					},
+					{
+						"revision": "",
+						"subject": "update npm 2"
+					},
+					{
+						"revision": "",
+						"subject": ""
+					},
+					{
+						"revision": "",
+						"subject": ""
+					}
+				]
+			}
+		]
+	},
+	{
+		"version": "0.0.1",
+		"contents": [
+			{
+				"type": "note",
+				"logs": [
+					{
+						"revision": "1b812754cfefc46015019afbeff0f1825fa3224a",
+						"subject": "公開"
+					}
+				]
+			}
+		]
+	}
+]

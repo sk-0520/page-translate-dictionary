@@ -67,7 +67,7 @@
 			"editorconfig.editorconfig",
 			"streetsidesoftware.code-spell-checker",
 			"orta.vscode-jest",
-			"awwsky.regionmarker"
+			"awwsky.regionmarker",
 		]
 	}
 }

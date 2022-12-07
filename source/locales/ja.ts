@@ -31,6 +31,10 @@ const messages: locale.Messages & locale.MessageMap = {
 		message: '適用設定ファイル一覧',
 	},
 
+	popup_extension_option: {
+		message: 'オプション',
+	},
+
 	options_title: {
 		message: '設定 - $TITLE$',
 		placeholders: {

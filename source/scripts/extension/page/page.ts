@@ -1,4 +1,5 @@
 import webextension from 'webextension-polyfill';
+
 import * as config from '../config';
 import * as uri from '../uri';
 import * as translator from './translator';
@@ -6,6 +7,7 @@ import * as throws from '../../core/throws';
 import * as string from '../../core/string';
 import * as dom from '../../core/dom';
 import * as types from '../../core/types';
+//import * as logging from '../../core/logging';
 import * as loader from '../loader';
 import * as messages from '../messages';
 import * as names from '../names';
@@ -378,17 +380,17 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 		// イベント監視設定追加
 		for (const siteItem of siteItems) {
 			for (const eventName of siteItem.watch.window) {
-				console.info('event:window', siteItem.name, eventName);
+				console.log('event:window', siteItem.name, eventName);
 				window.addEventListener(eventName, ev => updatedPageAsync(ev));
 			}
 			if (extension.kind === extensions.BrowserKind.Firefox) {
 				window.addEventListener('popstate', ev => {
-					console.error('popstate');
+					console.log('PTD firefox popstate');
 					updatedPageAsync(ev);
 				});
 			}
 			for (const eventName of siteItem.watch.document) {
-				console.info('event:document', siteItem.name, eventName);
+				console.log('event:document', siteItem.name, eventName);
 				document.addEventListener(eventName, ev => updatedPageAsync(ev));
 			}
 		}

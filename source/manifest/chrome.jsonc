@@ -29,7 +29,7 @@
 			"32": "extension-icon@32.png",
 			"48": "extension-icon@48.png",
 		},
-		"default_title": "ptd",
+		"default_title": "__MSG_ext_name__",
 		"default_popup": "popup-action.html",
 	},
 	"background": {
