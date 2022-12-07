@@ -63,6 +63,13 @@ async function applyTabAsync(tab: webextension.Tabs.Tab, extension: extensions.E
 }
 
 async function bootAsync(extension: extensions.Extension): Promise<void> {
+	const extensionOptionElement = dom.requireElementById('popup_extension_option');
+	extensionOptionElement.addEventListener('click', ev => {
+		ev.preventDefault();
+		webextension.runtime.openOptionsPage();
+		window.close();
+	});
+
 	const tabs = await webextension.tabs.query({
 		active: true,
 		currentWindow: true
