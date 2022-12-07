@@ -30,7 +30,7 @@
 		"postoutput:chrome": "ts-node ./source/build/output-rename.ts chrome",
 		"license": "ts-node ./source/generator/license-generator.ts",
 		"check": "ncu",
-		"update": "ncu -u && npm install"
+		"update": "ncu -u && npm install && npm run check"
 	},
 	"repository": {
 		"type": "git",
@@ -73,7 +73,7 @@
 		"license-checker": "^25.0.1",
 		"mkdirp": "^1.0.4",
 		"normalize-sass": "^1.0.0",
-		"npm-check-updates": "^16.4.3",
+		"npm-check-updates": "^16.5.0",
 		"npm-run-all": "^4.1.5",
 		"sass": "^1.56.1",
 		"sass-loader": "^13.2.0",
