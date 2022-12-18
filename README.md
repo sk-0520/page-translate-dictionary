@@ -10,7 +10,7 @@
 
 ### Node
 
-* node: `18.4.0`
+* node: `18.12.1`
 
 ### Firefox
 
