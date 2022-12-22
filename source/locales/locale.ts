@@ -66,6 +66,7 @@ export interface Messages {
 	options_tab_content_settings_item_details_repository: Message,
 	options_tab_content_settings_item_details_document: Message,
 	options_tab_content_settings_item_details_id: Message,
+	options_tab_content_settings_item_details_nextUpdate: Message,
 	options_tab_content_settings_item_details_actions: Message,
 	options_tab_content_settings_item_details_actions_state_enabled: Message,
 	options_tab_content_settings_item_details_actions_state_disabled: Message,

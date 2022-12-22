@@ -86,7 +86,7 @@ const messages: locale.Messages & locale.MessageMap = {
 		message: '設定バージョン',
 	},
 	options_tab_content_settings_item_updated_timestamp: {
-		message: '最終更新日時(UTC)',
+		message: '最終更新日時',
 	},
 	options_tab_content_settings_item_website: {
 		message: 'Webサイト',
@@ -117,6 +117,9 @@ const messages: locale.Messages & locale.MessageMap = {
 	},
 	options_tab_content_settings_item_details_id: {
 		message: 'ID',
+	},
+	options_tab_content_settings_item_details_nextUpdate: {
+		message: '次回チェック日時'
 	},
 	options_tab_content_settings_item_details_actions: {
 		message: '処理',

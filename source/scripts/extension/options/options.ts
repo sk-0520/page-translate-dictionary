@@ -30,8 +30,8 @@ function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfigurati
 	setState(currentStateElement, siteHeadConfiguration.isEnabled);
 
 	const updatedTimestampElement = dom.requireSelector(itemRootElement, '[name="updated-timestamp"]', HTMLTimeElement);
-	updatedTimestampElement.textContent = siteHeadConfiguration.updatedTimestamp;
 	updatedTimestampElement.dateTime = siteHeadConfiguration.updatedTimestamp;
+	updatedTimestampElement.textContent = new Date(siteHeadConfiguration.updatedTimestamp).toLocaleString();
 	const hostsElement = dom.requireSelector(itemRootElement, '[name="hosts"]');
 	dom.clearContent(hostsElement);
 	for (const host of siteHeadConfiguration.hosts) {
@@ -71,7 +71,7 @@ function setState(currentStateElement: HTMLElement, isEnabled: boolean): void {
 	currentStateElement.textContent = message;
 }
 
-function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
+function addSetting(applicationConfiguration: config.ApplicationConfiguration, siteHeadConfiguration: config.SiteHeadConfiguration) {
 	const itemRootElement = dom.cloneTemplate('#template-setting-item');
 	localize.applyNestElements(itemRootElement);
 
@@ -139,6 +139,13 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 	}
 
 	dom.requireSelector(itemRootElement, '[name="id"]').textContent = siteHeadConfiguration.id;
+
+	const nextUpdateElement = dom.requireSelector(itemRootElement, '[name="next-update"]', HTMLTimeElement);
+	const lastCheckedTimestamp = new Date(siteHeadConfiguration.lastCheckedTimestamp)
+	lastCheckedTimestamp.setDate(lastCheckedTimestamp.getDate() + applicationConfiguration.setting.periodDays);
+	nextUpdateElement.title = nextUpdateElement.dateTime = lastCheckedTimestamp.toISOString();
+	nextUpdateElement.textContent = lastCheckedTimestamp.toLocaleString();
+
 	dom.requireSelector(itemRootElement, '[name="delete"]').addEventListener('click', async ev => {
 		const element = ev.currentTarget as HTMLButtonElement;
 		const itemElement = dom.requireClosest(element, '.setting-item');
@@ -159,7 +166,7 @@ function addSetting(siteHeadConfiguration: config.SiteHeadConfiguration) {
 
 }
 
-async function importSettingAsync(settingUrl: string): Promise<void> {
+async function importSettingAsync(applicationConfiguration: config.ApplicationConfiguration, settingUrl: string): Promise<void> {
 	const log = new ImportLogger();
 	log.clear();
 
@@ -196,7 +203,7 @@ async function importSettingAsync(settingUrl: string): Promise<void> {
 
 		log.add(webextension.i18n.getMessage('options_import_log_success'));
 
-		addSetting(site.head);
+		addSetting(applicationConfiguration, site.head);
 
 	} catch (ex) {
 		if (ex instanceof Error) {
@@ -207,9 +214,9 @@ async function importSettingAsync(settingUrl: string): Promise<void> {
 	}
 }
 
-function setSettings(siteHeadConfigurations: ReadonlyArray<config.SiteHeadConfiguration>) {
+function setSettings(applicationConfiguration: config.ApplicationConfiguration, siteHeadConfigurations: ReadonlyArray<config.SiteHeadConfiguration>) {
 	for (const siteHeadConfiguration of siteHeadConfigurations) {
-		addSetting(siteHeadConfiguration);
+		addSetting(applicationConfiguration, siteHeadConfiguration);
 	}
 
 	dom.requireElementById('import').addEventListener('click', async ev => {
@@ -218,7 +225,7 @@ function setSettings(siteHeadConfigurations: ReadonlyArray<config.SiteHeadConfig
 		if (url === null) {
 			return;
 		}
-		await importSettingAsync(url);
+		await importSettingAsync(applicationConfiguration, url);
 	})
 }
 
@@ -285,7 +292,7 @@ async function bootAsync(extension: extensions.Extension): Promise<void> {
 		return a.id.localeCompare(b.id);
 	});
 
-	setSettings(siteHeads);
+	setSettings(application, siteHeads);
 
 	setLibraries();
 
