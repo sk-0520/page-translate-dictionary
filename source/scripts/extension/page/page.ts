@@ -425,4 +425,10 @@ async function bootAsync(extension: extensions.Extension): Promise<boolean> {
 
 export function boot(extension: extensions.Extension) {
 	bootAsync(extension);
+
+	webextension.notifications.create(undefined, {
+		title: 'TITLE',
+		message: 'message',
+		type: 'basic'
+	})
 }
