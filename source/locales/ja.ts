@@ -119,7 +119,7 @@ const messages: locale.Messages & locale.MessageMap = {
 		message: 'ID',
 	},
 	options_tab_content_settings_item_details_nextUpdate: {
-		message: '次回更新日時'
+		message: '次回チェック日時'
 	},
 	options_tab_content_settings_item_details_actions: {
 		message: '処理',
