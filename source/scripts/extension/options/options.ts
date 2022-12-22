@@ -30,8 +30,8 @@ function updateItemInformation(siteHeadConfiguration: config.SiteHeadConfigurati
 	setState(currentStateElement, siteHeadConfiguration.isEnabled);
 
 	const updatedTimestampElement = dom.requireSelector(itemRootElement, '[name="updated-timestamp"]', HTMLTimeElement);
-	updatedTimestampElement.textContent = siteHeadConfiguration.updatedTimestamp;
 	updatedTimestampElement.dateTime = siteHeadConfiguration.updatedTimestamp;
+	updatedTimestampElement.textContent = new Date(siteHeadConfiguration.updatedTimestamp).toLocaleString();
 	const hostsElement = dom.requireSelector(itemRootElement, '[name="hosts"]');
 	dom.clearContent(hostsElement);
 	for (const host of siteHeadConfiguration.hosts) {
