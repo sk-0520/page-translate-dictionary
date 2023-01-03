@@ -1,5 +1,57 @@
 [
 	{
+		"version": "0.0.3",
+		"contents": [
+			{
+				"type": "note",
+				"logs": [
+					{
+						"subject": "0.0.2 の更新履歴は多分なんかおかしい"
+					}
+				]
+			},
+			{
+				"type": "features",
+				"logs": [
+					{
+						"revision": "21069524eb06f09274dbffcc27814f3bcab1edd7",
+						"subject": "#6: 拡張機能の独立したウィンドウ(タブ)にアイコンを追加"
+					},
+					{
+						"revision": "1b95183c57012ec946a447af5c95fa5a9e46048f",
+						"subject": "#5: 設定ファイルの次の更新日時を表示する"
+					}
+				]
+			},
+			{
+				"type": "fixes",
+				"logs": [
+					{
+						"revision": "8f7f042511f5edf22faa97ccbf617bb9d59c5fe1",
+						"subject": "#7: 警告絵文字をVS16にする"
+					}
+				]
+			},
+			{
+				"type": "developer",
+				"logs": [
+					{
+						"revision": "690d40abd464e33b7e1332d2eb9a9f2bb4d5353f",
+						"subject": "update npm 3"
+					},
+					{
+						"revision": "b5dc19ba7755018f3a8a540753b50245a8edd2cc",
+						"subject": "update npm 4"
+					},
+					{
+						"revision": "fe62c304c022c364238d52fc49bc24f9ba94d3d4",
+						"subject": "Node.js 18.4.0 -> 18.12.1"
+					}
+				]
+			}
+		]
+	},
+	{
 		"version": "0.0.2",
 		"contents": [
 			{
@@ -28,20 +80,8 @@
 				"type": "features",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "53099e3f0e3566a5924a0889c0c170a4afb8baaf",
 						"subject": "#3: ポップアップから拡張機能の設定を開けるようにする"
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			},
@@ -49,20 +89,8 @@
 				"type": "fixes",
 				"logs": [
 					{
-						"revision": "",
+						"revision": "44bba19e54d5ad085a77eae7aaa2a04484bbdef1",
 						"subject": "#2: アイコンのツールチップにアプリ名を割り振る"
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			},
@@ -74,16 +102,8 @@
 						"subject": "update npm 1"
 					},
 					{
-						"revision": "",
+						"revision": "d9e31caca99863e3e404ffc8f21632ff656a9b74",
 						"subject": "update npm 2"
-					},
-					{
-						"revision": "",
-						"subject": ""
-					},
-					{
-						"revision": "",
-						"subject": ""
 					}
 				]
 			}

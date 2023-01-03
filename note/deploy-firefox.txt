@@ -1,0 +1,16 @@
+ソースコードを提出する必要がありますか？
+	はい
+
+審査担当者へのメモ:
+
+#build
+
+* node 18.12.1
+
+---------
+
+1. npm ci
+2. npm run build:production:firefox
+3. npm run output:firefox
+4. cd dist/web-ext-artifacts
+
