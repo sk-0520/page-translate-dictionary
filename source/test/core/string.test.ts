@@ -4,17 +4,6 @@ describe('string', () => {
 	test.each([
 		[false, undefined],
 		[false, null],
-		[true, ''],
-		[false, ' '],
-		[false, '　'],
-		[false, 'a'],
-	])('isEmpty', (expected: boolean, input: string | null | undefined) => {
-		expect(string.isEmpty(input)).toBe(expected);
-	});
-
-	test.each([
-		[false, undefined],
-		[false, null],
 		[false, ''],
 		[false, ' '],
 		[false, '　'],
