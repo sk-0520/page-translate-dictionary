@@ -8,10 +8,6 @@
 
 ## Build
 
-### Node
-
-* node: `18.12.1`
-
 ### Firefox
 
 ```cmd
