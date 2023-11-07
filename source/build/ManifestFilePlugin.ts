@@ -65,7 +65,7 @@ export default class ManifestFilePlugin {
 	public apply(compiler: webpack.Compiler) {
 		compiler.hooks.watchRun.tapPromise(ManifestFilePlugin.pluginName, async (compilation) => {
 			if (compilation.modifiedFiles) {
-				if (this.getWatchFilePaths().filter(i => compilation.modifiedFiles.has(i)).length) {
+				if (this.getWatchFilePaths().filter(i => compilation.modifiedFiles?.has(i)).length) {
 					console.debug(ManifestFilePlugin.pluginName, 'UPDATE');
 					this._canGenerate = true;
 				}
